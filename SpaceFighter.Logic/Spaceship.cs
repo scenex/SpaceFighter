@@ -20,9 +20,17 @@ namespace SpaceFighter.Logic
     public class Spaceship : ISpaceship
     {
         private readonly Texture2D spriteRegular;
-        private readonly Vector2 position;
-        private Game game;    
+        private Vector2 position;
+        private Game game;
 
+        private const float moveStep = 2.0f;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Spaceship"/> class.
+        /// </summary>
+        /// <param name="game">
+        /// The game to be passed.
+        /// </param>
         public Spaceship(Game game)
         {
             this.game = game;
@@ -62,6 +70,26 @@ namespace SpaceFighter.Logic
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public void MoveLeft()
+        {
+            this.position.X -= moveStep;
+        }
+
+        public void MoveRight()
+        {
+            this.position.X += moveStep;
+        }
+
+        public void MoveUp()
+        {
+            this.position.Y -= moveStep;
+        }
+
+        public void MoveDown()
+        {
+            this.position.Y += moveStep;
         }
     }
 }

@@ -21,10 +21,15 @@ namespace SpaceFighter
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private Texture2D spaceshipSprite;
-
         private Spaceship spaceship;
 
+        private const int screenWidth = 640;
+
+        private const int screenHeight = 480;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Game1"/> class.
+        /// </summary>
         public Game1()
         {
             this.graphics = new GraphicsDeviceManager(this);
@@ -38,7 +43,11 @@ namespace SpaceFighter
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize()
-        {
+        {   
+            this.graphics.PreferredBackBufferWidth = screenWidth;
+            this.graphics.PreferredBackBufferHeight = screenHeight;
+            this.graphics.ApplyChanges();
+            
             base.Initialize();
         }
 
@@ -48,10 +57,7 @@ namespace SpaceFighter
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
             this.spaceship = new Spaceship(this);
         }
 
@@ -71,13 +77,38 @@ namespace SpaceFighter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                this.Exit();
+                if (this.spaceship.Position.X + this.spaceship.SpriteRegular.Width <= screenWidth)
+                {
+                    this.spaceship.MoveRight();
+                }
             }
 
-            // TODO: Add your update logic here
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                if (this.spaceship.Position.X >= 0)
+                {
+                    this.spaceship.MoveLeft();
+                }
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                if (this.spaceship.Position.Y >= 0)
+                {
+                    this.spaceship.MoveUp();
+                }
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                if (this.spaceship.Position.Y + this.spaceship.SpriteRegular.Height <= screenHeight)
+                {
+                    this.spaceship.MoveDown();
+                }
+            }
+
             base.Update(gameTime);
         }
 

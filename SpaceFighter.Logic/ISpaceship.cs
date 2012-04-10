@@ -25,5 +25,13 @@ namespace SpaceFighter.Logic
         Texture2D SpriteExplosionSequence { get; }
 
         IWeapon Weapon { get; }
+
+        void MoveLeft();
+
+        void MoveRight();
+
+        void MoveUp();
+
+        void MoveDown();
     }
 }
