@@ -23,6 +23,7 @@ namespace SpaceFighter
         private SpriteBatch spriteBatch;
         private Spaceship spaceship;
 
+
         private const int screenWidth = 640;
 
         private const int screenHeight = 480;
@@ -47,7 +48,14 @@ namespace SpaceFighter
             this.graphics.PreferredBackBufferWidth = screenWidth;
             this.graphics.PreferredBackBufferHeight = screenHeight;
             this.graphics.ApplyChanges();
-            
+
+            this.spaceship = new Spaceship(
+                this,
+                new ContentManager(this.Services, "Content"),
+                new Vector2((screenWidth / 2) - 16, screenHeight / 2));
+
+            this.Components.Add(this.spaceship);
+
             base.Initialize();
         }
 
@@ -58,7 +66,6 @@ namespace SpaceFighter
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
-            this.spaceship = new Spaceship(this);
         }
 
         /// <summary>
@@ -79,7 +86,7 @@ namespace SpaceFighter
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                if (this.spaceship.Position.X + this.spaceship.SpriteRegular.Width <= screenWidth)
+                if (this.spaceship.Position.X + this.spaceship.ShipRegular.Width <= screenWidth)
                 {
                     this.spaceship.MoveRight();
                 }
@@ -95,7 +102,7 @@ namespace SpaceFighter
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                if (this.spaceship.Position.Y >= 0)
+                if (this.spaceship.Position.Y - 3 >= 0)
                 {
                     this.spaceship.MoveUp();
                 }
@@ -103,10 +110,15 @@ namespace SpaceFighter
 
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                if (this.spaceship.Position.Y + this.spaceship.SpriteRegular.Height <= screenHeight)
+                if (this.spaceship.Position.Y + this.spaceship.ShipRegular.Height <= screenHeight)
                 {
                     this.spaceship.MoveDown();
                 }
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                this.spaceship.FireWeapon();
             }
 
             base.Update(gameTime);
@@ -118,12 +130,7 @@ namespace SpaceFighter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-
-            this.spriteBatch.Begin();
-            this.spriteBatch.Draw(this.spaceship.SpriteRegular, this.spaceship.Position, Color.White);
-            this.spriteBatch.End();
-
+            GraphicsDevice.Clear(Color.White);
             base.Draw(gameTime);
         }
     }

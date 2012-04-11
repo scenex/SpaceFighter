@@ -13,6 +13,8 @@ namespace SpaceFighter.Logic
     /// </summary>
     public interface IWeapon
     {
+        void FireWeapon(Vector2 startPosition);
+
         Vector2[] ShotPositions { get; }
     }
 }

@@ -20,11 +20,9 @@ namespace SpaceFighter.Logic
 
         Vector2 Position { get; }
 
-        Texture2D SpriteRegular { get; }
+        Texture2D ShipRegular { get; }
 
-        Texture2D SpriteExplosionSequence { get; }
-
-        IWeapon Weapon { get; }
+        Texture2D ShipExplosionSequence { get; }
 
         void MoveLeft();
 
@@ -33,5 +31,11 @@ namespace SpaceFighter.Logic
         void MoveUp();
 
         void MoveDown();
+
+        void UpgradeWeapon();
+
+        void DowngradeWeapon();
+
+        void FireWeapon();
     }
 }
