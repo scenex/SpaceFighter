@@ -20,7 +20,7 @@ namespace SpaceFighter.Logic
 
         Vector2 Position { get; }
 
-        Texture2D ShipRegular { get; }
+        Texture2D ShipSprite { get; }
 
         Texture2D ShipExplosionSequence { get; }
 

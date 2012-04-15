@@ -23,6 +23,9 @@ namespace SpaceFighter
         private SpriteBatch spriteBatch;
         private Spaceship spaceship;
 
+        private KeyboardState previousKeyboardState;
+
+        private KeyboardState currentKeyboardState;
 
         private const int screenWidth = 640;
 
@@ -84,15 +87,9 @@ namespace SpaceFighter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                if (this.spaceship.Position.X + this.spaceship.ShipRegular.Width <= screenWidth)
-                {
-                    this.spaceship.MoveRight();
-                }
-            }
+            this.currentKeyboardState = Keyboard.GetState();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            if (this.currentKeyboardState.IsKeyDown(Keys.Left))
             {
                 if (this.spaceship.Position.X >= 0)
                 {
@@ -100,7 +97,15 @@ namespace SpaceFighter
                 }
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            if (this.currentKeyboardState.IsKeyDown(Keys.Right))
+            {
+                if (this.spaceship.Position.X + this.spaceship.ShipSprite.Width <= screenWidth)
+                {
+                    this.spaceship.MoveRight();
+                }
+            }
+
+            if (this.currentKeyboardState.IsKeyDown(Keys.Up))
             {
                 if (this.spaceship.Position.Y - 3 >= 0)
                 {
@@ -108,18 +113,20 @@ namespace SpaceFighter
                 }
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            if (this.currentKeyboardState.IsKeyDown(Keys.Down))
             {
-                if (this.spaceship.Position.Y + this.spaceship.ShipRegular.Height <= screenHeight)
+                if (this.spaceship.Position.Y + this.spaceship.ShipSprite.Height <= screenHeight)
                 {
                     this.spaceship.MoveDown();
                 }
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (this.currentKeyboardState.IsKeyDown(Keys.Space) && this.previousKeyboardState.IsKeyUp(Keys.Space))
             {
                 this.spaceship.FireWeapon();
             }
+
+            this.previousKeyboardState = this.currentKeyboardState;
 
             base.Update(gameTime);
         }
@@ -130,7 +137,7 @@ namespace SpaceFighter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
+            GraphicsDevice.Clear(Color.Black);
             base.Draw(gameTime);
         }
     }

@@ -25,7 +25,9 @@ namespace SpaceFighter.Logic
 
         public void FireWeapon(Vector2 startPosition)
         {
-            this.shotPositionsList.Add(startPosition);
+            this.shotPositionsList.Add(new Vector2(
+                startPosition.X - ((float)this.shotSprite.Width / 2),
+                startPosition.Y - ((float)this.shotSprite.Width / 2)));
         }
 
         public Vector2[] ShotPositions

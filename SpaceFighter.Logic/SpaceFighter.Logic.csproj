@@ -92,6 +92,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enemy.cs" />
+    <Compile Include="IEnemy.cs" />
     <Compile Include="ISpaceship.cs" />
     <Compile Include="IWeapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

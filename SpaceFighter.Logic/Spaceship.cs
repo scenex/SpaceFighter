@@ -20,7 +20,7 @@ namespace SpaceFighter.Logic
     /// </summary>
     public class Spaceship : DrawableGameComponent, ISpaceship
     {
-        private readonly Texture2D shipRegular;
+        private readonly Texture2D shipSprite;
         
         private Vector2 position;
         private ContentManager contentManager;
@@ -51,7 +51,7 @@ namespace SpaceFighter.Logic
             this.contentManager = contentManager;
             this.position = startPosition;
 
-            this.shipRegular = this.contentManager.Load<Texture2D>("Sprites/Spaceship");
+            this.shipSprite = this.contentManager.Load<Texture2D>("Sprites/Spaceship");
         }
 
         public event EventHandler CollisionDetected;
@@ -64,11 +64,11 @@ namespace SpaceFighter.Logic
             }
         }
 
-        public Texture2D ShipRegular
+        public Texture2D ShipSprite
         {
             get
             {
-                return this.shipRegular;
+                return this.shipSprite;
             }
         }
 
@@ -112,7 +112,7 @@ namespace SpaceFighter.Logic
 
         public void FireWeapon()
         {
-            this.weapon.FireWeapon(this.position);
+            this.weapon.FireWeapon(new Vector2(this.position.X + ((float)this.shipSprite.Width / 2), this.position.Y));
         }
 
         public override void Initialize()
@@ -138,7 +138,7 @@ namespace SpaceFighter.Logic
         public override void Draw(GameTime gameTime)
         {
             this.spriteBatch.Begin();
-            this.spriteBatch.Draw(this.ShipRegular, this.Position, Color.White);
+            this.spriteBatch.Draw(this.ShipSprite, this.Position, Color.White);
             this.spriteBatch.End();
 
             base.Draw(gameTime);
