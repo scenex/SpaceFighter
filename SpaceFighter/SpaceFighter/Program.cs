@@ -1,4 +1,6 @@
-using System;
+// -----------------------------------------------------------------------
+// (c) Cataclysm Game Studios 2012
+// -----------------------------------------------------------------------
 
 namespace SpaceFighter
 {
@@ -10,7 +12,7 @@ namespace SpaceFighter
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (var game = new Game1())
             {
                 game.Run();
             }

@@ -1,7 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IEnemy.cs" company="Cataclysm">
-// TODO: Update copyright text.
-// </copyright>
+// (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
 namespace SpaceFighter.Logic
@@ -13,6 +11,6 @@ namespace SpaceFighter.Logic
     {
         Vector2 Position { get; }
 
-        Texture2D ShipSprite { get; }
+        Texture2D EnemySprite { get; }
     }
 }

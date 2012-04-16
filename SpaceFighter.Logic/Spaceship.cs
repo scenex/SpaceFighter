@@ -1,29 +1,22 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Spaceship.cs" company="Catclysm">
-// TODO: Update copyright text.
-// </copyright>
+// (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
 namespace SpaceFighter.Logic
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// The spaceship class which represent the players spaceship.
     /// </summary>
     public class Spaceship : DrawableGameComponent, ISpaceship
     {
         private readonly Texture2D shipSprite;
         
         private Vector2 position;
-        private ContentManager contentManager;
+
 
         private const float moveStep = 2.0f;
 
@@ -45,13 +38,12 @@ namespace SpaceFighter.Logic
         /// <param name="startPosition">
         /// The start Position.
         /// </param>
-        public Spaceship(Game game, ContentManager contentManager, Vector2 startPosition) : base(game)
+        public Spaceship(Game game, Vector2 startPosition) : base(game)
         {
             this.game = game;
-            this.contentManager = contentManager;
             this.position = startPosition;
 
-            this.shipSprite = this.contentManager.Load<Texture2D>("Sprites/Spaceship");
+            this.shipSprite = this.game.Content.Load<Texture2D>("Sprites/Spaceship");
         }
 
         public event EventHandler CollisionDetected;

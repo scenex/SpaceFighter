@@ -1,3 +1,7 @@
+// -----------------------------------------------------------------------
+// (c) Cataclysm Game Studios 2012
+// -----------------------------------------------------------------------
+
 namespace SpaceFighter
 {
     using System;
@@ -21,7 +25,10 @@ namespace SpaceFighter
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+
         private Spaceship spaceship;
+
+        private Enemy enemy;
 
         private KeyboardState previousKeyboardState;
 
@@ -52,12 +59,11 @@ namespace SpaceFighter
             this.graphics.PreferredBackBufferHeight = screenHeight;
             this.graphics.ApplyChanges();
 
-            this.spaceship = new Spaceship(
-                this,
-                new ContentManager(this.Services, "Content"),
-                new Vector2((screenWidth / 2) - 16, screenHeight / 2));
+            this.spaceship = new Spaceship(this, new Vector2((screenWidth / 2) - 16, screenHeight / 2));
+            this.enemy = new Enemy(this);
 
             this.Components.Add(this.spaceship);
+            this.Components.Add(this.enemy);
 
             base.Initialize();
         }
@@ -121,7 +127,7 @@ namespace SpaceFighter
                 }
             }
 
-            if (this.currentKeyboardState.IsKeyDown(Keys.Space) && this.previousKeyboardState.IsKeyUp(Keys.Space))
+            if (this.currentKeyboardState.IsKeyDown(Keys.LeftControl) && this.previousKeyboardState.IsKeyUp(Keys.LeftControl))
             {
                 this.spaceship.FireWeapon();
             }

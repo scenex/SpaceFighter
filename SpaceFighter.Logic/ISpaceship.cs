@@ -1,7 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ISpaceship.cs" company="Cataclysm">
-// TODO: Update copyright text.
-// </copyright>
+// (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
 namespace SpaceFighter.Logic
