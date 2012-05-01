@@ -17,26 +17,25 @@ namespace SpaceFighter
     using Microsoft.Xna.Framework.Media;
 
     using SpaceFighter.Logic;
+    using SpaceFighter.Logic.Services;
 
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game1 : Game
     {
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
+        private const int ScreenWidth = 640;
+        private const int ScreenHeight = 480;
 
-        private Spaceship spaceship;
+        private readonly GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
         private Enemy enemy;
 
         private KeyboardState previousKeyboardState;
-
         private KeyboardState currentKeyboardState;
 
-        private const int screenWidth = 640;
-
-        private const int screenHeight = 480;
+        private IPlayerService playerService; 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
@@ -55,15 +54,20 @@ namespace SpaceFighter
         /// </summary>
         protected override void Initialize()
         {   
-            this.graphics.PreferredBackBufferWidth = screenWidth;
-            this.graphics.PreferredBackBufferHeight = screenHeight;
+            this.graphics.PreferredBackBufferWidth = ScreenWidth;
+            this.graphics.PreferredBackBufferHeight = ScreenHeight;
             this.graphics.ApplyChanges();
 
-            this.spaceship = new Spaceship(this, new Vector2((screenWidth / 2) - 16, screenHeight / 2));
             this.enemy = new Enemy(this);
 
-            this.Components.Add(this.spaceship);
             this.Components.Add(this.enemy);
+
+            this.Services.AddService(typeof(IPlayerService), new PlayerService(this));
+            this.playerService = (IPlayerService)this.Services.GetService(typeof(IPlayerService));
+
+            this.Services.AddService(typeof(IEnemiesServices), new EnemiesService(this));
+
+            this.Services.AddService(typeof(ICollisionDetectionService), new CollisionDetectionService(this));
 
             base.Initialize();
         }
@@ -97,39 +101,39 @@ namespace SpaceFighter
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Left))
             {
-                if (this.spaceship.Position.X >= 0)
+                if (this.playerService.Player.Position.X >= 0)
                 {
-                    this.spaceship.MoveLeft();
+                    this.playerService.MoveLeft();
                 }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Right))
             {
-                if (this.spaceship.Position.X + this.spaceship.ShipSprite.Width <= screenWidth)
+                if (this.playerService.Player.Position.X + this.playerService.Player.ShipSprite.Width <= ScreenWidth)
                 {
-                    this.spaceship.MoveRight();
+                    this.playerService.MoveRight();
                 }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Up))
             {
-                if (this.spaceship.Position.Y - 3 >= 0)
+                if (this.playerService.Player.Position.Y - 3 >= 0)
                 {
-                    this.spaceship.MoveUp();
+                    this.playerService.MoveUp();
                 }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Down))
             {
-                if (this.spaceship.Position.Y + this.spaceship.ShipSprite.Height <= screenHeight)
+                if (this.playerService.Player.Position.Y + this.playerService.Player.ShipSprite.Height <= ScreenHeight)
                 {
-                    this.spaceship.MoveDown();
+                    this.playerService.MoveDown();
                 }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.LeftControl) && this.previousKeyboardState.IsKeyUp(Keys.LeftControl))
             {
-                this.spaceship.FireWeapon();
+                this.playerService.FireWeapon();
             }
 
             this.previousKeyboardState = this.currentKeyboardState;

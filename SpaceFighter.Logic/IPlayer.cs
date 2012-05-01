@@ -12,28 +12,14 @@ namespace SpaceFighter.Logic
     /// <summary>
     /// The interface to represent the player's spaceship
     /// </summary>
-    public interface ISpaceship
+    public interface IPlayer
     {
         event EventHandler CollisionDetected;
 
-        Vector2 Position { get; }
+        Vector2 Position { get; set; }
 
         Texture2D ShipSprite { get; }
 
         Texture2D ShipExplosionSequence { get; }
-
-        void MoveLeft();
-
-        void MoveRight();
-
-        void MoveUp();
-
-        void MoveDown();
-
-        void UpgradeWeapon();
-
-        void DowngradeWeapon();
-
-        void FireWeapon();
     }
 }
