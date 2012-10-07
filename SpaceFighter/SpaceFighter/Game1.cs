@@ -4,19 +4,9 @@
 
 namespace SpaceFighter
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Audio;
-    using Microsoft.Xna.Framework.Content;
-    using Microsoft.Xna.Framework.GamerServices;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
-    using Microsoft.Xna.Framework.Media;
-
-    using SpaceFighter.Logic;
     using SpaceFighter.Logic.Services;
 
     /// <summary>
@@ -28,18 +18,11 @@ namespace SpaceFighter
         private const int ScreenHeight = 480;
 
         private readonly GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
-
-        //private Enemy enemy;
 
         private KeyboardState previousKeyboardState;
         private KeyboardState currentKeyboardState;
 
-        private IPlayerService playerService;
-
-        private IEnemiesService enemyService;
-
-        private ICollisionDetectionService collisionDetectionService;
+        private IGameController gameController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
@@ -62,17 +45,8 @@ namespace SpaceFighter
             this.graphics.PreferredBackBufferHeight = ScreenHeight;
             this.graphics.ApplyChanges();
 
-            //this.enemy = new Enemy(this); -> Service!
-            //this.Components.Add(this.enemy);
-
-            this.Services.AddService(typeof(IPlayerService), new PlayerService(this));
-            this.playerService = (IPlayerService)this.Services.GetService(typeof(IPlayerService));
-
-            this.Services.AddService(typeof(IEnemiesService), new EnemiesService(this));
-            this.enemyService = (IEnemiesService)this.Services.GetService(typeof(IEnemiesService));
-
-            this.Services.AddService(typeof(ICollisionDetectionService), new CollisionDetectionService(this));
-            this.collisionDetectionService = (ICollisionDetectionService)this.Services.GetService(typeof(ICollisionDetectionService));
+            this.Services.AddService(typeof(IGameController), new GameController(this));
+            this.gameController = (IGameController)this.Services.GetService(typeof(IGameController));
 
             base.Initialize();
         }
@@ -83,7 +57,6 @@ namespace SpaceFighter
         /// </summary>
         protected override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         /// <summary>
@@ -106,39 +79,39 @@ namespace SpaceFighter
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Left))
             {
-                if (this.playerService.Player.Position.X >= 0)
+                if (this.gameController.PlayerService.Player.Position.X >= 0)
                 {
-                    this.playerService.MoveLeft();
+                    this.gameController.PlayerService.MoveLeft();
                 }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Right))
             {
-                if (this.playerService.Player.Position.X + this.playerService.Player.ShipSprite.Width <= ScreenWidth)
+                if (this.gameController.PlayerService.Player.Position.X + this.gameController.PlayerService.Player.ShipSprite.Width <= ScreenWidth)
                 {
-                    this.playerService.MoveRight();
+                    this.gameController.PlayerService.MoveRight();
                 }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Up))
             {
-                if (this.playerService.Player.Position.Y - 3 >= 0)
+                if (this.gameController.PlayerService.Player.Position.Y - 3 >= 0)
                 {
-                    this.playerService.MoveUp();
+                    this.gameController.PlayerService.MoveUp();
                 }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Down))
             {
-                if (this.playerService.Player.Position.Y + this.playerService.Player.ShipSprite.Height <= ScreenHeight)
+                if (this.gameController.PlayerService.Player.Position.Y + this.gameController.PlayerService.Player.ShipSprite.Height <= ScreenHeight)
                 {
-                    this.playerService.MoveDown();
+                    this.gameController.PlayerService.MoveDown();
                 }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.LeftControl) && this.previousKeyboardState.IsKeyUp(Keys.LeftControl))
             {
-                this.playerService.FireWeapon();
+                this.gameController.PlayerService.FireWeapon();
             }
 
             this.previousKeyboardState = this.currentKeyboardState;
