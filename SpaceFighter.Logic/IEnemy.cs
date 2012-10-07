@@ -11,6 +11,8 @@ namespace SpaceFighter.Logic
     {
         Vector2 Position { get; }
 
-        Texture2D EnemySprite { get; }
+        Texture2D Sprite { get; }
+
+        Color[] SpriteDataCached { get; }
     }
 }

@@ -14,29 +14,28 @@ namespace SpaceFighter.Logic
     public class Player : DrawableGameComponent, IPlayer
     {   
         private readonly Game game;
-        private readonly Texture2D shipSprite;
+        private readonly Texture2D sprite;
         private SpriteBatch spriteBatch;
+        private Color[] spriteDataCached;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
             this.game = game;
             this.Position = startPosition;
-            this.shipSprite = this.game.Content.Load<Texture2D>("Sprites/Spaceship");
+            this.sprite = this.game.Content.Load<Texture2D>("Sprites/Spaceship");
         }
-
-        public event EventHandler CollisionDetected;
 
         public Vector2 Position { get; set; }
 
-        public Texture2D ShipSprite
+        public Texture2D Sprite
         {
             get
             {
-                return this.shipSprite;
+                return this.sprite;
             }
         }
 
-        public Texture2D ShipExplosionSequence
+        public Texture2D ExplosionSequence
         {
             get
             {
@@ -44,9 +43,21 @@ namespace SpaceFighter.Logic
             }
         }
 
+        public Color[] SpriteDataCached
+        {
+            get
+            {
+                return this.spriteDataCached;
+            }
+        }
+
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // Obtain color information for subsequent per pixel collision detection
+            this.spriteDataCached = new Color[this.sprite.Width * this.sprite.Height];
+            this.sprite.GetData(spriteDataCached);
 
             base.LoadContent();
         }
@@ -54,7 +65,7 @@ namespace SpaceFighter.Logic
         public override void Draw(GameTime gameTime)
         {
             this.spriteBatch.Begin();
-            this.spriteBatch.Draw(this.ShipSprite, this.Position, Color.White);
+            this.spriteBatch.Draw(this.Sprite, this.Position, Color.White);
             this.spriteBatch.End();
 
             base.Draw(gameTime);

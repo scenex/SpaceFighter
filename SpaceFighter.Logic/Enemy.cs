@@ -14,14 +14,15 @@ namespace SpaceFighter.Logic
     {
         private Vector2 position;
         private readonly Game game;
-        private readonly Texture2D enemySprite;
+        private readonly Texture2D sprite;
         private SpriteBatch spriteBatch;
+        private Color[] spriteDataCached;
 
         public Enemy(Game game, Vector2 startPosition) : base(game)
         {
             this.game = game;
             this.position = new Vector2(100, 100);
-            this.enemySprite = this.game.Content.Load<Texture2D>("Sprites/Enemy");
+            this.sprite = this.game.Content.Load<Texture2D>("Sprites/Enemy");
         }
 
         public Vector2 Position
@@ -32,11 +33,19 @@ namespace SpaceFighter.Logic
             }
         }
 
-        public Texture2D EnemySprite
+        public Texture2D Sprite
         {
             get
             {
-                return this.enemySprite;
+                return this.sprite;
+            }
+        }
+
+        public Color[] SpriteDataCached
+        {
+            get
+            {
+                return this.spriteDataCached;
             }
         }
 
@@ -56,7 +65,7 @@ namespace SpaceFighter.Logic
         public override void Draw(GameTime gameTime)
         {
             this.spriteBatch.Begin();
-            this.spriteBatch.Draw(this.enemySprite, this.position, Color.White);
+            this.spriteBatch.Draw(this.sprite, this.position, Color.White);
             this.spriteBatch.End();
 
             base.Draw(gameTime);
@@ -68,6 +77,11 @@ namespace SpaceFighter.Logic
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // Obtain color information for subsequent per pixel collision detection
+            this.spriteDataCached = new Color[this.sprite.Width * this.sprite.Height];
+            this.sprite.GetData(spriteDataCached);
+
             base.LoadContent();
         }
     }

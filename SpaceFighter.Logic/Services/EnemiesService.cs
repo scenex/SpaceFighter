@@ -4,7 +4,6 @@
 
 namespace SpaceFighter.Logic.Services
 {
-    using System;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
@@ -22,8 +21,13 @@ namespace SpaceFighter.Logic.Services
         {
             get
             {
-                throw new NotImplementedException();
+                return new List<IEnemy>() {enemy};
             }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
         }
     }
 }

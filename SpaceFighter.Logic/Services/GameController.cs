@@ -8,22 +8,24 @@ namespace SpaceFighter.Logic.Services
 
     public class GameController : GameComponent, IGameController
     {
-        private IPlayerService playerService;
+        private readonly PlayerService playerService;
 
-        private IEnemiesService enemyService;
+        private readonly EnemiesService enemyService;
 
-        private ICollisionDetectionService collisionDetectionService;
+        private readonly CollisionDetectionService collisionDetectionService;
 
         public GameController(Game game) : base(game)
         {
-            this.Game.Services.AddService(typeof(IPlayerService), new PlayerService(game));
-            this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
+            this.collisionDetectionService = new CollisionDetectionService(game);
+            this.Game.Components.Add(this.collisionDetectionService);
 
-            this.Game.Services.AddService(typeof(IEnemiesService), new EnemiesService(game));
-            this.enemyService = (IEnemiesService)this.Game.Services.GetService(typeof(IEnemiesService));
+            this.playerService = new PlayerService(game);
+            this.Game.Services.AddService(typeof(IPlayerService), this.playerService);
+            this.Game.Components.Add(this.playerService);
 
-            this.Game.Services.AddService(typeof(ICollisionDetectionService), new CollisionDetectionService(game));
-            this.collisionDetectionService = (ICollisionDetectionService)this.Game.Services.GetService(typeof(ICollisionDetectionService));
+            this.enemyService = new EnemiesService(game);
+            this.Game.Services.AddService(typeof(IEnemiesService), this.enemyService);
+            this.Game.Components.Add(this.enemyService);
         }
 
         public IPlayerService PlayerService
@@ -32,6 +34,11 @@ namespace SpaceFighter.Logic.Services
             {
                 return this.playerService;
             }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
         }
     }
 }

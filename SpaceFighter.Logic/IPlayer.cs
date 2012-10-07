@@ -14,12 +14,12 @@ namespace SpaceFighter.Logic
     /// </summary>
     public interface IPlayer
     {
-        event EventHandler CollisionDetected;
-
         Vector2 Position { get; set; }
 
-        Texture2D ShipSprite { get; }
+        Texture2D Sprite { get; }
 
-        Texture2D ShipExplosionSequence { get; }
+        Texture2D ExplosionSequence { get; }
+
+        Color[] SpriteDataCached { get; }
     }
 }

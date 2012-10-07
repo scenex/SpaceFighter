@@ -5,14 +5,13 @@
 namespace SpaceFighter
 {
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
     using SpaceFighter.Logic.Services;
 
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Game
+    public class SpaceGame : Game
     {
         private const int ScreenWidth = 640;
         private const int ScreenHeight = 480;
@@ -22,12 +21,12 @@ namespace SpaceFighter
         private KeyboardState previousKeyboardState;
         private KeyboardState currentKeyboardState;
 
-        private IGameController gameController;
+        private GameController gameController;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Game1"/> class.
+        /// Initializes a new instance of the <see cref="SpaceGame"/> class.
         /// </summary>
-        public Game1()
+        public SpaceGame()
         {
             this.graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -45,8 +44,7 @@ namespace SpaceFighter
             this.graphics.PreferredBackBufferHeight = ScreenHeight;
             this.graphics.ApplyChanges();
 
-            this.Services.AddService(typeof(IGameController), new GameController(this));
-            this.gameController = (IGameController)this.Services.GetService(typeof(IGameController));
+            this.gameController = new GameController(this);
 
             base.Initialize();
         }
@@ -87,7 +85,7 @@ namespace SpaceFighter
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Right))
             {
-                if (this.gameController.PlayerService.Player.Position.X + this.gameController.PlayerService.Player.ShipSprite.Width <= ScreenWidth)
+                if (this.gameController.PlayerService.Player.Position.X + this.gameController.PlayerService.Player.Sprite.Width <= ScreenWidth)
                 {
                     this.gameController.PlayerService.MoveRight();
                 }
@@ -103,7 +101,7 @@ namespace SpaceFighter
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Down))
             {
-                if (this.gameController.PlayerService.Player.Position.Y + this.gameController.PlayerService.Player.ShipSprite.Height <= ScreenHeight)
+                if (this.gameController.PlayerService.Player.Position.Y + this.gameController.PlayerService.Player.Sprite.Height <= ScreenHeight)
                 {
                     this.gameController.PlayerService.MoveDown();
                 }

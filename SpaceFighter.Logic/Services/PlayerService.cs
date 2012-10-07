@@ -30,6 +30,11 @@ namespace SpaceFighter.Logic.Services
             }
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
+
         // Todo: Find better solution than tracking coordinates like this.
         public void MoveLeft()
         {
@@ -63,7 +68,7 @@ namespace SpaceFighter.Logic.Services
 
         public void FireWeapon()
         {
-            this.weapon.FireWeapon(new Vector2(this.player.Position.X + ((float)this.player.ShipSprite.Width / 2), this.player.Position.Y));
+            this.weapon.FireWeapon(new Vector2(this.player.Position.X + ((float)this.player.Sprite.Width / 2), this.player.Position.Y));
         }
     }
 }
