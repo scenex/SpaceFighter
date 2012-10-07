@@ -9,7 +9,7 @@ namespace SpaceFighter.Logic.Services
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
-    public interface IEnemiesServices
+    public interface IEnemiesService
     {
         IEnumerable<IEnemy> Enemies { get; }
     }

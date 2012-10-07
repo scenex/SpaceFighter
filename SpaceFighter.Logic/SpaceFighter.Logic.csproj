@@ -100,7 +100,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EnemiesService.cs" />
     <Compile Include="Services\ICollisionDetectionService.cs" />
-    <Compile Include="Services\IEnemiesServices.cs" />
+    <Compile Include="Services\IEnemiesService.cs" />
     <Compile Include="Services\IPlayerService.cs" />
     <Compile Include="Services\PlayerService.cs" />
     <Compile Include="Player.cs" />

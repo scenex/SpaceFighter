@@ -30,12 +30,16 @@ namespace SpaceFighter
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private Enemy enemy;
+        //private Enemy enemy;
 
         private KeyboardState previousKeyboardState;
         private KeyboardState currentKeyboardState;
 
-        private IPlayerService playerService; 
+        private IPlayerService playerService;
+
+        private IEnemiesService enemyService;
+
+        private ICollisionDetectionService collisionDetectionService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
@@ -58,16 +62,17 @@ namespace SpaceFighter
             this.graphics.PreferredBackBufferHeight = ScreenHeight;
             this.graphics.ApplyChanges();
 
-            this.enemy = new Enemy(this);
-
-            this.Components.Add(this.enemy);
+            //this.enemy = new Enemy(this); -> Service!
+            //this.Components.Add(this.enemy);
 
             this.Services.AddService(typeof(IPlayerService), new PlayerService(this));
             this.playerService = (IPlayerService)this.Services.GetService(typeof(IPlayerService));
 
-            this.Services.AddService(typeof(IEnemiesServices), new EnemiesService(this));
+            this.Services.AddService(typeof(IEnemiesService), new EnemiesService(this));
+            this.enemyService = (IEnemiesService)this.Services.GetService(typeof(IEnemiesService));
 
             this.Services.AddService(typeof(ICollisionDetectionService), new CollisionDetectionService(this));
+            this.collisionDetectionService = (ICollisionDetectionService)this.Services.GetService(typeof(ICollisionDetectionService));
 
             base.Initialize();
         }

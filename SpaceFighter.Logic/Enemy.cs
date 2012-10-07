@@ -17,7 +17,7 @@ namespace SpaceFighter.Logic
         private readonly Texture2D enemySprite;
         private SpriteBatch spriteBatch;
 
-        public Enemy(Game game) : base(game)
+        public Enemy(Game game, Vector2 startPosition) : base(game)
         {
             this.game = game;
             this.position = new Vector2(100, 100);
