@@ -2,10 +2,13 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Services
+namespace SpaceFighter.Logic.Services.Implementations
 {
     using System.Collections.Generic;
+
     using Microsoft.Xna.Framework;
+
+    using SpaceFighter.Logic.Services.Interfaces;
 
     public class EnemiesService : GameComponent, IEnemiesService
     {
@@ -13,7 +16,9 @@ namespace SpaceFighter.Logic.Services
 
         public EnemiesService(Game game) : base(game)
         {
-            this.enemy = new Enemy(game, new Vector2((640 / 2) - 16, 480 / 2)); // Todo: Get screen width and height from graphics service
+            // TODO: Move into Initialize() or LoadContent()
+            // this.enemy = new Enemy(game, new Vector2((640 / 2) - 16, 480 / 2)); // Todo: Get screen width and height from graphics service
+            this.enemy = new Enemy(game, new Vector2(100, 100));
             game.Components.Add(this.enemy);
         }
 
@@ -21,7 +26,7 @@ namespace SpaceFighter.Logic.Services
         {
             get
             {
-                return new List<IEnemy>() {enemy};
+                return new List<IEnemy>() {this.enemy};
             }
         }
 

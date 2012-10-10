@@ -2,7 +2,7 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Services
+namespace SpaceFighter.Logic.Services.Interfaces
 {
     public interface IPlayerService
     {
@@ -16,10 +16,6 @@ namespace SpaceFighter.Logic.Services
 
         void MoveDown();
 
-        void UpgradeWeapon();
-
-        void DowngradeWeapon();
-
-        void FireWeapon();
+        void Fire();
     }
 }

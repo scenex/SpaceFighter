@@ -2,24 +2,24 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Services
+namespace SpaceFighter.Logic.Services.Implementations
 {
-    using System;
     using Microsoft.Xna.Framework;
+
+    using SpaceFighter.Logic.Services.Interfaces;
 
     public class PlayerService : GameComponent, IPlayerService
     {
         private const float MoveStep = 2.0f;
         private readonly Player player;
-        private readonly Weapon weapon;
+
+        private IWeaponService weaponService;
 
         public PlayerService(Game game) : base(game)
         {
+            // TODO: Move into Initialize() or LoadContent()
             this.player = new Player(game, new Vector2((640 / 2) - 16, 480 / 2)); // Todo: Get screen width and height from graphics service
             game.Components.Add(this.player);
-
-            this.weapon = new Weapon(game);
-            game.Components.Add(this.weapon);
         }
 
         public IPlayer Player
@@ -28,6 +28,12 @@ namespace SpaceFighter.Logic.Services
             {
                 return this.player;
             }
+        }
+
+        public override void Initialize()
+        {
+            this.weaponService = (IWeaponService)this.Game.Services.GetService(typeof(IWeaponService));
+            base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
@@ -56,19 +62,9 @@ namespace SpaceFighter.Logic.Services
             this.player.Position = new Vector2(this.player.Position.X, this.player.Position.Y + MoveStep);
         }
 
-        public void UpgradeWeapon()
+        public void Fire()
         {
-            throw new NotImplementedException();
-        }
-
-        public void DowngradeWeapon()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void FireWeapon()
-        {
-            this.weapon.FireWeapon(new Vector2(this.player.Position.X + ((float)this.player.Sprite.Width / 2), this.player.Position.Y));
+            this.weaponService.FireWeapon(new Vector2(this.player.Position.X + ((float)this.player.Sprite.Width / 2), this.player.Position.Y));
         }
     }
 }

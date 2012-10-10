@@ -4,8 +4,6 @@
 
 namespace SpaceFighter.Logic
 {
-    using System;
-
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -15,11 +13,8 @@ namespace SpaceFighter.Logic
     public interface IPlayer
     {
         Vector2 Position { get; set; }
-
         Texture2D Sprite { get; }
-
-        Texture2D ExplosionSequence { get; }
-
         Color[] SpriteDataCached { get; }
+        Texture2D ExplosionSequence { get; }
     }
 }

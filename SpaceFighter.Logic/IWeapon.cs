@@ -4,15 +4,15 @@
 
 namespace SpaceFighter.Logic
 {
+    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public interface IWeapon
     {
         void FireWeapon(Vector2 startPosition);
-
-        Vector2[] ShotPositions { get; }
+        IEnumerable<Vector2> SpritePositions { get; }
+        Texture2D Sprite { get; }
+        Color[] SpriteDataCached { get; }
     }
 }

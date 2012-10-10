@@ -9,12 +9,12 @@ namespace SpaceFighter.Logic
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
-    /// The spaceship class which represent the players spaceship.
+    /// The spaceship class which represent the player's spaceship.
     /// </summary>
     public class Player : DrawableGameComponent, IPlayer
     {   
         private readonly Game game;
-        private readonly Texture2D sprite;
+        private Texture2D sprite;
         private SpriteBatch spriteBatch;
         private Color[] spriteDataCached;
 
@@ -22,7 +22,6 @@ namespace SpaceFighter.Logic
         {
             this.game = game;
             this.Position = startPosition;
-            this.sprite = this.game.Content.Load<Texture2D>("Sprites/Spaceship");
         }
 
         public Vector2 Position { get; set; }
@@ -54,6 +53,7 @@ namespace SpaceFighter.Logic
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.sprite = this.game.Content.Load<Texture2D>("Sprites/Spaceship");
 
             // Obtain color information for subsequent per pixel collision detection
             this.spriteDataCached = new Color[this.sprite.Width * this.sprite.Height];

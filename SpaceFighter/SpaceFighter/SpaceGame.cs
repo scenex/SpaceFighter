@@ -6,7 +6,7 @@ namespace SpaceFighter
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
-    using SpaceFighter.Logic.Services;
+    using SpaceFighter.Logic.Services.Implementations;
 
     /// <summary>
     /// This is the main type for your game
@@ -109,7 +109,7 @@ namespace SpaceFighter
 
             if (this.currentKeyboardState.IsKeyDown(Keys.LeftControl) && this.previousKeyboardState.IsKeyUp(Keys.LeftControl))
             {
-                this.gameController.PlayerService.FireWeapon();
+                this.gameController.PlayerService.Fire();
             }
 
             this.previousKeyboardState = this.currentKeyboardState;

@@ -12,17 +12,16 @@ namespace SpaceFighter.Logic
     /// </summary>
     public class Enemy : DrawableGameComponent, IEnemy
     {
-        private Vector2 position;
+        private readonly Vector2 position;
         private readonly Game game;
-        private readonly Texture2D sprite;
+        private Texture2D sprite;
         private SpriteBatch spriteBatch;
         private Color[] spriteDataCached;
 
         public Enemy(Game game, Vector2 startPosition) : base(game)
         {
             this.game = game;
-            this.position = new Vector2(100, 100);
-            this.sprite = this.game.Content.Load<Texture2D>("Sprites/Enemy");
+            this.position = startPosition;
         }
 
         public Vector2 Position
@@ -77,6 +76,7 @@ namespace SpaceFighter.Logic
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.sprite = this.game.Content.Load<Texture2D>("Sprites/Enemy");
 
             // Obtain color information for subsequent per pixel collision detection
             this.spriteDataCached = new Color[this.sprite.Width * this.sprite.Height];

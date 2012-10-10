@@ -4,39 +4,38 @@
 
 namespace SpaceFighter.Logic
 {
-    using System;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     public class Weapon : DrawableGameComponent, IWeapon
     {
-        private readonly Texture2D shotSprite;
-
-        private List<Vector2> shotPositionsList;
-
+        private readonly List<Vector2> spritePositions;
         private SpriteBatch spriteBatch;
 
         public Weapon(Game game) : base(game)
         {
-            this.shotPositionsList = new List<Vector2>();
-            this.shotSprite = this.Game.Content.Load<Texture2D>("Sprites/Spaceship_Shot");
+            this.spritePositions = new List<Vector2>();
         }
 
         public void FireWeapon(Vector2 startPosition)
         {
-            this.shotPositionsList.Add(new Vector2(
-                startPosition.X - ((float)this.shotSprite.Width / 2),
-                startPosition.Y - ((float)this.shotSprite.Width / 2)));
+            this.spritePositions.Add(new Vector2(
+                startPosition.X - ((float)this.Sprite.Width / 2),
+                startPosition.Y - ((float)this.Sprite.Width / 2)));
         }
 
-        public Vector2[] ShotPositions
+        public IEnumerable<Vector2> SpritePositions
         {
             get
             {
-                throw new NotImplementedException();
+                return this.spritePositions;
             }
         }
+
+        public Texture2D Sprite { get; private set; }
+
+        public Color[] SpriteDataCached { get; private set; }
 
         public override void Initialize()
         {
@@ -46,18 +45,23 @@ namespace SpaceFighter.Logic
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.Sprite = this.Game.Content.Load<Texture2D>("Sprites/Spaceship_Shot");
+
+            //// Obtain color information for subsequent per pixel collision detection
+            this.SpriteDataCached = new Color[this.Sprite.Width * this.Sprite.Height];
+            this.Sprite.GetData(this.SpriteDataCached);
 
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            for (int i = 0; i < this.shotPositionsList.Count; i++)
+            for (int i = 0; i < this.spritePositions.Count; i++)
             {
-                this.shotPositionsList[i] = new Vector2(this.shotPositionsList[i].X, this.shotPositionsList[i].Y - 5);
+                this.spritePositions[i] = new Vector2(this.spritePositions[i].X, this.spritePositions[i].Y - 5);
             }
 
-            // Todo: Remove shot from list when out of window boundaries.
+            // Todo: Remove sprite from list when out of window boundaries.
             base.Update(gameTime);
         }
 
@@ -65,9 +69,9 @@ namespace SpaceFighter.Logic
         {
             this.spriteBatch.Begin();
 
-            foreach (var shotPosition in this.shotPositionsList)
+            foreach (var shotPosition in this.spritePositions)
             {
-                this.spriteBatch.Draw(shotSprite, shotPosition, Color.White);
+                this.spriteBatch.Draw(this.Sprite, shotPosition, Color.White);
             }
 
             this.spriteBatch.End();

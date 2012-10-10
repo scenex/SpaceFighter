@@ -2,25 +2,30 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-using System;
-using Microsoft.Xna.Framework;
-
-namespace SpaceFighter.Logic.Services
+namespace SpaceFighter.Logic.Services.Implementations
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using SpaceFighter.Logic.Services.Interfaces;
+
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
     public class CollisionDetectionService : GameComponent, ICollisionDetectionService
     {
         private IPlayerService playerService;
-
         private IEnemiesService enemyService;
+        private IWeaponService weaponService;
 
         public CollisionDetectionService(Game game) : base(game)
         {
         }
 
-        public event EventHandler<EventArgs> CollisionDetected;
+        public event EventHandler<EventArgs> PlayerEnemyCollisionDetected;
+
+        public event EventHandler<EventArgs> EnemyHitCollisionDetected;
+
+        public event EventHandler<EventArgs> PlayerHitCollisionDetected;
 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
@@ -30,6 +35,7 @@ namespace SpaceFighter.Logic.Services
         {
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
             this.enemyService = (IEnemiesService)this.Game.Services.GetService(typeof(IEnemiesService));
+            this.weaponService = (IWeaponService)this.Game.Services.GetService(typeof(IWeaponService));
 
             base.Initialize();
         }
@@ -40,6 +46,7 @@ namespace SpaceFighter.Logic.Services
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
+            // Check for collisions between enemies and player
             foreach (var enemy in this.enemyService.Enemies)
             {
                 if (this.IntersectPixels(new Rectangle((int)this.playerService.Player.Position.X, (int)this.playerService.Player.Position.Y, this.playerService.Player.Sprite.Width, this.playerService.Player.Sprite.Height), 
@@ -47,12 +54,28 @@ namespace SpaceFighter.Logic.Services
                                          new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Sprite.Width, enemy.Sprite.Height), 
                                          enemy.SpriteDataCached))
                 {
-                    if(CollisionDetected != null)
+                    if(this.PlayerEnemyCollisionDetected != null)
                     {
-                        this.CollisionDetected(this, null);
+                        this.PlayerEnemyCollisionDetected(this, null);
                     }
+                }
+            }
 
-                    break;
+            // Check whether enemy was hit by a player's shot
+            foreach (var enemy in this.enemyService.Enemies)
+            {
+                foreach (var shot in this.weaponService.Weapon.SpritePositions)
+                {  
+                    if (this.IntersectPixels(new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Sprite.Width, enemy.Sprite.Height),
+                                             enemy.SpriteDataCached,
+                                             new Rectangle((int)shot.X, (int)shot.Y, this.weaponService.Weapon.Sprite.Width, this.weaponService.Weapon.Sprite.Height),
+                                             this.weaponService.Weapon.SpriteDataCached))
+                    {
+                        if (this.PlayerEnemyCollisionDetected != null)
+                        {
+                            this.PlayerEnemyCollisionDetected(this, null);
+                        }
+                    }
                 }
             }
 

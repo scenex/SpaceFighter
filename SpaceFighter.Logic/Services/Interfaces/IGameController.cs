@@ -2,7 +2,7 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Services
+namespace SpaceFighter.Logic.Services.Interfaces
 {
     public interface IGameController
     {
