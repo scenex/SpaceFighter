@@ -19,6 +19,14 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
         }
 
+        public IPlayerService PlayerService
+        {
+            get
+            {
+                return this.playerService;
+            }
+        }
+
         public override void Initialize()
         {
             this.collisionDetectionService = new CollisionDetectionService(this.Game);
@@ -35,20 +43,22 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.weaponService = new WeaponService(this.Game);
             this.Game.Services.AddService(typeof(IWeaponService), this.weaponService);
             this.Game.Components.Add(this.weaponService);
+
+            this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
+
             base.Initialize();
         }
 
-        public IPlayerService PlayerService
+        private void OnEnemyHit(object sender, EnemyHitEventArgs e)
         {
-            get
-            {
-                return this.playerService;
-            }
+            this.enemyService.ReportEnemyHit(e.Enemy, e.Weapon);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
         }
+
+
     }
 }

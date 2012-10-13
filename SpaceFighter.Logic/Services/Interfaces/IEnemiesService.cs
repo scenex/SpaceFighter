@@ -9,5 +9,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
     public interface IEnemiesService
     {
         IEnumerable<IEnemy> Enemies { get; }
+        void ReportEnemyHit(IEnemy enemy, IWeapon weapon);
     }
 }

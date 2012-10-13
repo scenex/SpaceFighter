@@ -14,5 +14,6 @@ namespace SpaceFighter.Logic
         IEnumerable<Vector2> SpritePositions { get; }
         Texture2D Sprite { get; }
         Color[] SpriteDataCached { get; }
+        int FirePower { get; }
     }
 }

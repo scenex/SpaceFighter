@@ -21,11 +21,11 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
         }
 
-        public event EventHandler<EventArgs> PlayerEnemyCollisionDetected;
+        public event EventHandler<EventArgs> PlayerEnemyHit;
 
-        public event EventHandler<EventArgs> EnemyHitCollisionDetected;
+        public event EventHandler<EnemyHitEventArgs> EnemyHit;
 
-        public event EventHandler<EventArgs> PlayerHitCollisionDetected;
+        public event EventHandler<EventArgs> PlayerHit;
 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
@@ -54,9 +54,9 @@ namespace SpaceFighter.Logic.Services.Implementations
                                          new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Sprite.Width, enemy.Sprite.Height), 
                                          enemy.SpriteDataCached))
                 {
-                    if(this.PlayerEnemyCollisionDetected != null)
+                    if(this.PlayerEnemyHit != null)
                     {
-                        this.PlayerEnemyCollisionDetected(this, null);
+                        this.PlayerEnemyHit(this, null);
                     }
                 }
             }
@@ -71,9 +71,9 @@ namespace SpaceFighter.Logic.Services.Implementations
                                              new Rectangle((int)shot.X, (int)shot.Y, this.weaponService.Weapon.Sprite.Width, this.weaponService.Weapon.Sprite.Height),
                                              this.weaponService.Weapon.SpriteDataCached))
                     {
-                        if (this.PlayerEnemyCollisionDetected != null)
+                        if (this.EnemyHit != null)
                         {
-                            this.PlayerEnemyCollisionDetected(this, null);
+                            this.EnemyHit(this, new EnemyHitEventArgs(enemy, this.weaponService.Weapon));
                         }
                     }
                 }

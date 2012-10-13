@@ -8,11 +8,8 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
     public interface ICollisionDetectionService
     {
-        // Todo: Specific EventArgs
-        event EventHandler<EventArgs> PlayerEnemyCollisionDetected;
-
-        event EventHandler<EventArgs> EnemyHitCollisionDetected;
-
-        event EventHandler<EventArgs> PlayerHitCollisionDetected;
+        event EventHandler<EventArgs> PlayerEnemyHit;
+        event EventHandler<EnemyHitEventArgs> EnemyHit;
+        event EventHandler<EventArgs> PlayerHit;
     }
 }

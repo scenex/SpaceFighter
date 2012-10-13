@@ -24,6 +24,14 @@ namespace SpaceFighter.Logic
             this.position = startPosition;
         }
 
+        public int Energy
+        {
+            get
+            {
+                return 100;
+            }
+        }
+
         public Vector2 Position
         {
             get

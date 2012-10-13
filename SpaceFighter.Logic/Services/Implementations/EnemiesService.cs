@@ -26,6 +26,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
+        public void ReportEnemyHit(IEnemy enemy, IWeapon weapon)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void Initialize()
         {
             this.enemy = new Enemy(this.Game, new Vector2(100, 100));

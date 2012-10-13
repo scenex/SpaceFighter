@@ -9,6 +9,7 @@ namespace SpaceFighter.Logic
 
     public interface IEnemy
     {
+        int Energy { get; }
         Vector2 Position { get; }
         Texture2D Sprite { get; }
         Color[] SpriteDataCached { get; }

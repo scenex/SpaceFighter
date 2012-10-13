@@ -39,6 +39,14 @@ namespace SpaceFighter.Logic
 
         public Color[] SpriteDataCached { get; private set; }
 
+        public int FirePower
+        {
+            get
+            {
+                return 100;
+            }
+        }
+
         public override void Initialize()
         {
             base.Initialize();
