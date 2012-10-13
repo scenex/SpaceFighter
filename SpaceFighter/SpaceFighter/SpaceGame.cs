@@ -6,6 +6,8 @@ namespace SpaceFighter
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
+
+    using SpaceFighter.Logic;
     using SpaceFighter.Logic.Services.Implementations;
 
     /// <summary>
@@ -45,6 +47,8 @@ namespace SpaceFighter
             this.graphics.ApplyChanges();
 
             this.gameController = new GameController(this);
+
+            Components.Add(new FramerateCounter(this));
 
             base.Initialize();
         }
