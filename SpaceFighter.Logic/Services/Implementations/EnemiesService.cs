@@ -16,10 +16,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public EnemiesService(Game game) : base(game)
         {
-            // TODO: Move into Initialize() or LoadContent()
-            // this.enemy = new Enemy(game, new Vector2((640 / 2) - 16, 480 / 2)); // Todo: Get screen width and height from graphics service
-            this.enemy = new Enemy(game, new Vector2(100, 100));
-            game.Components.Add(this.enemy);
         }
 
         public IEnumerable<IEnemy> Enemies
@@ -28,6 +24,14 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 return new List<IEnemy>() {this.enemy};
             }
+        }
+
+        public override void Initialize()
+        {
+            this.enemy = new Enemy(this.Game, new Vector2(100, 100));
+            this.Game.Components.Add(this.enemy);
+
+            base.Initialize();
         }
 
         public override void Update(GameTime gameTime)

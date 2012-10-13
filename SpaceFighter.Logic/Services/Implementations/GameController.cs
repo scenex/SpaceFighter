@@ -10,28 +10,32 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class GameController : GameComponent, IGameController
     {
-        private readonly CollisionDetectionService collisionDetectionService;
-        private readonly PlayerService playerService;
-        private readonly EnemiesService enemyService;
-        private readonly WeaponService weaponService;
+        private CollisionDetectionService collisionDetectionService;
+        private PlayerService playerService;
+        private EnemiesService enemyService;
+        private WeaponService weaponService;
 
         public GameController(Game game) : base(game)
         {
-            // TODO: Move into Initialize() or LoadContent()
-            this.collisionDetectionService = new CollisionDetectionService(game);
+        }
+
+        public override void Initialize()
+        {
+            this.collisionDetectionService = new CollisionDetectionService(this.Game);
             this.Game.Components.Add(this.collisionDetectionService);
 
-            this.playerService = new PlayerService(game);
+            this.playerService = new PlayerService(this.Game);
             this.Game.Services.AddService(typeof(IPlayerService), this.playerService);
             this.Game.Components.Add(this.playerService);
 
-            this.enemyService = new EnemiesService(game);
+            this.enemyService = new EnemiesService(this.Game);
             this.Game.Services.AddService(typeof(IEnemiesService), this.enemyService);
             this.Game.Components.Add(this.enemyService);
 
-            this.weaponService = new WeaponService(game);
+            this.weaponService = new WeaponService(this.Game);
             this.Game.Services.AddService(typeof(IWeaponService), this.weaponService);
             this.Game.Components.Add(this.weaponService);
+            base.Initialize();
         }
 
         public IPlayerService PlayerService

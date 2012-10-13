@@ -9,13 +9,10 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class WeaponService : GameComponent, IWeaponService
     {
-        private readonly Weapon weapon;
+        private Weapon weapon;
 
         public WeaponService(Game game) : base(game)
         {
-            // TODO: Move into Initialize() or LoadContent()
-            this.weapon = new Weapon(game);
-            game.Components.Add(this.weapon);
         }
 
         public IWeapon Weapon
@@ -24,6 +21,14 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 return this.weapon;
             }
+        }
+
+        public override void Initialize()
+        {
+            this.weapon = new Weapon(this.Game);
+            this.Game.Components.Add(this.weapon);
+
+            base.Initialize();
         }
 
         public void FireWeapon(Vector2 initialCoordinates)

@@ -11,15 +11,13 @@ namespace SpaceFighter.Logic.Services.Implementations
     public class PlayerService : GameComponent, IPlayerService
     {
         private const float MoveStep = 2.0f;
-        private readonly Player player;
+        private Player player;
 
         private IWeaponService weaponService;
 
+
         public PlayerService(Game game) : base(game)
         {
-            // TODO: Move into Initialize() or LoadContent()
-            this.player = new Player(game, new Vector2((640 / 2) - 16, 480 / 2)); // Todo: Get screen width and height from graphics service
-            game.Components.Add(this.player);
         }
 
         public IPlayer Player
@@ -33,6 +31,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             this.weaponService = (IWeaponService)this.Game.Services.GetService(typeof(IWeaponService));
+            
+            this.player = new Player(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0));
+            this.Game.Components.Add(this.player);
+
             base.Initialize();
         }
 
