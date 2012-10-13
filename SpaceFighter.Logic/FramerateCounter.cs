@@ -1,3 +1,7 @@
+// -----------------------------------------------------------------------
+// (c) Cataclysm Game Studios 2012
+// -----------------------------------------------------------------------
+
 namespace SpaceFighter.Logic
 {
     using System;
@@ -8,12 +12,12 @@ namespace SpaceFighter.Logic
 
     public class FramerateCounter : DrawableGameComponent
     {
-        ContentManager content;
+        readonly ContentManager content;
         SpriteBatch spriteBatch;
         SpriteFont spriteFont;
 
-        int frameRate = 0;
-        int frameCounter = 0;
+        int frameRate;
+        int frameCounter;
         TimeSpan elapsedTime = TimeSpan.Zero;
 
 

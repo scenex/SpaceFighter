@@ -5,6 +5,8 @@
 namespace SpaceFighter.Logic
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -56,12 +58,19 @@ namespace SpaceFighter.Logic
 
         public override void Update(GameTime gameTime)
         {
-            for (int i = 0; i < this.spritePositions.Count; i++)
+            for (var i = 0; i < this.spritePositions.Count; i++)
             {
-                this.spritePositions[i] = new Vector2(this.spritePositions[i].X, this.spritePositions[i].Y - 5);
+                if (this.spritePositions[i].Y >= 0)
+                {
+                    this.spritePositions[i] = new Vector2(this.spritePositions[i].X, this.spritePositions[i].Y - 5);
+                }
+                else
+                {
+                    // Remove shots which are not visible anymore.
+                    this.spritePositions.Remove(this.spritePositions[i]);
+                }
             }
 
-            // Todo: Remove sprite from list when out of window boundaries.
             base.Update(gameTime);
         }
 
