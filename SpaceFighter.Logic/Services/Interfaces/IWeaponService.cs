@@ -8,6 +8,8 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
     using Microsoft.Xna.Framework;
 
+    using SpaceFighter.Logic.Entities.Interfaces;
+
     public interface IWeaponService
     {
         IWeapon Weapon { get; }

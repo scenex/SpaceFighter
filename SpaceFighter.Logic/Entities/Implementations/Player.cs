@@ -2,11 +2,14 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic
+namespace SpaceFighter.Logic.Entities.Implementations
 {
     using System;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+
+    using SpaceFighter.Logic.Entities.Interfaces;
 
     /// <summary>
     /// The spaceship class which represent the player's spaceship.
@@ -52,12 +55,12 @@ namespace SpaceFighter.Logic
 
         protected override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.sprite = this.game.Content.Load<Texture2D>("Sprites/Spaceship");
 
             // Obtain color information for subsequent per pixel collision detection
             this.spriteDataCached = new Color[this.sprite.Width * this.sprite.Height];
-            this.sprite.GetData(spriteDataCached);
+            this.sprite.GetData(this.spriteDataCached);
 
             base.LoadContent();
         }

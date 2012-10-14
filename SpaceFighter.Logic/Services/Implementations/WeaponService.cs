@@ -5,6 +5,9 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using Microsoft.Xna.Framework;
+
+    using SpaceFighter.Logic.Entities.Implementations;
+    using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class WeaponService : GameComponent, IWeaponService

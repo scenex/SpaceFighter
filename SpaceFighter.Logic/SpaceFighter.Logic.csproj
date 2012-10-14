@@ -94,11 +94,12 @@
   <ItemGroup>
     <Compile Include="EnemyHitEventArgs.cs" />
     <Compile Include="FramerateCounter.cs" />
+    <Compile Include="Entities\Interfaces\IShot.cs" />
     <Compile Include="Services\Implementations\CollisionDetectionService.cs" />
-    <Compile Include="Enemy.cs" />
-    <Compile Include="IEnemy.cs" />
-    <Compile Include="IPlayer.cs" />
-    <Compile Include="IWeapon.cs" />
+    <Compile Include="Entities\Implementations\Enemy.cs" />
+    <Compile Include="Entities\Interfaces\IEnemy.cs" />
+    <Compile Include="Entities\Interfaces\IPlayer.cs" />
+    <Compile Include="Entities\Interfaces\IWeapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Implementations\EnemiesService.cs" />
     <Compile Include="Services\Implementations\GameController.cs" />
@@ -109,8 +110,9 @@
     <Compile Include="Services\Interfaces\IPlayerService.cs" />
     <Compile Include="Services\Interfaces\IWeaponService.cs" />
     <Compile Include="Services\Implementations\PlayerService.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="Weapon.cs" />
+    <Compile Include="Entities\Implementations\Player.cs" />
+    <Compile Include="Entities\Implementations\Shot.cs" />
+    <Compile Include="Entities\Implementations\Weapon.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

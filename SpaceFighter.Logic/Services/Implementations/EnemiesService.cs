@@ -8,6 +8,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     using Microsoft.Xna.Framework;
 
+    using SpaceFighter.Logic.Entities.Implementations;
+    using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class EnemiesService : GameComponent, IEnemiesService
@@ -26,7 +28,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        public void ReportEnemyHit(IEnemy enemy, IWeapon weapon)
+        public void ReportEnemyHit(IEnemy enemy, IShot shot)
         {
             throw new System.NotImplementedException();
         }

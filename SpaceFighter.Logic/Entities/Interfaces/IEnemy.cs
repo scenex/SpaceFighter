@@ -2,7 +2,7 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic
+namespace SpaceFighter.Logic.Entities.Interfaces
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;

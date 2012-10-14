@@ -4,6 +4,8 @@
 
 namespace SpaceFighter.Logic.Services.Interfaces
 {
+    using SpaceFighter.Logic.Entities.Interfaces;
+
     public interface IPlayerService
     {
         IPlayer Player { get; }

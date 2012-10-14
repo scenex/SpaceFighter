@@ -64,16 +64,16 @@ namespace SpaceFighter.Logic.Services.Implementations
             // Check whether enemy was hit by a player's shot
             foreach (var enemy in this.enemyService.Enemies)
             {
-                foreach (var shot in this.weaponService.Weapon.SpritePositions)
+                foreach (var shot in this.weaponService.Weapon.Shots)
                 {  
                     if (this.IntersectPixels(new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Sprite.Width, enemy.Sprite.Height),
                                              enemy.SpriteDataCached,
-                                             new Rectangle((int)shot.X, (int)shot.Y, this.weaponService.Weapon.Sprite.Width, this.weaponService.Weapon.Sprite.Height),
-                                             this.weaponService.Weapon.SpriteDataCached))
+                                             new Rectangle((int)shot.Position.X, (int)shot.Position.Y, shot.Width, shot.Height),
+                                             shot.ColorData))
                     {
                         if (this.EnemyHit != null)
                         {
-                            this.EnemyHit(this, new EnemyHitEventArgs(enemy, this.weaponService.Weapon));
+                            this.EnemyHit(this, new EnemyHitEventArgs(enemy, shot));
                         }
                     }
                 }

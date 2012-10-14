@@ -2,18 +2,15 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic
+namespace SpaceFighter.Logic.Entities.Interfaces
 {
     using System.Collections.Generic;
+
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
 
     public interface IWeapon
     {
         void FireWeapon(Vector2 startPosition);
-        IEnumerable<Vector2> SpritePositions { get; }
-        Texture2D Sprite { get; }
-        Color[] SpriteDataCached { get; }
-        int FirePower { get; }
+        IEnumerable<IShot> Shots { get; }           
     }
 }

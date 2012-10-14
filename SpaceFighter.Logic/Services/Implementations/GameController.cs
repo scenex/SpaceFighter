@@ -51,14 +51,12 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void OnEnemyHit(object sender, EnemyHitEventArgs e)
         {
-            this.enemyService.ReportEnemyHit(e.Enemy, e.Weapon);
+            this.enemyService.ReportEnemyHit(e.Enemy, e.Shot);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
         }
-
-
     }
 }
