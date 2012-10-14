@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic.Entities.Interfaces
 {
     using System.Collections.Generic;
-
     using Microsoft.Xna.Framework;
 
     public interface IWeapon

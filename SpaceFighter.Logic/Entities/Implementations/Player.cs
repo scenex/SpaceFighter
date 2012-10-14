@@ -4,11 +4,8 @@
 
 namespace SpaceFighter.Logic.Entities.Implementations
 {
-    using System;
-
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-
     using SpaceFighter.Logic.Entities.Interfaces;
 
     /// <summary>
@@ -29,23 +26,23 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public Vector2 Position { get; set; }
 
-        public Texture2D Sprite
+        public int Width
         {
             get
             {
-                return this.sprite;
+                return this.sprite.Width;
             }
         }
 
-        public Texture2D ExplosionSequence
+        public int Height
         {
             get
             {
-                throw new NotImplementedException();
+                return this.sprite.Height;
             }
         }
 
-        public Color[] SpriteDataCached
+        public Color[] ColorData
         {
             get
             {
@@ -68,7 +65,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         public override void Draw(GameTime gameTime)
         {
             this.spriteBatch.Begin();
-            this.spriteBatch.Draw(this.Sprite, this.Position, Color.White);
+            this.spriteBatch.Draw(this.sprite, this.Position, Color.White);
             this.spriteBatch.End();
 
             base.Draw(gameTime);

@@ -5,13 +5,13 @@
 namespace SpaceFighter.Logic.Entities.Interfaces
 {
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
 
     public interface IEnemy
     {
-        int Energy { get; }
+        Color[] ColorData { get; }
         Vector2 Position { get; }
-        Texture2D Sprite { get; }
-        Color[] SpriteDataCached { get; }
+        int Width { get; }
+        int Height { get; }
+        int Energy { get; }
     }
 }

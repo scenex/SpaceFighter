@@ -5,9 +5,7 @@
 namespace SpaceFighter.Logic.Entities.Implementations
 {
     using System;
-
     using Microsoft.Xna.Framework;
-
     using SpaceFighter.Logic.Entities.Interfaces;
 
     public class Shot : IShot

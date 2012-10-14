@@ -49,10 +49,10 @@ namespace SpaceFighter.Logic.Services.Implementations
             // Check for collisions between enemies and player
             foreach (var enemy in this.enemyService.Enemies)
             {
-                if (this.IntersectPixels(new Rectangle((int)this.playerService.Player.Position.X, (int)this.playerService.Player.Position.Y, this.playerService.Player.Sprite.Width, this.playerService.Player.Sprite.Height), 
-                                         this.playerService.Player.SpriteDataCached,
-                                         new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Sprite.Width, enemy.Sprite.Height), 
-                                         enemy.SpriteDataCached))
+                if (this.IntersectPixels(new Rectangle((int)this.playerService.Player.Position.X, (int)this.playerService.Player.Position.Y, this.playerService.Player.Width, this.playerService.Player.Height), 
+                                         this.playerService.Player.ColorData,
+                                         new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height), 
+                                         enemy.ColorData))
                 {
                     if(this.PlayerEnemyHit != null)
                     {
@@ -66,8 +66,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 foreach (var shot in this.weaponService.Weapon.Shots)
                 {  
-                    if (this.IntersectPixels(new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Sprite.Width, enemy.Sprite.Height),
-                                             enemy.SpriteDataCached,
+                    if (this.IntersectPixels(new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height),
+                                             enemy.ColorData,
                                              new Rectangle((int)shot.Position.X, (int)shot.Position.Y, shot.Width, shot.Height),
                                              shot.ColorData))
                     {

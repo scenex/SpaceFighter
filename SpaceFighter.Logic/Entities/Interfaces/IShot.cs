@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic.Entities.Interfaces
 {
     using System;
-
     using Microsoft.Xna.Framework;
 
     public interface IShot

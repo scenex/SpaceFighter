@@ -6,7 +6,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-
     using SpaceFighter.Logic.Entities.Interfaces;
 
     /// <summary>
@@ -18,7 +17,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private readonly Game game;
         private Texture2D sprite;
         private SpriteBatch spriteBatch;
-        private Color[] spriteDataCached;
+        private Color[] colorData;
 
         public Enemy(Game game, Vector2 startPosition) : base(game)
         {
@@ -42,19 +41,27 @@ namespace SpaceFighter.Logic.Entities.Implementations
             }
         }
 
-        public Texture2D Sprite
+        public Color[] ColorData
         {
             get
             {
-                return this.sprite;
+                return this.colorData;
             }
         }
 
-        public Color[] SpriteDataCached
+        public int Width
         {
             get
             {
-                return this.spriteDataCached;
+                return this.sprite.Width;
+            }
+        }
+
+        public int Height
+        {
+            get
+            {
+                return this.sprite.Height;
             }
         }
 
@@ -89,8 +96,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.sprite = this.game.Content.Load<Texture2D>("Sprites/Enemy");
 
             // Obtain color information for subsequent per pixel collision detection
-            this.spriteDataCached = new Color[this.sprite.Width * this.sprite.Height];
-            this.sprite.GetData(this.spriteDataCached);
+            this.colorData = new Color[this.sprite.Width * this.sprite.Height];
+            this.sprite.GetData(this.colorData);
 
             base.LoadContent();
         }

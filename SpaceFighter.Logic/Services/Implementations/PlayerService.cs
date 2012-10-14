@@ -68,7 +68,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void Fire()
         {
-            this.weaponService.FireWeapon(new Vector2(this.player.Position.X + ((float)this.player.Sprite.Width / 2), this.player.Position.Y));
+            this.weaponService.FireWeapon(new Vector2(this.player.Position.X + ((float)this.player.Width / 2), this.player.Position.Y));
         }
     }
 }

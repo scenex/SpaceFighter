@@ -5,8 +5,6 @@
 namespace SpaceFighter.Logic.Entities.Implementations
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
-
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -59,8 +57,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public override void Update(GameTime gameTime)
         {
-            Debug.WriteLine(this.shots.Count);
-
             for (var i = 0; i < this.shots.Count; i++)
             {
                 if (this.shots[i].Position.Y >= 0)

@@ -90,7 +90,7 @@ namespace SpaceFighter
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Right))
             {
-                if (this.gameController.PlayerService.Player.Position.X + this.gameController.PlayerService.Player.Sprite.Width <= ScreenWidth)
+                if (this.gameController.PlayerService.Player.Position.X + this.gameController.PlayerService.Player.Width <= ScreenWidth)
                 {
                     this.gameController.PlayerService.MoveRight();
                 }
@@ -106,7 +106,7 @@ namespace SpaceFighter
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Down))
             {
-                if (this.gameController.PlayerService.Player.Position.Y + this.gameController.PlayerService.Player.Sprite.Height <= ScreenHeight)
+                if (this.gameController.PlayerService.Player.Position.Y + this.gameController.PlayerService.Player.Height <= ScreenHeight)
                 {
                     this.gameController.PlayerService.MoveDown();
                 }
