@@ -5,16 +5,14 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using System.Collections.Generic;
-
     using Microsoft.Xna.Framework;
-
     using SpaceFighter.Logic.Entities.Implementations;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class EnemiesService : GameComponent, IEnemiesService
     {
-        private Enemy enemy;
+        readonly IList<IEnemy> enemies = new List<IEnemy>(); 
 
         public EnemiesService(Game game) : base(game)
         {
@@ -24,26 +22,36 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             get
             {
-                return new List<IEnemy>() {this.enemy};
+                return enemies;
             }
-        }
-
-        public void ReportEnemyHit(IEnemy enemy, IShot shot)
-        {
-            throw new System.NotImplementedException();
         }
 
         public override void Initialize()
         {
-            this.enemy = new Enemy(this.Game, new Vector2(100, 100));
-            this.Game.Components.Add(this.enemy);
+            this.enemies.Add(new Enemy(this.Game, new Vector2(50, 100)));
+            this.enemies.Add(new Enemy(this.Game, new Vector2(100, 100)));
+            this.enemies.Add(new Enemy(this.Game, new Vector2(150, 100)));
+            this.enemies.Add(new Enemy(this.Game, new Vector2(200, 100)));
+            this.enemies.Add(new Enemy(this.Game, new Vector2(250, 100)));
+            this.enemies.Add(new Enemy(this.Game, new Vector2(300, 100)));
+            this.enemies.Add(new Enemy(this.Game, new Vector2(350, 100)));
+            this.enemies.Add(new Enemy(this.Game, new Vector2(400, 100)));
+            this.enemies.Add(new Enemy(this.Game, new Vector2(450, 100)));
+            this.enemies.Add(new Enemy(this.Game, new Vector2(500, 100)));
+            this.enemies.Add(new Enemy(this.Game, new Vector2(550, 100)));
 
             base.Initialize();
         }
 
-        public override void Update(GameTime gameTime)
+        public void ReportEnemyHit(IEnemy enemy, IShot shot)
         {
-            base.Update(gameTime);
+            enemy.Energy -= shot.FirePower;
+
+            if(enemy.Energy <= 0)
+            {
+                this.Game.Components.Remove(enemy as IGameComponent);
+                this.enemies.Remove(enemy);             
+            }
         }
     }
 }

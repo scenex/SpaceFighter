@@ -10,6 +10,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
     public interface IWeapon
     {
         void FireWeapon(Vector2 startPosition);
-        IEnumerable<IShot> Shots { get; }           
+        IList<IShot> Shots { get; }           
     }
 }

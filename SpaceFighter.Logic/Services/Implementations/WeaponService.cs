@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using Microsoft.Xna.Framework;
-
     using SpaceFighter.Logic.Entities.Implementations;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
@@ -47,6 +46,11 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void DowngradeWeapon()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void RemoveShot(IShot shot)
+        {
+            this.weapon.Shots.Remove(shot);
         }
     }
 }

@@ -5,6 +5,7 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
+    using System.Linq;
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Services.Interfaces;
 
@@ -62,9 +63,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
 
             // Check whether enemy was hit by a player's shot
-            foreach (var enemy in this.enemyService.Enemies)
+            foreach (var enemy in this.enemyService.Enemies.ToList())
             {
-                foreach (var shot in this.weaponService.Weapon.Shots)
+                foreach (var shot in this.weaponService.Weapon.Shots.ToList())
                 {  
                     if (this.IntersectPixels(new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height),
                                              enemy.ColorData,

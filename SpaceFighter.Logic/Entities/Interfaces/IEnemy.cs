@@ -12,6 +12,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         Vector2 Position { get; }
         int Width { get; }
         int Height { get; }
-        int Energy { get; }
+        int Energy { get; set; }
     }
 }

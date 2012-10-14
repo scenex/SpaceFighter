@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic.Services.Interfaces
 {
     using System.Collections.Generic;
-
     using SpaceFighter.Logic.Entities.Interfaces;
 
     public interface IEnemiesService

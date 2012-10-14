@@ -7,12 +7,11 @@ namespace SpaceFighter.Logic.Entities.Implementations
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-
     using SpaceFighter.Logic.Entities.Interfaces;
 
     public class Weapon : DrawableGameComponent, IWeapon
     {
-        private readonly List<IShot> shots;
+        private readonly IList<IShot> shots;
         private SpriteBatch spriteBatch;
 
         private Color[] spriteDataCached;
@@ -32,10 +31,10 @@ namespace SpaceFighter.Logic.Entities.Implementations
                     this.sprite.Width,
                     this.sprite.Height,
                     this.spriteDataCached, 
-                    100));
+                    50));
         }
 
-        public IEnumerable<IShot> Shots
+        public IList<IShot> Shots
         {
             get
             {

@@ -4,10 +4,7 @@
 
 namespace SpaceFighter.Logic.Services.Interfaces
 {
-    using System.Collections.Generic;
-
     using Microsoft.Xna.Framework;
-
     using SpaceFighter.Logic.Entities.Interfaces;
 
     public interface IWeaponService
@@ -16,5 +13,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void FireWeapon(Vector2 initialCoordinates);
         void UpgradeWeapon();
         void DowngradeWeapon();
+        void RemoveShot(IShot shot);
     }
 }

@@ -14,22 +14,26 @@ namespace SpaceFighter.Logic.Entities.Implementations
     public class Enemy : DrawableGameComponent, IEnemy
     {
         private readonly Vector2 position;
-        private readonly Game game;
         private Texture2D sprite;
         private SpriteBatch spriteBatch;
         private Color[] colorData;
+        private int energy = 100;
 
         public Enemy(Game game, Vector2 startPosition) : base(game)
         {
-            this.game = game;
             this.position = startPosition;
+            this.Game.Components.Add(this);
         }
 
         public int Energy
         {
             get
             {
-                return 100;
+                return this.energy;
+            }
+            set
+            {
+                this.energy = value;
             }
         }
 
@@ -66,12 +70,18 @@ namespace SpaceFighter.Logic.Entities.Implementations
         }
 
         /// <summary>
-        /// Called when the GameComponent needs to be updated. Override this method with component-specific update code.
+        /// Called when graphics resources need to be loaded. Override this method to load any component-specific graphics resources.
         /// </summary>
-        /// <param name="gameTime">Time elapsed since the last call to Update</param>
-        public override void Update(GameTime gameTime)
+        protected override void LoadContent()
         {
-            base.Update(gameTime);
+            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
+            this.sprite = this.Game.Content.Load<Texture2D>("Sprites/Enemy");
+
+            // Obtain color information for subsequent per pixel collision detection
+            this.colorData = new Color[this.sprite.Width * this.sprite.Height];
+            this.sprite.GetData(this.colorData);
+
+            base.LoadContent();
         }
 
         /// <summary>
@@ -85,21 +95,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.spriteBatch.End();
 
             base.Draw(gameTime);
-        }
-
-        /// <summary>
-        /// Called when graphics resources need to be loaded. Override this method to load any component-specific graphics resources.
-        /// </summary>
-        protected override void LoadContent()
-        {
-            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.sprite = this.game.Content.Load<Texture2D>("Sprites/Enemy");
-
-            // Obtain color information for subsequent per pixel collision detection
-            this.colorData = new Color[this.sprite.Width * this.sprite.Height];
-            this.sprite.GetData(this.colorData);
-
-            base.LoadContent();
         }
     }
 }
