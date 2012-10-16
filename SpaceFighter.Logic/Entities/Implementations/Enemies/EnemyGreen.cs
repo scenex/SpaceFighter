@@ -2,16 +2,17 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Entities.Implementations
+namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+
     using SpaceFighter.Logic.Entities.Interfaces;
 
     /// <summary>
     /// The enemy class.
     /// </summary>
-    public class Enemy : DrawableGameComponent, IEnemy
+    public class EnemyGreen : DrawableGameComponent, IEnemy
     {
         private readonly Vector2 position;
         private Texture2D sprite;
@@ -19,7 +20,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private Color[] colorData;
         private int energy = 100;
 
-        public Enemy(Game game, Vector2 startPosition) : base(game)
+        public EnemyGreen(Game game, Vector2 startPosition) : base(game)
         {
             this.position = startPosition;
             this.Game.Components.Add(this);

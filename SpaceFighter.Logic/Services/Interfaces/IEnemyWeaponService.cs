@@ -4,9 +4,7 @@
 
 namespace SpaceFighter.Logic.Services.Interfaces
 {
-    public interface IGameController
+    public interface IEnemyWeaponService
     {
-        // Todo: Remove from interface -> encapsulate
-        IPlayerService PlayerService { get; }
     }
 }

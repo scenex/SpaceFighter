@@ -4,12 +4,15 @@
 
 namespace SpaceFighter.Logic.Services.Interfaces
 {
-    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Entities.Interfaces;
 
-    public interface IEnemiesService
+    public interface IPlayerWeaponService
     {
-        IEnumerable<IEnemy> Enemies { get; }
-        void ReportEnemyHit(IEnemy enemy, IShot shot);
+        IWeapon Weapon { get; }
+        void FireWeapon(Vector2 initialCoordinates);
+        void UpgradeWeapon();
+        void DowngradeWeapon();
+        void RemoveShot(IShot shot);
     }
 }

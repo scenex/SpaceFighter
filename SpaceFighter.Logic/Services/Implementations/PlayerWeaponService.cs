@@ -9,11 +9,11 @@ namespace SpaceFighter.Logic.Services.Implementations
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class WeaponService : GameComponent, IWeaponService
+    public class PlayerWeaponService : GameComponent, IPlayerWeaponService
     {
         private Weapon weapon;
 
-        public WeaponService(Game game) : base(game)
+        public PlayerWeaponService(Game game) : base(game)
         {
         }
 

@@ -15,7 +15,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private const float MoveStep = 2.0f;
         private Player player;
 
-        private IWeaponService weaponService;
+        private IPlayerWeaponService playerWeaponService;
 
 
         public PlayerService(Game game) : base(game)
@@ -32,17 +32,12 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.weaponService = (IWeaponService)this.Game.Services.GetService(typeof(IWeaponService));
+            this.playerWeaponService = (IPlayerWeaponService)this.Game.Services.GetService(typeof(IPlayerWeaponService));
             
             this.player = new Player(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0));
             this.Game.Components.Add(this.player);
 
             base.Initialize();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
         }
 
         // Todo: Find better solution than tracking coordinates like this.
@@ -68,7 +63,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void Fire()
         {
-            this.weaponService.FireWeapon(new Vector2(this.player.Position.X + ((float)this.player.Width / 2), this.player.Position.Y));
+            this.playerWeaponService.FireWeapon(new Vector2(this.player.Position.X + ((float)this.player.Width / 2), this.player.Position.Y));
         }
     }
 }

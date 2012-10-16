@@ -9,15 +9,10 @@ namespace SpaceFighter.Logic.Services.Interfaces
     public interface IPlayerService
     {
         IPlayer Player { get; }
-
         void MoveLeft();
-
         void MoveRight();
-
         void MoveUp();
-
         void MoveDown();
-
         void Fire();
     }
 }

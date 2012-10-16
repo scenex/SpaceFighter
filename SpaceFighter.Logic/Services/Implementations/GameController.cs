@@ -12,8 +12,10 @@ namespace SpaceFighter.Logic.Services.Implementations
     {
         private CollisionDetectionService collisionDetectionService;
         private PlayerService playerService;
-        private EnemiesService enemyService;
-        private WeaponService weaponService;
+        private EnemyService enemyService;
+        private PlayerWeaponService playerWeaponService;
+
+        private EnemyWeaponService enemyWeaponService;
 
         public GameController(Game game) : base(game)
         {
@@ -36,13 +38,17 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.Game.Services.AddService(typeof(IPlayerService), this.playerService);
             this.Game.Components.Add(this.playerService);
 
-            this.enemyService = new EnemiesService(this.Game);
-            this.Game.Services.AddService(typeof(IEnemiesService), this.enemyService);
+            this.playerWeaponService = new PlayerWeaponService(this.Game);
+            this.Game.Services.AddService(typeof(IPlayerWeaponService), this.playerWeaponService);
+            this.Game.Components.Add(this.playerWeaponService);
+
+            this.enemyService = new EnemyService(this.Game);
+            this.Game.Services.AddService(typeof(IEnemyService), this.enemyService);
             this.Game.Components.Add(this.enemyService);
 
-            this.weaponService = new WeaponService(this.Game);
-            this.Game.Services.AddService(typeof(IWeaponService), this.weaponService);
-            this.Game.Components.Add(this.weaponService);
+            this.enemyWeaponService = new EnemyWeaponService(this.Game);
+            this.Game.Services.AddService(typeof(IEnemyWeaponService), this.enemyWeaponService);
+            this.Game.Components.Add(this.enemyWeaponService);
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
 
@@ -53,7 +59,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.enemyService.ReportEnemyHit(e.Enemy, e.Shot);
 
-            this.weaponService.RemoveShot(e.Shot);
+            this.playerWeaponService.RemoveShot(e.Shot);
         }
 
         public override void Update(GameTime gameTime)

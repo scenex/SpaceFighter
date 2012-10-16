@@ -15,8 +15,8 @@ namespace SpaceFighter.Logic.Services.Implementations
     public class CollisionDetectionService : GameComponent, ICollisionDetectionService
     {
         private IPlayerService playerService;
-        private IEnemiesService enemyService;
-        private IWeaponService weaponService;
+        private IEnemyService enemyService;
+        private IPlayerWeaponService weaponService;
 
         public CollisionDetectionService(Game game) : base(game)
         {
@@ -35,8 +35,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
-            this.enemyService = (IEnemiesService)this.Game.Services.GetService(typeof(IEnemiesService));
-            this.weaponService = (IWeaponService)this.Game.Services.GetService(typeof(IWeaponService));
+            this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
+            this.weaponService = (IPlayerWeaponService)this.Game.Services.GetService(typeof(IPlayerWeaponService));
 
             base.Initialize();
         }

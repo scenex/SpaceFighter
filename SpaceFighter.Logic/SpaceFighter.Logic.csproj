@@ -92,23 +92,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />
+    <Compile Include="Entities\Implementations\Enemies\EnemyRed.cs" />
     <Compile Include="FramerateCounter.cs" />
     <Compile Include="Entities\Interfaces\IShot.cs" />
     <Compile Include="Services\Implementations\CollisionDetectionService.cs" />
-    <Compile Include="Entities\Implementations\Enemy.cs" />
+    <Compile Include="Entities\Implementations\Enemies\EnemyGreen.cs" />
     <Compile Include="Entities\Interfaces\IEnemy.cs" />
     <Compile Include="Entities\Interfaces\IPlayer.cs" />
     <Compile Include="Entities\Interfaces\IWeapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Implementations\EnemiesService.cs" />
+    <Compile Include="Services\Implementations\EnemyService.cs" />
+    <Compile Include="Services\Implementations\EnemyWeaponService.cs" />
     <Compile Include="Services\Implementations\GameController.cs" />
     <Compile Include="Services\Interfaces\ICollisionDetectionService.cs" />
-    <Compile Include="Services\Interfaces\IEnemiesService.cs" />
+    <Compile Include="Services\Interfaces\IEnemyService.cs" />
+    <Compile Include="Services\Interfaces\IEnemyWeaponService.cs" />
     <Compile Include="Services\Interfaces\IGameController.cs" />
-    <Compile Include="Services\Implementations\WeaponService.cs" />
+    <Compile Include="Services\Implementations\PlayerWeaponService.cs" />
     <Compile Include="Services\Interfaces\IPlayerService.cs" />
-    <Compile Include="Services\Interfaces\IWeaponService.cs" />
+    <Compile Include="Services\Interfaces\IPlayerWeaponService.cs" />
     <Compile Include="Services\Implementations\PlayerService.cs" />
     <Compile Include="Entities\Implementations\Player.cs" />
     <Compile Include="Entities\Implementations\Shot.cs" />
