@@ -12,15 +12,12 @@ namespace SpaceFighter.Logic.Entities.Implementations
     {
         public Shot(Vector2 startPosition, int width, int height, Color[] colorData, int firePower)
         {           
-            this.Id = Guid.NewGuid();
             this.Position = startPosition;
             this.Width = width;
             this.Height = height;
             this.ColorData = colorData;
             this.FirePower = firePower;
         }
-
-        public Guid Id { get; private set; }
 
         public Color[] ColorData { get; private set; }
 

@@ -10,6 +10,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
     public interface IEnemyService
     {
         IEnumerable<IEnemy> Enemies { get; }
+        IEnumerable<IShot> Shots { get; } 
         void ReportEnemyHit(IEnemy enemy, IShot shot);
     }
 }

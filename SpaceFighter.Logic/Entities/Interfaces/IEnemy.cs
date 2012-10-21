@@ -4,6 +4,9 @@
 
 namespace SpaceFighter.Logic.Entities.Interfaces
 {
+    using System;
+    using System.Collections.Generic;
+
     using Microsoft.Xna.Framework;
 
     public interface IEnemy
@@ -13,5 +16,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         int Width { get; }
         int Height { get; }
         int Energy { get; set; }
+        Queue<int> ShotTriggers { get; }
+        DateTime SpawnTimestamp { get; }
     }
 }

@@ -80,6 +80,21 @@ namespace SpaceFighter.Logic.Services.Implementations
                 }
             }
 
+            // Check whether player was hit by a enemy's shot
+            foreach (var shot in this.enemyService.Shots)
+            {
+                if (this.IntersectPixels(new Rectangle((int)this.playerService.Player.Position.X, (int)this.playerService.Player.Position.Y, this.playerService.Player.Width, this.playerService.Player.Height),
+                                         this.playerService.Player.ColorData,
+                                         new Rectangle((int)shot.Position.X, (int)shot.Position.Y, shot.Width, shot.Height),
+                                         shot.ColorData))
+                {
+                    if (this.PlayerHit != null)
+                    {
+                        this.PlayerHit(this, null);
+                    }
+                }
+            }
+
             base.Update(gameTime);
         }
 

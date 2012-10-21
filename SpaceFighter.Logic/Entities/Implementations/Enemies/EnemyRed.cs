@@ -4,6 +4,9 @@
 
 namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {
+    using System;
+    using System.Collections.Generic;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -20,8 +23,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private Color[] colorData;
         private int energy = 100;
 
+        private Queue<int> shotTriggers;
+
         public EnemyRed(Game game, Vector2 startPosition) : base(game)
         {
+            this.SpawnTimestamp = DateTime.Now;
+            this.shotTriggers = new Queue<int>(new List<int>(){2,4,6,8,10});
             this.position = startPosition;
             this.Game.Components.Add(this);
         }
@@ -37,6 +44,16 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 this.energy = value;
             }
         }
+
+        public Queue<int> ShotTriggers
+        {
+            get
+            {
+                return this.shotTriggers;
+            }
+        }
+
+        public DateTime SpawnTimestamp { get; private set; }
 
         public Vector2 Position
         {

@@ -4,6 +4,9 @@
 
 namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {
+    using System;
+    using System.Collections.Generic;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -19,9 +22,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private SpriteBatch spriteBatch;
         private Color[] colorData;
         private int energy = 100;
+        private Queue<int> shotTriggers; 
 
         public EnemyGreen(Game game, Vector2 startPosition) : base(game)
         {
+            this.SpawnTimestamp = DateTime.Now;
+            this.shotTriggers = new Queue<int>(new List<int>(){1,3,5,7,9});
             this.position = startPosition;
             this.Game.Components.Add(this);
         }
@@ -37,6 +43,17 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 this.energy = value;
             }
         }
+
+        public Queue<int> ShotTriggers
+        {
+            get
+            {
+
+                return this.shotTriggers;
+            }
+        }
+
+        public DateTime SpawnTimestamp { get; private set; }
 
         public Vector2 Position
         {
@@ -92,7 +109,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public override void Draw(GameTime gameTime)
         {
             this.spriteBatch.Begin();
-            this.spriteBatch.Draw(this.sprite, this.position, Color.White);
+            this.spriteBatch.Draw(this.sprite, this.position, Color.Green);
             this.spriteBatch.End();
 
             base.Draw(gameTime);
