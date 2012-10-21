@@ -22,12 +22,17 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private SpriteBatch spriteBatch;
         private Color[] colorData;
         private int energy = 100;
-        private Queue<int> shotTriggers; 
+        private Queue<TimeSpan> weaponTriggers; 
 
         public EnemyGreen(Game game, Vector2 startPosition) : base(game)
         {
-            this.SpawnTimestamp = DateTime.Now;
-            this.shotTriggers = new Queue<int>(new List<int>(){1,3,5,7,9});
+            this.weaponTriggers = new Queue<TimeSpan>(new List<TimeSpan>(){ 
+                new TimeSpan(0,0,0,2),
+                new TimeSpan(0,0,0,4),
+                new TimeSpan(0,0,0,6),
+                new TimeSpan(0,0,0,8),
+                new TimeSpan(0,0,0,10)});
+
             this.position = startPosition;
             this.Game.Components.Add(this);
         }
@@ -44,16 +49,16 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             }
         }
 
-        public Queue<int> ShotTriggers
+        public Queue<TimeSpan> WeaponTriggers
         {
             get
             {
 
-                return this.shotTriggers;
+                return this.weaponTriggers;
             }
         }
 
-        public DateTime SpawnTimestamp { get; private set; }
+        public TimeSpan SpawnTimestamp { get; private set; }
 
         public Vector2 Position
         {

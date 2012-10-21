@@ -16,7 +16,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         int Width { get; }
         int Height { get; }
         int Energy { get; set; }
-        Queue<int> ShotTriggers { get; }
-        DateTime SpawnTimestamp { get; }
+        Queue<TimeSpan> WeaponTriggers { get; }
     }
 }

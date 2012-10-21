@@ -8,6 +8,7 @@ namespace SpaceFighter.Logic.Services.Implementations
     using System.Linq;
 
     using Microsoft.Xna.Framework;
+
     using SpaceFighter.Logic.Entities.Implementations.Enemies;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
@@ -15,7 +16,6 @@ namespace SpaceFighter.Logic.Services.Implementations
     public class EnemyService : GameComponent, IEnemyService
     {
         readonly IList<IEnemy> enemies = new List<IEnemy>();
-        private IEnumerable<IShot> shots = new List<IShot>();
 
         private IEnemyWeaponService enemyWeaponService;
 
@@ -35,7 +35,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             get
             {
-                return this.shots;
+                return this.enemyWeaponService.Weapon.Shots;
             }
         }
 
@@ -62,9 +62,14 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             foreach (var enemy in enemies.ToList())
             {
-                // Something like that
-                // if(enemy.SpawnTimestamp + enemy.ShotTriggers)
-                // {}
+                if (enemy.WeaponTriggers.Any())
+                {
+                    if(enemy.WeaponTriggers.First() < gameTime.TotalGameTime)
+                    {
+                        enemy.WeaponTriggers.Dequeue();
+                        this.enemyWeaponService.FireWeapon(new Vector2(enemy.Position.X + ((float)enemy.Width / 2), enemy.Position.Y));
+                    }
+                }
             }
             base.Update(gameTime);
         }
