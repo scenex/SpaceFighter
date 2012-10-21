@@ -2,14 +2,15 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Entities.Implementations
+namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 {
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+
     using SpaceFighter.Logic.Entities.Interfaces;
 
-    public class Weapon : DrawableGameComponent, IWeapon
+    public abstract class Weapon : DrawableGameComponent, IWeapon
     {
         private readonly IList<IShot> shots;
         private SpriteBatch spriteBatch;

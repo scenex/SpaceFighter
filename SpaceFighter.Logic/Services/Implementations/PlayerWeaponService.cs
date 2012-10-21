@@ -6,6 +6,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 {
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Entities.Implementations;
+    using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
 
@@ -27,7 +28,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.weapon = new Weapon(this.Game);
+            this.weapon = new PlayerWeapon(this.Game);
             this.Game.Components.Add(this.weapon);
 
             base.Initialize();
