@@ -11,78 +11,36 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
     using SpaceFighter.Logic.Entities.Interfaces;
 
     public abstract class Weapon : DrawableGameComponent, IWeapon
-    {
-        private readonly IList<IShot> shots;
-        private SpriteBatch spriteBatch;
+    {       
+        protected SpriteBatch spriteBatch;
+        protected Color[] spriteDataCached;
+        protected Texture2D sprite;
 
-        private Color[] spriteDataCached;
-
-        private Texture2D sprite;
-
-        public Weapon(Game game) : base(game)
-        {
-            this.shots = new List<IShot>();
+        protected Weapon(Game game) : base(game)
+        {          
         }
-
-        public void FireWeapon(Vector2 startPosition)
-        {
-            this.shots.Add(
-                new Shot(
-                    new Vector2(startPosition.X - (float)this.sprite.Width / 2, startPosition.Y - (float)this.sprite.Width / 2), 
-                    this.sprite.Width,
-                    this.sprite.Height,
-                    this.spriteDataCached, 
-                    50));
-        }
-
-        public IList<IShot> Shots
-        {
-            get
-            {
-                return this.shots;
-            }
-        }
+        
+        public abstract IList<IShot> Shots { get; }
+        public abstract void FireWeapon(Vector2 startPosition);
+        public abstract void LoadShots();
+        public abstract void UpdateShots();
+        public abstract void DrawShots();
 
         protected override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.sprite = this.Game.Content.Load<Texture2D>("Sprites/Spaceship_Shot");
-
-            // Obtain color information for subsequent per pixel collision detection
-            this.spriteDataCached = new Color[this.sprite.Width * this.sprite.Height];
-            this.sprite.GetData(this.spriteDataCached);
-
+            this.LoadShots();
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            for (var i = 0; i < this.shots.Count; i++)
-            {
-                if (this.shots[i].Position.Y >= 0)
-                {
-                    this.shots[i].Position = new Vector2(this.shots[i].Position.X, this.shots[i].Position.Y - 5);
-                }
-                else
-                {
-                    // Remove shots which are not visible anymore.
-                    this.shots.Remove(this.shots[i]);
-                }
-            }
-
+            this.UpdateShots();
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            this.spriteBatch.Begin();
-
-            foreach (var shot in this.shots)
-            {
-                this.spriteBatch.Draw(this.sprite, shot.Position, Color.White);
-            }
-
-            this.spriteBatch.End();
+            this.DrawShots();
             base.Draw(gameTime);
         }
     }
