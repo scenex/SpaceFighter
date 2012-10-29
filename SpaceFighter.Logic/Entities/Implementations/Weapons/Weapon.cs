@@ -15,6 +15,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         protected SpriteBatch spriteBatch;
         protected Color[] spriteDataCached;
         protected Texture2D sprite;
+        protected string path;
 
         protected Weapon(Game game) : base(game)
         {          
@@ -22,13 +23,23 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         
         public abstract IList<IShot> Shots { get; }
         public abstract void FireWeapon(Vector2 startPosition);
-        public abstract void LoadShots();
         public abstract void UpdateShots();
         public abstract void DrawShots();
 
+        public virtual void LoadShots(string texturePath)
+        {
+            this.path = texturePath;
+            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
+            this.sprite = this.Game.Content.Load<Texture2D>(this.path);
+
+            // Obtain color information for subsequent per pixel collision detection
+            this.spriteDataCached = new Color[this.sprite.Width * this.sprite.Height];
+            this.sprite.GetData(this.spriteDataCached);
+        }
+
         protected override void LoadContent()
         {
-            this.LoadShots();
+            this.LoadShots(this.path);
             base.LoadContent();
         }
 

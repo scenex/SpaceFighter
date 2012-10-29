@@ -30,14 +30,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                     50));
         }
 
-        public override void LoadShots()
+        public override void LoadShots(string texturePath)
         {
-            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.sprite = this.Game.Content.Load<Texture2D>("Sprites/Spaceship_Shot");
-
-            // Obtain color information for subsequent per pixel collision detection
-            this.spriteDataCached = new Color[this.sprite.Width * this.sprite.Height];
-            this.sprite.GetData(this.spriteDataCached);
+            base.LoadShots("Sprites/Spaceship_Shot");
         }
 
         public override void UpdateShots()
