@@ -5,10 +5,7 @@
 namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 {
     using System.Collections.Generic;
-
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-
     using SpaceFighter.Logic.Entities.Interfaces;
 
     public class PlayerWeapon : Weapon
