@@ -23,10 +23,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         }
 
         public event EventHandler<EventArgs> PlayerEnemyHit;
-
         public event EventHandler<EnemyHitEventArgs> EnemyHit;
-
-        public event EventHandler<EventArgs> PlayerHit;
+        public event EventHandler<PlayerHitEventArgs> PlayerHit;
 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
@@ -90,7 +88,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                 {
                     if (this.PlayerHit != null)
                     {
-                        this.PlayerHit(this, null);
+                        this.PlayerHit(this, new PlayerHitEventArgs(shot));
                     }
                 }
             }

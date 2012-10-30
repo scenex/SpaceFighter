@@ -14,5 +14,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void MoveUp();
         void MoveDown();
         void Fire();
+        void ReportPlayerHit(IShot shot);
     }
 }

@@ -7,15 +7,12 @@ namespace SpaceFighter.Logic
     using System;
     using SpaceFighter.Logic.Entities.Interfaces;
 
-    public class EnemyHitEventArgs : EventArgs
+    public class PlayerHitEventArgs : EventArgs
     {
-        public IEnemy Enemy { get; private set; }
-
         public IShot Shot { get; private set; }
 
-        public EnemyHitEventArgs(IEnemy enemy, IShot shot)
+        public PlayerHitEventArgs(IShot shot)
         {
-            this.Enemy = enemy;
             this.Shot = shot;
         }
     }

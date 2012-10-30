@@ -65,5 +65,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.playerWeaponService.FireWeapon(new Vector2(this.player.Position.X + ((float)this.player.Width / 2), this.player.Position.Y));
         }
+
+        public void ReportPlayerHit(IShot shot)
+        {
+            //Todo: Logic
+        }
     }
 }

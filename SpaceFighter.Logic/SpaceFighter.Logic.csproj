@@ -99,6 +99,7 @@
     <Compile Include="Entities\Implementations\Weapons\PlayerWeapon.cs" />
     <Compile Include="FramerateCounter.cs" />
     <Compile Include="Entities\Interfaces\IShot.cs" />
+    <Compile Include="PlayerHitEventArgs.cs" />
     <Compile Include="Services\Implementations\CollisionDetectionService.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyGreen.cs" />
     <Compile Include="Entities\Interfaces\IEnemy.cs" />

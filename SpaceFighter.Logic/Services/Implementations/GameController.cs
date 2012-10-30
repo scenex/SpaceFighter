@@ -4,6 +4,8 @@
 
 namespace SpaceFighter.Logic.Services.Implementations
 {
+    using System;
+
     using Microsoft.Xna.Framework;
 
     using SpaceFighter.Logic.Services.Interfaces;
@@ -51,14 +53,21 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.Game.Components.Add(this.enemyWeaponService);
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
-
+            this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
+            
             base.Initialize();
+        }
+
+        private void OnPlayerHit(object sender, PlayerHitEventArgs e)
+        {
+            this.playerService.ReportPlayerHit(e.Shot);
+
+            // Todo: Remove shot
         }
 
         private void OnEnemyHit(object sender, EnemyHitEventArgs e)
         {
             this.enemyService.ReportEnemyHit(e.Enemy, e.Shot);
-
             this.playerWeaponService.RemoveShot(e.Shot);
         }
 
