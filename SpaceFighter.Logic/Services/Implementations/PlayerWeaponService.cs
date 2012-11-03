@@ -40,12 +40,10 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void UpgradeWeapon()
         {
-            throw new System.NotImplementedException();
         }
 
         public void DowngradeWeapon()
         {
-            throw new System.NotImplementedException();
         }
 
         public void RemoveShot(IShot shot)

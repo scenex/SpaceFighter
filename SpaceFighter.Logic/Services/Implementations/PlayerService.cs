@@ -4,8 +4,8 @@
 
 namespace SpaceFighter.Logic.Services.Implementations
 {
+    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
-
     using SpaceFighter.Logic.Entities.Implementations;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
@@ -27,6 +27,14 @@ namespace SpaceFighter.Logic.Services.Implementations
             get
             {
                 return this.player;
+            }
+        }
+
+        public IEnumerable<IShot> Shots
+        {
+            get
+            {
+                return this.playerWeaponService.Weapon.Shots;
             }
         }
 
@@ -68,7 +76,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void ReportPlayerHit(IShot shot)
         {
-            //Todo: Logic
+            //Todo: Subtract firepower from player's health
         }
     }
 }

@@ -4,6 +4,7 @@
 
 namespace SpaceFighter.Logic.Services.Interfaces
 {
+    using System.Collections.Generic;
     using SpaceFighter.Logic.Entities.Interfaces;
 
     public interface IPlayerService
@@ -14,6 +15,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void MoveUp();
         void MoveDown();
         void Fire();
+        IEnumerable<IShot> Shots { get; } 
         void ReportPlayerHit(IShot shot);
     }
 }

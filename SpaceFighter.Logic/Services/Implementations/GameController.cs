@@ -4,10 +4,7 @@
 
 namespace SpaceFighter.Logic.Services.Implementations
 {
-    using System;
-
     using Microsoft.Xna.Framework;
-
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class GameController : GameComponent, IGameController
@@ -60,15 +57,14 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void OnPlayerHit(object sender, PlayerHitEventArgs e)
         {
+            this.enemyWeaponService.RemoveShot(e.Shot);
             this.playerService.ReportPlayerHit(e.Shot);
-
-            // Todo: Remove shot
         }
 
         private void OnEnemyHit(object sender, EnemyHitEventArgs e)
         {
-            this.enemyService.ReportEnemyHit(e.Enemy, e.Shot);
             this.playerWeaponService.RemoveShot(e.Shot);
+            this.enemyService.ReportEnemyHit(e.Enemy, e.Shot);         
         }
 
         public override void Update(GameTime gameTime)
