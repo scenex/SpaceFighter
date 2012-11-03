@@ -11,6 +11,5 @@ namespace SpaceFighter.Logic.Services.Interfaces
     {
         IWeapon Weapon { get; }
         void FireWeapon(Vector2 initialCoordinates);
-        void RemoveShot(IShot shot);
     }
 }

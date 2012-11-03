@@ -37,10 +37,5 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.weapon.FireWeapon(initialCoordinates);
         }
-
-        public void RemoveShot(IShot shot)
-        {
-            this.weapon.Shots.Remove(shot);
-        }
     }
 }

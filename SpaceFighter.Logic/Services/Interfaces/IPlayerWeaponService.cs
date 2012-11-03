@@ -13,6 +13,5 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void FireWeapon(Vector2 initialCoordinates);
         void UpgradeWeapon();
         void DowngradeWeapon();
-        void RemoveShot(IShot shot);
     }
 }

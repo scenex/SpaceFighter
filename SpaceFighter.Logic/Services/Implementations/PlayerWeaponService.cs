@@ -45,10 +45,5 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void DowngradeWeapon()
         {
         }
-
-        public void RemoveShot(IShot shot)
-        {
-            this.weapon.Shots.Remove(shot);
-        }
     }
 }

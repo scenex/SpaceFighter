@@ -16,7 +16,6 @@ namespace SpaceFighter.Logic.Services.Implementations
     {
         private IPlayerService playerService;
         private IEnemyService enemyService;
-        private IPlayerWeaponService weaponService;
 
         public CollisionDetectionService(Game game) : base(game)
         {
@@ -34,7 +33,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
             this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
-            this.weaponService = (IPlayerWeaponService)this.Game.Services.GetService(typeof(IPlayerWeaponService));
 
             base.Initialize();
         }
@@ -63,7 +61,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             // Check whether enemy was hit by a player's shot
             foreach (var enemy in this.enemyService.Enemies.ToList())
             {
-                foreach (var shot in this.weaponService.Weapon.Shots.ToList())
+                foreach (var shot in this.playerService.Shots.ToList())
                 {  
                     if (this.IntersectPixels(new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height),
                                              enemy.ColorData,
