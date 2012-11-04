@@ -126,7 +126,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.spriteBatch.Draw(
                 this.sprite,
                 new Vector2(this.position.X + this.sprite.Width / 2.0f, this.position.Y + sprite.Height / 2.0f),
-                new Rectangle((int)this.position.X, (int)this.position.Y, this.sprite.Width, this.sprite.Height),
+                null,
                 Color.Red,
                 this.rotation,
                 new Vector2(this.sprite.Width / 2.0f, this.sprite.Height / 2.0f),

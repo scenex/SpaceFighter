@@ -124,12 +124,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public override void Draw(GameTime gameTime)
         {
             this.spriteBatch.Begin();
+
             this.spriteBatch.Draw(
                 this.sprite,
-                new Vector2(this.position.X + this.sprite.Width / 2.0f, this.position.Y + sprite.Height / 2.0f), 
-                new Rectangle((int)this.position.X, (int)this.position.Y, this.sprite.Width, this.sprite.Height),
+                new Vector2(this.position.X + this.sprite.Width / 2.0f, this.position.Y + sprite.Height / 2.0f),
+                null,
                 Color.Green,
-                this.rotation, 
+                this.rotation,
                 new Vector2(this.sprite.Width / 2.0f, this.sprite.Height / 2.0f),
                 1.0f, SpriteEffects.None,
                 0.0f);
