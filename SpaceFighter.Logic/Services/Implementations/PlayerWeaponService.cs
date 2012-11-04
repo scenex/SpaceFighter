@@ -35,7 +35,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void FireWeapon(Vector2 initialCoordinates)
         {
-            this.weapon.FireWeapon(initialCoordinates);
+            this.weapon.FireWeapon(initialCoordinates, MathHelper.TwoPi);
         }
 
         public void UpgradeWeapon()

@@ -17,7 +17,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.shots = new List<IShot>();
         }
 
-        public override void FireWeapon(Vector2 startPosition)
+        public override void FireWeapon(Vector2 startPosition, double angle)
         {
             this.shots.Add(
                 new Shot(
@@ -25,7 +25,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                     this.sprite.Width,
                     this.sprite.Height,
                     this.spriteDataCached,
-                    50));
+                    50,
+                    angle));
         }
 
         public override void LoadShots(string texturePath)

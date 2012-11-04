@@ -10,6 +10,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
     public interface IEnemyWeaponService
     {
         IWeapon Weapon { get; }
-        void FireWeapon(Vector2 initialCoordinates);
+        void FireWeapon(Vector2 initialCoordinates, double angle);
     }
 }

@@ -18,12 +18,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     public class EnemyRed : DrawableGameComponent, IEnemy
     {
         private readonly Vector2 position;
+        private readonly Queue<TimeSpan> weaponTriggers;
         private Texture2D sprite;
         private SpriteBatch spriteBatch;
         private Color[] colorData;
         private int energy = 100;
 
-        private readonly Queue<TimeSpan> weaponTriggers;
+        private float rotation;
 
         public EnemyRed(Game game, Vector2 startPosition) : base(game)
         {
@@ -55,6 +56,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             get
             {
                 return this.weaponTriggers;
+            }
+        }
+
+        public float Rotation
+        {
+            get
+            {
+                return this.rotation;
             }
         }
 
@@ -114,10 +123,26 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public override void Draw(GameTime gameTime)
         {
             this.spriteBatch.Begin();
-            this.spriteBatch.Draw(this.sprite, this.position, Color.Red);
+            this.spriteBatch.Draw(
+                this.sprite,
+                new Vector2(this.position.X + this.sprite.Width / 2.0f, this.position.Y + sprite.Height / 2.0f),
+                new Rectangle((int)this.position.X, (int)this.position.Y, this.sprite.Width, this.sprite.Height),
+                Color.Red,
+                this.rotation,
+                new Vector2(this.sprite.Width / 2.0f, this.sprite.Height / 2.0f),
+                1.0f, SpriteEffects.None,
+                0.0f);
             this.spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            this.rotation -= 0.01f;
+            this.rotation = this.rotation % (2 * (float)Math.PI);
+
+            base.Update(gameTime);
         }
     }
 }

@@ -17,5 +17,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         int Height { get; }
         int Energy { get; set; }
         Queue<TimeSpan> WeaponTriggers { get; }
+        float Rotation { get; }
     }
 }
