@@ -22,7 +22,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         {
             this.shots.Add(
                 new Shot(
-                    new Vector2(startPosition.X - (float)this.sprite.Width / 2, startPosition.Y + (float)this.sprite.Height / 2),
+                    new Vector2(startPosition.X - (float)this.sprite.Width / 2, startPosition.Y + this.sprite.Height),
                     this.sprite.Width,
                     this.sprite.Height,
                     this.spriteDataCached,
@@ -42,8 +42,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                 if (this.shots[i].Position.Y >= 0 && this.shots[i].Position.Y <= Game.GraphicsDevice.PresentationParameters.BackBufferHeight)
                 {
                     this.shots[i].Position = new Vector2(
-                        this.shots[i].Position.X + (float)Math.Cos(this.shots[i].Angle - MathHelper.PiOver2) * 2,
-                        this.shots[i].Position.Y + (float)Math.Sin(this.shots[i].Angle - MathHelper.PiOver2) * 2);
+                        this.shots[i].Position.X + (float)Math.Cos(this.shots[i].Angle - MathHelper.PiOver2),
+                        this.shots[i].Position.Y + (float)Math.Sin(this.shots[i].Angle - MathHelper.PiOver2));
                 }
                 else
                 {

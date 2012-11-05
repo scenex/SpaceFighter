@@ -44,6 +44,7 @@ namespace SpaceFighter
         {   
             this.graphics.PreferredBackBufferWidth = ScreenWidth;
             this.graphics.PreferredBackBufferHeight = ScreenHeight;
+            this.IsMouseVisible = true;
             this.graphics.ApplyChanges();
 
             this.gameController = new GameController(this);
