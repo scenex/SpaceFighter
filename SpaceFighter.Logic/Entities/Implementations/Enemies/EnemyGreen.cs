@@ -33,7 +33,19 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 new TimeSpan(0,0,0,4),
                 new TimeSpan(0,0,0,6),
                 new TimeSpan(0,0,0,8),
-                new TimeSpan(0,0,0,10)});
+                new TimeSpan(0,0,0,10),
+                new TimeSpan(0,0,0,12),
+                new TimeSpan(0,0,0,14),
+                new TimeSpan(0,0,0,16),
+                new TimeSpan(0,0,0,18),
+                new TimeSpan(0,0,0,20),
+                new TimeSpan(0,0,0,22),
+                new TimeSpan(0,0,0,24),
+                new TimeSpan(0,0,0,26),
+                new TimeSpan(0,0,0,28),
+                new TimeSpan(0,0,0,30),
+                new TimeSpan(0,0,0,32),
+                new TimeSpan(0,0,0,34),});
 
             this.position = startPosition;
             this.Game.Components.Add(this);
@@ -75,6 +87,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             get
             {
                 return this.position;
+            }
+        }
+
+        public Vector2 Origin
+        {
+            get
+            {
+                return new Vector2(this.position.X + (this.Width / 2.0f), this.position.Y + (this.Height / 2.0f));
             }
         }
 

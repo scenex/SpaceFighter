@@ -39,6 +39,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.Game.Components.Add(this);
         }
 
+        public Vector2 Origin
+        {
+            get
+            {
+                return new Vector2(this.position.X + (this.Width / 2.0f), this.position.Y + (this.Height / 2.0f));
+            }
+        }
+
         public int Energy
         {
             get
