@@ -22,6 +22,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         {
             this.shots.Add(
                 new Shot(
+
+                    // Todo: Calculate offset from origin relative to angle
                     new Vector2(
                         startPosition.X - this.sprite.Width / 2.0f, 
                         startPosition.Y - this.sprite.Height / 2.0f),
@@ -45,18 +47,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                 if (this.shots[i].Position.Y >= 0 && this.shots[i].Position.Y <= Game.GraphicsDevice.PresentationParameters.BackBufferHeight)
                 {
                     this.shots[i].Position = new Vector2(
-                        this.shots[i].Position.X + ((float)Math.Cos(this.shots[i].Angle - MathHelper.PiOver2)) * 0.1f,
-                        this.shots[i].Position.Y + ((float)Math.Sin(this.shots[i].Angle - MathHelper.PiOver2)) * 0.1f
+                        (this.shots[i].Position.X + ((float)Math.Cos(this.shots[i].Angle - MathHelper.PiOver2)) * 0.1f),
+                        (this.shots[i].Position.Y + ((float)Math.Sin(this.shots[i].Angle - MathHelper.PiOver2)) * 0.1f)
                         );
 
                     //this.shots[i].Position = new Vector2(
                     //    this.shots[i].Position.X,
                     //    this.shots[i].Position.Y
                     //    );
-
-                    //this.shots[i].Position = new Vector2(
-                    //    this.shots[i].Position.X + (this.shots[i].Width / 2.0f) + (float)Math.Cos(this.shots[i].Angle - MathHelper.PiOver2),
-                    //    this.shots[i].Position.Y + (this.shots[i].Height / 2.0f) + (float)Math.Sin(this.shots[i].Angle - MathHelper.PiOver2));
                 }
                 else
                 {
