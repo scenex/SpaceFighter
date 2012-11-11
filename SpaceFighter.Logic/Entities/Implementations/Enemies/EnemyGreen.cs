@@ -29,6 +29,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public EnemyGreen(Game game, Vector2 startPosition) : base(game)
         {
             this.weaponTriggers = new Queue<TimeSpan>(new List<TimeSpan>(){ 
+                new TimeSpan(0,0,0,0),
                 new TimeSpan(0,0,0,2),
                 new TimeSpan(0,0,0,4),
                 new TimeSpan(0,0,0,6),

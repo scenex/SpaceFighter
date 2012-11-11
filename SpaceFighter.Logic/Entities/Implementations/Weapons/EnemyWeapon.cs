@@ -23,10 +23,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.shots.Add(
                 new Shot(
 
-                    // Todo: Calculate offset from origin relative to angle
+                    // Todo: Retrieve radius from enemy (radius = enemy origin + enemy length / 2)
                     new Vector2(
-                        startPosition.X - this.sprite.Width / 2.0f, 
-                        startPosition.Y - this.sprite.Height / 2.0f),
+                        startPosition.X - (this.sprite.Width / 2.0f)  + 16 * ((float)Math.Cos(angle - MathHelper.PiOver2)),   // Center shot and then add r*cos(angle)
+                        startPosition.Y - (this.sprite.Height / 2.0f) + 16 * ((float)Math.Sin(angle - MathHelper.PiOver2))),  // Center shot and then add r*sin(angle)
 
                     this.sprite.Width,
                     this.sprite.Height,
@@ -47,14 +47,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                 if (this.shots[i].Position.Y >= 0 && this.shots[i].Position.Y <= Game.GraphicsDevice.PresentationParameters.BackBufferHeight)
                 {
                     this.shots[i].Position = new Vector2(
-                        (this.shots[i].Position.X + ((float)Math.Cos(this.shots[i].Angle - MathHelper.PiOver2)) * 0.1f),
-                        (this.shots[i].Position.Y + ((float)Math.Sin(this.shots[i].Angle - MathHelper.PiOver2)) * 0.1f)
+                        (this.shots[i].Position.X + ((float)Math.Cos(this.shots[i].Angle - MathHelper.PiOver2))),
+                        (this.shots[i].Position.Y + ((float)Math.Sin(this.shots[i].Angle - MathHelper.PiOver2)))
                         );
-
-                    //this.shots[i].Position = new Vector2(
-                    //    this.shots[i].Position.X,
-                    //    this.shots[i].Position.Y
-                    //    );
                 }
                 else
                 {
