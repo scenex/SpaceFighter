@@ -15,5 +15,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         int Width { get; }
         int Height { get; }
         Color[] ColorData { get; }
+        Vector2 Origin { get; }
     }
 }

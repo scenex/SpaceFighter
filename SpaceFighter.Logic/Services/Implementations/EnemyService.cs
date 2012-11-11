@@ -69,6 +69,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                     {
                         enemy.WeaponTriggers.Dequeue();
                         this.enemyWeaponService.FireWeapon(new Vector2(enemy.Origin.X, enemy.Origin.Y), enemy.Rotation);
+                        //this.enemyWeaponService.FireWeapon(new Vector2(enemy.Origin.X, enemy.Origin.Y), enemy.AngleToPlayer);
                     }
                 }
             }

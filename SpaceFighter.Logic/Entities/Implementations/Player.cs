@@ -50,6 +50,14 @@ namespace SpaceFighter.Logic.Entities.Implementations
             }
         }
 
+        public Vector2 Origin
+        {
+            get
+            {
+                return new Vector2(this.Position.X + (this.Width / 2.0f), this.Position.Y + (this.Height / 2.0f));
+            }
+        }
+
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);

@@ -26,6 +26,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         
         private float rotation;
 
+        private double angleToPlayer;
+
         public EnemyGreen(Game game, Vector2 startPosition) : base(game)
         {
             this.weaponTriggers = new Queue<TimeSpan>(new List<TimeSpan>(){ 
@@ -121,6 +123,19 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             {
                 return this.sprite.Height;
             }
+        }
+
+        public double AngleToPlayer
+        {
+            get
+            {
+                return this.angleToPlayer;
+            }
+        }
+
+        public void UpdateAngleToPlayer(double angle)
+        {
+            this.angleToPlayer = angle;
         }
 
         /// <summary>

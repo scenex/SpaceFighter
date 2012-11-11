@@ -19,5 +19,8 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         int Energy { get; set; }
         Queue<TimeSpan> WeaponTriggers { get; }
         float Rotation { get; }
+
+        double AngleToPlayer { get; }
+        void UpdateAngleToPlayer(double angle);
     }
 }

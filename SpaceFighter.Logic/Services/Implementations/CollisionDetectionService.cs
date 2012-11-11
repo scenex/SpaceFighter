@@ -43,43 +43,64 @@ namespace SpaceFighter.Logic.Services.Implementations
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // Check for collisions between enemies and player
-            foreach (var enemy in this.enemyService.Enemies)
+            this.CheckForCollisionBetweenPlayerAndEnemies();
+            this.CheckForCollisionsBetweenPlayersShotsAndEnemies();
+            this.CheckForCollisionsBetweenEnemiesShotsAndPlayer();
+
+            this.UpdateEnemyAngleToPlayer();
+
+            base.Update(gameTime);
+        }
+
+        private void UpdateEnemyAngleToPlayer()
+        {
+            foreach (var enemy in this.enemyService.Enemies.ToList())
             {
-                //if (this.IntersectPixels(new Rectangle((int)this.playerService.Player.Position.X, (int)this.playerService.Player.Position.Y, this.playerService.Player.Width, this.playerService.Player.Height), 
-                //                         this.playerService.Player.ColorData,
-                //                         new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height), 
-                //                         enemy.ColorData))
-                
-                if (this.IntersectPixelsTranslated(
-                    Matrix.CreateTranslation(new Vector3(this.playerService.Player.Position, 0)),
-                    this.playerService.Player.Width,
-                    this.playerService.Player.Height,
-                    this.playerService.Player.ColorData,
-                    Matrix.CreateTranslation(new Vector3(enemy.Position, 0)), // Todo: Proper translation
-                    enemy.Width,
-                    enemy.Height,
-                    enemy.ColorData))
+                // Todo: Mathematically not correct yet.
+                double angle = Math.Tan((enemy.Origin.Y - playerService.Player.Origin.Y) / (enemy.Origin.X - playerService.Player.Origin.X)) + Math.PI / 2;
+                enemy.UpdateAngleToPlayer(angle);
+            }
+        }
+
+        private void CheckForCollisionsBetweenEnemiesShotsAndPlayer()
+        {
+            // Check whether player was hit by a enemy's shot
+            foreach (var shot in this.enemyService.Shots.ToList())
+            {
+                if (
+                    this.IntersectPixels(
+                        new Rectangle(
+                            (int)this.playerService.Player.Position.X,
+                            (int)this.playerService.Player.Position.Y,
+                            this.playerService.Player.Width,
+                            this.playerService.Player.Height),
+                        this.playerService.Player.ColorData,
+                        new Rectangle((int)shot.Position.X, (int)shot.Position.Y, shot.Width, shot.Height),
+                        shot.ColorData))
                 {
-                    if(this.PlayerEnemyHit != null)
+                    if (this.PlayerHit != null)
                     {
-                        this.PlayerEnemyHit(this, null);
+                        this.PlayerHit(this, new PlayerHitEventArgs(shot));
                     }
                 }
             }
+        }
 
+        private void CheckForCollisionsBetweenPlayersShotsAndEnemies()
+        {
             // Check whether enemy was hit by a player's shot
             foreach (var enemy in this.enemyService.Enemies.ToList())
             {
                 foreach (var shot in this.playerService.Shots.ToList())
-                {  
+                {
                     //if (this.IntersectPixels(new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height),
                     //                         enemy.ColorData,
                     //                         new Rectangle((int)shot.Position.X, (int)shot.Position.Y, shot.Width, shot.Height),
                     //                         shot.ColorData))
                     if (this.IntersectPixelsTranslated(
-                        Matrix.CreateTranslation(new Vector3(enemy.Position, 0)), // Todo: Proper translation
-                        enemy.Width, 
+                        Matrix.CreateTranslation(new Vector3(enemy.Position, 0)),
+                        // Todo: Proper translation
+                        enemy.Width,
                         enemy.Height,
                         enemy.ColorData,
                         Matrix.CreateTranslation(new Vector3(shot.Position, 0)),
@@ -94,23 +115,35 @@ namespace SpaceFighter.Logic.Services.Implementations
                     }
                 }
             }
+        }
 
-            // Check whether player was hit by a enemy's shot
-            foreach (var shot in this.enemyService.Shots.ToList())
+        private void CheckForCollisionBetweenPlayerAndEnemies()
+        {
+            // Check for collisions between enemies and player
+            foreach (var enemy in this.enemyService.Enemies)
             {
-                if (this.IntersectPixels(new Rectangle((int)this.playerService.Player.Position.X, (int)this.playerService.Player.Position.Y, this.playerService.Player.Width, this.playerService.Player.Height),
-                                         this.playerService.Player.ColorData,
-                                         new Rectangle((int)shot.Position.X, (int)shot.Position.Y, shot.Width, shot.Height),
-                                         shot.ColorData))
+                //if (this.IntersectPixels(new Rectangle((int)this.playerService.Player.Position.X, (int)this.playerService.Player.Position.Y, this.playerService.Player.Width, this.playerService.Player.Height), 
+                //                         this.playerService.Player.ColorData,
+                //                         new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height), 
+                //                         enemy.ColorData))
+
+                if (this.IntersectPixelsTranslated(
+                    Matrix.CreateTranslation(new Vector3(this.playerService.Player.Position, 0)),
+                    this.playerService.Player.Width,
+                    this.playerService.Player.Height,
+                    this.playerService.Player.ColorData,
+                    Matrix.CreateTranslation(new Vector3(enemy.Position, 0)),
+                    // Todo: Proper translation
+                    enemy.Width,
+                    enemy.Height,
+                    enemy.ColorData))
                 {
-                    if (this.PlayerHit != null)
+                    if (this.PlayerEnemyHit != null)
                     {
-                        this.PlayerHit(this, new PlayerHitEventArgs(shot));
+                        this.PlayerEnemyHit(this, null);
                     }
                 }
             }
-
-            base.Update(gameTime);
         }
 
         /// <summary>
@@ -122,7 +155,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         /// <param name="rectangleB">Bouding rectangle of the second sprite</param>
         /// <param name="dataB">Pixel data of the second sprite</param>
         /// <returns>True if non-transparent pixels overlap; false otherwise</returns>
-        public bool IntersectPixels(Rectangle rectangleA, Color[] dataA,
+        private bool IntersectPixels(Rectangle rectangleA, Color[] dataA,
                                     Rectangle rectangleB, Color[] dataB)
         {
             // Find the bounds of the rectangle intersection
@@ -155,7 +188,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             return false;
         }
 
-        public bool IntersectPixelsTranslated(
+        private bool IntersectPixelsTranslated(
                     Matrix transformA, int widthA, int heightA, Color[] dataA,
                     Matrix transformB, int widthB, int heightB, Color[] dataB)
         {
