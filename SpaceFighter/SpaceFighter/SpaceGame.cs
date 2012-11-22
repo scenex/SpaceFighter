@@ -5,9 +5,9 @@
 namespace SpaceFighter
 {
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Input;
 
     using SpaceFighter.Logic;
+    using SpaceFighter.Logic.Input.Implementation;
     using SpaceFighter.Logic.Services.Implementations;
 
     /// <summary>
@@ -19,9 +19,6 @@ namespace SpaceFighter
         private const int ScreenHeight = 480;
 
         private readonly GraphicsDeviceManager graphics;
-
-        private KeyboardState previousKeyboardState;
-        private KeyboardState currentKeyboardState;
 
         private GameController gameController;
 
@@ -49,8 +46,13 @@ namespace SpaceFighter
 
             this.gameController = new GameController(this);
             Components.Add(this.gameController);
-
             Components.Add(new FramerateCounter(this));
+
+            #if WINDOWS
+                this.gameController.SetInputDevice(new InputKeyboard());
+            #elif XBOX
+                this.gameController.SetInputDevice(new InputGamepad());
+            #endif
 
             base.Initialize();
         }
@@ -79,47 +81,6 @@ namespace SpaceFighter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            this.currentKeyboardState = Keyboard.GetState();
-
-            if (this.currentKeyboardState.IsKeyDown(Keys.Left))
-            {
-                if (this.gameController.PlayerService.Player.Position.X >= 0)
-                {
-                    this.gameController.PlayerService.MoveLeft();
-                }
-            }
-
-            if (this.currentKeyboardState.IsKeyDown(Keys.Right))
-            {
-                if (this.gameController.PlayerService.Player.Position.X + this.gameController.PlayerService.Player.Width <= ScreenWidth)
-                {
-                    this.gameController.PlayerService.MoveRight();
-                }
-            }
-
-            if (this.currentKeyboardState.IsKeyDown(Keys.Up))
-            {
-                if (this.gameController.PlayerService.Player.Position.Y - 3 >= 0)
-                {
-                    this.gameController.PlayerService.MoveUp();
-                }
-            }
-
-            if (this.currentKeyboardState.IsKeyDown(Keys.Down))
-            {
-                if (this.gameController.PlayerService.Player.Position.Y + this.gameController.PlayerService.Player.Height <= ScreenHeight)
-                {
-                    this.gameController.PlayerService.MoveDown();
-                }
-            }
-
-            if (this.currentKeyboardState.IsKeyDown(Keys.LeftControl) && this.previousKeyboardState.IsKeyUp(Keys.LeftControl))
-            {
-                this.gameController.PlayerService.Fire();
-            }
-
-            this.previousKeyboardState = this.currentKeyboardState;
-
             base.Update(gameTime);
         }
 

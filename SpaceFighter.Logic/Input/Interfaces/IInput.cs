@@ -2,14 +2,12 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Services.Interfaces
+namespace SpaceFighter.Logic.Input.Interfaces
 {
     using System;
-    using SpaceFighter.Logic.Input.Interfaces;
 
-    public interface IGameController
+    public interface IInput
     {
-        void SetInputDevice(IInput inputDevice);
-        Type InputDeviceType { get; }
+        Type DeviceType { get; }
     }
 }
