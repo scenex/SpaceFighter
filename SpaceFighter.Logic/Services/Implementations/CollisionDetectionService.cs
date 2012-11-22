@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
-    using System.Diagnostics;
     using System.Linq;
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Services.Interfaces;
@@ -60,7 +59,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                 // Todo: Seems to work, figure out why ;)
                 var angle = Math.Atan2((enemy.Origin.Y - playerService.Player.Origin.Y), (enemy.Origin.X - playerService.Player.Origin.X)) - MathHelper.PiOver2;
                 enemy.UpdateAngleToPlayer(angle);
-                Debug.WriteLine(angle);
+                //Debug.WriteLine(angle);
             }
         }
 
