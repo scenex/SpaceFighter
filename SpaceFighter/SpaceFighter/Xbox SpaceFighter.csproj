@@ -68,9 +68,9 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SpaceFighter.Logic\Xbox 360 SpaceFighter.Logic.csproj">
+    <ProjectReference Include="..\..\SpaceFighter.Logic\Xbox SpaceFighter.Logic.csproj">
       <Project>{b30d5cee-9d4a-4b57-b0a6-02f04a8d664d}</Project>
-      <Name>Xbox 360 SpaceFighter.Logic</Name>
+      <Name>Xbox SpaceFighter.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpaceFighterContent\SpaceFighterContent.contentproj">
       <Name>SpaceFighterContent %28Content%29</Name>

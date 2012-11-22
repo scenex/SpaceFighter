@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceFighterContent", "Spac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceFighter.Logic", "SpaceFighter.Logic\SpaceFighter.Logic.csproj", "{C13486CD-1584-45F2-A68C-720A6C819069}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox 360 SpaceFighter.Logic", "SpaceFighter.Logic\Xbox 360 SpaceFighter.Logic.csproj", "{B30D5CEE-9D4A-4B57-B0A6-02F04A8D664D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox SpaceFighter.Logic", "SpaceFighter.Logic\Xbox SpaceFighter.Logic.csproj", "{B30D5CEE-9D4A-4B57-B0A6-02F04A8D664D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox 360 SpaceFighter", "SpaceFighter\SpaceFighter\Xbox 360 SpaceFighter.csproj", "{F287DF4C-341E-452B-B74D-C1A1B2C8199F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox SpaceFighter", "SpaceFighter\SpaceFighter\Xbox SpaceFighter.csproj", "{F287DF4C-341E-452B-B74D-C1A1B2C8199F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
