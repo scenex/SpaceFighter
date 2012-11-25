@@ -139,46 +139,50 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void ProcessInputGamepad()
         {
-            //this.currentGamePadState = GamePad.GetState(PlayerIndex.Two);
+            this.currentGamePadState = GamePad.GetState(PlayerIndex.One);
 
-            //if (this.currentGamePadState.(Keys.Up))
-            //{
-            //    if (this.playerService.Player.Position.Y - 3 >= 0)
-            //    {
-            //        this.playerService.MoveUp();
-            //    }
-            //}
+            // LEFT
+            if (this.currentGamePadState.ThumbSticks.Left.X < 0.0f)
+            {
+                if (this.playerService.Player.Position.X >= 0)
+                {
+                    this.playerService.MoveLeft();
+                }
+            }
 
-            //if (this.currentGamePadState.IsKeyDown(Keys.Down))
-            //{
-            //    if (this.playerService.Player.Position.Y + this.playerService.Player.Height <= ScreenHeight)
-            //    {
-            //        this.playerService.MoveDown();
-            //    }
-            //}
+            // RIGHT
+            if(this.currentGamePadState.ThumbSticks.Left.X > 0.0f)
+            {
+                if (this.playerService.Player.Position.X + this.playerService.Player.Width <= ScreenWidth)
+                {
+                    this.playerService.MoveRight();
+                }
+            }
 
-            //if (this.currentGamePadState.IsKeyDown(Keys.Left))
-            //{
-            //    if (this.playerService.Player.Position.X >= 0)
-            //    {
-            //        this.playerService.MoveLeft();
-            //    }
-            //}
+            // UP
+            if (this.currentGamePadState.ThumbSticks.Left.Y > 0.0f)
+            {
+                if (this.playerService.Player.Position.Y - 3 >= 0)
+                {
+                    this.playerService.MoveUp();
+                }
+            }
 
-            //if (this.currentGamePadState.IsKeyDown(Keys.Right))
-            //{
-            //    if (this.playerService.Player.Position.X + this.playerService.Player.Width <= ScreenWidth)
-            //    {
-            //        this.playerService.MoveRight();
-            //    }
-            //}
+            // DOWN
+            if (this.currentGamePadState.ThumbSticks.Left.Y < 0.0f)
+            {
+                if (this.playerService.Player.Position.Y + this.playerService.Player.Height <= ScreenHeight)
+                {
+                    this.playerService.MoveDown();
+                }
+            }
 
-            //if (this.currentGamePadState.IsKeyDown(Keys.LeftControl) && this.previousGamePadState.IsKeyUp(Keys.LeftControl))
-            //{
-            //    this.playerService.Fire();
-            //}
+            if (this.currentGamePadState.Buttons.A == ButtonState.Pressed && this.previousGamePadState.Buttons.A == ButtonState.Released)
+            {
+                this.playerService.Fire();
+            }
 
-            //this.previousGamePadState = this.currentGamePadState;
+            this.previousGamePadState = this.currentGamePadState;
         }
     }
 }
