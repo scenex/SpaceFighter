@@ -54,7 +54,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 this.ProcessInputKeyboard();
             }
-            else 
+            else if(this.input.DeviceType == typeof(GamePad))
             {
                 this.ProcessInputGamepad();
             }
