@@ -15,8 +15,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private const float MoveStep = 2.0f;
         private Player player;
 
-        private PlayerWeaponService playerWeaponService;
-
+        private IPlayerWeaponService playerWeaponService;
 
         public PlayerService(Game game) : base(game)
         {
@@ -40,9 +39,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.playerWeaponService = new PlayerWeaponService(this.Game);
-            this.Game.Services.AddService(typeof(IPlayerWeaponService), this.playerWeaponService);
-            this.Game.Components.Add(this.playerWeaponService);
+            this.playerWeaponService = (IPlayerWeaponService)this.Game.Services.GetService((typeof(IPlayerWeaponService)));
             
             this.player = new Player(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0));
             this.Game.Components.Add(this.player);

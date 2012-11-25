@@ -9,6 +9,7 @@ namespace SpaceFighter
     using SpaceFighter.Logic;
     using SpaceFighter.Logic.Input.Implementation;
     using SpaceFighter.Logic.Services.Implementations;
+    using SpaceFighter.Logic.Services.Interfaces;
 
     /// <summary>
     /// This is the main type for your game
@@ -19,8 +20,6 @@ namespace SpaceFighter
         private const int ScreenHeight = 720;
 
         private readonly GraphicsDeviceManager graphics;
-
-        private GameController gameController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpaceGame"/> class.
@@ -44,46 +43,48 @@ namespace SpaceFighter
             this.IsMouseVisible = true;
             this.graphics.ApplyChanges();
 
-            this.gameController = new GameController(this);
-            Components.Add(this.gameController);
-
+            this.RegisterGameServices();
 
             Components.Add(new FramerateCounter(this));
 
             #if WINDOWS
-                this.gameController.SetInputDevice(new InputKeyboard());
+                ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputKeyboard());
             #elif XBOX
-                this.gameController.SetInputDevice(new InputGamepad());
+                ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputGamepad());
             #endif
 
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
-        protected override void LoadContent()
+        private void RegisterGameServices()
         {
-        }
+            var gameController = new GameController(this);
+            this.Services.AddService(typeof(IGameController), gameController);
+            Components.Add(gameController);
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
-        }
+            var inputService = new InputService(this);
+            this.Services.AddService(typeof(IInputService), inputService);
+            this.Components.Add(inputService);
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
+            var collisionDetectionService = new CollisionDetectionService(this);
+            this.Services.AddService(typeof(ICollisionDetectionService), collisionDetectionService);
+            this.Components.Add(collisionDetectionService);
+
+            var playerService = new PlayerService(this);
+            this.Services.AddService(typeof(IPlayerService), playerService);
+            this.Components.Add(playerService);
+
+            var enemyService = new EnemyService(this);
+            this.Services.AddService(typeof(IEnemyService), enemyService);
+            this.Components.Add(enemyService);
+
+            var playerWeaponService = new PlayerWeaponService(this);
+            this.Services.AddService(typeof(IPlayerWeaponService), playerWeaponService);
+            this.Components.Add(playerWeaponService);
+
+            var enemyWeaponService = new EnemyWeaponService(this);
+            this.Services.AddService(typeof(IEnemyWeaponService), enemyWeaponService);
+            this.Components.Add(enemyWeaponService);
         }
 
         /// <summary>

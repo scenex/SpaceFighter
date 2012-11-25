@@ -16,7 +16,7 @@ namespace SpaceFighter.Logic.Services.Implementations
     public class EnemyService : GameComponent, IEnemyService
     {
         readonly IList<IEnemy> enemies = new List<IEnemy>();
-        private EnemyWeaponService enemyWeaponService;
+        private IEnemyWeaponService enemyWeaponService;
 
         public EnemyService(Game game) : base(game)
         {
@@ -40,9 +40,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.enemyWeaponService = new EnemyWeaponService(this.Game);
-            this.Game.Services.AddService(typeof(IEnemyWeaponService), this.enemyWeaponService);
-            this.Game.Components.Add(this.enemyWeaponService);
+            this.enemyWeaponService = (IEnemyWeaponService)this.Game.Services.GetService(typeof(IEnemyWeaponService));
 
             this.enemies.Add(EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(50, 100)));
             //this.enemies.Add(EnemyFactory.Create<EnemyRed>(this.Game, new Vector2(100, 100)));

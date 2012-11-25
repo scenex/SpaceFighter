@@ -9,9 +9,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class GameController : GameComponent, IGameController
     {
-        private CollisionDetectionService collisionDetectionService;
-        private PlayerService playerService;
-        private EnemyService enemyService;
+        private ICollisionDetectionService collisionDetectionService;
+        private IPlayerService playerService;
+        private IEnemyService enemyService;
 
         public GameController(Game game) : base(game)
         {
@@ -19,16 +19,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.collisionDetectionService = new CollisionDetectionService(this.Game);
-            this.Game.Components.Add(this.collisionDetectionService);
-
-            this.playerService = new PlayerService(this.Game);
-            this.Game.Services.AddService(typeof(IPlayerService), this.playerService);
-            this.Game.Components.Add(this.playerService);
-
-            this.enemyService = new EnemyService(this.Game);
-            this.Game.Services.AddService(typeof(IEnemyService), this.enemyService);
-            this.Game.Components.Add(this.enemyService);
+            this.collisionDetectionService = (ICollisionDetectionService)this.Game.Services.GetService(typeof(ICollisionDetectionService));
+            this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
+            this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;

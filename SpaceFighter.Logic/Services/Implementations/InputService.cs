@@ -55,11 +55,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.input = inputDevice;
         }
 
-        public void UpdateInput(IInput input)
-        {
-            this.input = input;
-        }
-
         public Type InputDeviceType
         {
             get

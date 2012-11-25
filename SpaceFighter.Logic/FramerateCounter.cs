@@ -62,7 +62,7 @@ namespace SpaceFighter.Logic
 
             this.spriteBatch.Begin();
 
-            this.spriteBatch.DrawString(this.spriteFont, fps, new Vector2(25, 25), Color.White);
+            this.spriteBatch.DrawString(this.spriteFont, fps, new Vector2(50, 50), Color.White);
 
             this.spriteBatch.End();
         }
