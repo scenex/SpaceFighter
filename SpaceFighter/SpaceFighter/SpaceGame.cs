@@ -46,6 +46,8 @@ namespace SpaceFighter
 
             this.gameController = new GameController(this);
             Components.Add(this.gameController);
+
+
             Components.Add(new FramerateCounter(this));
 
             #if WINDOWS

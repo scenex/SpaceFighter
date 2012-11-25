@@ -4,7 +4,13 @@
 
 namespace SpaceFighter.Logic.Services.Interfaces
 {
-    public interface IGameController
+    using System;
+
+    using SpaceFighter.Logic.Input.Interfaces;
+
+    public interface IInputService
     {
+        void SetInputDevice(IInput inputDevice);
+        Type InputDeviceType { get; }
     }
 }
