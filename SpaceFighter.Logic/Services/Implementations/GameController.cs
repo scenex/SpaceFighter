@@ -23,8 +23,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         private GamePadState currentGamePadState;
         private GamePadState previousGamePadState;
 
-        private const int ScreenWidth = 640;
-        private const int ScreenHeight = 480;
+        private const int ScreenWidth = 1280;
+        private const int ScreenHeight = 720;
 
         public GameController(Game game) : base(game)
         {

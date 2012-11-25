@@ -15,8 +15,8 @@ namespace SpaceFighter
     /// </summary>
     public class SpaceGame : Game
     {
-        private const int ScreenWidth = 640;
-        private const int ScreenHeight = 480;
+        private const int ScreenWidth = 1280;
+        private const int ScreenHeight = 720;
 
         private readonly GraphicsDeviceManager graphics;
 
@@ -90,7 +90,7 @@ namespace SpaceFighter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Gray);
             base.Draw(gameTime);
         }
     }
