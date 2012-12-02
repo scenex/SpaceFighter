@@ -1,0 +1,41 @@
+Space Fighter Backlog
+=====================
+
+
+What's on:
+==========
+- Eliminate performance issue on XBox when to much shots fly around
+- Enemy spline movement
+
+
+What's next:
+============
+- HUD with score, energy, lives, special weapons in title safe area
+- Player state engine: Spawn, Alive, Attacking, Defending, Hit, Dying, Dead
+- Background tiling system
+
+- Weapon management & upgrade system
+- Radial electromagnetic shock wave
+- More accurate collision detection
+- Time system
+- Sound system
+- Scoring system
+
+- Create sound samples for: Shot, entity hit, entity explosion, intro music
+- Player sprite in left & right position
+- Player sprite explosion
+
+- Input device configuration
+- Screen menu start game, options
+- Screen pause
+- Screen high score
+- Screen company name 
+
+- Boss system
+- Level scripting
+- Level editor
+
+- 2 player mode offline
+- 2 player mode online
+
+- Acceptance/Integration testing
