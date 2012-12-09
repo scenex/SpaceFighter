@@ -7,6 +7,7 @@ namespace SpaceFighter.Logic.Services.Implementations
     using System;
 
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
     using SpaceFighter.Logic.Input.Interfaces;
@@ -23,8 +24,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         private IPlayerService playerService;
         private IInput input;
 
-        private const int ScreenWidth = 1280;
-        private const int ScreenHeight = 720;
+        private int screenWidth;
+        private int screenHeight;
 
         public InputService(Game game) : base(game)
         {
@@ -33,6 +34,9 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
+            this.screenWidth = ((IGraphicsDeviceService)this.Game.Services.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice.PresentationParameters.BackBufferWidth;
+            this.screenHeight = ((IGraphicsDeviceService)this.Game.Services.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice.PresentationParameters.BackBufferHeight;
+
             base.Initialize();
         }
 
@@ -77,7 +81,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Down))
             {
-                if (this.playerService.Player.Position.Y + this.playerService.Player.Height <= ScreenHeight)
+                if (this.playerService.Player.Position.Y + this.playerService.Player.Height <= screenHeight)
                 {
                     this.playerService.MoveDown();
                 }
@@ -93,7 +97,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Right))
             {
-                if (this.playerService.Player.Position.X + this.playerService.Player.Width <= ScreenWidth)
+                if (this.playerService.Player.Position.X + this.playerService.Player.Width <= screenWidth)
                 {
                     this.playerService.MoveRight();
                 }
@@ -123,7 +127,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             // RIGHT
             if (this.currentGamePadState.ThumbSticks.Left.X > 0.0f)
             {
-                if (this.playerService.Player.Position.X + this.playerService.Player.Width <= ScreenWidth)
+                if (this.playerService.Player.Position.X + this.playerService.Player.Width <= screenWidth)
                 {
                     this.playerService.MoveRight();
                 }
@@ -141,7 +145,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             // DOWN
             if (this.currentGamePadState.ThumbSticks.Left.Y < 0.0f)
             {
-                if (this.playerService.Player.Position.Y + this.playerService.Player.Height <= ScreenHeight)
+                if (this.playerService.Player.Position.Y + this.playerService.Player.Height <= screenHeight)
                 {
                     this.playerService.MoveDown();
                 }
