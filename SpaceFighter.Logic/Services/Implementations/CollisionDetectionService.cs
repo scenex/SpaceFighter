@@ -56,10 +56,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             foreach (var enemy in this.enemyService.Enemies.ToList())
             {
-                // Todo: Seems to work, figure out why ;)
                 var angle = Math.Atan2((enemy.Origin.Y - playerService.Player.Origin.Y), (enemy.Origin.X - playerService.Player.Origin.X)) - MathHelper.PiOver2;
                 enemy.UpdateAngleToPlayer(angle);
-                //Debug.WriteLine(angle);
             }
         }
 
@@ -94,20 +92,21 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 foreach (var shot in this.playerService.Shots.ToList())
                 {
-                    //if (this.IntersectPixels(new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height),
-                    //                         enemy.ColorData,
-                    //                         new Rectangle((int)shot.Position.X, (int)shot.Position.Y, shot.Width, shot.Height),
-                    //                         shot.ColorData))
-                    if (this.IntersectPixelsTranslated(
-                        Matrix.CreateTranslation(new Vector3(enemy.Position, 0)),
-                        // Todo: Proper translation
-                        enemy.Width,
-                        enemy.Height,
-                        enemy.ColorData,
-                        Matrix.CreateTranslation(new Vector3(shot.Position, 0)),
-                        shot.Width,
-                        shot.Height,
-                        shot.ColorData))
+                    if (this.IntersectPixels(new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height),
+                                             enemy.ColorData,
+                                             new Rectangle((int)shot.Position.X, (int)shot.Position.Y, shot.Width, shot.Height),
+                                             shot.ColorData))
+                    // PERFORMACE KILLER
+                    //if (this.IntersectPixelsTranslated(
+                    //    Matrix.CreateTranslation(new Vector3(enemy.Position, 0)), // Todo: Proper translation
+                    //    enemy.Width,
+                    //    enemy.Height,
+                    //    enemy.ColorData,
+                    //    Matrix.CreateTranslation(new Vector3(shot.Position, 0)),
+                    //    shot.Width,
+                    //    shot.Height,
+                    //    shot.ColorData))
+
                     {
                         if (this.EnemyHit != null)
                         {
@@ -123,21 +122,21 @@ namespace SpaceFighter.Logic.Services.Implementations
             // Check for collisions between enemies and player
             foreach (var enemy in this.enemyService.Enemies)
             {
-                //if (this.IntersectPixels(new Rectangle((int)this.playerService.Player.Position.X, (int)this.playerService.Player.Position.Y, this.playerService.Player.Width, this.playerService.Player.Height), 
-                //                         this.playerService.Player.ColorData,
-                //                         new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height), 
-                //                         enemy.ColorData))
+                if (this.IntersectPixels(new Rectangle((int)this.playerService.Player.Position.X, (int)this.playerService.Player.Position.Y, this.playerService.Player.Width, this.playerService.Player.Height),
+                                         this.playerService.Player.ColorData,
+                                         new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height),
+                                         enemy.ColorData))
 
-                if (this.IntersectPixelsTranslated(
-                    Matrix.CreateTranslation(new Vector3(this.playerService.Player.Position, 0)),
-                    this.playerService.Player.Width,
-                    this.playerService.Player.Height,
-                    this.playerService.Player.ColorData,
-                    Matrix.CreateTranslation(new Vector3(enemy.Position, 0)),
-                    // Todo: Proper translation
-                    enemy.Width,
-                    enemy.Height,
-                    enemy.ColorData))
+                // PERFORMANCE KILLER
+                //if (this.IntersectPixelsTranslated(
+                //    Matrix.CreateTranslation(new Vector3(this.playerService.Player.Position, 0)),
+                //    this.playerService.Player.Width,
+                //    this.playerService.Player.Height,
+                //    this.playerService.Player.ColorData,
+                //    Matrix.CreateTranslation(new Vector3(enemy.Position, 0)), Todo: Proper translation
+                //    enemy.Width,
+                //    enemy.Height,
+                //    enemy.ColorData))
                 {
                     if (this.PlayerEnemyHit != null)
                     {
