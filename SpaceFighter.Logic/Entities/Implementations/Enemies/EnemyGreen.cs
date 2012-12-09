@@ -31,6 +31,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private IEnumerable<Vector2> waypoints;
 
+        private readonly Curve enemyCurveX = new Curve();
+        private readonly Curve enemyCurveY = new Curve();
+
         public EnemyGreen(Game game, IEnumerable<Vector2> waypoints) : base(game)
         {
             this.weaponTriggers = new Queue<TimeSpan>(new List<TimeSpan>(){ 
@@ -52,6 +55,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 new TimeSpan(0,0,0,30),
                 new TimeSpan(0,0,0,32),
                 new TimeSpan(0,0,0,34),});
+
+            this.enemyCurveX.Keys.Add(new CurveKey(0.0f, 100));
+            this.enemyCurveX.Keys.Add(new CurveKey(4.0f, 200));
+            this.enemyCurveX.Keys.Add(new CurveKey(8.0f, 150));
+
+            this.enemyCurveY.Keys.Add(new CurveKey(0.0f, 10));
+            this.enemyCurveY.Keys.Add(new CurveKey(4.0f, 100));
+            this.enemyCurveY.Keys.Add(new CurveKey(8.0f, 70));
             
             this.position = waypoints.First();
             this.waypoints = waypoints;
@@ -198,7 +209,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.rotation += 0.01f;
             this.rotation = this.rotation % (2*(float)Math.PI);
          
-            this.position = new Vector2(MathHelper.Lerp(waypoints.ElementAt(0).Length(), waypoints.ElementAt(1).Length(), rotation));
+            this.position.X = this.enemyCurveX.Evaluate((float)gameTime.TotalGameTime.TotalSeconds);
+            this.position.Y = this.enemyCurveY.Evaluate((float)gameTime.TotalGameTime.TotalSeconds);
 
             base.Update(gameTime);
         }
