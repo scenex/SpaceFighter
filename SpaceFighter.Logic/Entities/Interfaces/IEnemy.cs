@@ -20,6 +20,8 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         Queue<TimeSpan> WeaponTriggers { get; }
         float Rotation { get; }
 
+        IEnumerable<Vector2> Waypoints { get; } 
+
         double AngleToPlayer { get; }
         void UpdateAngleToPlayer(double angle);
     }

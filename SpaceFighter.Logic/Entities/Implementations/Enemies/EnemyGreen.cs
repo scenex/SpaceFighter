@@ -6,6 +6,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -17,7 +18,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     /// </summary>
     public class EnemyGreen : DrawableGameComponent, IEnemy
     {
-        private readonly Vector2 position;
+        private Vector2 position;
         private readonly Queue<TimeSpan> weaponTriggers;
         private Texture2D sprite;
         private SpriteBatch spriteBatch;
@@ -28,7 +29,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private double angleToPlayer;
 
-        public EnemyGreen(Game game, Vector2 startPosition) : base(game)
+        private IEnumerable<Vector2> waypoints;
+
+        public EnemyGreen(Game game, IEnumerable<Vector2> waypoints) : base(game)
         {
             this.weaponTriggers = new Queue<TimeSpan>(new List<TimeSpan>(){ 
                 new TimeSpan(0,0,0,0),
@@ -49,8 +52,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 new TimeSpan(0,0,0,30),
                 new TimeSpan(0,0,0,32),
                 new TimeSpan(0,0,0,34),});
-
-            this.position = startPosition;
+            
+            this.position = waypoints.First();
+            this.waypoints = waypoints;
+            
             this.Game.Components.Add(this);
         }
 
@@ -80,6 +85,18 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             get
             {
                 return this.rotation;
+            }
+        }
+
+        public IEnumerable<Vector2> Waypoints
+        {
+            get
+            {
+                return this.waypoints;
+            }
+            set
+            {
+                this.waypoints = value;
             }
         }
 
@@ -180,6 +197,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             this.rotation += 0.01f;
             this.rotation = this.rotation % (2*(float)Math.PI);
+         
+            this.position = new Vector2(MathHelper.Lerp(waypoints.ElementAt(0).Length(), waypoints.ElementAt(1).Length(), rotation));
 
             base.Update(gameTime);
         }

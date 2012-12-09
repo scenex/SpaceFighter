@@ -77,6 +77,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             }
         }
 
+        public IEnumerable<Vector2> Waypoints
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public TimeSpan SpawnTimestamp { get; private set; }
 
         public Vector2 Position

@@ -42,17 +42,13 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.enemyWeaponService = (IEnemyWeaponService)this.Game.Services.GetService(typeof(IEnemyWeaponService));
 
-            this.enemies.Add(EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(50, 100)));
-            //this.enemies.Add(EnemyFactory.Create<EnemyRed>(this.Game, new Vector2(100, 100)));
-            this.enemies.Add(EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(150, 100)));
-            //this.enemies.Add(EnemyFactory.Create<EnemyRed>(this.Game, new Vector2(200, 100)));
-            this.enemies.Add(EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(250, 100)));
-            //this.enemies.Add(EnemyFactory.Create<EnemyRed>(this.Game, new Vector2(300, 100)));
-            this.enemies.Add(EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(350, 100)));
-            //this.enemies.Add(EnemyFactory.Create<EnemyRed>(this.Game, new Vector2(400, 100)));
-            this.enemies.Add(EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(450, 100)));
-            //this.enemies.Add(EnemyFactory.Create<EnemyRed>(this.Game, new Vector2(500, 100)));
-            this.enemies.Add(EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(550, 100)));
+            this.enemies.Add(EnemyFactory.Create<EnemyGreen>(
+                this.Game, 
+                new List<Vector2>
+                    {
+                        new Vector2(150, 100), 
+                        new Vector2(200, 200)
+                    }));
 
             base.Initialize();
         }
