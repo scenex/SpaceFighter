@@ -4,7 +4,6 @@ Space Fighter Backlog
 
 What's on:
 ==========
-- Eliminate performance issue on XBox when to much shots fly around
 - Enemy spline movement
 
 
@@ -41,3 +40,8 @@ What's next:
 - 2 player mode online
 
 - Acceptance/Integration testing
+
+
+DONE:
+=====
+- Eliminate performance issue on XBox when to much shots fly around
