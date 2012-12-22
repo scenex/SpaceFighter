@@ -12,6 +12,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private ICollisionDetectionService collisionDetectionService;
         private IPlayerService playerService;
         private IEnemyService enemyService;
+        private IWorldService worldService;
 
         public GameController(Game game) : base(game)
         {
@@ -22,6 +23,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.collisionDetectionService = (ICollisionDetectionService)this.Game.Services.GetService(typeof(ICollisionDetectionService));
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
             this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
+            this.worldService = (IWorldService)this.Game.Services.GetService(typeof(IWorldService));
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
