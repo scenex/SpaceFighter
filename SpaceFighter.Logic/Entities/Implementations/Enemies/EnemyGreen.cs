@@ -31,6 +31,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private IEnumerable<Vector2> waypoints;
 
+        private SpriteEffects spriteEffect;
+
         private readonly Curve enemyCurveX = new Curve();
         private readonly Curve enemyCurveY = new Curve();
 
@@ -56,14 +58,18 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 new TimeSpan(0,0,0,32),
                 new TimeSpan(0,0,0,34),});
 
-            this.enemyCurveX.Keys.Add(new CurveKey(0.0f, 100));
-            this.enemyCurveX.Keys.Add(new CurveKey(4.0f, 200));
-            this.enemyCurveX.Keys.Add(new CurveKey(8.0f, 150));
+            this.enemyCurveX.Keys.Add(new CurveKey(0.0f, 200));
+            this.enemyCurveX.Keys.Add(new CurveKey(4.0f, 300));
+            this.enemyCurveX.Keys.Add(new CurveKey(8.0f, 200));
+            this.enemyCurveX.Keys.Add(new CurveKey(12.0f,100));
+            this.enemyCurveX.Keys.Add(new CurveKey(16.0f,200));
 
-            this.enemyCurveY.Keys.Add(new CurveKey(0.0f, 10));
-            this.enemyCurveY.Keys.Add(new CurveKey(4.0f, 100));
-            this.enemyCurveY.Keys.Add(new CurveKey(8.0f, 70));
-            
+            this.enemyCurveY.Keys.Add(new CurveKey(0.0f, 200));
+            this.enemyCurveY.Keys.Add(new CurveKey(4.0f, 300));
+            this.enemyCurveY.Keys.Add(new CurveKey(8.0f, 400));
+            this.enemyCurveY.Keys.Add(new CurveKey(12.0f,300));
+            this.enemyCurveY.Keys.Add(new CurveKey(16.0f,200));
+
             this.position = waypoints.First();
             this.waypoints = waypoints;
             
@@ -196,7 +202,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 Color.Green,
                 this.rotation,
                 new Vector2(this.sprite.Width / 2.0f, this.sprite.Height / 2.0f),
-                1.0f, SpriteEffects.None,
+                1.0f, SpriteEffects.None, 
                 0.0f);
 
             this.spriteBatch.End();
@@ -205,12 +211,23 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         }
 
         public override void Update(GameTime gameTime)
-        {
-            this.rotation += 0.01f;
-            this.rotation = this.rotation % (2*(float)Math.PI);
-         
+        {      
+            this.enemyCurveX.PostLoop = CurveLoopType.Cycle;
+            this.enemyCurveY.PostLoop = CurveLoopType.Cycle;
+
+            this.enemyCurveX.PreLoop = CurveLoopType.Cycle;
+            this.enemyCurveY.PreLoop = CurveLoopType.Cycle;
+
+            this.enemyCurveX.ComputeTangents(CurveTangent.Smooth);
+            this.enemyCurveY.ComputeTangents(CurveTangent.Smooth);
+
+            var previousPositionX = this.position.X;
+            var previousPositionY = this.position.Y;
+
             this.position.X = this.enemyCurveX.Evaluate((float)gameTime.TotalGameTime.TotalSeconds);
             this.position.Y = this.enemyCurveY.Evaluate((float)gameTime.TotalGameTime.TotalSeconds);
+
+            this.rotation = (float)Math.Atan2(this.position.Y - previousPositionY, this.position.X - previousPositionX) + MathHelper.PiOver2;
 
             base.Update(gameTime);
         }
