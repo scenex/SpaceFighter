@@ -25,11 +25,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             var verticalTileCount = screenHeight / TileSize;
             this.tileMap = new int[horizontalTileCount, verticalTileCount];
 
-            for(int i = 0; i < verticalTileCount; i++)
+            for (int i = 0; i < horizontalTileCount; i++)
             {
-                for(int j = 0; j < horizontalTileCount; j++)
+                for (int j = 0; j < verticalTileCount; j++)
                 {
-                    //this.tileMap[]
+                    this.tileMap[i, j] = 0x01;
                 }
             }
         }
