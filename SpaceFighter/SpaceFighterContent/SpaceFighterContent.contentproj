@@ -22,6 +22,9 @@
     <RootNamespace>SpaceFighterContent</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ContentManifestExtensions">
+      <HintPath>..\..\Libs\ContentManifestExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
@@ -70,55 +73,62 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sprites\L1\L1_00.png">
-      <Name>L1_00</Name>
+    <Compile Include="Sprites\L1\00.png">
+      <Name>00</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Sprites\L1\L1_01.png">
-      <Name>L1_01</Name>
+    <Compile Include="Sprites\L1\01.png">
+      <Name>01</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Sprites\L1\L1_02.png">
-      <Name>L1_02</Name>
+    <Compile Include="Sprites\L1\02.png">
+      <Name>02</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Sprites\L1\L1_03.png">
-      <Name>L1_03</Name>
+    <Compile Include="Sprites\L1\03.png">
+      <Name>03</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Sprites\L1\L1_04.png">
-      <Name>L1_04</Name>
+    <Compile Include="Sprites\L1\04.png">
+      <Name>04</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Sprites\L1\L1_05.png">
-      <Name>L1_05</Name>
+    <Compile Include="Sprites\L1\05.png">
+      <Name>05</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Sprites\L1\L1_06.png">
-      <Name>L1_06</Name>
+    <Compile Include="Sprites\L1\06.png">
+      <Name>06</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Sprites\L1\L1_07.png">
-      <Name>L1_07</Name>
+    <Compile Include="Sprites\L1\07.png">
+      <Name>07</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Sprites\L1\L1_08.png">
-      <Name>L1_08</Name>
+    <Compile Include="Sprites\L1\08.png">
+      <Name>08</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Sprites\L1\L1_09.png">
-      <Name>L1_09</Name>
+    <Compile Include="Sprites\L1\09.png">
+      <Name>09</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="manifest.manifest">
+      <Name>manifest</Name>
+      <Importer>ManifestImporter</Importer>
+      <Processor>ManifestProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

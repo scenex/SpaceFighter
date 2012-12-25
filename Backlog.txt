@@ -4,7 +4,8 @@ Space Fighter Backlog
 
 What's on:
 ==========
-- Enemy spline movement
+- 2D Camera movement
+- Angular player movement with thrust propulsion
 
 
 What's next:
@@ -41,7 +42,10 @@ What's next:
 
 - Acceptance/Integration testing
 
+- Collision detection with terrain
+
 
 DONE:
 =====
 - Eliminate performance issue on XBox when to much shots fly around
+- Enemy spline movement (manual programming)
