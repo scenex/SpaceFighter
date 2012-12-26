@@ -31,8 +31,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private IEnumerable<Vector2> waypoints;
 
-        private SpriteEffects spriteEffect;
-
         private readonly Curve enemyCurveX = new Curve();
         private readonly Curve enemyCurveY = new Curve();
 
