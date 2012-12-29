@@ -7,6 +7,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Entities.Interfaces;
+    using SpaceFighter.Logic.Services.Interfaces;
 
     /// <summary>
     /// The spaceship class which represent the player's spaceship.
@@ -18,13 +19,27 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private SpriteBatch spriteBatch;
         private Color[] spriteDataCached;
 
+        private Vector2 position;
+
+        private ICameraService cameraService;
+
         public Player(Game game, Vector2 startPosition) : base(game)
         {
             this.game = game;
             this.Position = startPosition;
         }
 
-        public Vector2 Position { get; set; }
+        public Vector2 Position
+        {
+            get
+            {
+                return this.position;
+            }
+            set
+            {
+                this.position = value;
+            }
+        }
 
         public int Width
         {
@@ -58,6 +73,12 @@ namespace SpaceFighter.Logic.Entities.Implementations
             }
         }
 
+        public override void Initialize()
+        {
+            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            base.Initialize();
+        }
+
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
@@ -70,9 +91,23 @@ namespace SpaceFighter.Logic.Entities.Implementations
             base.LoadContent();
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            this.cameraService.Position = this.position;
+            base.Update(gameTime);
+        }
+
         public override void Draw(GameTime gameTime)
         {
-            this.spriteBatch.Begin();
+            this.spriteBatch.Begin(
+                SpriteSortMode.BackToFront,
+                BlendState.AlphaBlend,
+                null,
+                null,
+                null,
+                null,
+                cameraService.GetTransformation());
+
             this.spriteBatch.Draw(this.sprite, this.Position, Color.White);
             this.spriteBatch.End();
 

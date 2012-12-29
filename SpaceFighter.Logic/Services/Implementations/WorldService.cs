@@ -78,7 +78,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Update(GameTime gameTime)
         {
-            this.cameraService.Move(new Vector2(0.1f, 0.1f));
             base.Update(gameTime);
         }
 

@@ -12,6 +12,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using Microsoft.Xna.Framework.Graphics;
 
     using SpaceFighter.Logic.Entities.Interfaces;
+    using SpaceFighter.Logic.Services.Interfaces;
 
     /// <summary>
     /// The enemy class.
@@ -33,6 +34,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private readonly Curve enemyCurveX = new Curve();
         private readonly Curve enemyCurveY = new Curve();
+
+        private ICameraService cameraService;
 
         public EnemyGreen(Game game, IEnumerable<Vector2> waypoints) : base(game)
         {
@@ -170,6 +173,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.angleToPlayer = angle;
         }
 
+        public override void Initialize()
+        {
+            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            base.Initialize();
+        }
+
         /// <summary>
         /// Called when graphics resources need to be loaded. Override this method to load any component-specific graphics resources.
         /// </summary>
@@ -191,7 +200,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         /// <param name="gameTime">Time passed since the last call to Draw.</param>
         public override void Draw(GameTime gameTime)
         {
-            this.spriteBatch.Begin();
+            this.spriteBatch.Begin(
+                SpriteSortMode.BackToFront,
+                BlendState.AlphaBlend,
+                null,
+                null,
+                null,
+                null,
+                cameraService.GetTransformation());
 
             this.spriteBatch.Draw(
                 this.sprite,

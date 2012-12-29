@@ -14,6 +14,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         public Vector2 position;
         protected float rotation;
 
+        private IPlayerService playerService;
+
         public CameraService(Game game) : base(game)
         {
             this.zoom = 1.0f;
@@ -44,13 +46,22 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.position += amount;
         }
 
+        public override void Initialize()
+        {
+            this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
+            base.Initialize();
+        }
+
         public Matrix GetTransformation()
         {
             return Matrix.CreateTranslation(
                         new Vector3(-this.position.X, -this.position.Y, 0)) *
                             Matrix.CreateRotationZ(Rotation) *
                             Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
-                            Matrix.CreateTranslation(new Vector3(0, 0, 0));
+                            Matrix.CreateTranslation(new Vector3(
+                                (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - (this.playerService.Player.Width / 2), 
+                                (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) - (this.playerService.Player.Height / 2), 
+                                0)); 
         }
     }
 }
