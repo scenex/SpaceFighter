@@ -4,7 +4,6 @@ Space Fighter Backlog
 
 What's on:
 ==========
-- 2D Camera movement
 - Angular player movement with thrust propulsion
 
 
@@ -12,7 +11,6 @@ What's next:
 ============
 - HUD with score, energy, lives, special weapons in title safe area
 - Player state engine: Spawn, Alive, Attacking, Defending, Hit, Dying, Dead
-- Background tiling system
 
 - Weapon management & upgrade system
 - Radial electromagnetic shock wave
@@ -49,3 +47,5 @@ DONE:
 =====
 - Eliminate performance issue on XBox when to much shots fly around
 - Enemy spline movement (manual programming)
+- 2D Camera movement
+- Background tiling system
