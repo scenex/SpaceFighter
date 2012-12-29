@@ -6,11 +6,16 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 {
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     using SpaceFighter.Logic.Entities.Interfaces;
+    using SpaceFighter.Logic.Services.Interfaces;
 
     public class PlayerWeapon : Weapon
     {
         private readonly IList<IShot> shots;
+
+        private ICameraService cameraService;
 
         public PlayerWeapon(Game game) : base(game)
         {
@@ -27,6 +32,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                     this.spriteDataCached,
                     50,
                     angle));
+        }
+
+        public override void Initialize()
+        {
+            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            base.Initialize();
         }
 
         public override void LoadShots(string texturePath)
@@ -52,7 +63,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         public override void DrawShots()
         {
-            this.spriteBatch.Begin();
+            this.spriteBatch.Begin(
+                SpriteSortMode.BackToFront,
+                BlendState.AlphaBlend,
+                null,
+                null,
+                null,
+                null,
+                cameraService.GetTransformation());
 
             foreach (var shot in this.shots)
             {
