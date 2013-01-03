@@ -216,7 +216,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 Color.Green,
                 this.rotation,
                 new Vector2(this.sprite.Width / 2.0f, this.sprite.Height / 2.0f),
-                1.0f, SpriteEffects.None, 
+                1.0f, 
+                SpriteEffects.None, 
                 0.0f);
 
             this.spriteBatch.End();
