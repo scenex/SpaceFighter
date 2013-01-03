@@ -69,8 +69,8 @@ namespace SpaceFighter.Logic.Services.Implementations
                 if (
                     this.IntersectPixels(
                         new Rectangle(
-                            (int)this.playerService.Player.Position.X,
-                            (int)this.playerService.Player.Position.Y,
+                            (int)this.playerService.Player.Position.X - this.playerService.Player.Width / 2, // Offset because we center player tile while drawing it
+                            (int)this.playerService.Player.Position.Y - this.playerService.Player.Height / 2,
                             this.playerService.Player.Width,
                             this.playerService.Player.Height),
                         this.playerService.Player.ColorData,
@@ -122,10 +122,19 @@ namespace SpaceFighter.Logic.Services.Implementations
             // Check for collisions between enemies and player
             foreach (var enemy in this.enemyService.Enemies)
             {
-                if (this.IntersectPixels(new Rectangle((int)this.playerService.Player.Position.X, (int)this.playerService.Player.Position.Y, this.playerService.Player.Width, this.playerService.Player.Height),
-                                         this.playerService.Player.ColorData,
-                                         new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height),
-                                         enemy.ColorData))
+                if (this.IntersectPixels(
+                    new Rectangle(
+                        (int)this.playerService.Player.Position.X - this.playerService.Player.Width / 2,
+                        (int)this.playerService.Player.Position.Y - this.playerService.Player.Height / 2, 
+                        this.playerService.Player.Width, 
+                        this.playerService.Player.Height),
+                            this.playerService.Player.ColorData,
+                                new Rectangle(
+                                    (int)enemy.Position.X, 
+                                    (int)enemy.Position.Y, 
+                                    enemy.Width, 
+                                    enemy.Height),
+                                        enemy.ColorData))
 
                 // PERFORMANCE KILLER
                 //if (this.IntersectPixelsTranslated(

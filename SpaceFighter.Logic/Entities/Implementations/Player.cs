@@ -18,10 +18,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private Texture2D sprite;
         private SpriteBatch spriteBatch;
         private Color[] spriteDataCached;
-
         private Vector2 position;
-
         private ICameraService cameraService;
+        private float rotation;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
@@ -73,6 +72,18 @@ namespace SpaceFighter.Logic.Entities.Implementations
             }
         }
 
+        public float Rotation
+        {
+            get
+            {
+                return this.rotation;
+            }
+            set
+            {
+                this.rotation = value;
+            }
+        }
+
         public override void Initialize()
         {
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
@@ -108,7 +119,17 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 null,
                 cameraService.GetTransformation());
 
-            this.spriteBatch.Draw(this.sprite, this.Position, Color.White);
+            this.spriteBatch.Draw(
+                this.sprite,
+                this.Position,
+                null,
+                Color.White,
+                this.rotation,
+                new Vector2((float)this.Width / 2, (float)this.Height / 2),
+                1.0f,
+                SpriteEffects.None,
+                0.0f);
+
             this.spriteBatch.End();
 
             base.Draw(gameTime);

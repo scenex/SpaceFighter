@@ -47,7 +47,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             base.Initialize();
         }
 
-        // Todo: Find better solution than tracking coordinates like this.
         public void MoveLeft()
         {
             this.player.Position = new Vector2(this.player.Position.X - MoveStep, this.player.Position.Y);
@@ -68,9 +67,19 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Position = new Vector2(this.player.Position.X, this.player.Position.Y + MoveStep);
         }
 
+        public void RotateLeft()
+        {
+            this.player.Rotation += 0.1f;
+        }
+
+        public void RotateRight()
+        {
+            this.player.Rotation -= 0.1f;
+        }
+
         public void Fire()
         {
-            this.playerWeaponService.FireWeapon(new Vector2(this.player.Position.X + ((float)this.player.Width / 2), this.player.Position.Y));
+            this.playerWeaponService.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y - ((float)this.player.Height / 2)));
         }
 
         public void ReportPlayerHit(IShot shot)

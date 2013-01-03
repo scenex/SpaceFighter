@@ -103,6 +103,16 @@ namespace SpaceFighter.Logic.Services.Implementations
                 }
             }
 
+            if (this.currentKeyboardState.IsKeyDown(Keys.NumPad4))
+            {
+                this.playerService.RotateLeft();
+            }
+
+            if (this.currentKeyboardState.IsKeyDown(Keys.NumPad6))
+            {
+                this.playerService.RotateRight();
+            }
+
             if (this.currentKeyboardState.IsKeyDown(Keys.LeftControl) && this.previousKeyboardState.IsKeyUp(Keys.LeftControl))
             {
                 this.playerService.Fire();

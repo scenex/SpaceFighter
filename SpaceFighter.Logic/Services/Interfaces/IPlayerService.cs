@@ -14,6 +14,8 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void MoveRight();
         void MoveUp();
         void MoveDown();
+        void RotateLeft();
+        void RotateRight();    
         void Fire();
         IEnumerable<IShot> Shots { get; } 
         void ReportPlayerHit(IShot shot);
