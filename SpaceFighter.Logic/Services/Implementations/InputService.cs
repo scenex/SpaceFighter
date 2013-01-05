@@ -73,7 +73,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Up))
             {
-                if (this.playerService.Player.Position.Y - 3 >= 0)
+                if (this.playerService.Player.Position.Y - (float)this.playerService.Player.Height / 2 >= 0)
                 {
                     this.playerService.MoveUp();
                 }
@@ -81,7 +81,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Down))
             {
-                if (this.playerService.Player.Position.Y + this.playerService.Player.Height <= screenHeight)
+                if (this.playerService.Player.Position.Y + (float)this.playerService.Player.Height / 2 <= screenHeight)
                 {
                     this.playerService.MoveDown();
                 }
@@ -89,7 +89,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Left))
             {
-                if (this.playerService.Player.Position.X >= 0)
+                if (this.playerService.Player.Position.X - (float)this.playerService.Player.Width / 2 >= 0)
                 {
                     this.playerService.MoveLeft();
                 }
@@ -97,7 +97,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Right))
             {
-                if (this.playerService.Player.Position.X + this.playerService.Player.Width <= screenWidth)
+                if (this.playerService.Player.Position.X + (float)this.playerService.Player.Width / 2 <= screenWidth)
                 {
                     this.playerService.MoveRight();
                 }
