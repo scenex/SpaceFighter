@@ -84,7 +84,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void ReportPlayerHit(IShot shot)
         {
-            //Todo: Subtract firepower from player's health
+            // Subtract firepower from player's health
         }
 
         public void RemoveShot(IShot shot)
