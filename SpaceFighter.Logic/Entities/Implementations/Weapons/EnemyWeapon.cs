@@ -23,15 +23,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.shots = new List<IShot>();
         }
 
-        public override void FireWeapon(Vector2 startPosition, double angle)
+        public override void FireWeapon(Vector2 startPosition, int offset, double angle)
         {
             this.shots.Add(
                 new Shot(
-
-                    // Todo: Retrieve radius from enemy (radius = enemy origin + enemy length / 2)
                     new Vector2(
-                        startPosition.X - (this.sprite.Width / 2.0f)  + 16 * ((float)Math.Cos(angle - MathHelper.PiOver2)),   // Center shot and then add r*cos(angle)
-                        startPosition.Y - (this.sprite.Height / 2.0f) + 16 * ((float)Math.Sin(angle - MathHelper.PiOver2))),  // Center shot and then add r*sin(angle)
+                        startPosition.X - (this.sprite.Width / 2.0f) + offset * ((float)Math.Cos(angle - MathHelper.PiOver2)),   // Center shot and then add r*cos(angle)
+                        startPosition.Y - (this.sprite.Height / 2.0f) + offset * ((float)Math.Sin(angle - MathHelper.PiOver2))),  // Center shot and then add r*sin(angle)
 
                     this.sprite.Width,
                     this.sprite.Height,
@@ -59,8 +57,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                 {
                     this.shots[i].Position = new Vector2(
                         (this.shots[i].Position.X + ((float)Math.Cos(this.shots[i].Angle - MathHelper.PiOver2))),
-                        (this.shots[i].Position.Y + ((float)Math.Sin(this.shots[i].Angle - MathHelper.PiOver2)))
-                        );
+                        (this.shots[i].Position.Y + ((float)Math.Sin(this.shots[i].Angle - MathHelper.PiOver2))));
                 }
                 else
                 {

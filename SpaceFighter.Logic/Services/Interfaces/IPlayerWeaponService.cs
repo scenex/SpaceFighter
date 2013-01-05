@@ -10,7 +10,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
     public interface IPlayerWeaponService
     {
         IWeapon Weapon { get; }
-        void FireWeapon(Vector2 initialCoordinates);
+        void FireWeapon(Vector2 initialCoordinates, int offset, double angle);
         void UpgradeWeapon();
         void DowngradeWeapon();
     }

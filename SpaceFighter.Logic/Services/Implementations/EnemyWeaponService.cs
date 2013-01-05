@@ -33,9 +33,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             base.Initialize();
         }
 
-        public void FireWeapon(Vector2 initialCoordinates, double angle)
+        public void FireWeapon(Vector2 initialCoordinates, int offset, double angle)
         {
-            this.weapon.FireWeapon(initialCoordinates, angle);
+            this.weapon.FireWeapon(initialCoordinates, offset, angle);
         }
     }
 }

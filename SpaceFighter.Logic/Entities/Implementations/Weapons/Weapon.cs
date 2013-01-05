@@ -22,7 +22,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         }
         
         public abstract IList<IShot> Shots { get; }
-        public abstract void FireWeapon(Vector2 startPosition, double angle);
+        public abstract void FireWeapon(Vector2 startPosition, int offset, double angle);
         public abstract void UpdateShots();
         public abstract void DrawShots();
 

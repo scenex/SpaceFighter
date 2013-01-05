@@ -79,7 +79,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void Fire()
         {
-            this.playerWeaponService.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y - ((float)this.player.Height / 2)));
+            this.playerWeaponService.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2, this.player.Rotation);
         }
 
         public void ReportPlayerHit(IShot shot)
