@@ -20,7 +20,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private int levelHeight;
         private int levelWidth;
-        private bool isCollision;
+
+        private bool isCollisionWithBoundaries;
+        private bool isCollisionDetectionActive;
 
         public CollisionDetectionService(Game game) : base(game)
         {
@@ -30,6 +32,16 @@ namespace SpaceFighter.Logic.Services.Implementations
         public event EventHandler<EnemyHitEventArgs> EnemyHit;
         public event EventHandler<PlayerHitEventArgs> PlayerHit;
         public event EventHandler<EventArgs> BoundaryHit;
+
+        public void EnableCollisionDetection()
+        {
+            this.isCollisionDetectionActive = true;
+        }
+
+        public void DisableCollisionDetection()
+        {
+            this.isCollisionDetectionActive = false;
+        }
 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
@@ -44,6 +56,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.levelHeight = this.worldService.LevelHeight;
             this.levelWidth = this.worldService.LevelWidth;
 
+            this.isCollisionDetectionActive = true;
+
             base.Initialize();
         }
 
@@ -53,12 +67,14 @@ namespace SpaceFighter.Logic.Services.Implementations
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            this.CheckForCollisionBetweenPlayerAndEnemies();
-            this.CheckForCollisionsBetweenPlayersShotsAndEnemies();
-            this.CheckForCollisionsBetweenEnemiesShotsAndPlayer();
-            this.CheckForCollisionsWithBoundaries();
-
-            this.UpdateEnemyAngleToPlayer();
+            if (this.isCollisionDetectionActive)
+            {
+                this.CheckForCollisionBetweenPlayerAndEnemies();
+                this.CheckForCollisionsBetweenPlayersShotsAndEnemies();
+                this.CheckForCollisionsBetweenEnemiesShotsAndPlayer();
+                this.CheckForCollisionsWithBoundaries();
+                this.UpdateEnemyAngleToPlayer();
+            }
 
             base.Update(gameTime);
         }
@@ -171,28 +187,28 @@ namespace SpaceFighter.Logic.Services.Implementations
             // Left
             if (this.playerService.Player.Position.X - (float)this.playerService.Player.Width / 2 <= 0)
             {
-                isCollision = true;
+                this.isCollisionWithBoundaries = true;
             }
 
             // Right
             if (this.playerService.Player.Position.X + (float)this.playerService.Player.Width / 2 >= levelWidth)
             {
-                isCollision = true;
+                this.isCollisionWithBoundaries = true;
             }
 
             // Top
             if (this.playerService.Player.Position.Y - (float)this.playerService.Player.Height / 2 <= 0)
             {
-                isCollision = true;
+                this.isCollisionWithBoundaries = true;
             }
 
             // Bottom
             if (this.playerService.Player.Position.Y + (float)this.playerService.Player.Height / 2 >= levelHeight)
             {
-                isCollision = true;
+                this.isCollisionWithBoundaries = true;
             }
 
-            if (isCollision && this.BoundaryHit != null)
+            if (this.isCollisionWithBoundaries && this.BoundaryHit != null)
             {
                 this.BoundaryHit(this, null);
             }

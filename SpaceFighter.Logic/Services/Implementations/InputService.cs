@@ -23,7 +23,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private IPlayerService playerService;
         private IInput input;
 
-        private bool isSuspended;
+        private bool isInputDeviceActive;
 
         public InputService(Game game) : base(game)
         {
@@ -32,12 +32,14 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
+            this.isInputDeviceActive = true;
+
             base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
-            if(!isSuspended)
+            if(this.isInputDeviceActive)
             {
                 if (this.input.DeviceType == typeof(Keyboard))
                 {
@@ -57,9 +59,14 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.input = inputDevice;
         }
 
-        public void SuspendInputDevice()
+        public void DisableInputDevice()
         {
-            this.isSuspended = true;
+            this.isInputDeviceActive = false;
+        }
+
+        public void EnableInputDevice()
+        {
+            this.isInputDeviceActive = true;
         }
 
         public Type InputDeviceType
