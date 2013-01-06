@@ -32,26 +32,27 @@ namespace SpaceFighter.Logic.Services.Implementations
             base.Initialize();
         }
 
+        private void OnEnemyHit(object sender, EnemyHitEventArgs e)
+        {
+            this.playerService.RemoveShot(e.Shot);
+            this.enemyService.ReportEnemyHit(e.Enemy, e.Shot);
+        }
+
         private void OnPlayerHit(object sender, PlayerHitEventArgs e)
         {
             this.enemyService.RemoveShot(e.Shot);
             this.playerService.ReportPlayerHit(e.Shot);
-        }
-
-        private void OnEnemyHit(object sender, EnemyHitEventArgs e)
-        {
-            this.playerService.RemoveShot(e.Shot);
-            this.enemyService.ReportEnemyHit(e.Enemy, e.Shot);         
+            this.playerService.SetStateDead();
         }
 
         private void OnPlayerEnemyHit(object sender, EventArgs e)
         {
-            // Todo
+            this.playerService.SetStateDead();
         }
 
         private void OnBoundaryHit(object sender, EventArgs e)
         {
-            // Todo
+            this.playerService.SetStateDead();
         }
     }
 }

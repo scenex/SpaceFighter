@@ -6,8 +6,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 {
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-
     using SpaceFighter.Logic.Entities.Implementations;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
@@ -16,8 +14,6 @@ namespace SpaceFighter.Logic.Services.Implementations
     {
         private Player player;
         private IPlayerWeaponService playerWeaponService;
-        private int screenWidth;
-        private int screenHeight;
 
         public PlayerService(Game game) : base(game)
         {
@@ -42,8 +38,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             this.playerWeaponService = (IPlayerWeaponService)this.Game.Services.GetService((typeof(IPlayerWeaponService)));
-            this.screenWidth = ((IGraphicsDeviceService)this.Game.Services.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice.PresentationParameters.BackBufferWidth;
-            this.screenHeight = ((IGraphicsDeviceService)this.Game.Services.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice.PresentationParameters.BackBufferHeight;
 
             this.player = new Player(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0));
             this.Game.Components.Add(this.player);
@@ -69,6 +63,16 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void Thrust()
         {
             this.player.Thrust(3);
+        }
+
+        public void SetStateDead()
+        {
+            this.player.SetStateDead();
+        }
+
+        public void SetStateAlive()
+        {
+            this.player.SetStateAlive();
         }
 
         public void ReportPlayerHit(IShot shot)

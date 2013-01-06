@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic.Entities.Implementations
 {
     using System;
-
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Entities.Interfaces;
@@ -17,8 +16,10 @@ namespace SpaceFighter.Logic.Entities.Implementations
     public class Player : DrawableGameComponent, IPlayer
     {   
         private readonly Game game;
-        private Texture2D sprite;
         private SpriteBatch spriteBatch;
+
+        private Texture2D spriteAlive;
+        private Texture2D spriteDead;
 
         private ICameraService cameraService;
 
@@ -26,17 +27,19 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             this.game = game;
             this.Position = startPosition;
+            this.State = PlayerState.Alive;
         }
 
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
+        public PlayerState State { get; private set; }
         public Color[] ColorData { get; private set; }
 
         public int Width
         {
             get
             {
-                return this.sprite.Width;
+                return this.GetCurrentSprite().Width;
             }
         }
 
@@ -44,7 +47,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             get
             {
-                return this.sprite.Height;
+                return this.GetCurrentSprite().Height;
             }
         }
 
@@ -66,6 +69,34 @@ namespace SpaceFighter.Logic.Entities.Implementations
                     this.Position);
         }
 
+        private Texture2D GetCurrentSprite()
+        {
+            switch (this.State)
+            {
+                case PlayerState.Alive:
+                    return spriteAlive;
+
+                case PlayerState.Dead:
+                    return spriteDead;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public void SetStateAlive()
+        {
+            this.State = PlayerState.Alive;
+            this.UpdateSpriteColorData();
+
+        }
+
+        public void SetStateDead()
+        {
+            this.State = PlayerState.Dead;
+            this.UpdateSpriteColorData();
+        }
+
         public override void Initialize()
         {
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
@@ -75,11 +106,11 @@ namespace SpaceFighter.Logic.Entities.Implementations
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.sprite = this.game.Content.Load<Texture2D>("Sprites/Spaceship");
 
-            // Obtain color information for subsequent per pixel collision detection
-            this.ColorData = new Color[this.sprite.Width * this.sprite.Height];
-            this.sprite.GetData(this.ColorData);
+            this.spriteAlive = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive");
+            this.spriteDead = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead");
+
+            this.UpdateSpriteColorData();
 
             base.LoadContent();
         }
@@ -102,7 +133,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 cameraService.GetTransformation());
 
             this.spriteBatch.Draw(
-                this.sprite,
+                this.GetCurrentSprite(),
                 this.Position,
                 null,
                 Color.White,
@@ -116,5 +147,20 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
             base.Draw(gameTime);
         }
+
+        private void UpdateSpriteColorData()
+        {
+            // Obtain color information for subsequent per pixel collision detection
+            this.ColorData = new Color[this.GetCurrentSprite().Width * this.GetCurrentSprite().Height];
+            this.GetCurrentSprite().GetData(this.ColorData);
+        }
+    }
+
+    public enum PlayerState
+    {
+        None,
+        Alive,
+        Dying,
+        Dead
     }
 }

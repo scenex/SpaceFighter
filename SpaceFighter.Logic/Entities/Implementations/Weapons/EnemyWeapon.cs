@@ -46,7 +46,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         public override void LoadShots(string texturePath)
         {
-            base.LoadShots("Sprites/Spaceship_Shot");
+            base.LoadShots("Sprites/Shot");
         }
 
         public override void UpdateShots()

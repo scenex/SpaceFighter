@@ -5,6 +5,7 @@
 namespace SpaceFighter.Logic.Entities.Interfaces
 {
     using Microsoft.Xna.Framework;
+    using SpaceFighter.Logic.Entities.Implementations;
 
     /// <summary>
     /// The interface to represent the player's spaceship
@@ -17,6 +18,10 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         Color[] ColorData { get; }
         Vector2 Origin { get; }
         float Rotation { get; set; }
+
+        PlayerState State { get; } 
+        void SetStateAlive();
+        void SetStateDead();
 
         void Thrust(int amount);
     }

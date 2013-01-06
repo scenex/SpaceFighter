@@ -45,15 +45,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sprites\Spaceship_Shot.png">
-      <Name>Spaceship_Shot</Name>
+    <Compile Include="Sprites\Shot.png">
+      <Name>Shot</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sprites\Spaceship.png">
-      <Name>Spaceship</Name>
+    <Compile Include="Sprites\Spaceship\Alive.png">
+      <Name>Alive</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -129,6 +129,13 @@
       <Name>manifest</Name>
       <Importer>ManifestImporter</Importer>
       <Processor>ManifestProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sprites\Spaceship\Dead.png">
+      <Name>Dead</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
