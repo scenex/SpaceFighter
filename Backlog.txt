@@ -4,14 +4,13 @@ Space Fighter Backlog
 
 What's on:
 ==========
-- Angular player movement with thrust propulsion
+- Player state engine: Spawn, Alive, Attacking, Defending, Hit, Dying, Dead
+- Player sprite explosion
 
 
 What's next:
 ============
 - HUD with score, energy, lives, special weapons in title safe area
-- Player state engine: Spawn, Alive, Attacking, Defending, Hit, Dying, Dead
-
 - Weapon management & upgrade system
 - Radial electromagnetic shock wave
 - More accurate collision detection
@@ -21,7 +20,6 @@ What's next:
 
 - Create sound samples for: Shot, entity hit, entity explosion, intro music
 - Player sprite in left & right position
-- Player sprite explosion
 - Enemy sprites
 - Boss sprites
 
@@ -49,3 +47,4 @@ DONE:
 - Enemy spline movement (manual programming)
 - 2D Camera movement
 - Background tiling system
+- Angular player movement with thrust propulsion
