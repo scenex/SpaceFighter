@@ -11,5 +11,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
         event EventHandler<EventArgs> PlayerEnemyHit;
         event EventHandler<EnemyHitEventArgs> EnemyHit;
         event EventHandler<PlayerHitEventArgs> PlayerHit;
+        event EventHandler<EventArgs> BoundaryHit;
     }
 }

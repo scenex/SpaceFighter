@@ -16,6 +16,11 @@ namespace SpaceFighter.Logic.Services.Implementations
     {
         private IPlayerService playerService;
         private IEnemyService enemyService;
+        private IWorldService worldService;
+
+        private int levelHeight;
+        private int levelWidth;
+        private bool isCollision;
 
         public CollisionDetectionService(Game game) : base(game)
         {
@@ -24,6 +29,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         public event EventHandler<EventArgs> PlayerEnemyHit;
         public event EventHandler<EnemyHitEventArgs> EnemyHit;
         public event EventHandler<PlayerHitEventArgs> PlayerHit;
+        public event EventHandler<EventArgs> BoundaryHit;
 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
@@ -33,6 +39,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
             this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
+            this.worldService = (IWorldService)this.Game.Services.GetService(typeof(IWorldService));
+
+            this.levelHeight = this.worldService.LevelHeight;
+            this.levelWidth = this.worldService.LevelWidth;
 
             base.Initialize();
         }
@@ -46,6 +56,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.CheckForCollisionBetweenPlayerAndEnemies();
             this.CheckForCollisionsBetweenPlayersShotsAndEnemies();
             this.CheckForCollisionsBetweenEnemiesShotsAndPlayer();
+            this.CheckForCollisionsWithBoundaries();
 
             this.UpdateEnemyAngleToPlayer();
 
@@ -152,6 +163,38 @@ namespace SpaceFighter.Logic.Services.Implementations
                         this.PlayerEnemyHit(this, null);
                     }
                 }
+            }
+        }
+
+        private void CheckForCollisionsWithBoundaries()
+        {
+            // Left
+            if (this.playerService.Player.Position.X - (float)this.playerService.Player.Width / 2 <= 0)
+            {
+                isCollision = true;
+            }
+
+            // Right
+            if (this.playerService.Player.Position.X + (float)this.playerService.Player.Width / 2 >= levelWidth)
+            {
+                isCollision = true;
+            }
+
+            // Top
+            if (this.playerService.Player.Position.Y - (float)this.playerService.Player.Height / 2 <= 0)
+            {
+                isCollision = true;
+            }
+
+            // Bottom
+            if (this.playerService.Player.Position.Y + (float)this.playerService.Player.Height / 2 >= levelHeight)
+            {
+                isCollision = true;
+            }
+
+            if (isCollision && this.BoundaryHit != null)
+            {
+                this.BoundaryHit(this, null);
             }
         }
 

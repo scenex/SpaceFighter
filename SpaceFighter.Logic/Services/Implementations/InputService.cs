@@ -7,7 +7,6 @@ namespace SpaceFighter.Logic.Services.Implementations
     using System;
 
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
     using SpaceFighter.Logic.Input.Interfaces;
@@ -24,9 +23,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         private IPlayerService playerService;
         private IInput input;
 
-        private int screenWidth;
-        private int screenHeight;
-
         public InputService(Game game) : base(game)
         {
         }
@@ -34,9 +30,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
-            this.screenWidth = ((IGraphicsDeviceService)this.Game.Services.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice.PresentationParameters.BackBufferWidth;
-            this.screenHeight = ((IGraphicsDeviceService)this.Game.Services.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice.PresentationParameters.BackBufferHeight;
-
             base.Initialize();
         }
 
@@ -90,38 +83,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 this.playerService.Thrust();
             }
-
-            //if (this.currentKeyboardState.IsKeyDown(Keys.Left))
-            //{
-            //    if (this.playerService.Player.Position.X - (float)this.playerService.Player.Width / 2 >= 0)
-            //    {
-            //        this.playerService.MoveLeft();
-            //    }
-            //}
-
-            //if (this.currentKeyboardState.IsKeyDown(Keys.Right))
-            //{
-            //    if (this.playerService.Player.Position.X + (float)this.playerService.Player.Width / 2 <= screenWidth)
-            //    {
-            //        this.playerService.MoveRight();
-            //    }
-            //}
-
-            //if (this.currentKeyboardState.IsKeyDown(Keys.Up))
-            //{
-            //    if (this.playerService.Player.Position.Y - (float)this.playerService.Player.Height / 2 >= 0)
-            //    {
-            //        this.playerService.MoveUp();
-            //    }
-            //}
-
-            //if (this.currentKeyboardState.IsKeyDown(Keys.Down))
-            //{
-            //    if (this.playerService.Player.Position.Y + (float)this.playerService.Player.Height / 2 <= screenHeight)
-            //    {
-            //        this.playerService.MoveDown();
-            //    }
-            //}
 
             this.previousKeyboardState = this.currentKeyboardState;
         }

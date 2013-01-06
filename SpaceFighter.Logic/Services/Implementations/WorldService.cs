@@ -62,6 +62,22 @@ namespace SpaceFighter.Logic.Services.Implementations
             throw new NotImplementedException();
         }
 
+        public int LevelWidth
+        {
+            get
+            {
+                return this.horizontalTileCount * TileSize;
+            }
+        }
+
+        public int LevelHeight
+        {
+            get
+            {
+                return this.verticalTileCount * TileSize;
+            }
+        }
+
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);

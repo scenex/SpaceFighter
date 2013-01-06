@@ -4,6 +4,7 @@
 
 namespace SpaceFighter.Logic.Services.Implementations
 {
+    using System;
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Services.Interfaces;
 
@@ -12,7 +13,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         private ICollisionDetectionService collisionDetectionService;
         private IPlayerService playerService;
         private IEnemyService enemyService;
-        private IWorldService worldService;
 
         public GameController(Game game) : base(game)
         {
@@ -23,10 +23,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.collisionDetectionService = (ICollisionDetectionService)this.Game.Services.GetService(typeof(ICollisionDetectionService));
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
             this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
-            this.worldService = (IWorldService)this.Game.Services.GetService(typeof(IWorldService));
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
+            this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
+            this.collisionDetectionService.BoundaryHit += this.OnBoundaryHit;
             
             base.Initialize();
         }
@@ -41,6 +42,16 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.playerService.RemoveShot(e.Shot);
             this.enemyService.ReportEnemyHit(e.Enemy, e.Shot);         
+        }
+
+        private void OnPlayerEnemyHit(object sender, EventArgs e)
+        {
+            // Todo
+        }
+
+        private void OnBoundaryHit(object sender, EventArgs e)
+        {
+            // Todo
         }
     }
 }
