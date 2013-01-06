@@ -4,6 +4,8 @@
 
 namespace SpaceFighter.Logic.Entities.Implementations
 {
+    using System;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Entities.Interfaces;
@@ -17,10 +19,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private readonly Game game;
         private Texture2D sprite;
         private SpriteBatch spriteBatch;
-        private Color[] spriteDataCached;
-        private Vector2 position;
+
         private ICameraService cameraService;
-        private float rotation;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
@@ -28,17 +28,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.Position = startPosition;
         }
 
-        public Vector2 Position
-        {
-            get
-            {
-                return this.position;
-            }
-            set
-            {
-                this.position = value;
-            }
-        }
+        public Vector2 Position { get; set; }
+        public float Rotation { get; set; }
+        public Color[] ColorData { get; private set; }
 
         public int Width
         {
@@ -56,14 +48,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
             }
         }
 
-        public Color[] ColorData
-        {
-            get
-            {
-                return this.spriteDataCached;
-            }
-        }
-
         public Vector2 Origin
         {
             get
@@ -72,16 +56,14 @@ namespace SpaceFighter.Logic.Entities.Implementations
             }
         }
 
-        public float Rotation
+        public void Thrust(int amount)
         {
-            get
-            {
-                return this.rotation;
-            }
-            set
-            {
-                this.rotation = value;
-            }
+            this.Position =
+                Vector2.Add(
+                    new Vector2(
+                        (float)Math.Cos(this.Rotation - MathHelper.PiOver2) * amount,
+                        (float)Math.Sin(this.Rotation - MathHelper.PiOver2) * amount),
+                    this.Position);
         }
 
         public override void Initialize()
@@ -96,15 +78,15 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.sprite = this.game.Content.Load<Texture2D>("Sprites/Spaceship");
 
             // Obtain color information for subsequent per pixel collision detection
-            this.spriteDataCached = new Color[this.sprite.Width * this.sprite.Height];
-            this.sprite.GetData(this.spriteDataCached);
+            this.ColorData = new Color[this.sprite.Width * this.sprite.Height];
+            this.sprite.GetData(this.ColorData);
 
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            this.cameraService.Position = this.position;
+            this.cameraService.Position = this.Position;
             base.Update(gameTime);
         }
 
@@ -124,7 +106,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 this.Position,
                 null,
                 Color.White,
-                this.rotation,
+                this.Rotation,
                 new Vector2((float)this.Width / 2, (float)this.Height / 2),
                 1.0f,
                 SpriteEffects.None,

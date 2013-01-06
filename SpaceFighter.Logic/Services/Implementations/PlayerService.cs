@@ -12,7 +12,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class PlayerService : GameComponent, IPlayerService
     {
-        private const float MoveStep = 2.0f;
         private Player player;
 
         private IPlayerWeaponService playerWeaponService;
@@ -47,26 +46,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             base.Initialize();
         }
 
-        public void MoveLeft()
-        {
-            this.player.Position = new Vector2(this.player.Position.X - MoveStep, this.player.Position.Y);
-        }
-
-        public void MoveRight()
-        {
-            this.player.Position = new Vector2(this.player.Position.X + MoveStep, this.player.Position.Y);
-        }
-
-        public void MoveUp()
-        {
-            this.player.Position = new Vector2(this.player.Position.X, this.player.Position.Y - MoveStep);
-        }
-
-        public void MoveDown()
-        {
-            this.player.Position = new Vector2(this.player.Position.X, this.player.Position.Y + MoveStep);
-        }
-
         public void RotateLeft()
         {
             this.player.Rotation += 0.1f;
@@ -80,6 +59,11 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void Fire()
         {
             this.playerWeaponService.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2, this.player.Rotation);
+        }
+
+        public void Thrust()
+        {
+            this.player.Thrust(3);
         }
 
         public void ReportPlayerHit(IShot shot)

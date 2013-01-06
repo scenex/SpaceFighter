@@ -17,5 +17,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         Color[] ColorData { get; }
         Vector2 Origin { get; }
         float Rotation { get; set; }
+
+        void Thrust(int amount);
     }
 }

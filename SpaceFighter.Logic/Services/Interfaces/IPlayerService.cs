@@ -10,15 +10,13 @@ namespace SpaceFighter.Logic.Services.Interfaces
     public interface IPlayerService
     {
         IPlayer Player { get; }
-        void MoveLeft();
-        void MoveRight();
-        void MoveUp();
-        void MoveDown();
-        void RotateLeft();
-        void RotateRight();    
-        void Fire();
         IEnumerable<IShot> Shots { get; } 
         void ReportPlayerHit(IShot shot);
         void RemoveShot(IShot shot);
+
+        void RotateLeft();
+        void RotateRight();
+        void Fire();
+        void Thrust();
     }
 }
