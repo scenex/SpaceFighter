@@ -11,6 +11,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
     public interface IInputService
     {
         void SetInputDevice(IInput inputDevice);
+        void SuspendInputDevice();
         Type InputDeviceType { get; }
     }
 }
