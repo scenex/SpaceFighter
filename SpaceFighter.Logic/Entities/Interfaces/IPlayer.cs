@@ -20,8 +20,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         float Rotation { get; set; }
 
         PlayerState State { get; } 
-        void SetStateAlive();
-        void SetStateDead();
+        void TranscendStateDying(bool respawn);
 
         void Thrust(int amount);
     }

@@ -72,10 +72,10 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.CheckForCollisionBetweenPlayerAndEnemies();
                 this.CheckForCollisionsBetweenPlayersShotsAndEnemies();
                 this.CheckForCollisionsBetweenEnemiesShotsAndPlayer();
-                this.CheckForCollisionsWithBoundaries();
-                this.UpdateEnemyAngleToPlayer();
+                this.CheckForCollisionsWithBoundaries();               
             }
 
+            this.UpdateEnemyAngleToPlayer(); // Todo: Consider if this calculation is done at the right place
             base.Update(gameTime);
         }
 

@@ -20,6 +20,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private Texture2D spriteAlive;
         private Texture2D spriteDead;
+        private Texture2D spriteDying;
 
         private ICameraService cameraService;
 
@@ -76,6 +77,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 case PlayerState.Alive:
                     return spriteAlive;
 
+                case PlayerState.Dying:
+                    return spriteDying;
+
                 case PlayerState.Dead:
                     return spriteDead;
 
@@ -84,16 +88,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
             }
         }
 
-        public void SetStateAlive()
+        public void TranscendStateDying(bool respawn)
         {
-            this.State = PlayerState.Alive;
-            this.UpdateSpriteColorData();
-
-        }
-
-        public void SetStateDead()
-        {
-            this.State = PlayerState.Dead;
+            this.State = PlayerState.Dying;
             this.UpdateSpriteColorData();
         }
 
@@ -108,6 +105,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
             this.spriteAlive = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive");
+            this.spriteDying = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying");
             this.spriteDead = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead");
 
             this.UpdateSpriteColorData();

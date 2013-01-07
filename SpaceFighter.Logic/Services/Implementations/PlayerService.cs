@@ -39,7 +39,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.playerWeaponService = (IPlayerWeaponService)this.Game.Services.GetService((typeof(IPlayerWeaponService)));
 
-            this.player = new Player(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0));
+            this.player = new Player(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0)); // Todo: Eliminate magic number
             this.Game.Components.Add(this.player);
 
             base.Initialize();
@@ -65,14 +65,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Thrust(3);
         }
 
-        public void SetStateDead()
+        public void TranscendStateDying()
         {
-            this.player.SetStateDead();
-        }
-
-        public void SetStateAlive()
-        {
-            this.player.SetStateAlive();
+            this.player.TranscendStateDying(true);
         }
 
         public void ReportPlayerHit(IShot shot)

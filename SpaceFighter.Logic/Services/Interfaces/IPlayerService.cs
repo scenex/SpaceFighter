@@ -13,8 +13,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         IEnumerable<IShot> Shots { get; } 
         void ReportPlayerHit(IShot shot);
         void RemoveShot(IShot shot);
-        void SetStateAlive();
-        void SetStateDead();
+        void TranscendStateDying();
 
         void RotateLeft();
         void RotateRight();

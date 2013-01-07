@@ -132,6 +132,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Sprites\Spaceship\Dying.png">
+      <Name>Dying</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Sprites\Spaceship\Dead.png">
       <Name>Dead</Name>
       <Importer>TextureImporter</Importer>
