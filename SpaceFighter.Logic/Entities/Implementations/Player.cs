@@ -18,11 +18,16 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private readonly Game game;
         private SpriteBatch spriteBatch;
 
+        private Rectangle spriteRectangle;
+
         private Texture2D spriteAlive;
         private Texture2D spriteDead;
         private Texture2D spriteDying;
 
         private ICameraService cameraService;
+
+        private int currentRectangleIndex;
+        private TimeSpan frameDuration;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
@@ -40,7 +45,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             get
             {
-                return this.GetCurrentSprite().Width;
+                return this.spriteRectangle.Width;
             }
         }
 
@@ -48,7 +53,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             get
             {
-                return this.GetCurrentSprite().Height;
+                return this.spriteRectangle.Height;
             }
         }
 
@@ -88,6 +93,23 @@ namespace SpaceFighter.Logic.Entities.Implementations
             }
         }
 
+        private Rectangle GetCurrentRectangle(GameTime gameTime)
+        {
+            var rect = new Rectangle(0 + currentRectangleIndex * this.Width, 0, this.Width, this.Height);
+
+            if (this.State == PlayerState.Dying && currentRectangleIndex != 3)
+            {
+                this.frameDuration += gameTime.ElapsedGameTime;
+
+                if (this.frameDuration.TotalMilliseconds - 1000 * currentRectangleIndex > 0)
+                {
+                    currentRectangleIndex++;
+                }
+            }
+
+            return rect;
+        }
+
         public void TranscendStateDying(bool respawn)
         {
             this.State = PlayerState.Dying;
@@ -107,9 +129,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.spriteAlive = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive");
             this.spriteDying = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying");
             this.spriteDead = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead");
+            this.spriteRectangle = new Rectangle(0, 0, this.spriteAlive.Width, this.spriteAlive.Height);
 
             this.UpdateSpriteColorData();
-
             base.LoadContent();
         }
 
@@ -133,7 +155,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.spriteBatch.Draw(
                 this.GetCurrentSprite(),
                 this.Position,
-                null,
+                this.GetCurrentRectangle(gameTime),
                 Color.White,
                 this.Rotation,
                 new Vector2((float)this.Width / 2, (float)this.Height / 2),
