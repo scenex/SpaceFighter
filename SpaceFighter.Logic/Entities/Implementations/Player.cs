@@ -26,8 +26,10 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private ICameraService cameraService;
 
-        private int currentRectangleIndex;
-        private TimeSpan frameDuration;
+        private float totalElapsed;
+        private int currentFrame;
+        private const int FrameCount = 16;
+        private const float TimePerFrame = 0.0166667f * 3;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
@@ -95,19 +97,21 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private Rectangle GetCurrentRectangle(GameTime gameTime)
         {
-            var rect = new Rectangle(0 + currentRectangleIndex * this.Width, 0, this.Width, this.Height);
+            var currentRectangle = new Rectangle(0 + this.currentFrame * this.Width, 0, this.Width, this.Height);
 
-            if (this.State == PlayerState.Dying && currentRectangleIndex != 3)
+            if (this.State == PlayerState.Dying && this.currentFrame != FrameCount - 1)
             {
-                this.frameDuration += gameTime.ElapsedGameTime;
+                this.totalElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (this.frameDuration.TotalMilliseconds - 1000 * currentRectangleIndex > 0)
+                if (this.totalElapsed > TimePerFrame)
                 {
-                    currentRectangleIndex++;
+                    this.currentFrame++;
+                    this.currentFrame = this.currentFrame % FrameCount;
+                    this.totalElapsed -= TimePerFrame;
                 }
             }
 
-            return rect;
+            return currentRectangle;
         }
 
         public void TranscendStateDying(bool respawn)
