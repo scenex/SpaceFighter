@@ -28,6 +28,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private float totalElapsed;
         private int currentFrame;
+        private bool respawn;
+
         private const int FrameCount = 16;
         private const float TimePerFrame = 0.0166667f * 3;
 
@@ -97,27 +99,43 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private Rectangle GetCurrentRectangle(GameTime gameTime)
         {
-            var currentRectangle = new Rectangle(0 + this.currentFrame * this.Width, 0, this.Width, this.Height);
+            Rectangle currentRectangle;
 
-            if (this.State == PlayerState.Dying && this.currentFrame != FrameCount - 1)
+            switch (this.State)
             {
-                this.totalElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                case PlayerState.Dying:
+                    currentRectangle = new Rectangle(0 + this.currentFrame * this.Width, 0, this.Width, this.Height);
+                    this.totalElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (this.totalElapsed > TimePerFrame)
-                {
-                    this.currentFrame++;
-                    this.currentFrame = this.currentFrame % FrameCount;
-                    this.totalElapsed -= TimePerFrame;
-                }
+                    if (this.currentFrame != FrameCount - 1)
+                    {
+                        if (this.totalElapsed > TimePerFrame)
+                        {
+                            this.currentFrame++;
+                            this.currentFrame = this.currentFrame % FrameCount;
+                            this.totalElapsed = 0;
+                        }
+                    }
+                    break;
+
+                default:
+                    currentRectangle = this.spriteRectangle;
+                    this.currentFrame = 0;
+                    break;
             }
 
             return currentRectangle;
         }
 
-        public void TranscendStateDying(bool respawn)
+        public void RestartLifeCycle(bool respawn)
         {
+            if (this.State != PlayerState.Alive)
+            {
+                throw new InvalidOperationException(string.Format("State transition from {0} is invalid.", this.State));
+            }
+
+            this.respawn = respawn;
             this.State = PlayerState.Dying;
-            this.UpdateSpriteColorData();
         }
 
         public override void Initialize()
@@ -142,6 +160,19 @@ namespace SpaceFighter.Logic.Entities.Implementations
         public override void Update(GameTime gameTime)
         {
             this.cameraService.Position = this.Position;
+
+            switch (this.State)
+            {
+                case PlayerState.Alive:
+                    break;
+
+                case PlayerState.Dying:
+                    break;
+
+                case PlayerState.Dead:
+                    break;
+            }
+
             base.Update(gameTime);
         }
 
@@ -185,6 +216,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         None,
         Alive,
         Dying,
-        Dead
+        Dead,
+        Respawn
     }
 }

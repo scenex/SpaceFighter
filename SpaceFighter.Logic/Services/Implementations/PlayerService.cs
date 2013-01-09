@@ -67,7 +67,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void TranscendStateDying()
         {
-            this.player.TranscendStateDying(true);
+            this.player.RestartLifeCycle(true);
         }
 
         public void ReportPlayerHit(IShot shot)

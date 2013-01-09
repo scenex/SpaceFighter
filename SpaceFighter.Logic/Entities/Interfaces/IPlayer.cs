@@ -20,7 +20,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         float Rotation { get; set; }
 
         PlayerState State { get; } 
-        void TranscendStateDying(bool respawn);
+        void RestartLifeCycle(bool respawn);
 
         void Thrust(int amount);
     }
