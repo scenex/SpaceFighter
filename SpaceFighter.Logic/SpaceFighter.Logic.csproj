@@ -129,6 +129,9 @@
     <Compile Include="Entities\Implementations\Shot.cs" />
     <Compile Include="Entities\Implementations\Weapons\Weapon.cs" />
     <Compile Include="Services\Interfaces\IWorldService.cs" />
+    <Compile Include="StateMachine\State.cs" />
+    <Compile Include="StateMachine\StateMachine.cs" />
+    <Compile Include="StateMachine\Transition.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
