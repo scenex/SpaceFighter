@@ -45,21 +45,21 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.enemyService.RemoveShot(e.Shot);
             this.playerService.ReportPlayerHit(e.Shot);
 
-            this.playerService.TranscendStateDying();
+            this.playerService.SubtractHealth(e.Shot.FirePower * 2); // <-- Make proper eventing and transitioning in state machine.
             this.inputService.DisableInputDevice();
             this.collisionDetectionService.DisableCollisionDetection();
         }
 
         private void OnPlayerEnemyHit(object sender, EventArgs e)
         {
-            this.playerService.TranscendStateDying();
+            this.playerService.SubtractHealth(100);
             this.inputService.DisableInputDevice();
             this.collisionDetectionService.DisableCollisionDetection();
         }
 
         private void OnBoundaryHit(object sender, EventArgs e)
         {
-            this.playerService.TranscendStateDying();
+            this.playerService.SubtractHealth(100);
             this.inputService.DisableInputDevice();
             this.collisionDetectionService.DisableCollisionDetection();
         }

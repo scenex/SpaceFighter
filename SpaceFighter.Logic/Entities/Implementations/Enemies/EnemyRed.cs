@@ -22,7 +22,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private Texture2D sprite;
         private SpriteBatch spriteBatch;
         private Color[] colorData;
-        private int energy = 100;
+        private int health = 100;
 
         private float rotation;
 
@@ -49,15 +49,15 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             }
         }
 
-        public int Energy
+        public int Health
         {
             get
             {
-                return this.energy;
+                return this.health;
             }
             set
             {
-                this.energy = value;
+                this.health = value;
             }
         }
 

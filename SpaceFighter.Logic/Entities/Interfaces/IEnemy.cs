@@ -16,7 +16,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         Vector2 Origin { get; }
         int Width { get; }
         int Height { get; }
-        int Energy { get; set; }
+        int Health { get; set; }
         Queue<TimeSpan> WeaponTriggers { get; }
         float Rotation { get; }
 

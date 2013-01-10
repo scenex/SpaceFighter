@@ -9,6 +9,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
+    using StateMachine;
 
     /// <summary>
     /// The spaceship class which represent the player's spaceship.
@@ -28,22 +29,25 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private float totalElapsed;
         private int currentFrame;
-        private bool respawn;
 
         private const int FrameCount = 16;
         private const float TimePerFrame = 0.0166667f * 3;
 
+        private StateMachine<Action<float>> stateMachine;
+
+        private bool isRespawnAllowed;
+
         public Player(Game game, Vector2 startPosition) : base(game)
         {
+            Health = 100;
             this.game = game;
             this.Position = startPosition;
-            this.State = PlayerState.Alive;
         }
 
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
-        public PlayerState State { get; private set; }
         public Color[] ColorData { get; private set; }
+        public int Health { get; set; }
 
         public int Width
         {
@@ -81,7 +85,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private Texture2D GetCurrentSprite()
         {
-            switch (this.State)
+            switch(this.stateMachine.CurrentState.Name)
             {
                 case PlayerState.Alive:
                     return spriteAlive;
@@ -101,7 +105,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             Rectangle currentRectangle;
 
-            switch (this.State)
+            switch (this.stateMachine.CurrentState.Name)
             {
                 case PlayerState.Dying:
                     currentRectangle = new Rectangle(0 + this.currentFrame * this.Width, 0, this.Width, this.Height);
@@ -127,21 +131,26 @@ namespace SpaceFighter.Logic.Entities.Implementations
             return currentRectangle;
         }
 
-        public void RestartLifeCycle(bool respawn)
-        {
-            if (this.State != PlayerState.Alive)
-            {
-                throw new InvalidOperationException(string.Format("State transition from {0} is invalid.", this.State));
-            }
-
-            this.respawn = respawn;
-            this.State = PlayerState.Dying;
-        }
-
         public override void Initialize()
         {
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            this.InitializeStateMachine();
             base.Initialize();
+        }
+
+        private void InitializeStateMachine()
+        {
+            var alive = new State<Action<float>>("Alive", null, null, null);
+            var dying = new State<Action<float>>("Dying", null, null, null);
+            //var dead = new State<Action<float>>("dead", null, EnterLead, null);
+            //var respawn = new State<Action<float>>("respawn", Rally, EnterRally, null);
+
+            alive.AddTransition(dying, () => this.Health <= 0);
+            //dying.AddTransition(dead, () => Leader != null);
+            //dead.AddTransition(respawn, () => Leader == null);
+            //respawn.AddTransition(alive, () => Members.Count < FormationSize);
+
+            this.stateMachine = new StateMachine<Action<float>>(alive);
         }
 
         protected override void LoadContent()
@@ -160,18 +169,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
         public override void Update(GameTime gameTime)
         {
             this.cameraService.Position = this.Position;
-
-            switch (this.State)
-            {
-                case PlayerState.Alive:
-                    break;
-
-                case PlayerState.Dying:
-                    break;
-
-                case PlayerState.Dead:
-                    break;
-            }
+            this.stateMachine.Update();
+            //this.stateMachine.CurrentState.Tag(gameTime.ElapsedGameTime);
 
             base.Update(gameTime);
         }
@@ -211,12 +210,11 @@ namespace SpaceFighter.Logic.Entities.Implementations
         }
     }
 
-    public enum PlayerState
+    public static class PlayerState
     {
-        None,
-        Alive,
-        Dying,
-        Dead,
-        Respawn
+        public const string Alive = "Alive";
+        public const string Dying = "Dying";
+        public const string Dead = "Dead";
+        public const string Respawn = "Respawn";
     }
 }

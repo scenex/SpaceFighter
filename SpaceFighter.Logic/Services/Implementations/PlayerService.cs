@@ -45,6 +45,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             base.Initialize();
         }
 
+        public void SubtractHealth(int amount)
+        {
+            this.player.Health -= amount;
+        }
+
         public void RotateLeft()
         {
             this.player.Rotation += 0.05f;
@@ -63,11 +68,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void Thrust()
         {
             this.player.Thrust(3);
-        }
-
-        public void TranscendStateDying()
-        {
-            this.player.RestartLifeCycle(true);
         }
 
         public void ReportPlayerHit(IShot shot)

@@ -71,9 +71,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void ReportEnemyHit(IEnemy enemy, IShot shot)
         {
-            enemy.Energy -= shot.FirePower;
+            enemy.Health -= shot.FirePower;
 
-            if(enemy.Energy <= 0)
+            if(enemy.Health <= 0)
             {
                 this.Game.Components.Remove(enemy as IGameComponent);
                 this.enemies.Remove(enemy);             
