@@ -12,7 +12,10 @@ namespace SpaceFighter.Logic.Entities.Interfaces
     /// </summary>
     public interface IPlayer
     {
-        event EventHandler<PlayerStateEventArgs> PlayerStateChanged;
+        event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
+        event EventHandler<StateChangedEventArgs> TransitionToStateDying;
+        event EventHandler<StateChangedEventArgs> TransitionToStateDead;
+        event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
 
         Vector2 Position { get; set; }
         int Width { get; }

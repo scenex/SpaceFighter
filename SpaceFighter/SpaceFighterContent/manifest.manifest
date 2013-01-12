@@ -1,5 +1,5 @@
-Sprites\Spaceship_Shot
-Sprites\Spaceship
+Sprites\Shot
+Sprites\Spaceship\Alive
 Sprites\Enemy
 FramerateFont
 Sprites\L1\00
@@ -12,3 +12,5 @@ Sprites\L1\06
 Sprites\L1\07
 Sprites\L1\08
 Sprites\L1\09
+Sprites\Spaceship\Dying
+Sprites\Spaceship\Dead

@@ -35,7 +35,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private StateMachine<Action<float>> stateMachine;
 
-        private bool isRespawnAllowed;
+        private bool isRespawnAllowed = true;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
@@ -44,7 +44,10 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.Position = startPosition;
         }
 
-        public event EventHandler<PlayerStateEventArgs> PlayerStateChanged;
+        public event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
+        public event EventHandler<StateChangedEventArgs> TransitionToStateDying;
+        public event EventHandler<StateChangedEventArgs> TransitionToStateDead;
+        public event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
 
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
@@ -108,6 +111,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 case PlayerState.Dead:
                     return spriteDead;
 
+                case PlayerState.Respawn:
+                    return spriteAlive;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -152,31 +158,60 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private void InitializeStateMachine()
         {
-            var alive = new State<Action<float>>(
-                PlayerState.Alive, 
-                null, 
-                null,
-                null);
-
             var dying = new State<Action<float>>(
                 PlayerState.Dying, 
                 null,
                 delegate
                     {
-                        if (this.PlayerStateChanged != null)
+                        if (this.TransitionToStateDying != null)
                         {
-                            this.PlayerStateChanged(this, new PlayerStateEventArgs(PlayerState.Alive, PlayerState.Dying));
+                            this.TransitionToStateDying(this, new StateChangedEventArgs(PlayerState.Alive, PlayerState.Dying));
                         }
                     }, 
                 null);
 
-            //var dead = new State<Action<float>>("dead", null, EnterLead, null);
-            //var respawn = new State<Action<float>>("respawn", Rally, EnterRally, null);
+            var dead = new State<Action<float>>(
+                PlayerState.Dead, 
+                null,
+                delegate
+                {
+                    if (this.TransitionToStateDead != null)
+                    {
+                        this.TransitionToStateDead(this, new StateChangedEventArgs(PlayerState.Dying, PlayerState.Dead));
+                    }
+                }, 
+                null);
+
+            var respawn = new State<Action<float>>(
+                PlayerState.Respawn, 
+                null, 
+                delegate
+                    {
+                        this.Health = 100;
+
+                        if (this.TransitionToStateRespawn != null)
+                        {
+                            this.TransitionToStateRespawn(this, new StateChangedEventArgs(PlayerState.Dead, PlayerState.Respawn));
+                        }
+                }, 
+                null);
+
+            var alive = new State<Action<float>>(
+                PlayerState.Alive,
+                null,
+                delegate
+                {
+                    if (this.TransitionToStateAlive != null)
+                    {
+                        this.TransitionToStateAlive(this, new StateChangedEventArgs(PlayerState.Respawn, PlayerState.Alive));
+                    }
+                },
+                null);
 
             alive.AddTransition(dying, () => this.Health <= 0);
-            //dying.AddTransition(dead, () => Leader != null);
-            //dead.AddTransition(respawn, () => Leader == null);
-            //respawn.AddTransition(alive, () => Members.Count < FormationSize);
+            dying.AddTransition(dead, () => this.currentFrame == FrameCount - 1);
+            dead.AddTransition(respawn, () => isRespawnAllowed);
+            respawn.AddTransition(alive, () => true);
 
             this.stateMachine = new StateMachine<Action<float>>(alive);
         }

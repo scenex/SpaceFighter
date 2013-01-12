@@ -6,12 +6,12 @@ namespace SpaceFighter.Logic
 {
     using System;
 
-    public class PlayerStateEventArgs : EventArgs
+    public class StateChangedEventArgs : EventArgs
     {
         private readonly string oldState;
         private readonly string newState;
 
-        public PlayerStateEventArgs(string oldState, string newState)
+        public StateChangedEventArgs(string oldState, string newState)
         {
             this.oldState = oldState;
             this.newState = newState;

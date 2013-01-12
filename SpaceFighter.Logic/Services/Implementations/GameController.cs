@@ -33,6 +33,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.playerService.TransitionToStateDying += this.OnTransitionToStateDying;
             this.playerService.TransitionToStateDead += this.OnTransitionToStateDead;
+            this.playerService.TransitionToStateRespawn += PlayerServiceOnTransitionToStateRespawn;
+            this.playerService.TransitionToStateAlive += PlayerServiceOnTransitionToStateAlive;
             
             base.Initialize();
         }
@@ -46,6 +48,16 @@ namespace SpaceFighter.Logic.Services.Implementations
         private void OnTransitionToStateDead(object sender, EventArgs eventArgs)
         {
             // Continue...
+        }
+
+        private void PlayerServiceOnTransitionToStateRespawn(object sender, StateChangedEventArgs stateChangedEventArgs)
+        {
+            this.inputService.Enable();
+        }
+
+        private void PlayerServiceOnTransitionToStateAlive(object sender, StateChangedEventArgs stateChangedEventArgs)
+        {
+            this.collisionDetectionService.Enable();
         }
 
         private void OnEnemyHit(object sender, EnemyHitEventArgs e)

@@ -53,7 +53,6 @@
     <Compile Include="Input\Implementation\InputKeyboard.cs" />
     <Compile Include="Input\Interfaces\IInput.cs" />
     <Compile Include="PlayerHitEventArgs.cs" />
-    <Compile Include="PlayerStateEventArgs.cs" />
     <Compile Include="Services\Implementations\CameraService.cs" />
     <Compile Include="Services\Implementations\CollisionDetectionService.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyGreen.cs" />
@@ -80,6 +79,7 @@
     <Compile Include="Entities\Implementations\Shot.cs" />
     <Compile Include="Entities\Implementations\Weapons\Weapon.cs" />
     <Compile Include="Services\Interfaces\IWorldService.cs" />
+    <Compile Include="StateChangedEventArgs.cs" />
     <Compile Include="StateMachine\State.cs" />
     <Compile Include="StateMachine\StateMachine.cs" />
     <Compile Include="StateMachine\Transition.cs" />

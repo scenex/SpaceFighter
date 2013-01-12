@@ -20,10 +20,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
         }
 
-        public event EventHandler<EventArgs> TransitionToStateAlive;
-        public event EventHandler<EventArgs> TransitionToStateDying;
-        public event EventHandler<EventArgs> TransitionToStateDead;
-        public event EventHandler<EventArgs> TransitionToStateRespawn;
+        public event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
+        public event EventHandler<StateChangedEventArgs> TransitionToStateDying;
+        public event EventHandler<StateChangedEventArgs> TransitionToStateDead;
+        public event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
 
         public IPlayer Player
         {
@@ -46,10 +46,12 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerWeaponService = (IPlayerWeaponService)this.Game.Services.GetService((typeof(IPlayerWeaponService)));
 
             this.player = new Player(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0)); // Todo: Eliminate magic number
-            this.player.PlayerStateChanged += PlayerOnPlayerStateChanged;
             this.Game.Components.Add(this.player);
 
-
+            this.player.TransitionToStateDying += this.OnTransitionToStateDying;
+            this.player.TransitionToStateDead += this.OnTransitionToStateDead;
+            this.player.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
+            this.player.TransitionToStateAlive += this.OnTransitionToStateAlive;
 
             base.Initialize();
         }
@@ -89,25 +91,36 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerWeaponService.Weapon.Shots.Remove(shot);
         }
 
-        private void PlayerOnPlayerStateChanged(object sender, PlayerStateEventArgs playerStateEventArgs)
+        private void OnTransitionToStateDying(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
-            if (playerStateEventArgs.OldState == PlayerState.Alive && playerStateEventArgs.NewState == PlayerState.Dying)
+            if (this.TransitionToStateDying != null)
             {
-                if (this.TransitionToStateDying != null)
-                {
-                    this.TransitionToStateDying(this, null);
-                }
+                this.TransitionToStateDying(this, stateChangedEventArgs);
             }
+        }
 
-            if (playerStateEventArgs.OldState == PlayerState.Dying && playerStateEventArgs.NewState == PlayerState.Dead)
+        private void OnTransitionToStateDead(object sender, StateChangedEventArgs stateChangedEventArgs)
+        {
+            if (this.TransitionToStateDead != null)
             {
-                if (this.TransitionToStateDead != null)
-                {
-                    this.TransitionToStateDead(this, null);
-                }
+                this.TransitionToStateDead(this, stateChangedEventArgs);
             }
+        }
 
-            // Todo add TransitionToStateAlive & TransitionToStateRespawn;
+        private void OnTransitionToStateRespawn(object sender, StateChangedEventArgs stateChangedEventArgs)
+        {
+            if (this.TransitionToStateRespawn != null)
+            {
+                this.TransitionToStateRespawn(this, stateChangedEventArgs);
+            }
+        }
+
+        private void OnTransitionToStateAlive(object sender, StateChangedEventArgs stateChangedEventArgs)
+        {
+            if (this.TransitionToStateAlive != null)
+            {
+                this.TransitionToStateAlive(this, stateChangedEventArgs);
+            }
         }
     }
 }
