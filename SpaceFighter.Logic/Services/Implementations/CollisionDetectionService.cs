@@ -33,12 +33,12 @@ namespace SpaceFighter.Logic.Services.Implementations
         public event EventHandler<PlayerHitEventArgs> PlayerHit;
         public event EventHandler<EventArgs> BoundaryHit;
 
-        public void EnableCollisionDetection()
+        public void Enable()
         {
             this.isCollisionDetectionActive = true;
         }
 
-        public void DisableCollisionDetection()
+        public void Disable()
         {
             this.isCollisionDetectionActive = false;
         }

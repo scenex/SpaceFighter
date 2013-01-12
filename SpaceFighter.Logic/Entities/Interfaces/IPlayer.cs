@@ -4,6 +4,7 @@
 
 namespace SpaceFighter.Logic.Entities.Interfaces
 {
+    using System;
     using Microsoft.Xna.Framework;
 
     /// <summary>
@@ -11,13 +12,19 @@ namespace SpaceFighter.Logic.Entities.Interfaces
     /// </summary>
     public interface IPlayer
     {
+        event EventHandler<PlayerStateEventArgs> PlayerStateChanged;
+
         Vector2 Position { get; set; }
         int Width { get; }
         int Height { get; }
         Color[] ColorData { get; }
         Vector2 Origin { get; }
         float Rotation { get; set; }
-        int Health { get; set; }
+
+        int Health { get; }
+        void SubtractHealth(int amount);
+        void AddHealth(int amount);
+
         void Thrust(int amount);
     }
 }

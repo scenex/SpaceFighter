@@ -12,7 +12,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void SetInputDevice(IInput inputDevice);
         Type InputDeviceType { get; }
 
-        void DisableInputDevice();
-        void EnableInputDevice();      
+        void Disable();
+        void Enable();      
     }
 }

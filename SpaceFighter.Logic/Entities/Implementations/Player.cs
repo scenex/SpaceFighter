@@ -44,10 +44,12 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.Position = startPosition;
         }
 
+        public event EventHandler<PlayerStateEventArgs> PlayerStateChanged;
+
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
         public Color[] ColorData { get; private set; }
-        public int Health { get; set; }
+        public int Health { get; private set; }
 
         public int Width
         {
@@ -81,6 +83,16 @@ namespace SpaceFighter.Logic.Entities.Implementations
                         (float)Math.Cos(this.Rotation - MathHelper.PiOver2) * amount,
                         (float)Math.Sin(this.Rotation - MathHelper.PiOver2) * amount),
                     this.Position);
+        }
+
+        public void SubtractHealth(int amount)
+        {
+            this.Health -= amount;
+        }
+
+        public void AddHealth(int amount)
+        {
+            this.Health += amount;
         }
 
         private Texture2D GetCurrentSprite()
@@ -140,8 +152,24 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private void InitializeStateMachine()
         {
-            var alive = new State<Action<float>>("Alive", null, null, null);
-            var dying = new State<Action<float>>("Dying", null, null, null);
+            var alive = new State<Action<float>>(
+                PlayerState.Alive, 
+                null, 
+                null,
+                null);
+
+            var dying = new State<Action<float>>(
+                PlayerState.Dying, 
+                null,
+                delegate
+                    {
+                        if (this.PlayerStateChanged != null)
+                        {
+                            this.PlayerStateChanged(this, new PlayerStateEventArgs(PlayerState.Alive, PlayerState.Dying));
+                        }
+                    }, 
+                null);
+
             //var dead = new State<Action<float>>("dead", null, EnterLead, null);
             //var respawn = new State<Action<float>>("respawn", Rally, EnterRally, null);
 

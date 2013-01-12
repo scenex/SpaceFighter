@@ -13,7 +13,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         event EventHandler<PlayerHitEventArgs> PlayerHit;
         event EventHandler<EventArgs> BoundaryHit;
 
-        void EnableCollisionDetection();
-        void DisableCollisionDetection();
+        void Enable();
+        void Disable();
     }
 }

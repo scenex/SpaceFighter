@@ -59,12 +59,12 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.input = inputDevice;
         }
 
-        public void DisableInputDevice()
+        public void Disable()
         {
             this.isInputDeviceActive = false;
         }
 
-        public void EnableInputDevice()
+        public void Enable()
         {
             this.isInputDeviceActive = true;
         }

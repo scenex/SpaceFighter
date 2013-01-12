@@ -53,6 +53,7 @@
     <Compile Include="Input\Implementation\InputKeyboard.cs" />
     <Compile Include="Input\Interfaces\IInput.cs" />
     <Compile Include="PlayerHitEventArgs.cs" />
+    <Compile Include="PlayerStateEventArgs.cs" />
     <Compile Include="Services\Implementations\CameraService.cs" />
     <Compile Include="Services\Implementations\CollisionDetectionService.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyGreen.cs" />

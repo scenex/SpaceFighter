@@ -30,8 +30,22 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
             this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
             this.collisionDetectionService.BoundaryHit += this.OnBoundaryHit;
+
+            this.playerService.TransitionToStateDying += this.OnTransitionToStateDying;
+            this.playerService.TransitionToStateDead += this.OnTransitionToStateDead;
             
             base.Initialize();
+        }
+
+        private void OnTransitionToStateDying(object sender, EventArgs eventArgs)
+        {   
+            this.inputService.Disable();
+            this.collisionDetectionService.Disable();  
+        }
+
+        private void OnTransitionToStateDead(object sender, EventArgs eventArgs)
+        {
+            // Continue...
         }
 
         private void OnEnemyHit(object sender, EnemyHitEventArgs e)
@@ -44,24 +58,16 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.enemyService.RemoveShot(e.Shot);
             this.playerService.ReportPlayerHit(e.Shot);
-
-            this.playerService.SubtractHealth(e.Shot.FirePower * 2); // <-- Make proper eventing and transitioning in state machine.
-            this.inputService.DisableInputDevice();
-            this.collisionDetectionService.DisableCollisionDetection();
         }
 
         private void OnPlayerEnemyHit(object sender, EventArgs e)
         {
-            this.playerService.SubtractHealth(100);
-            this.inputService.DisableInputDevice();
-            this.collisionDetectionService.DisableCollisionDetection();
+            this.playerService.ReportPlayerHit(100);
         }
 
         private void OnBoundaryHit(object sender, EventArgs e)
         {
-            this.playerService.SubtractHealth(100);
-            this.inputService.DisableInputDevice();
-            this.collisionDetectionService.DisableCollisionDetection();
+            this.playerService.ReportPlayerHit(100); 
         }
     }
 }
