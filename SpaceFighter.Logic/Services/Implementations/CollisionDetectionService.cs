@@ -210,6 +210,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.isCollisionWithBoundaries && this.BoundaryHit != null)
             {
+                this.isCollisionWithBoundaries = false;
                 this.BoundaryHit(this, null);
             }
         }
