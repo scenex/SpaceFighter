@@ -32,10 +32,11 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private const int FrameCount = 16;
         private const float TimePerFrame = 0.0166667f * 3;
+        
+        private StateMachine<Action<double>> stateMachine;
 
-        private StateMachine<Action<float>> stateMachine;
-
-        private bool isRespawnAllowed = true;
+        private double deadToRespawnTimer;
+        private double respawnToAliveTimer ;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
@@ -158,9 +159,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private void InitializeStateMachine()
         {
-            var dying = new State<Action<float>>(
-                PlayerState.Dying, 
-                null,
+            var dying = new State<Action<double>>(
+                PlayerState.Dying,
+                delegate { this.deadToRespawnTimer = 0; this.respawnToAliveTimer = 0; },
                 delegate
                     {
                         if (this.TransitionToStateDying != null)
@@ -170,21 +171,21 @@ namespace SpaceFighter.Logic.Entities.Implementations
                     }, 
                 null);
 
-            var dead = new State<Action<float>>(
-                PlayerState.Dead, 
-                null,
+            var dead = new State<Action<double>>(
+                PlayerState.Dead,
+                delegate(double elapsedTime) { this.deadToRespawnTimer += elapsedTime; this.respawnToAliveTimer = 0; },
                 delegate
-                {
-                    if (this.TransitionToStateDead != null)
-                    {
-                        this.TransitionToStateDead(this, new StateChangedEventArgs(PlayerState.Dying, PlayerState.Dead));
-                    }
-                }, 
+                    {       
+                        if (this.TransitionToStateDead != null)
+                        {
+                            this.TransitionToStateDead(this, new StateChangedEventArgs(PlayerState.Dying, PlayerState.Dead));
+                        }
+                    }, 
                 null);
 
-            var respawn = new State<Action<float>>(
-                PlayerState.Respawn, 
-                null, 
+            var respawn = new State<Action<double>>(
+                PlayerState.Respawn,
+                delegate(double elapsedTime) { this.deadToRespawnTimer = 0; this.respawnToAliveTimer += elapsedTime; }, 
                 delegate
                     {
                         this.Health = 100;
@@ -192,28 +193,28 @@ namespace SpaceFighter.Logic.Entities.Implementations
                         if (this.TransitionToStateRespawn != null)
                         {
                             this.TransitionToStateRespawn(this, new StateChangedEventArgs(PlayerState.Dead, PlayerState.Respawn));
-                        }
-                }, 
+                        }                       
+                    }, 
                 null);
 
-            var alive = new State<Action<float>>(
+            var alive = new State<Action<double>>(
                 PlayerState.Alive,
-                null,
+                delegate { this.deadToRespawnTimer = 0; this.respawnToAliveTimer = 0; }, 
                 delegate
-                {
-                    if (this.TransitionToStateAlive != null)
                     {
-                        this.TransitionToStateAlive(this, new StateChangedEventArgs(PlayerState.Respawn, PlayerState.Alive));
-                    }
-                },
+                        if (this.TransitionToStateAlive != null)
+                        {
+                            this.TransitionToStateAlive(this, new StateChangedEventArgs(PlayerState.Respawn, PlayerState.Alive));
+                        }
+                    },
                 null);
 
             alive.AddTransition(dying, () => this.Health <= 0);
             dying.AddTransition(dead, () => this.currentFrame == FrameCount - 1);
-            dead.AddTransition(respawn, () => isRespawnAllowed);
-            respawn.AddTransition(alive, () => true);
+            dead.AddTransition(respawn, () => this.deadToRespawnTimer > 1000);
+            respawn.AddTransition(alive, () => this.respawnToAliveTimer > 6000);
 
-            this.stateMachine = new StateMachine<Action<float>>(alive);
+            this.stateMachine = new StateMachine<Action<double>>(alive);
         }
 
         protected override void LoadContent()
@@ -233,7 +234,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             this.cameraService.Position = this.Position;
             this.stateMachine.Update();
-            //this.stateMachine.CurrentState.Tag(gameTime.ElapsedGameTime);
+            this.stateMachine.CurrentState.Tag(gameTime.ElapsedGameTime.TotalMilliseconds);
 
             base.Update(gameTime);
         }
