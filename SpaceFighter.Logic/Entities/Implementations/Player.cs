@@ -5,6 +5,8 @@
 namespace SpaceFighter.Logic.Entities.Implementations
 {
     using System;
+    using System.Collections.Generic;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Entities.Interfaces;
@@ -21,9 +23,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private Rectangle spriteRectangle;
 
-        private Texture2D spriteAlive;
-        private Texture2D spriteDead;
-        private Texture2D spriteDying;
+        private readonly Dictionary<string, Texture2D> sprites;
 
         private ICameraService cameraService;
 
@@ -43,6 +43,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
             Health = 100;
             this.game = game;
             this.Position = startPosition;
+            this.sprites = new Dictionary<string, Texture2D>();
         }
 
         public event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
@@ -104,16 +105,16 @@ namespace SpaceFighter.Logic.Entities.Implementations
             switch(this.stateMachine.CurrentState.Name)
             {
                 case PlayerState.Alive:
-                    return spriteAlive;
+                    return this.sprites[PlayerState.Alive];
 
                 case PlayerState.Dying:
-                    return spriteDying;
+                    return this.sprites[PlayerState.Dying];
 
                 case PlayerState.Dead:
-                    return spriteDead;
+                    return this.sprites[PlayerState.Dead];
 
                 case PlayerState.Respawn:
-                    return spriteAlive;
+                    return this.sprites[PlayerState.Alive];
 
                 default:
                     throw new NotImplementedException();
@@ -221,10 +222,11 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            this.spriteAlive = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive");
-            this.spriteDying = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying");
-            this.spriteDead = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead");
-            this.spriteRectangle = new Rectangle(0, 0, this.spriteAlive.Width, this.spriteAlive.Height);
+            this.sprites[PlayerState.Alive] = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive");
+            this.sprites[PlayerState.Dying] = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying");
+            this.sprites[PlayerState.Dead] = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead");
+
+            this.spriteRectangle = new Rectangle(0, 0, this.sprites[PlayerState.Alive].Width, this.sprites[PlayerState.Alive].Height);
 
             this.UpdateSpriteColorData();
             base.LoadContent();
