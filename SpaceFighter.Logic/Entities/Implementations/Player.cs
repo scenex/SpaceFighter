@@ -38,6 +38,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private double deadToRespawnTimer;
         private double respawnToAliveTimer ;
 
+        private Effect effect;
+
         public Player(Game game, Vector2 startPosition) : base(game)
         {
             Health = 100;
@@ -225,6 +227,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.sprites[PlayerState.Alive] = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive");
             this.sprites[PlayerState.Dying] = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying");
             this.sprites[PlayerState.Dead] = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead");
+            this.effect = this.game.Content.Load<Effect>("Shaders/Transparency");
 
             this.spriteRectangle = new Rectangle(0, 0, this.sprites[PlayerState.Alive].Width, this.sprites[PlayerState.Alive].Height);
 
@@ -253,7 +256,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 null,
                 null,
                 null,
-                null,
+                effect,
                 cameraService.GetTransformation());
 
             this.spriteBatch.Draw(
