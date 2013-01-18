@@ -6,7 +6,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
 {
     using System;
     using System.Collections.Generic;
-
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Entities.Interfaces;
@@ -39,6 +38,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private double respawnToAliveTimer ;
 
         private Effect effect;
+
+        private double radian;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
@@ -153,6 +154,18 @@ namespace SpaceFighter.Logic.Entities.Implementations
             return currentRectangle;
         }
 
+        private Effect GetCurrentShader()
+        {      
+            switch (this.stateMachine.CurrentState.Name)
+            {
+                case PlayerState.Respawn:
+                    return this.effect;
+
+                default:
+                    return null;
+            }
+        }
+
         public override void Initialize()
         {
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
@@ -236,7 +249,11 @@ namespace SpaceFighter.Logic.Entities.Implementations
         }
 
         public override void Update(GameTime gameTime)
-        {
+        {       
+            this.radian = (radian + 0.01f);
+            var temp = 0.5f * Math.Sin(30 * radian) + 0.5f;
+            this.effect.Parameters["param1"].SetValue((float)temp);
+
             this.cameraService.Position = this.Position;
             this.stateMachine.Update();
 
@@ -256,7 +273,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 null,
                 null,
                 null,
-                effect,
+                this.GetCurrentShader(),
                 cameraService.GetTransformation());
 
             this.spriteBatch.Draw(

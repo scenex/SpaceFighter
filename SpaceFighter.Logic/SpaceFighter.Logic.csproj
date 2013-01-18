@@ -103,6 +103,7 @@
     <Compile Include="Input\Implementation\InputKeyboard.cs" />
     <Compile Include="Input\Interfaces\IInput.cs" />
     <Compile Include="PlayerHitEventArgs.cs" />
+    <Compile Include="SpriteManager.cs" />
     <Compile Include="StateChangedEventArgs.cs" />
     <Compile Include="Services\Implementations\CameraService.cs" />
     <Compile Include="Services\Implementations\CollisionDetectionService.cs" />

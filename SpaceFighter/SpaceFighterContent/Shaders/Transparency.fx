@@ -7,12 +7,13 @@ float4x4 View;
 float4x4 Projection;
 
 sampler s0;
+float param1;
 
 float4 PixelShaderFunction(float2 coords: TEXCOORD) : COLOR0
 {
 	float4 color = tex2D(s0, coords);  
-	color.gb = color.r;
-	return color; 
+	//color.gb = color.r;	
+	return color * param1; 
 }
 
 technique Technique1
