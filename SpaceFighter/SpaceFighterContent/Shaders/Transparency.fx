@@ -13,7 +13,8 @@ float4 PixelShaderFunction(float2 coords: TEXCOORD) : COLOR0
 {
 	float4 color = tex2D(s0, coords);  
 	//color.gb = color.r;	
-	return color * param1; 
+	color = color * param1;
+	return color; 
 }
 
 technique Technique1
