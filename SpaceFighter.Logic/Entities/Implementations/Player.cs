@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic.Entities.Implementations
 {
     using System;
-    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Entities.Interfaces;
@@ -20,33 +19,22 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private readonly Game game;
         private SpriteBatch spriteBatch;
 
-        private Rectangle spriteRectangle;
-
-        private readonly Dictionary<string, Texture2D> sprites;
-
         private ICameraService cameraService;
-
-        private float totalElapsed;
-        private int currentFrame;
-
-        private const int FrameCount = 16;
-        private const float TimePerFrame = 0.0166667f * 3;
         
         private StateMachine<Action<double>> stateMachine;
 
         private double deadToRespawnTimer;
         private double respawnToAliveTimer ;
 
-        private Effect effect;
+        private double totalElapsedTime;
 
-        private double radian;
+        private SpriteManager spriteManager;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
             Health = 100;
             this.game = game;
             this.Position = startPosition;
-            this.sprites = new Dictionary<string, Texture2D>();
         }
 
         public event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
@@ -63,7 +51,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             get
             {
-                return this.spriteRectangle.Width;
+                return this.spriteManager.GetRectangle().Width;
             }
         }
 
@@ -71,7 +59,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             get
             {
-                return this.spriteRectangle.Height;
+                return this.spriteManager.GetRectangle().Height;
             }
         }
 
@@ -101,69 +89,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
         public void AddHealth(int amount)
         {
             this.Health += amount;
-        }
-
-        private Texture2D GetCurrentSprite()
-        {
-            switch(this.stateMachine.CurrentState.Name)
-            {
-                case PlayerState.Alive:
-                    return this.sprites[PlayerState.Alive];
-
-                case PlayerState.Dying:
-                    return this.sprites[PlayerState.Dying];
-
-                case PlayerState.Dead:
-                    return this.sprites[PlayerState.Dead];
-
-                case PlayerState.Respawn:
-                    return this.sprites[PlayerState.Alive];
-
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        private Rectangle GetCurrentRectangle(GameTime gameTime)
-        {
-            Rectangle currentRectangle;
-
-            switch (this.stateMachine.CurrentState.Name)
-            {
-                case PlayerState.Dying:
-                    currentRectangle = new Rectangle(0 + this.currentFrame * this.Width, 0, this.Width, this.Height);
-                    this.totalElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                    if (this.currentFrame != FrameCount - 1)
-                    {
-                        if (this.totalElapsed > TimePerFrame)
-                        {
-                            this.currentFrame++;
-                            this.currentFrame = this.currentFrame % FrameCount;
-                            this.totalElapsed = 0;
-                        }
-                    }
-                    break;
-
-                default:
-                    currentRectangle = this.spriteRectangle;
-                    this.currentFrame = 0;
-                    break;
-            }
-
-            return currentRectangle;
-        }
-
-        private Effect GetCurrentShader()
-        {      
-            switch (this.stateMachine.CurrentState.Name)
-            {
-                case PlayerState.Respawn:
-                    return this.effect;
-
-                default:
-                    return null;
-            }
         }
 
         public override void Initialize()
@@ -201,7 +126,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
             var respawn = new State<Action<double>>(
                 PlayerState.Respawn,
-                elapsedTime => this.respawnToAliveTimer += elapsedTime, 
+                elapsedTime => { this.respawnToAliveTimer += elapsedTime; this.totalElapsedTime += elapsedTime; },
                 delegate
                     {
                         this.Health = 100;
@@ -210,8 +135,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
                         {
                             this.TransitionToStateRespawn(this, new StateChangedEventArgs(PlayerState.Dead, PlayerState.Respawn));
                         }                       
-                    }, 
-                () => this.respawnToAliveTimer = 0);
+                    },
+                () => { this.respawnToAliveTimer = 0; this.totalElapsedTime = 0; });
 
             var alive = new State<Action<double>>(
                 PlayerState.Alive,
@@ -226,7 +151,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 null);
 
             alive.AddTransition(dying, () => this.Health <= 0);
-            dying.AddTransition(dead, () => this.currentFrame == FrameCount - 1);
+            dying.AddTransition(dead, () => this.spriteManager.IsAnimationDone);
             dead.AddTransition(respawn, () => this.deadToRespawnTimer > 1000);
             respawn.AddTransition(alive, () => this.respawnToAliveTimer > 4000);
 
@@ -237,12 +162,15 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            this.sprites[PlayerState.Alive] = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive");
-            this.sprites[PlayerState.Dying] = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying");
-            this.sprites[PlayerState.Dead] = this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead");
-            this.effect = this.game.Content.Load<Effect>("Shaders/Transparency");
+            this.spriteManager = new SpriteManager(PlayerState.Alive);
 
-            this.spriteRectangle = new Rectangle(0, 0, this.sprites[PlayerState.Alive].Width, this.sprites[PlayerState.Alive].Height);
+            this.spriteManager.AddShader(this.game.Content.Load<Effect>("Shaders/Transparency"));
+
+            this.spriteManager.AddSprite(PlayerState.Alive, this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"));
+            this.spriteManager.AddSprite(PlayerState.Dying, this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying"));
+            this.spriteManager.AddSprite(PlayerState.Dead, this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead"));
+            
+            this.spriteManager.SetRectangle(PlayerState.Alive);
 
             this.UpdateSpriteColorData();
             base.LoadContent();
@@ -250,12 +178,16 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public override void Update(GameTime gameTime)
         {       
-            this.radian = (radian + 0.01f);
-            var temp = 0.5f * Math.Sin(30 * radian) + 0.5f;
-            this.effect.Parameters["param1"].SetValue((float)temp);
+            if (this.stateMachine.CurrentState.Name == PlayerState.Respawn) // <- move logic to spritemanager, assign shader to state
+            {
+                var temp = 0.5f * Math.Sin(this.totalElapsedTime / 50) + 0.5f;
+                this.spriteManager.GetCurrentShader().Parameters["param1"].SetValue((float)temp);
+            }
 
             this.cameraService.Position = this.Position;
+
             this.stateMachine.Update();
+            this.spriteManager.Update(this.stateMachine.CurrentState.Name);
 
             if (this.stateMachine.CurrentState.Tag != null)
             {
@@ -273,13 +205,13 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 null,
                 null,
                 null,
-                this.GetCurrentShader(),
+                this.spriteManager.GetCurrentShader(),
                 cameraService.GetTransformation());
 
             this.spriteBatch.Draw(
-                this.GetCurrentSprite(),
+                this.spriteManager.GetCurrentSprite(),
                 this.Position,
-                this.GetCurrentRectangle(gameTime),
+                this.spriteManager.GetCurrentRectangle(gameTime),
                 Color.White,
                 this.Rotation,
                 new Vector2((float)this.Width / 2, (float)this.Height / 2),
@@ -294,17 +226,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private void UpdateSpriteColorData()
         {
-            // Obtain color information for subsequent per pixel collision detection
-            this.ColorData = new Color[this.GetCurrentSprite().Width * this.GetCurrentSprite().Height];
-            this.GetCurrentSprite().GetData(this.ColorData);
+            this.ColorData = new Color[this.spriteManager.GetCurrentSprite().Width * this.spriteManager.GetCurrentSprite().Height];
+            this.spriteManager.GetCurrentSprite().GetData(this.ColorData);
         }
-    }
-
-    public static class PlayerState
-    {
-        public const string Alive = "Alive";
-        public const string Dying = "Dying";
-        public const string Dead = "Dead";
-        public const string Respawn = "Respawn";
     }
 }
