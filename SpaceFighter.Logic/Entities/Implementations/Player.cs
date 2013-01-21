@@ -51,7 +51,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             get
             {
-                return this.spriteManager.GetRectangle().Width;
+                return this.spriteManager.GetCurrentRectangle().Width;
             }
         }
 
@@ -59,7 +59,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             get
             {
-                return this.spriteManager.GetRectangle().Height;
+                return this.spriteManager.GetCurrentRectangle().Height;
             }
         }
 
@@ -151,7 +151,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 null);
 
             alive.AddTransition(dying, () => this.Health <= 0);
-            dying.AddTransition(dead, () => this.spriteManager.IsAnimationDone);
+            dying.AddTransition(dead, () => this.spriteManager.IsAnimationDone(this.stateMachine.CurrentState.Name));
             dead.AddTransition(respawn, () => this.deadToRespawnTimer > 1000);
             respawn.AddTransition(alive, () => this.respawnToAliveTimer > 4000);
 
@@ -162,30 +162,24 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            this.spriteManager = new SpriteManager(PlayerState.Alive);
+            this.spriteManager = new SpriteManager(PlayerState.Alive, 64, 64);
 
-            this.spriteManager.AddSprite(
+            this.spriteManager.AddStillSprite(
                 PlayerState.Alive, 
-                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"), 
-                false);
+                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"));
 
-            this.spriteManager.AddSprite(
+            this.spriteManager.AddAnimatedSprite(
                 PlayerState.Dying, 
-                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying"), 
-                true);
+                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying"));
 
-            this.spriteManager.AddSprite(
+            this.spriteManager.AddStillSprite(
                 PlayerState.Dead, 
-                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead"), 
-                false);
+                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead"));
 
-            this.spriteManager.AddSprite(
+            this.spriteManager.AddStillSprite(
                 PlayerState.Respawn, 
                 this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"), 
-                this.game.Content.Load<Effect>("Shaders/Transparency"),
-                false);
-
-            this.spriteManager.SetRectangle(PlayerState.Alive);
+                this.game.Content.Load<Effect>("Shaders/Transparency"));
 
             this.UpdateSpriteColorData();
             base.LoadContent();
@@ -202,7 +196,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.cameraService.Position = this.Position;
 
             this.stateMachine.Update();
-            this.spriteManager.Update(this.stateMachine.CurrentState.Name);
+            this.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);
 
             if (this.stateMachine.CurrentState.Tag != null)
             {
@@ -226,7 +220,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.spriteBatch.Draw(
                 this.spriteManager.GetCurrentSprite(),
                 this.Position,
-                this.spriteManager.GetCurrentRectangle(gameTime),
+                this.spriteManager.GetCurrentRectangle(),
                 Color.White,
                 this.Rotation,
                 new Vector2((float)this.Width / 2, (float)this.Height / 2),

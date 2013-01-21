@@ -13,50 +13,63 @@ namespace SpaceFighter.Logic
         private float totalElapsed;
 
         private int currentFrame;
-        private const int FrameCount = 16;
-        private const float TimePerFrame = 0.0166667f * 3;
+        private const float TimePerFrame = 0.0166667f * 50;
         
         private readonly Dictionary<string, Texture2D> sprites;
         private readonly Dictionary<string, Effect> effects;
         private readonly Dictionary<string, bool> animations;
 
-        private Rectangle spriteRectangle;
+        private readonly Rectangle spriteRectangle;
 
         private string state;
 
-        public SpriteManager(string initialEntityState)
+        private readonly int spriteHeight;
+
+        private readonly int spriteWidth;
+
+        private GameTime gameTime;
+
+        public SpriteManager(string initialEntityState, int spriteHeight, int spriteWidth)
         {
             this.sprites = new Dictionary<string, Texture2D>();
             this.effects = new Dictionary<string, Effect>();
             this.animations = new Dictionary<string, bool>();
 
             this.state = initialEntityState;
+            this.spriteHeight = spriteHeight;
+            this.spriteWidth = spriteWidth;
+
+            this.spriteRectangle = new Rectangle(0, 0, this.spriteWidth, this.spriteHeight);     
         }
 
-        public bool IsAnimationDone
+        public bool IsAnimationDone(string entityState)
         {
-            get
-            {
-                return this.currentFrame == FrameCount - 1;
-            }
+            return this.currentFrame == (this.sprites[entityState].Width / this.spriteWidth) - 1;          
         }
 
-        public void AddSprite(string entityState, Texture2D sprite, bool isAnimated)
+        public void AddStillSprite(string entityState, Texture2D stillSprite)
         {
-            this.sprites.Add(entityState, sprite);
-            this.animations.Add(entityState, isAnimated);
+            this.sprites.Add(entityState, stillSprite);
+            this.animations.Add(entityState, false);
         }
 
-        public void AddSprite(string entityState, Texture2D sprite, Effect shader, bool isAnimated)
+        public void AddStillSprite(string entityState, Texture2D stillSprite, Effect shader)
         {
-            this.sprites.Add(entityState, sprite);
+            this.sprites.Add(entityState, stillSprite);
             this.effects.Add(entityState, shader);
-            this.animations.Add(entityState, isAnimated);
+            this.animations.Add(entityState, false);
         }
 
-        public void Update(string entityState)
+        public void AddAnimatedSprite(string entityState, Texture2D animatedSprite)
+        {
+            this.sprites.Add(entityState, animatedSprite);
+            this.animations.Add(entityState, true);
+        }
+
+        public void Update(string entityState, GameTime gameTime)
         {
             this.state = entityState;
+            this.gameTime = gameTime;
         }
 
         public Texture2D GetCurrentSprite()
@@ -64,21 +77,23 @@ namespace SpaceFighter.Logic
             return this.sprites[this.state];
         }
 
-        public Rectangle GetCurrentRectangle(GameTime gameTime) // <- hide rectangle handling from consumer
+        public Rectangle GetCurrentRectangle()
         {
             Rectangle currentRectangle;
 
             if (this.animations[this.state])
             {
-                currentRectangle = new Rectangle(this.currentFrame * this.spriteRectangle.Width, 0, this.spriteRectangle.Width, this.spriteRectangle.Height);
-                this.totalElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                var frameCount = this.sprites[this.state].Width / this.spriteWidth;
 
-                if (this.currentFrame != FrameCount - 1)
+                currentRectangle = new Rectangle(this.currentFrame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight);
+                this.totalElapsed += (float)this.gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (this.currentFrame != frameCount - 1)
                 {
                     if (this.totalElapsed > TimePerFrame)
                     {
                         this.currentFrame++;
-                        this.currentFrame = this.currentFrame % FrameCount;
+                        this.currentFrame = this.currentFrame % frameCount;
                         this.totalElapsed = 0;
                     }
                 }
@@ -100,16 +115,6 @@ namespace SpaceFighter.Logic
             }
 
             return null;
-        }
-
-        public void SetRectangle(string entityState)
-        {
-            this.spriteRectangle = new Rectangle(0, 0, this.sprites[entityState].Width, this.sprites[entityState].Height);
-        }
-
-        public Rectangle GetRectangle()
-        {
-            return this.spriteRectangle;
         }
     }
 }
