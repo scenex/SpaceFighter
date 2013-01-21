@@ -53,7 +53,7 @@ namespace SpaceFighter.Logic
             this.animations.Add(entityState, false);
         }
 
-        public void AddStillSprite(string entityState, Texture2D stillSprite, Effect shader)
+        public void AddStillSprite(string entityState, Texture2D stillSprite, Effect shader) // <- Add shader param action
         {
             this.sprites.Add(entityState, stillSprite);
             this.effects.Add(entityState, shader);
@@ -83,17 +83,14 @@ namespace SpaceFighter.Logic
 
             if (this.animations[this.state])
             {
-                var frameCount = this.sprites[this.state].Width / this.spriteWidth;
-
                 currentRectangle = new Rectangle(this.currentFrame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight);
                 this.totalElapsed += (float)this.gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (this.currentFrame != frameCount - 1)
+                if (this.currentFrame != this.sprites[this.state].Width / this.spriteWidth - 1)
                 {
                     if (this.totalElapsed > TimePerFrame)
                     {
                         this.currentFrame++;
-                        this.currentFrame = this.currentFrame % frameCount;
                         this.totalElapsed = 0;
                     }
                 }
