@@ -164,12 +164,27 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
             this.spriteManager = new SpriteManager(PlayerState.Alive);
 
-            this.spriteManager.AddShader(this.game.Content.Load<Effect>("Shaders/Transparency"));
+            this.spriteManager.AddSprite(
+                PlayerState.Alive, 
+                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"), 
+                false);
 
-            this.spriteManager.AddSprite(PlayerState.Alive, this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"));
-            this.spriteManager.AddSprite(PlayerState.Dying, this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying"));
-            this.spriteManager.AddSprite(PlayerState.Dead, this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead"));
-            
+            this.spriteManager.AddSprite(
+                PlayerState.Dying, 
+                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying"), 
+                true);
+
+            this.spriteManager.AddSprite(
+                PlayerState.Dead, 
+                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead"), 
+                false);
+
+            this.spriteManager.AddSprite(
+                PlayerState.Respawn, 
+                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"), 
+                this.game.Content.Load<Effect>("Shaders/Transparency"),
+                false);
+
             this.spriteManager.SetRectangle(PlayerState.Alive);
 
             this.UpdateSpriteColorData();

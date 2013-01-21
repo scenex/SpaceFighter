@@ -17,15 +17,19 @@ namespace SpaceFighter.Logic
         private const float TimePerFrame = 0.0166667f * 3;
         
         private readonly Dictionary<string, Texture2D> sprites;
+        private readonly Dictionary<string, Effect> effects;
+        private readonly Dictionary<string, bool> animations;
+
         private Rectangle spriteRectangle;
 
         private string state;
 
-        private Effect effect;
-
         public SpriteManager(string initialEntityState)
         {
             this.sprites = new Dictionary<string, Texture2D>();
+            this.effects = new Dictionary<string, Effect>();
+            this.animations = new Dictionary<string, bool>();
+
             this.state = initialEntityState;
         }
 
@@ -37,14 +41,17 @@ namespace SpaceFighter.Logic
             }
         }
 
-        public void AddSprite(string entityState, Texture2D sprite) // <- associate shader to state / sprite? dictionary state / shader? associate actions for params in shader?
+        public void AddSprite(string entityState, Texture2D sprite, bool isAnimated)
         {
             this.sprites.Add(entityState, sprite);
+            this.animations.Add(entityState, isAnimated);
         }
 
-        public void AddShader(Effect shader)
+        public void AddSprite(string entityState, Texture2D sprite, Effect shader, bool isAnimated)
         {
-            this.effect = shader;
+            this.sprites.Add(entityState, sprite);
+            this.effects.Add(entityState, shader);
+            this.animations.Add(entityState, isAnimated);
         }
 
         public void Update(string entityState)
@@ -54,30 +61,14 @@ namespace SpaceFighter.Logic
 
         public Texture2D GetCurrentSprite()
         {
-            switch (state)
-            {
-                case PlayerState.Alive:
-                    return this.sprites[PlayerState.Alive];
-
-                case PlayerState.Dying:
-                    return this.sprites[PlayerState.Dying];
-
-                case PlayerState.Dead:
-                    return this.sprites[PlayerState.Dead];
-
-                case PlayerState.Respawn:
-                    return this.sprites[PlayerState.Alive];
-
-                default:
-                    return null;
-            }
+            return this.sprites[this.state];
         }
 
-        public Rectangle GetCurrentRectangle(GameTime gameTime)
+        public Rectangle GetCurrentRectangle(GameTime gameTime) // <- hide rectangle handling from consumer
         {
             Rectangle currentRectangle;
 
-            if (this.state == PlayerState.Dying)
+            if (this.animations[this.state])
             {
                 currentRectangle = new Rectangle(this.currentFrame * this.spriteRectangle.Width, 0, this.spriteRectangle.Width, this.spriteRectangle.Height);
                 this.totalElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -103,17 +94,17 @@ namespace SpaceFighter.Logic
 
         public Effect GetCurrentShader()
         {
-            if (state == PlayerState.Respawn)
+            if (this.effects.ContainsKey(this.state))
             {
-                return this.effect;
+                return this.effects[this.state];
             }
 
             return null;
         }
 
-        public void SetRectangle(string playerState)
+        public void SetRectangle(string entityState)
         {
-            this.spriteRectangle = new Rectangle(0, 0, this.sprites[playerState].Width, this.sprites[playerState].Height);
+            this.spriteRectangle = new Rectangle(0, 0, this.sprites[entityState].Width, this.sprites[entityState].Height);
         }
 
         public Rectangle GetRectangle()
