@@ -26,8 +26,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private double deadToRespawnTimer;
         private double respawnToAliveTimer ;
 
-        private double totalElapsedTime;
-
         private SpriteManager spriteManager;
 
         public Player(Game game, Vector2 startPosition) : base(game)
@@ -126,7 +124,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
             var respawn = new State<Action<double>>(
                 PlayerState.Respawn,
-                elapsedTime => { this.respawnToAliveTimer += elapsedTime; this.totalElapsedTime += elapsedTime; },
+                elapsedTime => { this.respawnToAliveTimer += elapsedTime; },
                 delegate
                     {
                         this.Health = 100;
@@ -136,7 +134,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                             this.TransitionToStateRespawn(this, new StateChangedEventArgs(PlayerState.Dead, PlayerState.Respawn));
                         }                       
                     },
-                () => { this.respawnToAliveTimer = 0; this.totalElapsedTime = 0; });
+                () => { this.respawnToAliveTimer = 0; });
 
             var alive = new State<Action<double>>(
                 PlayerState.Alive,
@@ -179,7 +177,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.spriteManager.AddStillSprite(
                 PlayerState.Respawn, 
                 this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"), 
-                this.game.Content.Load<Effect>("Shaders/Transparency"));
+                this.game.Content.Load<Effect>("Shaders/Transparency"),
+                time => (float)(0.5f * Math.Sin(time * 20) + 0.5));
 
             this.UpdateSpriteColorData();
             base.LoadContent();
@@ -187,12 +186,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public override void Update(GameTime gameTime)
         {       
-            if (this.stateMachine.CurrentState.Name == PlayerState.Respawn) // <- move logic to spritemanager, assign shader to state
-            {
-                var temp = 0.5f * Math.Sin(this.totalElapsedTime / 50) + 0.5f;
-                this.spriteManager.GetCurrentShader().Parameters["param1"].SetValue((float)temp);
-            }
-
             this.cameraService.Position = this.Position;
 
             this.stateMachine.Update();

@@ -4,13 +4,16 @@
 
 namespace SpaceFighter.Logic
 {
+    using System;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     public class SpriteManager
     {
-        private float totalElapsed;
+        private float totalElapsedTimeAnimation;
+
+        private float totalElapsedTimeShader;
 
         private int currentFrame;
         private const float TimePerFrame = 0.0166667f * 50;
@@ -28,6 +31,8 @@ namespace SpaceFighter.Logic
         private readonly int spriteWidth;
 
         private GameTime gameTime;
+
+        private Func<float, float> shaderParam;
 
         public SpriteManager(string initialEntityState, int spriteHeight, int spriteWidth)
         {
@@ -53,11 +58,12 @@ namespace SpaceFighter.Logic
             this.animations.Add(entityState, false);
         }
 
-        public void AddStillSprite(string entityState, Texture2D stillSprite, Effect shader) // <- Add shader param action
+        public void AddStillSprite(string entityState, Texture2D stillSprite, Effect shader, Func<float, float> shaderParam)
         {
             this.sprites.Add(entityState, stillSprite);
             this.effects.Add(entityState, shader);
             this.animations.Add(entityState, false);
+            this.shaderParam = shaderParam;
         }
 
         public void AddAnimatedSprite(string entityState, Texture2D animatedSprite)
@@ -84,14 +90,14 @@ namespace SpaceFighter.Logic
             if (this.animations[this.state])
             {
                 currentRectangle = new Rectangle(this.currentFrame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight);
-                this.totalElapsed += (float)this.gameTime.ElapsedGameTime.TotalSeconds;
+                this.totalElapsedTimeAnimation += (float)this.gameTime.ElapsedGameTime.TotalSeconds;
 
                 if (this.currentFrame != this.sprites[this.state].Width / this.spriteWidth - 1)
                 {
-                    if (this.totalElapsed > TimePerFrame)
+                    if (this.totalElapsedTimeAnimation > TimePerFrame)
                     {
                         this.currentFrame++;
-                        this.totalElapsed = 0;
+                        this.totalElapsedTimeAnimation = 0;
                     }
                 }
             }
@@ -108,9 +114,12 @@ namespace SpaceFighter.Logic
         {
             if (this.effects.ContainsKey(this.state))
             {
+                this.totalElapsedTimeShader += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                this.effects[this.state].Parameters["param1"].SetValue(this.shaderParam.Invoke(this.totalElapsedTimeShader)); // <- param1 ?
                 return this.effects[this.state];
             }
 
+            this.totalElapsedTimeShader = 0;
             return null;
         }
     }
