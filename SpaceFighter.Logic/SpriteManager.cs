@@ -32,7 +32,7 @@ namespace SpaceFighter.Logic
 
         private GameTime gameTime;
 
-        private Func<float, float> shaderParam;
+        private Func<float, float> effectParam;
 
         public SpriteManager(string initialEntityState, int spriteHeight, int spriteWidth)
         {
@@ -58,12 +58,12 @@ namespace SpaceFighter.Logic
             this.animations.Add(entityState, false);
         }
 
-        public void AddStillSprite(string entityState, Texture2D stillSprite, Effect shader, Func<float, float> shaderParam)
+        public void AddStillSprite(string entityState, Texture2D stillSprite, Effect shader, Func<float, float> shaderParam) // <- 'Effect, ShaderParamName[], ShaderParamFunc[]' -> into some structure.
         {
             this.sprites.Add(entityState, stillSprite);
             this.effects.Add(entityState, shader);
             this.animations.Add(entityState, false);
-            this.shaderParam = shaderParam;
+            this.effectParam = shaderParam;
         }
 
         public void AddAnimatedSprite(string entityState, Texture2D animatedSprite)
@@ -115,7 +115,7 @@ namespace SpaceFighter.Logic
             if (this.effects.ContainsKey(this.state))
             {
                 this.totalElapsedTimeShader += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                this.effects[this.state].Parameters["param1"].SetValue(this.shaderParam.Invoke(this.totalElapsedTimeShader)); // <- param1 ?
+                this.effects[this.state].Parameters["param1"].SetValue(this.effectParam.Invoke(this.totalElapsedTimeShader));
                 return this.effects[this.state];
             }
 
