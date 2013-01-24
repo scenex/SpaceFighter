@@ -14,7 +14,7 @@ namespace SpaceFighter.Logic
         private float totalElapsedTimeAnimation;
         private float totalElapsedTimeShader;
         private int currentFrame;
-        private const float TimePerFrame = 0.0166667f * 50;        
+        private const float TimePerFrame = 0.0166667f * 30;        
         private readonly Dictionary<string, Texture2D> sprites;
         private readonly Dictionary<string, bool> animations;
         private readonly Rectangle spriteRectangle;
