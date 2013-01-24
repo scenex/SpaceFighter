@@ -25,6 +25,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private bool isInputDeviceActive;
 
+        private GameTime gameTime;
+
         public InputService(Game game) : base(game)
         {
         }
@@ -50,6 +52,8 @@ namespace SpaceFighter.Logic.Services.Implementations
                     this.ProcessInputGamepad();
                 }
             }
+
+            this.gameTime = gameTime;
 
             base.Update(gameTime);
         }
@@ -108,41 +112,18 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.currentGamePadState = GamePad.GetState(PlayerIndex.One);
 
-            //// LEFT
-            //if (this.currentGamePadState.ThumbSticks.Left.X < 0.0f)
-            //{
-            //    if (this.playerService.Player.Position.X >= 0)
-            //    {
-            //        this.playerService.MoveLeft();
-            //    }
-            //}
+            if (gameTime != null)
+            {
+                this.playerService.Player.Rotation +=
+                    new Vector2(
+                        this.currentGamePadState.ThumbSticks.Left.X * (float)gameTime.ElapsedGameTime.TotalSeconds,
+                        this.currentGamePadState.ThumbSticks.Left.Y * (float)gameTime.ElapsedGameTime.TotalSeconds).Length();
+            }
 
-            //// RIGHT
-            //if (this.currentGamePadState.ThumbSticks.Left.X > 0.0f)
-            //{
-            //    if (this.playerService.Player.Position.X + this.playerService.Player.Width <= screenWidth)
-            //    {
-            //        this.playerService.MoveRight();
-            //    }
-            //}
-
-            //// UP
-            //if (this.currentGamePadState.ThumbSticks.Left.Y > 0.0f)
-            //{
-            //    if (this.playerService.Player.Position.Y - 3 >= 0)
-            //    {
-            //        this.playerService.MoveUp();
-            //    }
-            //}
-
-            //// DOWN
-            //if (this.currentGamePadState.ThumbSticks.Left.Y < 0.0f)
-            //{
-            //    if (this.playerService.Player.Position.Y + this.playerService.Player.Height <= screenHeight)
-            //    {
-            //        this.playerService.MoveDown();
-            //    }
-            //}
+            if (this.currentGamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+            {
+                this.playerService.Thrust();
+            }
 
             if (this.currentGamePadState.Buttons.A == ButtonState.Pressed && this.previousGamePadState.Buttons.A == ButtonState.Released)
             {
