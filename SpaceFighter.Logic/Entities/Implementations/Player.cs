@@ -178,7 +178,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 PlayerState.Respawn, 
                 this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"), 
                 this.game.Content.Load<Effect>("Shaders/Transparency"),
-                time => (float)(0.5f * Math.Sin(time * 20) + 0.5));
+                time => (float)(0.5f * Math.Sin(time * 20) + 0.5),
+                "param1");
 
             this.UpdateSpriteColorData();
             base.LoadContent();

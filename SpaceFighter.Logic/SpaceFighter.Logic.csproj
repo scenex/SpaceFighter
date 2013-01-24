@@ -104,6 +104,7 @@
     <Compile Include="Input\Interfaces\IInput.cs" />
     <Compile Include="PlayerHitEventArgs.cs" />
     <Compile Include="PlayerState.cs" />
+    <Compile Include="Shader.cs" />
     <Compile Include="SpriteManager.cs" />
     <Compile Include="StateChangedEventArgs.cs" />
     <Compile Include="Services\Implementations\CameraService.cs" />

@@ -12,32 +12,21 @@ namespace SpaceFighter.Logic
     public class SpriteManager
     {
         private float totalElapsedTimeAnimation;
-
         private float totalElapsedTimeShader;
-
         private int currentFrame;
-        private const float TimePerFrame = 0.0166667f * 50;
-        
+        private const float TimePerFrame = 0.0166667f * 50;        
         private readonly Dictionary<string, Texture2D> sprites;
-        private readonly Dictionary<string, Effect> effects;
         private readonly Dictionary<string, bool> animations;
-
         private readonly Rectangle spriteRectangle;
-
         private string state;
-
         private readonly int spriteHeight;
-
         private readonly int spriteWidth;
-
         private GameTime gameTime;
-
-        private Func<float, float> effectParam;
+        private Shader shader;
 
         public SpriteManager(string initialEntityState, int spriteHeight, int spriteWidth)
         {
             this.sprites = new Dictionary<string, Texture2D>();
-            this.effects = new Dictionary<string, Effect>();
             this.animations = new Dictionary<string, bool>();
 
             this.state = initialEntityState;
@@ -58,12 +47,12 @@ namespace SpaceFighter.Logic
             this.animations.Add(entityState, false);
         }
 
-        public void AddStillSprite(string entityState, Texture2D stillSprite, Effect shader, Func<float, float> shaderParam) // <- 'Effect, ShaderParamName[], ShaderParamFunc[]' -> into some structure.
+        public void AddStillSprite(string entityState, Texture2D stillSprite, Effect shaderAsset, Func<float, float> shaderParameter, string shaderParameterName)
         {
             this.sprites.Add(entityState, stillSprite);
-            this.effects.Add(entityState, shader);
             this.animations.Add(entityState, false);
-            this.effectParam = shaderParam;
+
+            this.shader = new Shader(entityState, shaderAsset, shaderParameter, shaderParameterName);
         }
 
         public void AddAnimatedSprite(string entityState, Texture2D animatedSprite)
@@ -112,11 +101,11 @@ namespace SpaceFighter.Logic
 
         public Effect GetCurrentShader()
         {
-            if (this.effects.ContainsKey(this.state))
+            if (this.shader.EntityState.Equals(this.state))        
             {
                 this.totalElapsedTimeShader += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                this.effects[this.state].Parameters["param1"].SetValue(this.effectParam.Invoke(this.totalElapsedTimeShader));
-                return this.effects[this.state];
+                this.shader.EffectAsset.Parameters[this.shader.EffectParameterName].SetValue(this.shader.EffectParameter.Invoke(this.totalElapsedTimeShader));
+                return this.shader.EffectAsset;
             }
 
             this.totalElapsedTimeShader = 0;

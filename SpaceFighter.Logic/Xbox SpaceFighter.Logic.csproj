@@ -80,6 +80,7 @@
     <Compile Include="Entities\Implementations\Shot.cs" />
     <Compile Include="Entities\Implementations\Weapons\Weapon.cs" />
     <Compile Include="Services\Interfaces\IWorldService.cs" />
+    <Compile Include="Shader.cs" />
     <Compile Include="SpriteManager.cs" />
     <Compile Include="StateChangedEventArgs.cs" />
     <Compile Include="StateMachine\State.cs" />
