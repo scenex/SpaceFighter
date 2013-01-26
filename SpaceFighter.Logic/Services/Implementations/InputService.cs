@@ -25,8 +25,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private bool isInputDeviceActive;
 
-        private GameTime gameTime;
-
         public InputService(Game game) : base(game)
         {
         }
@@ -52,8 +50,6 @@ namespace SpaceFighter.Logic.Services.Implementations
                     this.ProcessInputGamepad();
                 }
             }
-
-            this.gameTime = gameTime;
 
             base.Update(gameTime);
         }
@@ -110,17 +106,18 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void ProcessInputGamepad()
         {
-            this.currentGamePadState = GamePad.GetState(PlayerIndex.One);
+            this.currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
 
-            if (gameTime != null)
+            if (Math.Abs(this.currentGamePadState.ThumbSticks.Left.X - 0) > 0.1f || Math.Abs(this.currentGamePadState.ThumbSticks.Left.Y - 0) > 0.1f)
             {
-                this.playerService.Player.Rotation +=
-                    new Vector2(
-                        this.currentGamePadState.ThumbSticks.Left.X * (float)gameTime.ElapsedGameTime.TotalSeconds,
-                        this.currentGamePadState.ThumbSticks.Left.Y * (float)gameTime.ElapsedGameTime.TotalSeconds).Length();
+                this.playerService.Player.Rotation = ((float)Math.Atan2(this.currentGamePadState.ThumbSticks.Left.Y, this.currentGamePadState.ThumbSticks.Left.X) - MathHelper.PiOver2) * -1;
             }
-
-            if (this.currentGamePadState.Buttons.RightShoulder == ButtonState.Pressed)
+                                          
+            //Debug.WriteLine("X: " + this.currentGamePadState.ThumbSticks.Left.X);
+            //Debug.WriteLine("Y: " + this.currentGamePadState.ThumbSticks.Left.Y);
+            //Debug.WriteLine("Rotation: " + this.playerService.Player.Rotation);
+            
+            if (this.currentGamePadState.Triggers.Right > 0)
             {
                 this.playerService.Thrust();
             }
