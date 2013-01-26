@@ -242,7 +242,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.position.X = this.enemyCurveX.Evaluate((float)gameTime.TotalGameTime.TotalSeconds);
             this.position.Y = this.enemyCurveY.Evaluate((float)gameTime.TotalGameTime.TotalSeconds);
 
-            this.rotation = (float)Math.Atan2(this.position.Y - previousPositionY, this.position.X - previousPositionX) + MathHelper.PiOver2;
+            this.rotation = (float)Math.Atan2(this.position.Y - previousPositionY, this.position.X - previousPositionX);
 
             base.Update(gameTime);
         }

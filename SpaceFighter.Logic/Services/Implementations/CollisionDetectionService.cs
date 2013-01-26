@@ -83,7 +83,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             foreach (var enemy in this.enemyService.Enemies.ToList())
             {
-                var angle = Math.Atan2((enemy.Origin.Y - playerService.Player.Origin.Y), (enemy.Origin.X - playerService.Player.Origin.X)) - MathHelper.PiOver2;
+                var angle = Math.Atan2((enemy.Origin.Y - playerService.Player.Origin.Y), (enemy.Origin.X - playerService.Player.Origin.X)) + MathHelper.Pi; // Todo: why MathHelper.Pi?
                 enemy.UpdateAngleToPlayer(angle);
             }
         }
