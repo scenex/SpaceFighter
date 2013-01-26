@@ -93,6 +93,10 @@ namespace SpaceFighter
             var cameraService = new CameraService(this);
             this.Services.AddService(typeof(ICameraService), cameraService);
             this.Components.Add(cameraService);
+
+            var headUpDisplayService = new HeadUpDisplayService(this);
+            this.Services.AddService(typeof(IHeadUpDisplayService), headUpDisplayService);
+            this.Components.Add(headUpDisplayService);
         }
 
         /// <summary>

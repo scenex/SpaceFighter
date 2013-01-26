@@ -16,6 +16,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         event EventHandler<StateChangedEventArgs> TransitionToStateDying;
         event EventHandler<StateChangedEventArgs> TransitionToStateDead;
         event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
+        event EventHandler<HealthChangedEventArgs> HealthChanged; 
 
         Vector2 Position { get; set; }
         int Width { get; }

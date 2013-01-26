@@ -14,6 +14,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         event EventHandler<StateChangedEventArgs> TransitionToStateDying;
         event EventHandler<StateChangedEventArgs> TransitionToStateDead;
         event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
+        event EventHandler<HealthChangedEventArgs> HealthChanged;
 
         IPlayer Player { get; }
         IEnumerable<IShot> Shots { get; } 

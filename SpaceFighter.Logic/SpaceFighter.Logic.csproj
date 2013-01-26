@@ -99,11 +99,15 @@
     <Compile Include="Entities\Implementations\Weapons\PlayerWeapon.cs" />
     <Compile Include="FramerateCounter.cs" />
     <Compile Include="Entities\Interfaces\IShot.cs" />
+    <Compile Include="HealthChangedEventArgs.cs" />
     <Compile Include="Input\Implementation\InputGamepad.cs" />
     <Compile Include="Input\Implementation\InputKeyboard.cs" />
     <Compile Include="Input\Interfaces\IInput.cs" />
     <Compile Include="PlayerHitEventArgs.cs" />
     <Compile Include="PlayerState.cs" />
+    <Compile Include="PrimitiveBatch.cs" />
+    <Compile Include="Services\Implementations\HeadUpDisplayService.cs" />
+    <Compile Include="Services\Interfaces\IHeadUpDisplayService.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="SpriteManager.cs" />
     <Compile Include="StateChangedEventArgs.cs" />

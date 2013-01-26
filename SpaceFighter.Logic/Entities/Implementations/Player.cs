@@ -28,6 +28,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private SpriteManager spriteManager;
 
+        private int health;
+
         public Player(Game game, Vector2 startPosition) : base(game)
         {
             this.Health = 100;
@@ -41,11 +43,28 @@ namespace SpaceFighter.Logic.Entities.Implementations
         public event EventHandler<StateChangedEventArgs> TransitionToStateDying;
         public event EventHandler<StateChangedEventArgs> TransitionToStateDead;
         public event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
+        public event EventHandler<HealthChangedEventArgs> HealthChanged; 
 
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
         public Color[] ColorData { get; private set; }
-        public int Health { get; private set; }
+        
+        public int Health
+        {
+            get
+            {
+                return this.health;
+            }
+            private set
+            {
+                this.health = value;
+
+                if (this.HealthChanged != null)
+                {
+                    this.HealthChanged(this, new HealthChangedEventArgs(value));
+                }
+            }
+        }
 
         public int Width
         {
@@ -126,11 +145,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
             var respawn = new State<Action<double>>(
                 PlayerState.Respawn,
-                elapsedTime => { this.respawnToAliveTimer += elapsedTime; },
+                elapsedTime => { this.respawnToAliveTimer += elapsedTime; this.Health++; },
                 delegate
                     {
-                        this.Health = 100;
-
                         if (this.TransitionToStateRespawn != null)
                         {
                             this.TransitionToStateRespawn(this, new StateChangedEventArgs(PlayerState.Dead, PlayerState.Respawn));
@@ -153,7 +170,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
             alive.AddTransition(dying, () => this.Health <= 0);
             dying.AddTransition(dead, () => this.spriteManager.IsAnimationDone(this.stateMachine.CurrentState.Name));
             dead.AddTransition(respawn, () => this.deadToRespawnTimer > 1000);
-            respawn.AddTransition(alive, () => this.respawnToAliveTimer > 4000);
+            respawn.AddTransition(alive, () => this.Health == 100);
 
             this.stateMachine = new StateMachine<Action<double>>(alive);
         }

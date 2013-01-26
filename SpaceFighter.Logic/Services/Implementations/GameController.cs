@@ -15,6 +15,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         private IEnemyService enemyService;
         private IInputService inputService;
 
+        private IHeadUpDisplayService headUpDisplay;
+
         public GameController(Game game) : base(game)
         {
         }
@@ -25,6 +27,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
             this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
             this.inputService = (IInputService)this.Game.Services.GetService(typeof(IInputService));
+            this.headUpDisplay = (IHeadUpDisplayService)this.Game.Services.GetService(typeof(IHeadUpDisplayService));
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
@@ -33,8 +36,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.playerService.TransitionToStateDying += this.OnTransitionToStateDying;
             this.playerService.TransitionToStateDead += this.OnTransitionToStateDead;
-            this.playerService.TransitionToStateRespawn += PlayerServiceOnTransitionToStateRespawn;
-            this.playerService.TransitionToStateAlive += PlayerServiceOnTransitionToStateAlive;
+            this.playerService.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
+            this.playerService.TransitionToStateAlive += this.OnTransitionToStateAlive;
+            this.playerService.HealthChanged += this.OnHealthChanged;
             
             base.Initialize();
         }
@@ -50,14 +54,19 @@ namespace SpaceFighter.Logic.Services.Implementations
             // Continue...
         }
 
-        private void PlayerServiceOnTransitionToStateRespawn(object sender, StateChangedEventArgs stateChangedEventArgs)
+        private void OnTransitionToStateRespawn(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
             this.inputService.Enable();
         }
 
-        private void PlayerServiceOnTransitionToStateAlive(object sender, StateChangedEventArgs stateChangedEventArgs)
+        private void OnTransitionToStateAlive(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
             this.collisionDetectionService.Enable();
+        }
+
+        private void OnHealthChanged(object sender, HealthChangedEventArgs healthChangedEventArgs)
+        {
+            this.headUpDisplay.Health = healthChangedEventArgs.NewHealth;
         }
 
         private void OnEnemyHit(object sender, EnemyHitEventArgs e)
@@ -70,16 +79,19 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.enemyService.RemoveShot(e.Shot);
             this.playerService.ReportPlayerHit(e.Shot);
+            this.headUpDisplay.Health = this.playerService.Player.Health;
         }
 
         private void OnPlayerEnemyHit(object sender, EventArgs e)
         {
             this.playerService.ReportPlayerHit(100);
+            this.headUpDisplay.Health = this.playerService.Player.Health;
         }
 
         private void OnBoundaryHit(object sender, EventArgs e)
         {
-            this.playerService.ReportPlayerHit(100); 
+            this.playerService.ReportPlayerHit(100);
+            this.headUpDisplay.Health = this.playerService.Player.Health;
         }
     }
 }
