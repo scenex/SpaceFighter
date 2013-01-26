@@ -5,6 +5,7 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
+    using System.Diagnostics;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
@@ -110,7 +111,12 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (Math.Abs(this.currentGamePadState.ThumbSticks.Left.X - 0) > 0.1f || Math.Abs(this.currentGamePadState.ThumbSticks.Left.Y - 0) > 0.1f)
             {
-                this.playerService.Player.Rotation = ((float)Math.Atan2(this.currentGamePadState.ThumbSticks.Left.Y, this.currentGamePadState.ThumbSticks.Left.X) - MathHelper.PiOver2) * -1;
+                // http://plasticsturgeon.com/2012/08/rotate-the-shortest-direction/
+
+                var originalRotation = this.playerService.Player.Rotation;
+                var targetRotation = ((float)Math.Atan2(this.currentGamePadState.ThumbSticks.Left.Y, this.currentGamePadState.ThumbSticks.Left.X) - MathHelper.PiOver2) * -1;
+                var rotationDifference = (float)Math.Atan2(Math.Sin(targetRotation - originalRotation), Math.Cos(targetRotation - originalRotation));
+                this.playerService.Player.Rotation += rotationDifference * 0.05f;
             }
                                           
             //Debug.WriteLine("X: " + this.currentGamePadState.ThumbSticks.Left.X);
