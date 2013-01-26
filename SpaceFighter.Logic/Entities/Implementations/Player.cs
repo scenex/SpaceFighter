@@ -30,7 +30,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
-            Health = 100;
+            this.Health = 100;
+            this.Rotation = -MathHelper.PiOver2;
+
             this.game = game;
             this.Position = startPosition;
         }
@@ -74,8 +76,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.Position =
                 Vector2.Add(
                     new Vector2(
-                        (float)Math.Cos(this.Rotation - MathHelper.PiOver2) * amount,
-                        (float)Math.Sin(this.Rotation - MathHelper.PiOver2) * amount),
+                        (float)Math.Cos(this.Rotation) * amount,
+                        (float)Math.Sin(this.Rotation) * amount),
                     this.Position);
         }
 
