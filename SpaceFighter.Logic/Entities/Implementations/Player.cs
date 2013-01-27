@@ -24,7 +24,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private StateMachine<Action<double>> stateMachine;
 
         private double deadToRespawnTimer;
-        private double respawnToAliveTimer ;
+
+        private int healthReplenishCounter;
 
         private SpriteManager spriteManager;
 
@@ -145,7 +146,15 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
             var respawn = new State<Action<double>>(
                 PlayerState.Respawn,
-                elapsedTime => { this.respawnToAliveTimer += elapsedTime; this.Health++; },
+                elapsedTime =>
+                    {
+                        this.healthReplenishCounter++; 
+
+                        if(this.healthReplenishCounter % 2 == 0)
+                        {
+                            this.Health++;
+                        }
+                    },
                 delegate
                     {
                         if (this.TransitionToStateRespawn != null)
@@ -153,7 +162,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                             this.TransitionToStateRespawn(this, new StateChangedEventArgs(PlayerState.Dead, PlayerState.Respawn));
                         }                       
                     },
-                () => { this.respawnToAliveTimer = 0; });
+                () => { this.healthReplenishCounter = 0; });
 
             var alive = new State<Action<double>>(
                 PlayerState.Alive,
