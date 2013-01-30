@@ -5,8 +5,10 @@ Space Fighter Backlog
 What's on:
 ==========
 
-- Create sound samples for: Shot, entity hit, entity explosion, propulsion
-- Sound system
+- Shot removal after level bound hit
+- State engine for enemies
+- Entity system unification
+
 
 What's next:
 ============
@@ -37,6 +39,8 @@ What's next:
 
 - Collision detection with terrain
 
+- Game restart
+
 
 DONE:
 =====
@@ -47,3 +51,5 @@ DONE:
 - Angular player movement with thrust propulsion
 - Player state engine: Alive, Dying, Dead, Respawn
 - Player sprite explosion
+- Create sound samples for: Shot and entity explosion
+- Sound system
