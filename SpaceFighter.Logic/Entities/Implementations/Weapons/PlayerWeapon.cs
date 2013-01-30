@@ -50,7 +50,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         public override void UpdateShots()
         {
-            for (var i = 0; i < this.shots.Count; i++)
+            for (var i = 0; i < this.shots.Count; i++) // <- consider some concept to remove shots
             {
                 if (this.shots[i].Position.Y >= 0)
                 {
