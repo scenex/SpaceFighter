@@ -18,9 +18,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         private IEnemyService enemyService;
         private IWorldService worldService;
 
-        private int levelHeight;
-        private int levelWidth;
-
         private bool isCollisionDetectionActive;
 
         private Rectangle levelBoundsRectangle;
@@ -54,10 +51,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
             this.worldService = (IWorldService)this.Game.Services.GetService(typeof(IWorldService));
 
-            this.levelHeight = this.worldService.LevelHeight;
-            this.levelWidth = this.worldService.LevelWidth;
-
-            this.levelBoundsRectangle = new Rectangle(0, 0, levelWidth, levelHeight);
+            this.levelBoundsRectangle = new Rectangle(0, 0, this.worldService.LevelWidth, this.worldService.LevelHeight);
 
             this.isCollisionDetectionActive = true;
 
