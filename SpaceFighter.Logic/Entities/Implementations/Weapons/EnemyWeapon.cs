@@ -53,7 +53,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         {
             for (var i = 0; i < this.shots.Count; i++)
             {
-                if (this.shots[i].Position.Y >= 0 && this.shots[i].Position.Y <= Game.GraphicsDevice.PresentationParameters.BackBufferHeight)
+                if (this.shots[i].Position.Y >= 0 && this.shots[i].Position.Y <= Game.GraphicsDevice.PresentationParameters.BackBufferHeight) // <- crap..
                 {
                     this.shots[i].Position = new Vector2(
                         (this.shots[i].Position.X + ((float)Math.Cos(this.shots[i].Angle))),

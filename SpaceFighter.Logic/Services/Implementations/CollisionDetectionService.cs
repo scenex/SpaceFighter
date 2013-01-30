@@ -23,7 +23,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private bool isCollisionDetectionActive;
 
-        private Rectangle levelBoundaryRectangle;
+        private Rectangle levelBoundsRectangle;
 
         public CollisionDetectionService(Game game) : base(game)
         {
@@ -57,7 +57,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.levelHeight = this.worldService.LevelHeight;
             this.levelWidth = this.worldService.LevelWidth;
 
-            this.levelBoundaryRectangle = new Rectangle(0, 0, levelWidth, levelHeight);
+            this.levelBoundsRectangle = new Rectangle(0, 0, levelWidth, levelHeight);
 
             this.isCollisionDetectionActive = true;
 
@@ -70,12 +70,15 @@ namespace SpaceFighter.Logic.Services.Implementations
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
+            this.CheckCollisionsBetweenPlayerShotsAndBounds();
+            this.CheckCollisionsBetweenEnemyShotsAndBounds();
+            this.CheckCollisionsBetweenPlayersShotsAndEnemies();
+
             if (this.isCollisionDetectionActive)
             {
-                this.CheckForCollisionBetweenPlayerAndEnemies();
-                this.CheckForCollisionsBetweenPlayersShotsAndEnemies();
-                this.CheckForCollisionsBetweenEnemiesShotsAndPlayer();
-                this.CheckForCollisionsWithBoundaries();               
+                this.CheckCollisionBetweenPlayerAndEnemies();              
+                this.CheckCollisionsBetweenEnemiesShotsAndPlayer();
+                this.CheckCollisionsBetweenPlayerAndBounds();
             }
 
             this.UpdateEnemyAngleToPlayer(); // Todo: Consider if this calculation is done at the right place
@@ -91,7 +94,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        private void CheckForCollisionsBetweenEnemiesShotsAndPlayer()
+        private void CheckCollisionsBetweenEnemiesShotsAndPlayer()
         {
             // Check whether player was hit by a enemy's shot
             foreach (var shot in this.enemyService.Shots.ToList())
@@ -115,7 +118,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        private void CheckForCollisionsBetweenPlayersShotsAndEnemies()
+        private void CheckCollisionsBetweenPlayersShotsAndEnemies()
         {
             // Check whether enemy was hit by a player's shot
             foreach (var enemy in this.enemyService.Enemies.ToList())
@@ -147,7 +150,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        private void CheckForCollisionBetweenPlayerAndEnemies()
+        private void CheckCollisionBetweenPlayerAndEnemies()
         {
             // Check for collisions between enemies and player
             foreach (var enemy in this.enemyService.Enemies)
@@ -185,15 +188,25 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        private void CheckForCollisionsWithBoundaries()
+        private void CheckCollisionsBetweenPlayerAndBounds()
         {
-            if (!this.levelBoundaryRectangle.Contains(this.playerService.Player.BoundingRectangle))
+            if (!this.levelBoundsRectangle.Contains(this.playerService.Player.BoundingRectangle))
             {
                 if (this.BoundaryHit != null)
                 {
                     this.BoundaryHit(this, null);
                 }
             }
+        }
+
+        private void CheckCollisionsBetweenPlayerShotsAndBounds()
+        {
+            // Todo...
+        }
+
+        private void CheckCollisionsBetweenEnemyShotsAndBounds()
+        {
+            // Todo...
         }
 
         /// <summary>
