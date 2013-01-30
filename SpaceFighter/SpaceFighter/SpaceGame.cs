@@ -97,6 +97,10 @@ namespace SpaceFighter
             var headUpDisplayService = new HeadUpDisplayService(this);
             this.Services.AddService(typeof(IHeadUpDisplayService), headUpDisplayService);
             this.Components.Add(headUpDisplayService);
+
+            var audioService = new AudioService(this);
+            this.Services.AddService(typeof(IAudioService), audioService);
+            this.Components.Add(audioService);
         }
 
         /// <summary>

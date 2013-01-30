@@ -106,7 +106,9 @@
     <Compile Include="PlayerHitEventArgs.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="PrimitiveBatch.cs" />
+    <Compile Include="Services\Implementations\AudioService.cs" />
     <Compile Include="Services\Implementations\HeadUpDisplayService.cs" />
+    <Compile Include="Services\Interfaces\IAudioService.cs" />
     <Compile Include="Services\Interfaces\IHeadUpDisplayService.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="SpriteManager.cs" />

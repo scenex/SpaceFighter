@@ -56,6 +56,7 @@
     <Compile Include="PlayerHitEventArgs.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="PrimitiveBatch.cs" />
+    <Compile Include="Services\Implementations\AudioService.cs" />
     <Compile Include="Services\Implementations\CameraService.cs" />
     <Compile Include="Services\Implementations\CollisionDetectionService.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyGreen.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Services\Implementations\HeadUpDisplayService.cs" />
     <Compile Include="Services\Implementations\InputService.cs" />
     <Compile Include="Services\Implementations\WorldService.cs" />
+    <Compile Include="Services\Interfaces\IAudioService.cs" />
     <Compile Include="Services\Interfaces\ICameraService.cs" />
     <Compile Include="Services\Interfaces\ICollisionDetectionService.cs" />
     <Compile Include="Services\Interfaces\IEnemyService.cs" />

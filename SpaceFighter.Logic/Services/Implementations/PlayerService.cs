@@ -14,7 +14,9 @@ namespace SpaceFighter.Logic.Services.Implementations
     public class PlayerService : GameComponent, IPlayerService
     {
         private Player player;
+
         private IPlayerWeaponService playerWeaponService;
+        private IAudioService audioService;
 
         public PlayerService(Game game) : base(game)
         {
@@ -45,6 +47,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             this.playerWeaponService = (IPlayerWeaponService)this.Game.Services.GetService((typeof(IPlayerWeaponService)));
+            this.audioService = (IAudioService)this.Game.Services.GetService((typeof(IAudioService)));
 
             this.player = new Player(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0)); // Todo: Eliminate magic number
             this.Game.Components.Add(this.player);
@@ -70,6 +73,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void Fire()
         {
+            this.audioService.PlaySound("shot");
             this.playerWeaponService.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2, this.player.Rotation);
         }
 
@@ -95,6 +99,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void OnTransitionToStateDying(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
+            this.audioService.PlaySound("explosion");
+
             if (this.TransitionToStateDying != null)
             {
                 this.TransitionToStateDying(this, stateChangedEventArgs);
