@@ -21,8 +21,9 @@ namespace SpaceFighter.Logic.Services.Implementations
         private int levelHeight;
         private int levelWidth;
 
-        private bool isCollisionWithBoundaries;
         private bool isCollisionDetectionActive;
+
+        private Rectangle levelBoundaryRectangle;
 
         public CollisionDetectionService(Game game) : base(game)
         {
@@ -55,6 +56,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.levelHeight = this.worldService.LevelHeight;
             this.levelWidth = this.worldService.LevelWidth;
+
+            this.levelBoundaryRectangle = new Rectangle(0, 0, levelWidth, levelHeight);
 
             this.isCollisionDetectionActive = true;
 
@@ -184,34 +187,12 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void CheckForCollisionsWithBoundaries()
         {
-            // Left
-            if (this.playerService.Player.Position.X - (float)this.playerService.Player.Width / 2 <= 0)
+            if (!this.levelBoundaryRectangle.Contains(this.playerService.Player.BoundingRectangle))
             {
-                this.isCollisionWithBoundaries = true;
-            }
-
-            // Right
-            if (this.playerService.Player.Position.X + (float)this.playerService.Player.Width / 2 >= levelWidth)
-            {
-                this.isCollisionWithBoundaries = true;
-            }
-
-            // Top
-            if (this.playerService.Player.Position.Y - (float)this.playerService.Player.Height / 2 <= 0)
-            {
-                this.isCollisionWithBoundaries = true;
-            }
-
-            // Bottom
-            if (this.playerService.Player.Position.Y + (float)this.playerService.Player.Height / 2 >= levelHeight)
-            {
-                this.isCollisionWithBoundaries = true;
-            }
-
-            if (this.isCollisionWithBoundaries && this.BoundaryHit != null)
-            {
-                this.isCollisionWithBoundaries = false;
-                this.BoundaryHit(this, null);
+                if (this.BoundaryHit != null)
+                {
+                    this.BoundaryHit(this, null);
+                }
             }
         }
 

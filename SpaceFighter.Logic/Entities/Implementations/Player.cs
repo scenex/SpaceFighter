@@ -49,7 +49,19 @@ namespace SpaceFighter.Logic.Entities.Implementations
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
         public Color[] ColorData { get; private set; }
-        
+
+        public Rectangle BoundingRectangle
+        {
+            get
+            {
+                return new Rectangle(
+                    (int)this.Position.X - this.spriteManager.GetCurrentRectangle().Width / 2,
+                    (int)this.Position.Y - this.spriteManager.GetCurrentRectangle().Height / 2,
+                    this.spriteManager.GetCurrentRectangle().Width,
+                    this.spriteManager.GetCurrentRectangle().Height);
+            }
+        }
+
         public int Health
         {
             get
