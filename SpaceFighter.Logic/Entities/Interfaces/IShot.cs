@@ -15,5 +15,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         int Height { get; }
         int FirePower { get; }
         double Angle { get; }
+        Rectangle BoundingRectangle { get; }
     }
 }

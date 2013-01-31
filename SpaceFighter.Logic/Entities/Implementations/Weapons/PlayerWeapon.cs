@@ -50,19 +50,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         public override void UpdateShots()
         {
-            for (var i = 0; i < this.shots.Count; i++) // <- consider some concept to remove shots
+            foreach (var shot in this.shots)
             {
-                if (this.shots[i].Position.Y >= 0)
-                {
-                    this.shots[i].Position = new Vector2(
-                        (this.shots[i].Position.X + ((float)Math.Cos(this.shots[i].Angle)) * 5),
-                        (this.shots[i].Position.Y + ((float)Math.Sin(this.shots[i].Angle)) * 5));
-                }
-                else
-                {
-                    // Remove shots which are not visible anymore.
-                    this.shots.Remove(this.shots[i]);
-                }
+                shot.Position = 
+                    new Vector2(
+                        (shot.Position.X + ((float)Math.Cos(shot.Angle)) * 5),
+                        (shot.Position.Y + ((float)Math.Sin(shot.Angle)) * 5));
             }
         }
 

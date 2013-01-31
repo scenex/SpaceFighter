@@ -8,14 +8,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class EnemyWeapon : Weapon
     {
         private readonly IList<IShot> shots;
-
         private ICameraService cameraService;
 
         public EnemyWeapon(Game game) : base(game)
@@ -51,19 +49,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         public override void UpdateShots()
         {
-            for (var i = 0; i < this.shots.Count; i++)
+            foreach (var shot in this.shots)
             {
-                if (this.shots[i].Position.Y >= 0 && this.shots[i].Position.Y <= Game.GraphicsDevice.PresentationParameters.BackBufferHeight) // <- crap..
-                {
-                    this.shots[i].Position = new Vector2(
-                        (this.shots[i].Position.X + ((float)Math.Cos(this.shots[i].Angle))),
-                        (this.shots[i].Position.Y + ((float)Math.Sin(this.shots[i].Angle))));
-                }
-                else
-                {
-                    // Remove shots which are not visible anymore.
-                    this.shots.Remove(this.shots[i]);
-                }
+                shot.Position = 
+                    new Vector2(
+                        (shot.Position.X + ((float)Math.Cos(shot.Angle))),
+                        (shot.Position.Y + ((float)Math.Sin(shot.Angle))));
             }
         }
 

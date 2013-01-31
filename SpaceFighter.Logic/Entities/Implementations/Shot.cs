@@ -17,9 +17,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
             this.ColorData = colorData;
             this.FirePower = firePower;
             this.Angle = angle;
-        }
-
-        
+        }       
 
         public Vector2 Origin
         {
@@ -40,5 +38,17 @@ namespace SpaceFighter.Logic.Entities.Implementations
         public int FirePower { get; private set; }
 
         public double Angle { get; private set; }
+
+        public Rectangle BoundingRectangle
+        {
+            get
+            {
+                return new Rectangle(
+                    (int)this.Position.X,
+                    (int)this.Position.Y,
+                    this.Width,
+                    this.Height);
+            }
+        }
     }
 }

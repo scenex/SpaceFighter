@@ -195,12 +195,24 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void CheckCollisionsBetweenPlayerShotsAndBounds()
         {
-            // Todo...
+            foreach (var playerShot in this.playerService.Shots.ToList())
+            {
+                if (!this.levelBoundsRectangle.Contains(playerShot.BoundingRectangle))
+                {
+                    this.playerService.RemoveShot(playerShot);
+                }
+            }
         }
 
         private void CheckCollisionsBetweenEnemyShotsAndBounds()
         {
-            // Todo...
+            foreach (var enemyShot in this.enemyService.Shots.ToList())
+            {
+                if (!this.levelBoundsRectangle.Contains(enemyShot.BoundingRectangle))
+                {
+                    this.enemyService.RemoveShot(enemyShot);
+                }
+            }         
         }
 
         /// <summary>
