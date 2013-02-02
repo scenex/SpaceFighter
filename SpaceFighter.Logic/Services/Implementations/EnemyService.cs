@@ -71,7 +71,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void ReportEnemyHit(IEnemy enemy, IShot shot)
         {
-            enemy.Health -= shot.FirePower;
+            enemy.SubtractHealth(shot.FirePower);
 
             if(enemy.Health <= 0)
             {

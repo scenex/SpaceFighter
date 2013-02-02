@@ -114,13 +114,9 @@ namespace SpaceFighter.Logic.Services.Implementations
                 var originalRotation = this.playerService.Player.Rotation;
                 var targetRotation = ((float)Math.Atan2(this.currentGamePadState.ThumbSticks.Left.Y, this.currentGamePadState.ThumbSticks.Left.X)) * -1; // Todo: Why do have to invert?
                 var rotationDifference = (float)Math.Atan2(Math.Sin(targetRotation - originalRotation), Math.Cos(targetRotation - originalRotation));
-                this.playerService.Player.Rotation += rotationDifference * 0.05f;
+                this.playerService.Player.SetRotation(rotationDifference * 0.05f);
             }
                                           
-            //Debug.WriteLine("X: " + this.currentGamePadState.ThumbSticks.Left.X);
-            //Debug.WriteLine("Y: " + this.currentGamePadState.ThumbSticks.Left.Y);
-            //Debug.WriteLine("Rotation: " + this.playerService.Player.Rotation);
-            
             if (this.currentGamePadState.Triggers.Right > 0)
             {
                 this.playerService.Thrust();

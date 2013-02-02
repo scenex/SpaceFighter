@@ -9,19 +9,15 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
     using Microsoft.Xna.Framework;
 
-    public interface IEnemy
+    public interface IEnemy : IEntity
     {
-        Color[] ColorData { get; }
-        Vector2 Position { get; }
-        Vector2 Origin { get; }
-        int Width { get; }
-        int Height { get; }
-        int Health { get; set; }
-        Queue<TimeSpan> WeaponTriggers { get; }
-        float Rotation { get; }
+        void SubtractHealth(int amount);
+        void AddHealth(int amount);
 
+        Queue<TimeSpan> WeaponTriggers { get; }
         IEnumerable<Vector2> Waypoints { get; } 
 
+        // hmm... is there a better way?
         double AngleToPlayer { get; }
         void UpdateAngleToPlayer(double angle);
     }

@@ -5,7 +5,6 @@ Codename: 'Space Fighter' Backlog
 What's currently on:
 ==========
 
-- Entity system unification
 - State engine for enemies
 - Swarm enemies
 - Strategy pattern for enemy AI states
@@ -55,4 +54,5 @@ DONE:
 - Player sprite explosion
 - Create sound samples for: Shot and entity explosion
 - Sound system
+- Entity system unification
 - Shot removal after level bound hit

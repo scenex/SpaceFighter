@@ -31,23 +31,40 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private int health;
 
+        private Vector2 position;
+        private float rotation;
+
         public Player(Game game, Vector2 startPosition) : base(game)
         {
             this.Health = 100;
-            this.Rotation = -MathHelper.PiOver2;
+            this.rotation = -MathHelper.PiOver2;
 
             this.game = game;
-            this.Position = startPosition;
+            this.position = startPosition;
         }
 
         public event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
         public event EventHandler<StateChangedEventArgs> TransitionToStateDying;
         public event EventHandler<StateChangedEventArgs> TransitionToStateDead;
         public event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
-        public event EventHandler<HealthChangedEventArgs> HealthChanged; 
+        public event EventHandler<HealthChangedEventArgs> HealthChanged;
 
-        public Vector2 Position { get; set; }
-        public float Rotation { get; set; }
+        public Vector2 Position
+        {
+            get
+            {
+                return this.position;
+            }
+        }
+
+        public float Rotation
+        {
+            get
+            {
+                return this.rotation;
+            }
+        }
+
         public Color[] ColorData { get; private set; }
 
         public Rectangle BoundingRectangle
@@ -105,12 +122,17 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public void Thrust(int amount)
         {
-            this.Position =
+            this.position =
                 Vector2.Add(
                     new Vector2(
-                        (float)Math.Cos(this.Rotation) * amount,
-                        (float)Math.Sin(this.Rotation) * amount),
+                        (float)Math.Cos(this.rotation) * amount,
+                        (float)Math.Sin(this.rotation) * amount),
                     this.Position);
+        }
+
+        public void SetRotation(float angle)
+        {
+            this.rotation += angle;
         }
 
         public void SubtractHealth(int amount)
@@ -256,7 +278,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 this.Position,
                 this.spriteManager.GetCurrentRectangle(),
                 Color.White,
-                this.Rotation,
+                this.rotation,
                 new Vector2((float)this.Width / 2, (float)this.Height / 2),
                 1.0f,
                 SpriteEffects.None,

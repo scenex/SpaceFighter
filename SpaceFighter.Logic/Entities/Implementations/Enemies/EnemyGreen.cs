@@ -83,10 +83,24 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             {
                 return this.health;
             }
-            set
+        }
+
+        public Rectangle BoundingRectangle
+        {
+            get
             {
-                this.health = value;
+                throw new NotImplementedException();
             }
+        }
+
+        public void SubtractHealth(int amount)
+        {
+            this.health -= amount;
+        }
+
+        public void AddHealth(int amount)
+        {
+            this.health += amount;
         }
 
         public Queue<TimeSpan> WeaponTriggers
@@ -117,8 +131,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 this.waypoints = value;
             }
         }
-
-        public TimeSpan SpawnTimestamp { get; private set; }
 
         public Vector2 Position
         {

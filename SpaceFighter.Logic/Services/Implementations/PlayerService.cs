@@ -63,12 +63,12 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void RotateLeft()
         {
-            this.player.Rotation += 0.05f;
+            this.player.SetRotation(+0.05f);
         }
 
         public void RotateRight()
         {
-            this.player.Rotation -= 0.05f;
+            this.player.SetRotation(-0.05f);
         }
 
         public void Fire()
