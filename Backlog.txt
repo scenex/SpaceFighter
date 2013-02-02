@@ -1,16 +1,19 @@
-Space Fighter Backlog
-=====================
+Codename: 'Space Fighter' Backlog
+=================================
 
 
-What's on:
+What's currently on:
 ==========
 
-- State engine for enemies
 - Entity system unification
+- State engine for enemies
+- Swarm enemies
+- Strategy pattern for enemy AI states
 
 
 What's next:
 ============
+
 - HUD with score, energy, lives, special weapons in title safe area
 - Weapon management & upgrade system
 - Radial electromagnetic shock wave
