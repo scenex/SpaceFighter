@@ -33,7 +33,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                     this.sprite.Width,
                     this.sprite.Height,
                     this.spriteDataCached,
-                    50,
+                    10,
                     angle));
         }
 
