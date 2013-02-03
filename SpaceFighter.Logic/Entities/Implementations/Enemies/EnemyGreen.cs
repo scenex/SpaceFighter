@@ -13,15 +13,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
+    using SpaceFighter.Logic.StateMachine;
 
-    /// <summary>
-    /// The enemy class.
-    /// </summary>
     public class EnemyGreen : DrawableGameComponent, IEnemy
     {
         private Vector2 position;
         private readonly Queue<TimeSpan> weaponTriggers;
-        private Texture2D sprite;
         private SpriteBatch spriteBatch;
         private Color[] colorData;
         private int health = 100;
@@ -36,6 +33,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private readonly Curve enemyCurveY = new Curve();
 
         private ICameraService cameraService;
+
+        private StateMachine<Action<double>> stateMachine;
+
+        private SpriteManager spriteManager;
 
         public EnemyGreen(Game game, IEnumerable<Vector2> waypoints) : base(game)
         {
@@ -160,7 +161,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             get
             {
-                return this.sprite.Width;
+                return this.spriteManager.GetCurrentRectangle().Width;
             }
         }
 
@@ -168,7 +169,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             get
             {
-                return this.sprite.Height;
+                return this.spriteManager.GetCurrentRectangle().Height;
             }
         }
 
@@ -188,7 +189,34 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public override void Initialize()
         {
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            this.InitializeStateMachine();
             base.Initialize();
+        }
+
+        private void InitializeStateMachine()
+        {
+            var dying = new State<Action<double>>(
+                EnemyState.Dying,
+                null,
+                null,
+                null);
+
+            var dead = new State<Action<double>>(
+                EnemyState.Dead,
+                null,
+                null,
+                null);
+
+            var alive = new State<Action<double>>(
+                EnemyState.Alive,
+                null,
+                null,
+                null);
+
+            alive.AddTransition(dying, () => this.Health <= 0);
+            dying.AddTransition(dead, () => this.spriteManager.IsAnimationDone(this.stateMachine.CurrentState.Name));
+
+            this.stateMachine = new StateMachine<Action<double>>(alive);
         }
 
         /// <summary>
@@ -197,11 +225,22 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.sprite = this.Game.Content.Load<Texture2D>("Sprites/Enemy/Alive");
 
-            // Obtain color information for subsequent per pixel collision detection
-            this.colorData = new Color[this.sprite.Width * this.sprite.Height];
-            this.sprite.GetData(this.colorData);
+            this.spriteManager = new SpriteManager(EnemyState.Alive, 64, 64);
+
+            this.spriteManager.AddStillSprite(
+                EnemyState.Alive,
+                this.Game.Content.Load<Texture2D>("Sprites/Enemy/Alive"));
+
+            this.spriteManager.AddAnimatedSprite(
+                EnemyState.Dying,
+                this.Game.Content.Load<Texture2D>("Sprites/Enemy/Dying"));
+
+            this.spriteManager.AddStillSprite(
+                EnemyState.Dead,
+                this.Game.Content.Load<Texture2D>("Sprites/Enemy/Dead"));
+
+            this.UpdateSpriteColorData();
 
             base.LoadContent();
         }
@@ -222,12 +261,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 cameraService.GetTransformation());
 
             this.spriteBatch.Draw(
-                this.sprite,
-                new Vector2(this.position.X + this.sprite.Width / 2.0f, this.position.Y + sprite.Height / 2.0f),
-                null,
+                this.spriteManager.GetCurrentSprite(),
+                this.Origin, // <- compare to Player, some offset issue?
+                this.spriteManager.GetCurrentRectangle(),
                 Color.Green,
                 this.rotation,
-                new Vector2(this.sprite.Width / 2.0f, this.sprite.Height / 2.0f),
+                new Vector2(this.Width / 2.0f, this.Height / 2.0f),
                 1.0f, 
                 SpriteEffects.None, 
                 0.0f);
@@ -238,7 +277,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         }
 
         public override void Update(GameTime gameTime)
-        {      
+        {
+            this.stateMachine.Update();
+            this.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);
+           
             this.enemyCurveX.PostLoop = CurveLoopType.Cycle;
             this.enemyCurveY.PostLoop = CurveLoopType.Cycle;
 
@@ -257,6 +299,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.rotation = (float)Math.Atan2(this.position.Y - previousPositionY, this.position.X - previousPositionX);
 
             base.Update(gameTime);
+        }
+
+        private void UpdateSpriteColorData()
+        {
+            this.colorData = new Color[this.spriteManager.GetCurrentSprite().Width * this.spriteManager.GetCurrentSprite().Height];
+            this.spriteManager.GetCurrentSprite().GetData(this.ColorData);
         }
     }
 }

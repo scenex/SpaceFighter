@@ -16,7 +16,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
     /// </summary>
     public class Player : DrawableGameComponent, IPlayer
     {   
-        private readonly Game game;
         private SpriteBatch spriteBatch;
 
         private ICameraService cameraService;
@@ -33,13 +32,12 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private Vector2 position;
         private float rotation;
+        private Color[] colorData;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
             this.Health = 100;
             this.rotation = -MathHelper.PiOver2;
-
-            this.game = game;
             this.position = startPosition;
         }
 
@@ -65,7 +63,13 @@ namespace SpaceFighter.Logic.Entities.Implementations
             }
         }
 
-        public Color[] ColorData { get; private set; }
+        public Color[] ColorData
+        {
+            get
+            {
+                return this.colorData;
+            }
+        }
 
         public Rectangle BoundingRectangle
         {
@@ -226,20 +230,20 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
             this.spriteManager.AddStillSprite(
                 PlayerState.Alive, 
-                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"));
+                this.Game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"));
 
             this.spriteManager.AddAnimatedSprite(
                 PlayerState.Dying, 
-                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dying"));
+                this.Game.Content.Load<Texture2D>("Sprites/Spaceship/Dying"));
 
             this.spriteManager.AddStillSprite(
                 PlayerState.Dead, 
-                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Dead"));
+                this.Game.Content.Load<Texture2D>("Sprites/Spaceship/Dead"));
 
             this.spriteManager.AddStillSprite(
                 PlayerState.Respawn, 
-                this.game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"), 
-                this.game.Content.Load<Effect>("Shaders/Transparency"),
+                this.Game.Content.Load<Texture2D>("Sprites/Spaceship/Alive"), 
+                this.Game.Content.Load<Effect>("Shaders/Transparency"),
                 time => (float)(0.5f * Math.Sin(time * 20) + 0.5),
                 "param1");
 
@@ -275,11 +279,11 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
             this.spriteBatch.Draw(
                 this.spriteManager.GetCurrentSprite(),
-                this.Position,
+                this.Position, // <- compare to EnemyGreen, some offset issue?
                 this.spriteManager.GetCurrentRectangle(),
                 Color.White,
                 this.rotation,
-                new Vector2((float)this.Width / 2, (float)this.Height / 2),
+                new Vector2(this.Width / 2.0f, this.Height / 2.0f),
                 1.0f,
                 SpriteEffects.None,
                 0.0f);
@@ -291,7 +295,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private void UpdateSpriteColorData()
         {
-            this.ColorData = new Color[this.spriteManager.GetCurrentSprite().Width * this.spriteManager.GetCurrentSprite().Height];
+            this.colorData = new Color[this.spriteManager.GetCurrentSprite().Width * this.spriteManager.GetCurrentSprite().Height];
             this.spriteManager.GetCurrentSprite().GetData(this.ColorData);
         }
     }

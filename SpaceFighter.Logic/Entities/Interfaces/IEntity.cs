@@ -10,7 +10,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
     {
         Color[] ColorData { get; }
         Vector2 Position { get; }
-        Vector2 Origin { get; }
+        Vector2 Origin { get; } // <- rename to 'AbsoluteOrigin' ?
         int Width { get; }
         int Height { get; }
         int Health { get; }

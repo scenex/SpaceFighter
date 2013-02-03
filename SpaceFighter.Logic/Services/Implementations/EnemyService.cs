@@ -75,8 +75,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if(enemy.Health <= 0)
             {
-                this.Game.Components.Remove(enemy as IGameComponent);
-                this.enemies.Remove(enemy);             
+                //this.Game.Components.Remove(enemy as IGameComponent); // <- Don't remove enemy immediately, wait until transitioned to 'Dead' state
+                //this.enemies.Remove(enemy);             
             }
         }
 
