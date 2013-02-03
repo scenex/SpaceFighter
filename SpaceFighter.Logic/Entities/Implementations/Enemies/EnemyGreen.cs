@@ -197,7 +197,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.sprite = this.Game.Content.Load<Texture2D>("Sprites/Enemy");
+            this.sprite = this.Game.Content.Load<Texture2D>("Sprites/Enemy/Alive");
 
             // Obtain color information for subsequent per pixel collision detection
             this.colorData = new Color[this.sprite.Width * this.sprite.Height];

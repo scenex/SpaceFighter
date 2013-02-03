@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />
+    <Compile Include="EnemyState.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyRed.cs" />
     <Compile Include="Entities\Implementations\Weapons\EnemyWeapon.cs" />
     <Compile Include="Entities\Implementations\Weapons\PlayerWeapon.cs" />

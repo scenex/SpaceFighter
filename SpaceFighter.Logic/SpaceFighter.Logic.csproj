@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnemyState.cs" />
     <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyRed.cs" />
