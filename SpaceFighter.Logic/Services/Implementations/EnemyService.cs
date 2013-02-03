@@ -62,7 +62,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                     if(enemy.WeaponTriggers.First() < gameTime.TotalGameTime)
                     {
                         enemy.WeaponTriggers.Dequeue();
-                        this.enemyWeaponService.FireWeapon(new Vector2(enemy.Origin.X, enemy.Origin.Y), enemy.Height / 2, enemy.AngleToPlayer);
+                        this.enemyWeaponService.FireWeapon(new Vector2(enemy.Position.X, enemy.Position.Y), enemy.Height / 2, enemy.AngleToPlayer);
                     }
                 }
             }

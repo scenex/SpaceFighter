@@ -279,7 +279,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
             this.spriteBatch.Draw(
                 this.spriteManager.GetCurrentSprite(),
-                this.Position, // <- compare to EnemyGreen, some offset issue?
+                this.Position,
                 this.spriteManager.GetCurrentRectangle(),
                 Color.White,
                 this.rotation,

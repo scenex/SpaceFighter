@@ -66,6 +66,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.CheckCollisionsBetweenPlayerShotsAndBounds();
             this.CheckCollisionsBetweenEnemyShotsAndBounds();
+
             this.CheckCollisionsBetweenPlayersShotsAndEnemies();
 
             if (this.isCollisionDetectionActive)
@@ -92,16 +93,20 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             // Check whether player was hit by a enemy's shot
             foreach (var shot in this.enemyService.Shots.ToList())
-            {
-                if (
-                    this.IntersectPixels(
+            {               
+                if (this.IntersectPixels(
                         new Rectangle(
                             (int)this.playerService.Player.Position.X - this.playerService.Player.Width / 2, // Offset because we center player tile while drawing it
                             (int)this.playerService.Player.Position.Y - this.playerService.Player.Height / 2,
                             this.playerService.Player.Width,
                             this.playerService.Player.Height),
                         this.playerService.Player.ColorData,
-                        new Rectangle((int)shot.Position.X, (int)shot.Position.Y, shot.Width, shot.Height),
+
+                        new Rectangle(
+                            (int)shot.Position.X, 
+                            (int)shot.Position.Y, 
+                            shot.Width, 
+                            shot.Height),
                         shot.ColorData))
                 {
                     if (this.PlayerHit != null)
@@ -119,10 +124,27 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 foreach (var shot in this.playerService.Shots.ToList())
                 {
-                    if (this.IntersectPixels(new Rectangle((int)enemy.Position.X, (int)enemy.Position.Y, enemy.Width, enemy.Height),
-                                             enemy.ColorData,
-                                             new Rectangle((int)shot.Position.X, (int)shot.Position.Y, shot.Width, shot.Height),
-                                             shot.ColorData))
+                    if (this.IntersectPixels(
+                            new Rectangle(
+                                (int)enemy.Position.X - enemy.Width / 2, 
+                                (int)enemy.Position.Y - enemy.Height /2, 
+                                enemy.Width, 
+                                enemy.Height),
+                            enemy.ColorData,
+
+                            new Rectangle(
+                                (int)shot.Position.X, 
+                                (int)shot.Position.Y, 
+                                shot.Width, 
+                                shot.Height),
+                            shot.ColorData))
+                    {
+                        if (this.EnemyHit != null)
+                        {
+                            this.EnemyHit(this, new EnemyHitEventArgs(enemy, shot));
+                        }
+                    }
+
                     // PERFORMACE KILLER
                     //if (this.IntersectPixelsTranslated(
                     //    Matrix.CreateTranslation(new Vector3(enemy.Position, 0)), // Todo: Proper translation
@@ -133,13 +155,6 @@ namespace SpaceFighter.Logic.Services.Implementations
                     //    shot.Width,
                     //    shot.Height,
                     //    shot.ColorData))
-
-                    {
-                        if (this.EnemyHit != null)
-                        {
-                            this.EnemyHit(this, new EnemyHitEventArgs(enemy, shot));
-                        }
-                    }
                 }
             }
         }
@@ -150,18 +165,25 @@ namespace SpaceFighter.Logic.Services.Implementations
             foreach (var enemy in this.enemyService.Enemies)
             {
                 if (this.IntersectPixels(
-                    new Rectangle(
-                        (int)this.playerService.Player.Position.X - this.playerService.Player.Width / 2,
-                        (int)this.playerService.Player.Position.Y - this.playerService.Player.Height / 2, 
-                        this.playerService.Player.Width, 
-                        this.playerService.Player.Height),
-                            this.playerService.Player.ColorData,
-                                new Rectangle(
-                                    (int)enemy.Position.X, 
-                                    (int)enemy.Position.Y, 
-                                    enemy.Width, 
-                                    enemy.Height),
-                                        enemy.ColorData))
+                        new Rectangle(
+                            (int)this.playerService.Player.Position.X,
+                            (int)this.playerService.Player.Position.Y, 
+                            this.playerService.Player.Width, 
+                            this.playerService.Player.Height),
+                        this.playerService.Player.ColorData,
+
+                        new Rectangle(
+                            (int)enemy.Position.X, 
+                            (int)enemy.Position.Y, 
+                            enemy.Width, 
+                            enemy.Height),
+                        enemy.ColorData))
+                {
+                    if (this.PlayerEnemyHit != null)
+                    {
+                        this.PlayerEnemyHit(this, null);
+                    }
+                }
 
                 // PERFORMANCE KILLER
                 //if (this.IntersectPixelsTranslated(
@@ -173,12 +195,6 @@ namespace SpaceFighter.Logic.Services.Implementations
                 //    enemy.Width,
                 //    enemy.Height,
                 //    enemy.ColorData))
-                {
-                    if (this.PlayerEnemyHit != null)
-                    {
-                        this.PlayerEnemyHit(this, null);
-                    }
-                }
             }
         }
 
