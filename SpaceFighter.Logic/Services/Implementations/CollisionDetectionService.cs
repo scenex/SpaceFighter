@@ -127,7 +127,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                     if (this.IntersectPixels(
                             new Rectangle(
                                 (int)enemy.Position.X - enemy.Width / 2, 
-                                (int)enemy.Position.Y - enemy.Height /2, 
+                                (int)enemy.Position.Y - enemy.Height / 2, 
                                 enemy.Width, 
                                 enemy.Height),
                             enemy.ColorData,
