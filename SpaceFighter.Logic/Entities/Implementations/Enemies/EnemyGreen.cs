@@ -38,8 +38,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private SpriteManager spriteManager;
 
+        private bool isAlive;
+
         public EnemyGreen(Game game, IEnumerable<Vector2> waypoints) : base(game)
         {
+            this.isAlive = true;
+
             this.weaponTriggers = new Queue<TimeSpan>(new List<TimeSpan>(){ 
                 new TimeSpan(0,0,0,0),
                 new TimeSpan(0,0,0,2),
@@ -91,6 +95,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             get
             {
                 throw new NotImplementedException();
+            }
+        }
+
+        public bool IsAlive
+        {
+            get
+            {
+                return this.isAlive;
             }
         }
 
@@ -195,6 +207,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private void InitializeStateMachine()
         {
+            var alive = new State<Action<double>>(
+                EnemyState.Alive,
+                null,
+                null,
+                null);
+
             var dying = new State<Action<double>>(
                 EnemyState.Dying,
                 null,
@@ -204,13 +222,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             var dead = new State<Action<double>>(
                 EnemyState.Dead,
                 null,
-                null,
-                null);
-
-            var alive = new State<Action<double>>(
-                EnemyState.Alive,
-                null,
-                null,
+                () => this.isAlive = false,
                 null);
 
             alive.AddTransition(dying, () => this.Health <= 0);

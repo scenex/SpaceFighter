@@ -55,7 +55,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var enemy in enemies.ToList())
+            foreach (var enemy in this.enemies.ToList())
             {
                 if (enemy.WeaponTriggers.Any())
                 {
@@ -66,18 +66,18 @@ namespace SpaceFighter.Logic.Services.Implementations
                     }
                 }
             }
+
+            foreach (var enemy in this.enemies.ToList().Where(enemy => enemy.IsAlive == false))
+            {
+                this.enemies.Remove(enemy);
+            }
+
             base.Update(gameTime);
         }
 
         public void ReportEnemyHit(IEnemy enemy, IShot shot)
         {
             enemy.SubtractHealth(shot.FirePower);
-
-            if(enemy.Health <= 0)
-            {
-                //this.Game.Components.Remove(enemy as IGameComponent); // <- Don't remove enemy immediately, wait until transitioned to 'Dead' state
-                //this.enemies.Remove(enemy);             
-            }
         }
 
         public void RemoveShot(IShot shot)

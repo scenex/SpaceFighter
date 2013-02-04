@@ -11,6 +11,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
     public interface IEnemy : IEntity
     {
+        bool IsAlive { get; }
         void SubtractHealth(int amount);
         void AddHealth(int amount);
 
