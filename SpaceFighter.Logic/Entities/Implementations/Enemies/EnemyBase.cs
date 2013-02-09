@@ -5,12 +5,8 @@
 namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
@@ -18,7 +14,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     public class EnemyBase : DrawableGameComponent, IEnemy
     {
         private Vector2 position;
-        private readonly Queue<TimeSpan> weaponTriggers;
+        //private readonly Queue<TimeSpan> weaponTriggers;
         private SpriteBatch spriteBatch;
         private Color[] colorData;
         private int health = 100;
@@ -27,10 +23,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private double angleToPlayer;
 
-        private IEnumerable<Vector2> waypoints;
+        //private IEnumerable<Vector2> waypoints;
 
-        private readonly Curve enemyCurveX = new Curve();
-        private readonly Curve enemyCurveY = new Curve();
+        //private readonly Curve enemyCurveX = new Curve();
+        //private readonly Curve enemyCurveY = new Curve();
 
         private ICameraService cameraService;
 
@@ -40,44 +36,46 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private bool isAlive;
 
-        public EnemyBase(Game game, IEnumerable<Vector2> waypoints) : base(game)
+        private Vector2 distanceToPlayer;
+
+        public EnemyBase(Game game, Vector2 startPosition) : base(game)
         {
             this.isAlive = true;
 
-            this.weaponTriggers = new Queue<TimeSpan>(new List<TimeSpan>(){ 
-                new TimeSpan(0,0,0,0),
-                new TimeSpan(0,0,0,2),
-                new TimeSpan(0,0,0,4),
-                new TimeSpan(0,0,0,6),
-                new TimeSpan(0,0,0,8),
-                new TimeSpan(0,0,0,10),
-                new TimeSpan(0,0,0,12),
-                new TimeSpan(0,0,0,14),
-                new TimeSpan(0,0,0,16),
-                new TimeSpan(0,0,0,18),
-                new TimeSpan(0,0,0,20),
-                new TimeSpan(0,0,0,22),
-                new TimeSpan(0,0,0,24),
-                new TimeSpan(0,0,0,26),
-                new TimeSpan(0,0,0,28),
-                new TimeSpan(0,0,0,30),
-                new TimeSpan(0,0,0,32),
-                new TimeSpan(0,0,0,34),});
+            //this.weaponTriggers = new Queue<TimeSpan>(new List<TimeSpan>(){ 
+            //    new TimeSpan(0,0,0,0),
+            //    new TimeSpan(0,0,0,2),
+            //    new TimeSpan(0,0,0,4),
+            //    new TimeSpan(0,0,0,6),
+            //    new TimeSpan(0,0,0,8),
+            //    new TimeSpan(0,0,0,10),
+            //    new TimeSpan(0,0,0,12),
+            //    new TimeSpan(0,0,0,14),
+            //    new TimeSpan(0,0,0,16),
+            //    new TimeSpan(0,0,0,18),
+            //    new TimeSpan(0,0,0,20),
+            //    new TimeSpan(0,0,0,22),
+            //    new TimeSpan(0,0,0,24),
+            //    new TimeSpan(0,0,0,26),
+            //    new TimeSpan(0,0,0,28),
+            //    new TimeSpan(0,0,0,30),
+            //    new TimeSpan(0,0,0,32),
+            //    new TimeSpan(0,0,0,34),});
 
-            this.enemyCurveX.Keys.Add(new CurveKey(0.0f, 200));
-            this.enemyCurveX.Keys.Add(new CurveKey(4.0f, 300));
-            this.enemyCurveX.Keys.Add(new CurveKey(8.0f, 200));
-            this.enemyCurveX.Keys.Add(new CurveKey(12.0f,100));
-            this.enemyCurveX.Keys.Add(new CurveKey(16.0f,200));
+            //this.enemyCurveX.Keys.Add(new CurveKey(0.0f, 200));
+            //this.enemyCurveX.Keys.Add(new CurveKey(4.0f, 300));
+            //this.enemyCurveX.Keys.Add(new CurveKey(8.0f, 200));
+            //this.enemyCurveX.Keys.Add(new CurveKey(12.0f,100));
+            //this.enemyCurveX.Keys.Add(new CurveKey(16.0f,200));
 
-            this.enemyCurveY.Keys.Add(new CurveKey(0.0f, 200));
-            this.enemyCurveY.Keys.Add(new CurveKey(4.0f, 300));
-            this.enemyCurveY.Keys.Add(new CurveKey(8.0f, 400));
-            this.enemyCurveY.Keys.Add(new CurveKey(12.0f,300));
-            this.enemyCurveY.Keys.Add(new CurveKey(16.0f,200));
+            //this.enemyCurveY.Keys.Add(new CurveKey(0.0f, 200));
+            //this.enemyCurveY.Keys.Add(new CurveKey(4.0f, 300));
+            //this.enemyCurveY.Keys.Add(new CurveKey(8.0f, 400));
+            //this.enemyCurveY.Keys.Add(new CurveKey(12.0f,300));
+            //this.enemyCurveY.Keys.Add(new CurveKey(16.0f,200));
 
-            this.position = waypoints.First();
-            this.waypoints = waypoints;
+            this.position = startPosition;
+            //this.waypoints = waypoints;
             
             this.Game.Components.Add(this);
         }
@@ -116,14 +114,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.health += amount;
         }
 
-        public Queue<TimeSpan> WeaponTriggers
-        {
-            get
-            {
+        //public Queue<TimeSpan> WeaponTriggers
+        //{
+        //    get
+        //    {
 
-                return this.weaponTriggers;
-            }
-        }
+        //        return this.weaponTriggers;
+        //    }
+        //}
 
         public float Rotation
         {
@@ -133,17 +131,17 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             }
         }
 
-        public IEnumerable<Vector2> Waypoints
-        {
-            get
-            {
-                return this.waypoints;
-            }
-            set
-            {
-                this.waypoints = value;
-            }
-        }
+        //public IEnumerable<Vector2> Waypoints
+        //{
+        //    get
+        //    {
+        //        return this.waypoints;
+        //    }
+        //    set
+        //    {
+        //        this.waypoints = value;
+        //    }
+        //}
 
         public Vector2 Position
         {
@@ -196,6 +194,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public void UpdateAngleToPlayer(double angle)
         {
             this.angleToPlayer = angle;
+        }
+
+        public void UpdateDistanceToPlayer(Vector2 distance)
+        {
+            this.distanceToPlayer = distance;
         }
 
         public override void Initialize()
@@ -288,25 +291,45 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             base.Draw(gameTime);
         }
 
+        private Vector2 velocity;
         public override void Update(GameTime gameTime)
         {
             this.stateMachine.Update();
             this.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);
            
-            this.enemyCurveX.PostLoop = CurveLoopType.Cycle;
-            this.enemyCurveY.PostLoop = CurveLoopType.Cycle;
+            //this.enemyCurveX.PostLoop = CurveLoopType.Cycle;
+            //this.enemyCurveY.PostLoop = CurveLoopType.Cycle;
 
-            this.enemyCurveX.PreLoop = CurveLoopType.Cycle;
-            this.enemyCurveY.PreLoop = CurveLoopType.Cycle;
+            //this.enemyCurveX.PreLoop = CurveLoopType.Cycle;
+            //this.enemyCurveY.PreLoop = CurveLoopType.Cycle;
 
-            this.enemyCurveX.ComputeTangents(CurveTangent.Smooth);
-            this.enemyCurveY.ComputeTangents(CurveTangent.Smooth);
+            //this.enemyCurveX.ComputeTangents(CurveTangent.Smooth);
+            //this.enemyCurveY.ComputeTangents(CurveTangent.Smooth);
 
             var previousPositionX = this.position.X;
             var previousPositionY = this.position.Y;
 
-            this.position.X = this.enemyCurveX.Evaluate((float)gameTime.TotalGameTime.TotalSeconds);
-            this.position.Y = this.enemyCurveY.Evaluate((float)gameTime.TotalGameTime.TotalSeconds);
+            //this.position.X = this.enemyCurveX.Evaluate((float)gameTime.TotalGameTime.TotalSeconds);
+            //this.position.Y = this.enemyCurveY.Evaluate((float)gameTime.TotalGameTime.TotalSeconds);
+
+
+            // *** Steering Behaviour: Seek ***
+            const float mass = 8;
+            const float max_velocity = 6;
+            const float max_force = 1;
+            const float max_speed = 1f;
+
+            var desiredVelocity = Vector2.Normalize(this.distanceToPlayer) * max_velocity;
+            var steering = Vector2.Subtract(desiredVelocity, velocity);
+            
+            steering = steering.Truncate(max_force);            
+            steering = Vector2.Divide(steering, mass);
+
+            velocity = Vector2.Add(velocity, steering);
+            velocity = velocity.Truncate(max_speed);
+            this.position += velocity;
+            // ********************************
+
 
             this.rotation = (float)Math.Atan2(this.position.Y - previousPositionY, this.position.X - previousPositionX);
 

@@ -71,12 +71,14 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.isCollisionDetectionActive)
             {
-                this.CheckCollisionBetweenPlayerAndEnemies();              
+                //this.CheckCollisionBetweenPlayerAndEnemies();              
                 this.CheckCollisionsBetweenEnemiesShotsAndPlayer();
                 this.CheckCollisionsBetweenPlayerAndBounds();
             }
 
             this.UpdateEnemyAngleToPlayer(); // Todo: Consider if this calculation is done at the right place
+            this.UpdateEnemyDistanceToPlayer();
+
             base.Update(gameTime);
         }
 
@@ -86,6 +88,17 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 var angle = Math.Atan2((enemy.Origin.Y - playerService.Player.Origin.Y), (enemy.Origin.X - playerService.Player.Origin.X)) + MathHelper.Pi; // Todo: why MathHelper.Pi?
                 enemy.UpdateAngleToPlayer(angle);
+            }
+        }
+
+        private void UpdateEnemyDistanceToPlayer()
+        {
+            foreach (var enemy in this.enemyService.Enemies.ToList())
+            {                
+                enemy.UpdateDistanceToPlayer(
+                    new Vector2(
+                        this.playerService.Player.Position.X - enemy.Position.X, 
+                        this.playerService.Player.Position.Y - enemy.Position.Y));
             }
         }
 

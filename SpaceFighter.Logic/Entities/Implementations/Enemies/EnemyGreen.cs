@@ -9,7 +9,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
     public class EnemyGreen : EnemyBase
     {
-        public EnemyGreen(Game game, IEnumerable<Vector2> waypoints) : base(game, waypoints)
+        public EnemyGreen(Game game, Vector2 startPosition) : base(game, startPosition)
         {
         }
     }

@@ -4,14 +4,14 @@
 
 namespace SpaceFighter.Logic
 {
-    using System;
     using Microsoft.Xna.Framework;
 
-    public static class EnemyFactory
+    public static class Vector2Extensions
     {
-        public static T Create<T>(Game game, Vector2 startPosition)
+        public static Vector2 Truncate(this Vector2 vector2, float amount)
         {
-            return (T)Activator.CreateInstance(typeof(T), game, startPosition);
+            vector2.Normalize();
+            return Vector2.Multiply(vector2, amount);
         }
     }
 }

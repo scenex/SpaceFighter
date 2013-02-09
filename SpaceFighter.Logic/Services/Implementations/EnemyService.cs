@@ -42,30 +42,24 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.enemyWeaponService = (IEnemyWeaponService)this.Game.Services.GetService(typeof(IEnemyWeaponService));
 
-            this.enemies.Add(EnemyFactory.Create<EnemyGreen>(
-                this.Game, 
-                new List<Vector2>
-                    {
-                        new Vector2(150, 100), 
-                        new Vector2(200, 200)
-                    }));
+            this.enemies.Add(EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(400, 400)));
 
             base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var enemy in this.enemies.ToList())
-            {
-                if (enemy.WeaponTriggers.Any())
-                {
-                    if(enemy.WeaponTriggers.First() < gameTime.TotalGameTime)
-                    {
-                        enemy.WeaponTriggers.Dequeue();
-                        this.enemyWeaponService.FireWeapon(new Vector2(enemy.Position.X, enemy.Position.Y), enemy.Height / 2, enemy.AngleToPlayer);
-                    }
-                }
-            }
+            //foreach (var enemy in this.enemies.ToList())
+            //{
+            //    if (enemy.WeaponTriggers.Any())
+            //    {
+            //        if(enemy.WeaponTriggers.First() < gameTime.TotalGameTime)
+            //        {
+            //            enemy.WeaponTriggers.Dequeue();
+            //            this.enemyWeaponService.FireWeapon(new Vector2(enemy.Position.X, enemy.Position.Y), enemy.Height / 2, enemy.AngleToPlayer);
+            //        }
+            //    }
+            //}
 
             foreach (var enemy in this.enemies.ToList().Where(enemy => enemy.IsAlive == false))
             {
