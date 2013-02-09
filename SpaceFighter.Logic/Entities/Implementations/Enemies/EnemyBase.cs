@@ -238,7 +238,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            this.spriteManager = new SpriteManager(EnemyState.Alive, 64, 64);
+            this.spriteManager = new SpriteManager(EnemyState.Alive, 108, 128);
 
             this.spriteManager.AddStillSprite(
                 EnemyState.Alive,
@@ -276,7 +276,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 this.spriteManager.GetCurrentSprite(),
                 this.position,
                 this.spriteManager.GetCurrentRectangle(),
-                Color.Green,
+                Color.White,
                 this.rotation,
                 new Vector2(this.Width / 2.0f, this.Height / 2.0f),
                 1.0f, 

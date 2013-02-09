@@ -226,7 +226,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            this.spriteManager = new SpriteManager(PlayerState.Alive, 64, 64);
+            this.spriteManager = new SpriteManager(PlayerState.Alive, 105, 128);
 
             this.spriteManager.AddStillSprite(
                 PlayerState.Alive, 
