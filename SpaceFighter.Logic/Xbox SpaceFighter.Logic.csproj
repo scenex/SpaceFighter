@@ -42,6 +42,8 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="AI\ISteering.cs" />
+    <Compile Include="AI\SteeringSeek.cs" />
     <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />
     <Compile Include="EnemyState.cs" />

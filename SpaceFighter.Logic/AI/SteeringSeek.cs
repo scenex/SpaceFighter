@@ -1,0 +1,32 @@
+// -----------------------------------------------------------------------
+// (c) Cataclysm Game Studios 2012
+// -----------------------------------------------------------------------
+
+namespace SpaceFighter.Logic.AI
+{
+    using Microsoft.Xna.Framework;
+
+    public class SteeringSeek : ISteering
+    {
+        const float Mass = 8;
+        const float MaxVelocity = 6;
+        const float MaxForce = 1;
+        const float MaxSpeed = 1f;
+
+        Vector2 velocity;
+
+        public Vector2 AdvancePosition(Vector2 position, Vector2 distance, float angle)
+        {
+            var desiredVelocity = Vector2.Normalize(distance) * MaxVelocity;
+            var steering = Vector2.Subtract(desiredVelocity, velocity);
+
+            steering = steering.Truncate(MaxForce);
+            steering = Vector2.Divide(steering, Mass);
+
+            velocity = Vector2.Add(velocity, steering);
+            velocity = velocity.Truncate(MaxSpeed);
+            
+            return position + this.velocity;
+        }
+    }
+}

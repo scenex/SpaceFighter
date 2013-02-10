@@ -4,7 +4,6 @@
 
 namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {   
-    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
     public class EnemyGreen : EnemyBase
