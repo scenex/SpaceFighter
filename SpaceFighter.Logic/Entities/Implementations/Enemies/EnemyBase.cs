@@ -7,7 +7,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using SpaceFighter.Logic.AI;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
@@ -17,27 +16,25 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private SpriteBatch spriteBatch;
 
         private ICameraService cameraService;
-        private Vector2 distanceToPlayer;
-        private ISteering steeringStrategy;
+        protected Vector2 distanceToPlayer;      
 
         protected StateMachine<Action<double>> stateMachine;
         protected SpriteManager spriteManager;
 
         protected EnemyBase(Game game, Vector2 startPosition) : base(game)
         {
-            this.Position = startPosition;
-            this.steeringStrategy = new SteeringSeek();
-            
+            this.Position = startPosition;           
             this.Game.Components.Add(this);
         }
 
         public abstract void InitializeStateMachine();
         public abstract void LoadSprites();
+        public abstract void UpdatePosition();
         public abstract bool IsAlive { get; }
 
         public int Health { get; protected set; }
         public float Rotation { get; private set; }
-        public Vector2 Position { get; private set; }
+        public Vector2 Position { get; protected set; }
         public double AngleToPlayer { get; private set; }
         public Color[] ColorData { get; private set; }
 
@@ -151,13 +148,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
            
             var previousPositionX = this.Position.X;
             var previousPositionY = this.Position.Y;
+            
+            this.UpdatePosition();
 
-            this.Position = this.steeringStrategy.AdvancePosition(this.Position, this.distanceToPlayer, this.Rotation);
             this.Rotation = (float)Math.Atan2(this.Position.Y - previousPositionY, this.Position.X - previousPositionX);
 
             base.Update(gameTime);
         }
-
+       
         private void UpdateSpriteColorData()
         {
             this.ColorData = new Color[this.spriteManager.GetCurrentSprite().Width * this.spriteManager.GetCurrentSprite().Height];

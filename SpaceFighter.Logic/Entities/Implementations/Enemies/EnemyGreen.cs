@@ -8,16 +8,20 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using SpaceFighter.Logic.AI;
     using SpaceFighter.Logic.StateMachine;
 
     public class EnemyGreen : EnemyBase
     {
         private bool isAlive;
+        private ISteering steeringStrategy;
 
         public EnemyGreen(Game game, Vector2 startPosition) : base(game, startPosition)
         {
             this.isAlive = true;
             this.Health = 100;
+
+            this.steeringStrategy = new SteeringSeek();
         }
 
         public override bool IsAlive
@@ -26,6 +30,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             {
                 return this.isAlive;
             }
+        }
+
+        public override void UpdatePosition()
+        {
+            this.Position = this.steeringStrategy.AdvancePosition(this.Position, this.distanceToPlayer, this.Rotation);
         }
 
         public override void InitializeStateMachine()
