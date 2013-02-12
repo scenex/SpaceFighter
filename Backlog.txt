@@ -5,16 +5,15 @@ Codename: 'Space Fighter' Backlog
 What's currently on:
 ==========
 
-- State engine for enemies
-- Swarm enemies
-- Strategy pattern for enemy AI states
+- Weapon architecture re-design (enemy -> weapon strategy)
+- Weapon upgrade logic
 
 
 What's next:
 ============
 
+- Swarm enemies
 - HUD with score, energy, lives, special weapons in title safe area
-- Weapon management & upgrade system
 - Radial electromagnetic shock wave
 - More accurate collision detection
 - Time system
@@ -56,3 +55,5 @@ DONE:
 - Sound system
 - Entity system unification
 - Shot removal after level bound hit
+- State engine for enemies
+- Strategy pattern for enemy AI states
