@@ -9,6 +9,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using Microsoft.Xna.Framework.Graphics;
 
     using SpaceFighter.Logic.AI;
+    using SpaceFighter.Logic.Entities.Implementations.Weapons;
+    using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.StateMachine;
 
     public class EnemyGreen : EnemyBase
@@ -16,12 +18,22 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private bool isAlive;
         private ISteering steeringStrategy;
 
+        private Weapon weapon;
+
         public EnemyGreen(Game game, Vector2 startPosition) : base(game, startPosition)
         {
             this.isAlive = true;
             this.Health = 100;
 
             this.steeringStrategy = new SteeringSeek();
+        }
+
+        public override void Initialize()
+        {
+            this.weapon = new EnemyWeapon(this.Game);
+            this.Game.Components.Add(this.weapon);
+
+            base.Initialize();
         }
 
         public override bool IsAlive
@@ -32,12 +44,25 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             }
         }
 
-        public override void UpdatePosition()
+        public override IWeapon Weapon
+        {
+            get
+            {
+                return this.weapon;
+            }
+        }
+
+        protected override void UpdatePosition()
         {
             this.Position = this.steeringStrategy.AdvancePosition(this.Position, this.distanceToPlayer, this.Rotation);
         }
 
-        public override void InitializeStateMachine()
+        protected override void UpdateWeaponSystem()
+        {
+            this.Weapon.FireWeapon(new Vector2(this.Position.X, this.Position.Y), this.Height / 2, this.AngleToPlayer);
+        }
+
+        protected override void InitializeStateMachine()
         {
             var alive = new State<Action<double>>(
                 EnemyState.Alive,
@@ -63,7 +88,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.stateMachine = new StateMachine<Action<double>>(alive);
         }
 
-        public override void LoadSprites()
+        protected override void LoadSprites()
         {
             this.spriteManager = new SpriteManager(EnemyState.Alive, 108, 128);
 

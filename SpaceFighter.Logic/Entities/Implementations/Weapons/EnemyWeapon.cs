@@ -53,8 +53,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             {
                 shot.Position = 
                     new Vector2(
-                        (shot.Position.X + ((float)Math.Cos(shot.Angle))),
-                        (shot.Position.Y + ((float)Math.Sin(shot.Angle))));
+                        (shot.Position.X + (float)Math.Cos(shot.Angle) * 3),
+                        (shot.Position.Y + (float)Math.Sin(shot.Angle) * 3));
             }
         }
 

@@ -70,7 +70,6 @@
     <Compile Include="Entities\Interfaces\IWeapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Implementations\EnemyService.cs" />
-    <Compile Include="Services\Implementations\EnemyWeaponService.cs" />
     <Compile Include="Services\Implementations\GameController.cs" />
     <Compile Include="Services\Implementations\HeadUpDisplayService.cs" />
     <Compile Include="Services\Implementations\InputService.cs" />
@@ -79,13 +78,10 @@
     <Compile Include="Services\Interfaces\ICameraService.cs" />
     <Compile Include="Services\Interfaces\ICollisionDetectionService.cs" />
     <Compile Include="Services\Interfaces\IEnemyService.cs" />
-    <Compile Include="Services\Interfaces\IEnemyWeaponService.cs" />
     <Compile Include="Services\Interfaces\IGameController.cs" />
-    <Compile Include="Services\Implementations\PlayerWeaponService.cs" />
     <Compile Include="Services\Interfaces\IHeadUpDisplayService.cs" />
     <Compile Include="Services\Interfaces\IInputService.cs" />
     <Compile Include="Services\Interfaces\IPlayerService.cs" />
-    <Compile Include="Services\Interfaces\IPlayerWeaponService.cs" />
     <Compile Include="Services\Implementations\PlayerService.cs" />
     <Compile Include="Entities\Implementations\Player.cs" />
     <Compile Include="Entities\Implementations\Shot.cs" />

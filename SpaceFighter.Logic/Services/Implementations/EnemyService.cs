@@ -16,8 +16,7 @@ namespace SpaceFighter.Logic.Services.Implementations
     public class EnemyService : GameComponent, IEnemyService
     {
         readonly IList<IEnemy> enemies = new List<IEnemy>();
-        private IEnemyWeaponService enemyWeaponService;
-
+       
         public EnemyService(Game game) : base(game)
         {
         }
@@ -34,14 +33,13 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             get
             {
-                return this.enemyWeaponService.Weapon.Shots;
+                // Todo !
+                return this.enemies[0].Weapon.Shots;
             }
         }
 
         public override void Initialize()
         {
-            this.enemyWeaponService = (IEnemyWeaponService)this.Game.Services.GetService(typeof(IEnemyWeaponService));
-
             this.enemies.Add(EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(400, 400)));
 
             base.Initialize();
@@ -49,18 +47,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Update(GameTime gameTime)
         {
-            //foreach (var enemy in this.enemies.ToList())
-            //{
-            //    if (enemy.WeaponTriggers.Any())
-            //    {
-            //        if(enemy.WeaponTriggers.First() < gameTime.TotalGameTime)
-            //        {
-            //            enemy.WeaponTriggers.Dequeue();
-            //            this.enemyWeaponService.FireWeapon(new Vector2(enemy.Position.X, enemy.Position.Y), enemy.Height / 2, enemy.AngleToPlayer);
-            //        }
-            //    }
-            //}
-
             foreach (var enemy in this.enemies.ToList().Where(enemy => enemy.IsAlive == false))
             {
                 this.enemies.Remove(enemy);
@@ -76,7 +62,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void RemoveShot(IShot shot)
         {
-            this.enemyWeaponService.Weapon.Shots.Remove(shot);
+            // Todo ! 
+            this.enemies[0].Weapon.Shots.Remove(shot);
         }
     }
 }

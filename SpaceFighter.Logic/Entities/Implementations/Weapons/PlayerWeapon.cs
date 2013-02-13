@@ -33,7 +33,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                     this.sprite.Width,
                     this.sprite.Height,
                     this.spriteDataCached,
-                    10,
+                    20,
                     angle));
         }
 
@@ -54,8 +54,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             {
                 shot.Position = 
                     new Vector2(
-                        (shot.Position.X + ((float)Math.Cos(shot.Angle)) * 5),
-                        (shot.Position.Y + ((float)Math.Sin(shot.Angle)) * 5));
+                        (shot.Position.X + (float)Math.Cos(shot.Angle) * 5),
+                        (shot.Position.Y + (float)Math.Sin(shot.Angle) * 5));
             }
         }
 

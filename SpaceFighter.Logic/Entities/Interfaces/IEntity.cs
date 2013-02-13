@@ -16,5 +16,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         int Health { get; }
         float Rotation { get; }
         Rectangle BoundingRectangle { get; }
+
+        IWeapon Weapon { get; }
     }
 }

@@ -71,7 +71,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.isCollisionDetectionActive)
             {
-                //this.CheckCollisionBetweenPlayerAndEnemies();              
+                this.CheckCollisionBetweenPlayerAndEnemies();              
                 this.CheckCollisionsBetweenEnemiesShotsAndPlayer();
                 this.CheckCollisionsBetweenPlayerAndBounds();
             }

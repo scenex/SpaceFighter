@@ -14,8 +14,6 @@ namespace SpaceFighter.Logic.Services.Implementations
     public class PlayerService : GameComponent, IPlayerService
     {
         private Player player;
-
-        private IPlayerWeaponService playerWeaponService;
         private IAudioService audioService;
 
         public PlayerService(Game game) : base(game)
@@ -40,13 +38,12 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             get
             {
-                return this.playerWeaponService.Weapon.Shots;
+                return this.player.Weapon.Shots;
             }
         }
 
         public override void Initialize()
         {
-            this.playerWeaponService = (IPlayerWeaponService)this.Game.Services.GetService((typeof(IPlayerWeaponService)));
             this.audioService = (IAudioService)this.Game.Services.GetService((typeof(IAudioService)));
 
             this.player = new Player(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0)); // Todo: Eliminate magic number
@@ -74,7 +71,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void Fire()
         {
             this.audioService.PlaySound("shot");
-            this.playerWeaponService.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2, this.player.Rotation);
+            this.player.Weapon.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2, this.player.Rotation);
         }
 
         public void Thrust()
@@ -94,7 +91,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void RemoveShot(IShot shot)
         {
-            this.playerWeaponService.Weapon.Shots.Remove(shot);
+            this.player.Weapon.Shots.Remove(shot);
         }
 
         private void OnTransitionToStateDying(object sender, StateChangedEventArgs stateChangedEventArgs)

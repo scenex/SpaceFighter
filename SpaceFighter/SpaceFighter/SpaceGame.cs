@@ -78,14 +78,6 @@ namespace SpaceFighter
             this.Services.AddService(typeof(IEnemyService), enemyService);
             this.Components.Add(enemyService);
 
-            var playerWeaponService = new PlayerWeaponService(this);
-            this.Services.AddService(typeof(IPlayerWeaponService), playerWeaponService);
-            this.Components.Add(playerWeaponService);
-
-            var enemyWeaponService = new EnemyWeaponService(this);
-            this.Services.AddService(typeof(IEnemyWeaponService), enemyWeaponService);
-            this.Components.Add(enemyWeaponService);
-
             var worldService = new WorldService(this);
             this.Services.AddService(typeof(IWorldService), worldService);
             this.Components.Add(worldService);

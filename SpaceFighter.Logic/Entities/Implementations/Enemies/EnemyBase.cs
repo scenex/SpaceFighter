@@ -27,10 +27,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.Game.Components.Add(this);
         }
 
-        public abstract void InitializeStateMachine();
-        public abstract void LoadSprites();
-        public abstract void UpdatePosition();
+        protected abstract void InitializeStateMachine();
+        protected abstract void LoadSprites();
+        protected abstract void UpdatePosition();
+        protected abstract void UpdateWeaponSystem();
+        
         public abstract bool IsAlive { get; }
+        public abstract IWeapon Weapon { get; }
 
         public int Health { get; protected set; }
         public float Rotation { get; private set; }
@@ -150,7 +153,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             var previousPositionY = this.Position.Y;
             
             this.UpdatePosition();
-
+            this.UpdateWeaponSystem();
             this.Rotation = (float)Math.Atan2(this.Position.Y - previousPositionY, this.Position.X - previousPositionX);
 
             base.Update(gameTime);

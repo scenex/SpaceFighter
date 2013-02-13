@@ -7,6 +7,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+
+    using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
     using StateMachine;
@@ -33,6 +35,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private Vector2 position;
         private float rotation;
         private Color[] colorData;
+        private Weapon weapon;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
@@ -80,6 +83,14 @@ namespace SpaceFighter.Logic.Entities.Implementations
                     (int)this.Position.Y - this.spriteManager.GetCurrentRectangle().Height / 2,
                     this.spriteManager.GetCurrentRectangle().Width,
                     this.spriteManager.GetCurrentRectangle().Height);
+            }
+        }
+
+        public IWeapon Weapon
+        {
+            get
+            {
+                return this.weapon;
             }
         }
 
@@ -151,7 +162,11 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public override void Initialize()
         {
+            this.weapon = new PlayerWeapon(this.Game);
+            this.Game.Components.Add(this.weapon);
+
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            
             this.InitializeStateMachine();
             base.Initialize();
         }
