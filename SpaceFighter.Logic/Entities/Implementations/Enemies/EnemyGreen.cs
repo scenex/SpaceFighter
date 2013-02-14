@@ -17,6 +17,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     {
         private bool isAlive;
         private ISteering steeringStrategy;
+        private IShooting shootingStrategy;
 
         private Weapon weapon;
 
@@ -26,6 +27,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.Health = 100;
 
             this.steeringStrategy = new SteeringSeek();
+            this.shootingStrategy = new ShootingPeriodically();
         }
 
         public override void Initialize()
@@ -54,12 +56,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         protected override void UpdatePosition()
         {
-            this.Position = this.steeringStrategy.AdvancePosition(this.Position, this.distanceToPlayer, this.Rotation);
+            this.Position = this.steeringStrategy.Run(this.Position, this.distanceToPlayer, this.Rotation);
         }
 
-        protected override void UpdateWeaponSystem()
+        protected override void UpdateWeapon()
         {
-            this.Weapon.FireWeapon(new Vector2(this.Position.X, this.Position.Y), this.Height / 2, this.AngleToPlayer);
+            this.shootingStrategy.Run(() => this.Weapon.FireWeapon(this.Position, this.Height / 2, this.AngleToPlayer));
         }
 
         protected override void InitializeStateMachine()

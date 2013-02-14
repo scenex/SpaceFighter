@@ -4,10 +4,13 @@
 
 namespace SpaceFighter.Logic.AI
 {
-    using Microsoft.Xna.Framework;
+    using System;
 
-    public interface ISteering
+    public class ShootingPeriodically : IShooting
     {
-        Vector2 Run(Vector2 position, Vector2 distance, float angle);
+        public void Run(Action action)
+        {
+            action.Invoke();
+        }
     }
 }

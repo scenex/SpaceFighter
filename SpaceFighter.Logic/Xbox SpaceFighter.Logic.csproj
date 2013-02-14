@@ -42,7 +42,9 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="AI\IShooting.cs" />
     <Compile Include="AI\ISteering.cs" />
+    <Compile Include="AI\ShootingPeriodically.cs" />
     <Compile Include="AI\SteeringSeek.cs" />
     <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />

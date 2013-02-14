@@ -15,7 +15,7 @@ namespace SpaceFighter.Logic.AI
 
         Vector2 velocity;
 
-        public Vector2 AdvancePosition(Vector2 position, Vector2 distance, float angle)
+        public Vector2 Run(Vector2 position, Vector2 distance, float angle)
         {
             var desiredVelocity = Vector2.Normalize(distance) * MaxVelocity;
             var steering = Vector2.Subtract(desiredVelocity, velocity);
