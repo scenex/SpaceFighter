@@ -8,9 +8,17 @@ namespace SpaceFighter.Logic.AI
 
     public class ShootingPeriodically : IShooting
     {
-        public void Run(Action action)
+        private double elapsedMilliseconds;
+
+        public void Run(Action action, TimeSpan elapsed)
         {
-            action.Invoke();
+            this.elapsedMilliseconds += elapsed.TotalMilliseconds;
+            
+            if (this.elapsedMilliseconds > 1000)
+            {
+                action.Invoke();
+                this.elapsedMilliseconds = 0;
+            }            
         }
     }
 }

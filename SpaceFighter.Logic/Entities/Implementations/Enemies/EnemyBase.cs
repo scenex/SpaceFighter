@@ -30,7 +30,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         protected abstract void InitializeStateMachine();
         protected abstract void LoadSprites();
         protected abstract void UpdatePosition();
-        protected abstract void UpdateWeapon();
+        protected abstract void UpdateWeapon(TimeSpan elapsed);
         
         public abstract bool IsAlive { get; }
         public abstract IWeapon Weapon { get; }
@@ -153,7 +153,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             var previousPositionY = this.Position.Y;
             
             this.UpdatePosition();
-            this.UpdateWeapon();
+            this.UpdateWeapon(gameTime.ElapsedGameTime);
             this.Rotation = (float)Math.Atan2(this.Position.Y - previousPositionY, this.Position.X - previousPositionX);
 
             base.Update(gameTime);

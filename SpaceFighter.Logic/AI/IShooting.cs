@@ -8,6 +8,6 @@ namespace SpaceFighter.Logic.AI
 
     public interface IShooting
     {
-        void Run(Action action);
+        void Run(Action action, TimeSpan elapsed);
     }
 }
