@@ -35,7 +35,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private Vector2 position;
         private float rotation;
         private Color[] colorData;
-        private Weapon weapon;
+
+        private Weapon weapon; // <- make weapon aware of current entity position.
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {

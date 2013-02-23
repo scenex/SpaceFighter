@@ -27,11 +27,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.shots.Add(
                 new Shot(
                      new Vector2(
-                        startPosition.X - (this.sprite.Width / 2.0f) + offset * ((float)Math.Cos(angle)),   // Center shot and then add r*cos(angle)
-                        startPosition.Y - (this.sprite.Height / 2.0f) + offset * ((float)Math.Sin(angle))),  // Center shot and then add r*sin(angle)
+                        startPosition.X - (this.spriteShot.Width / 2.0f) + offset * ((float)Math.Cos(angle)),   // Center shot and then add r*cos(angle)
+                        startPosition.Y - (this.spriteShot.Height / 2.0f) + offset * ((float)Math.Sin(angle))),  // Center shot and then add r*sin(angle)
                     
-                    this.sprite.Width,
-                    this.sprite.Height,
+                    this.spriteShot.Width,
+                    this.spriteShot.Height,
                     this.spriteDataCached,
                     20,
                     angle));
@@ -72,8 +72,36 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
             foreach (var shot in this.shots)
             {
-                this.spriteBatch.Draw(this.sprite, shot.Position, Color.White);
+                this.spriteBatch.Draw(this.spriteShot, shot.Position, Color.White);
             }
+
+            this.spriteBatch.End();
+        }
+
+        public override void LoadTurret(string texturePath)
+        {
+            base.LoadTurret("Sprites/Turrets/Turret");
+        }
+
+        public override void UpdateTurret()
+        {
+            // Do some rotational math calc here...
+        }
+
+        public override void DrawTurret()
+        {
+            this.spriteBatch.Begin(
+                SpriteSortMode.BackToFront,
+                BlendState.AlphaBlend,
+                null,
+                null,
+                null,
+                null,
+                cameraService.GetTransformation());
+
+                // Todo: Retrieve turret position
+                //this.spriteBatch.Draw(this.spriteTurret, shot.Position, Color.White);
+            
 
             this.spriteBatch.End();
         }

@@ -26,11 +26,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.shots.Add(
                 new Shot(
                     new Vector2(
-                        startPosition.X - (this.sprite.Width / 2.0f) + offset * ((float)Math.Cos(angle)),   // Center shot and then add r*cos(angle)
-                        startPosition.Y - (this.sprite.Height / 2.0f) + offset * ((float)Math.Sin(angle))),  // Center shot and then add r*sin(angle)
+                        startPosition.X - (this.spriteShot.Width / 2.0f) + offset * ((float)Math.Cos(angle)),   // Center shot and then add r*cos(angle)
+                        startPosition.Y - (this.spriteShot.Height / 2.0f) + offset * ((float)Math.Sin(angle))),  // Center shot and then add r*sin(angle)
 
-                    this.sprite.Width,
-                    this.sprite.Height,
+                    this.spriteShot.Width,
+                    this.spriteShot.Height,
                     this.spriteDataCached,
                     25,
                     angle));
@@ -71,10 +71,22 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
             foreach (var shot in this.shots)
             {
-                this.spriteBatch.Draw(this.sprite, shot.Position, Color.White);
+                this.spriteBatch.Draw(this.spriteShot, shot.Position, Color.White);
             }
 
             this.spriteBatch.End();
+        }
+
+        public override void LoadTurret(string texturePath)
+        {
+        }
+
+        public override void UpdateTurret()
+        {
+        }
+
+        public override void DrawTurret()
+        {
         }
 
         public override IList<IShot> Shots
