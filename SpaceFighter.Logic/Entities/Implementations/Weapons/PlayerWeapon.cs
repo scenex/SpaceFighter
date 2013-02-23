@@ -43,12 +43,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             base.Initialize();
         }
 
-        public override void LoadShots(string texturePath)
+        protected override void LoadShots(string texturePath)
         {
             base.LoadShots("Sprites/Shot");
         }
 
-        public override void UpdateShots()
+        protected override void UpdateShots()
         {
             foreach (var shot in this.shots)
             {
@@ -59,7 +59,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             }
         }
 
-        public override void DrawShots()
+        protected override void DrawShots()
         {
             this.spriteBatch.Begin(
                 SpriteSortMode.BackToFront,
@@ -78,17 +78,17 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.spriteBatch.End();
         }
 
-        public override void LoadTurret(string texturePath)
+        protected override void LoadTurret(string texturePath)
         {
             base.LoadTurret("Sprites/Turrets/Turret");
         }
 
-        public override void UpdateTurret()
+        protected override void UpdateTurret()
         {
             // Do some rotational math calc here...
         }
 
-        public override void DrawTurret()
+        protected override void DrawTurret()
         {
             this.spriteBatch.Begin(
                 SpriteSortMode.BackToFront,

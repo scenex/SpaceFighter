@@ -25,13 +25,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         public abstract IList<IShot> Shots { get; }
         public abstract void FireWeapon(Vector2 startPosition, int offset, double angle);
 
-        public abstract void DrawShots();
-        public abstract void DrawTurret();
+        protected abstract void DrawShots();
+        protected abstract void DrawTurret();
 
-        public abstract void UpdateShots();
-        public abstract void UpdateTurret();
-           
-        public virtual void LoadTurret(string texturePath)
+        protected abstract void UpdateShots();
+        protected abstract void UpdateTurret();
+
+        protected virtual void LoadTurret(string texturePath)
         {
             this.path = texturePath;
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
@@ -42,7 +42,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.spriteTurret.GetData(this.spriteDataCached);
         }
 
-        public virtual void LoadShots(string texturePath)
+        protected virtual void LoadShots(string texturePath)
         {
             this.path = texturePath;
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);

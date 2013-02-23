@@ -270,6 +270,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
         public override void Update(GameTime gameTime)
         {       
             this.cameraService.Position = this.Position;
+            
+            // Update weapon position here!
 
             this.stateMachine.Update();
             this.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);

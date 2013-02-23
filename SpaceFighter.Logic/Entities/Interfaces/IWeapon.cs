@@ -9,17 +9,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
     public interface IWeapon
     {
-        void FireWeapon(Vector2 startPosition, int offset, double angle);
-        
-        void LoadShots(string texturePath);
-        void LoadTurret(string texturePath);
-      
-        void DrawShots();
-        void DrawTurret();
-
-        void UpdateShots();
-        void UpdateTurret();
-
+        void FireWeapon(Vector2 startPosition, int offset, double angle);      
         IList<IShot> Shots { get; }
     }
 }
