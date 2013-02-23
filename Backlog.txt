@@ -5,7 +5,9 @@ Codename: 'Space Fighter' Backlog
 What's currently on:
 ==========
 
-- Weapon architecture re-design (enemy -> weapon strategy)
+- Rotational weapon control
+- Player friction (movement smoothing)
+- Integrate background music
 - Weapon upgrade logic
 
 
@@ -56,4 +58,5 @@ DONE:
 - Entity system unification
 - Shot removal after level bound hit
 - State engine for enemies
+- Weapon architecture re-design (enemy -> weapon strategy)
 - Strategy pattern for enemy AI states
