@@ -14,12 +14,27 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
     public class PlayerWeapon : Weapon
     {
         private readonly IList<IShot> shots;
-
         private ICameraService cameraService;
+        private Vector2 turretPosition;
+
+        private float turretAngle;
 
         public PlayerWeapon(Game game) : base(game)
         {
             this.shots = new List<IShot>();
+        }
+
+        public override void Initialize()
+        {
+            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            this.LoadShot("Sprites/Shot");
+            this.LoadTurret("Sprites/Turrets/Turret");
+            base.LoadContent();
         }
 
         public override void FireWeapon(Vector2 startPosition, int offset, double angle)
@@ -37,15 +52,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                     angle));
         }
 
-        public override void Initialize()
+        public override void SetTurret(Vector2 startPosition, float angle)
         {
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
-            base.Initialize();
-        }
-
-        protected override void LoadShots(string texturePath)
-        {
-            base.LoadShots("Sprites/Shot");
+            this.turretPosition = startPosition;
+            this.turretAngle = angle;
         }
 
         protected override void UpdateShots()
@@ -78,11 +88,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.spriteBatch.End();
         }
 
-        protected override void LoadTurret(string texturePath)
-        {
-            base.LoadTurret("Sprites/Turrets/Turret");
-        }
-
         protected override void UpdateTurret()
         {
             // Do some rotational math calc here...
@@ -99,8 +104,16 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                 null,
                 cameraService.GetTransformation());
 
-                // Todo: Retrieve turret position
-                //this.spriteBatch.Draw(this.spriteTurret, shot.Position, Color.White);
+            this.spriteBatch.Draw(
+                this.spriteTurret, 
+                this.turretPosition, 
+                null, 
+                Color.White, 
+                this.turretAngle, 
+                new Vector2(this.spriteTurret.Width / 2.0f, this.spriteTurret.Height / 2.0f), 
+                1.0f, 
+                SpriteEffects.None, 
+                0.0f);
             
 
             this.spriteBatch.End();

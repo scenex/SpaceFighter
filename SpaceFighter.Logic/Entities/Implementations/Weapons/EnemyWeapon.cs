@@ -42,9 +42,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             base.Initialize();
         }
 
-        protected override void LoadShots(string texturePath)
+        protected override void LoadContent()
         {
-            base.LoadShots("Sprites/Shot");
+            this.LoadShot("Sprites/Shot");
+            base.LoadContent();
         }
 
         protected override void UpdateShots()
@@ -86,6 +87,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         }
 
         protected override void DrawTurret()
+        {
+        }
+
+        public override void SetTurret(Vector2 startPosition, float angle)
         {
         }
 

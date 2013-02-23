@@ -32,17 +32,13 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private int health;
 
-        private Vector2 position;
-        private float rotation;
-        private Color[] colorData;
-
         private Weapon weapon; // <- make weapon aware of current entity position.
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
             this.Health = 100;
-            this.rotation = -MathHelper.PiOver2;
-            this.position = startPosition;
+            this.Rotation = -MathHelper.PiOver2;
+            this.Position = startPosition;
         }
 
         public event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
@@ -51,29 +47,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
         public event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
         public event EventHandler<HealthChangedEventArgs> HealthChanged;
 
-        public Vector2 Position
-        {
-            get
-            {
-                return this.position;
-            }
-        }
-
-        public float Rotation
-        {
-            get
-            {
-                return this.rotation;
-            }
-        }
-
-        public Color[] ColorData
-        {
-            get
-            {
-                return this.colorData;
-            }
-        }
+        public Vector2 Position { get; private set; }
+        public float Rotation { get; private set; }
+        public Color[] ColorData { get; private set; }
 
         public Rectangle BoundingRectangle
         {
@@ -138,17 +114,17 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public void Thrust(int amount)
         {
-            this.position =
+            this.Position =
                 Vector2.Add(
                     new Vector2(
-                        (float)Math.Cos(this.rotation) * amount,
-                        (float)Math.Sin(this.rotation) * amount),
+                        (float)Math.Cos(this.Rotation) * amount,
+                        (float)Math.Sin(this.Rotation) * amount),
                     this.Position);
         }
 
         public void SetRotation(float angle)
         {
-            this.rotation += angle;
+            this.Rotation += angle;
         }
 
         public void SubtractHealth(int amount)
@@ -268,11 +244,10 @@ namespace SpaceFighter.Logic.Entities.Implementations
         }
 
         public override void Update(GameTime gameTime)
-        {       
+        {
+            this.weapon.SetTurret(this.Position, this.Rotation);
             this.cameraService.Position = this.Position;
-            
-            // Update weapon position here!
-
+          
             this.stateMachine.Update();
             this.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);
 
@@ -300,7 +275,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 this.Position,
                 this.spriteManager.GetCurrentRectangle(),
                 Color.White,
-                this.rotation,
+                this.Rotation,
                 new Vector2(this.Width / 2.0f, this.Height / 2.0f),
                 1.0f,
                 SpriteEffects.None,
@@ -313,7 +288,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private void UpdateSpriteColorData()
         {
-            this.colorData = new Color[this.spriteManager.GetCurrentSprite().Width * this.spriteManager.GetCurrentSprite().Height];
+            this.ColorData = new Color[this.spriteManager.GetCurrentSprite().Width * this.spriteManager.GetCurrentSprite().Height];
             this.spriteManager.GetCurrentSprite().GetData(this.ColorData);
         }
     }

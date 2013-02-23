@@ -16,7 +16,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         protected Color[] spriteDataCached;
         protected Texture2D spriteShot;
         protected Texture2D spriteTurret;
-        protected string path;
+        protected string pathShot;
+        protected string pathTurret;
 
         protected Weapon(Game game) : base(game)
         {          
@@ -24,6 +25,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         public abstract IList<IShot> Shots { get; }
         public abstract void FireWeapon(Vector2 startPosition, int offset, double angle);
+        public abstract void SetTurret(Vector2 startPosition, float angle);
 
         protected abstract void DrawShots();
         protected abstract void DrawTurret();
@@ -33,20 +35,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         protected virtual void LoadTurret(string texturePath)
         {
-            this.path = texturePath;
-            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.spriteTurret = this.Game.Content.Load<Texture2D>(this.path);
-
-            // Obtain color information for subsequent per pixel collision detection
-            this.spriteDataCached = new Color[this.spriteTurret.Width * this.spriteTurret.Height];
-            this.spriteTurret.GetData(this.spriteDataCached);
+            this.pathTurret = texturePath;            
+            this.spriteTurret = this.Game.Content.Load<Texture2D>(this.pathTurret);
         }
 
-        protected virtual void LoadShots(string texturePath)
+        protected virtual void LoadShot(string texturePath)
         {
-            this.path = texturePath;
-            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.spriteShot = this.Game.Content.Load<Texture2D>(this.path);
+            this.pathShot = texturePath;
+            this.spriteShot = this.Game.Content.Load<Texture2D>(this.pathShot);
 
             // Obtain color information for subsequent per pixel collision detection
             this.spriteDataCached = new Color[this.spriteShot.Width * this.spriteShot.Height];
@@ -55,13 +51,15 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         protected override void LoadContent()
         {
-            this.LoadShots(this.path);
+            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);        
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
-        {
+        {   
+            this.UpdateTurret();
             this.UpdateShots();
+            
             base.Update(gameTime);
         }
 
@@ -69,6 +67,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         {
             this.DrawTurret();
             this.DrawShots();
+
             base.Draw(gameTime);
         }
     }

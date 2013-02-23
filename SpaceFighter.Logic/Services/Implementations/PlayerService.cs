@@ -58,6 +58,12 @@ namespace SpaceFighter.Logic.Services.Implementations
             base.Initialize();
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            this.player.Weapon.SetTurret(new Vector2(this.player.Position.X, this.player.Position.Y), this.player.Rotation);
+            base.Update(gameTime);
+        }
+
         public void RotateLeft()
         {
             this.player.SetRotation(+0.05f);
