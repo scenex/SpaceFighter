@@ -245,7 +245,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public override void Update(GameTime gameTime)
         {
-            this.weapon.SetTurret(this.Position, this.Rotation);
+            this.weapon.SetPosition(this.Position);
             this.cameraService.Position = this.Position;
           
             this.stateMachine.Update();

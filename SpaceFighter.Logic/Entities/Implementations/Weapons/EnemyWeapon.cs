@@ -78,22 +78,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.spriteBatch.End();
         }
 
-        protected override void LoadTurret(string texturePath)
-        {
-        }
-
-        protected override void UpdateTurret()
-        {
-        }
-
-        protected override void DrawTurret()
-        {
-        }
-
-        public override void SetTurret(Vector2 startPosition, float angle)
-        {
-        }
-
         public override IList<IShot> Shots
         {
             get

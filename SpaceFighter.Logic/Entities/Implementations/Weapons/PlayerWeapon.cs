@@ -15,9 +15,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
     {
         private readonly IList<IShot> shots;
         private ICameraService cameraService;
-        private Vector2 turretPosition;
-
-        private float turretAngle;
 
         public PlayerWeapon(Game game) : base(game)
         {
@@ -52,10 +49,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                     angle));
         }
 
-        public override void SetTurret(Vector2 startPosition, float angle)
+        public override void SetPosition(Vector2 pos)
         {
-            this.turretPosition = startPosition;
-            this.turretAngle = angle;
+            this.Position = pos;
+        }
+
+        public override void SetRotation(float angle)
+        {
+            this.Rotation += angle;
         }
 
         protected override void UpdateShots()
@@ -90,7 +91,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         protected override void UpdateTurret()
         {
-            // Do some rotational math calc here...
+            // Not used yet..
         }
 
         protected override void DrawTurret()
@@ -106,10 +107,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
             this.spriteBatch.Draw(
                 this.spriteTurret, 
-                this.turretPosition, 
+                this.Position, 
                 null, 
                 Color.White, 
-                this.turretAngle, 
+                this.Rotation, 
                 new Vector2(this.spriteTurret.Width / 2.0f, this.spriteTurret.Height / 2.0f), 
                 1.0f, 
                 SpriteEffects.None, 

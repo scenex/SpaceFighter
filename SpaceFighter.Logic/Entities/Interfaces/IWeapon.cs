@@ -9,9 +9,13 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
     public interface IWeapon
     {
-        void FireWeapon(Vector2 startPosition, int offset, double angle);
-        void SetTurret(Vector2 startPosition, float angle);
-
+        float Rotation { get; }
+        Vector2 Position { get; }
         IList<IShot> Shots { get; }
+
+        void SetRotation(float angle);
+        void SetPosition(Vector2 pos);
+
+        void FireWeapon(Vector2 startPosition, int offset, double angle);
     }
 }

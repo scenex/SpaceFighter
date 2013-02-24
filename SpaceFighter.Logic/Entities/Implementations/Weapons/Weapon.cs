@@ -23,15 +23,20 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         {          
         }
 
+        public virtual float Rotation { get; protected set; }
+        public virtual Vector2 Position { get; protected set; }
+
         public abstract IList<IShot> Shots { get; }
         public abstract void FireWeapon(Vector2 startPosition, int offset, double angle);
-        public abstract void SetTurret(Vector2 startPosition, float angle);
+
+        public virtual void SetRotation(float angle) {}
+        public virtual void SetPosition(Vector2 pos) {}
 
         protected abstract void DrawShots();
-        protected abstract void DrawTurret();
-
         protected abstract void UpdateShots();
-        protected abstract void UpdateTurret();
+
+        protected virtual void DrawTurret() {}
+        protected virtual void UpdateTurret() { }
 
         protected virtual void LoadTurret(string texturePath)
         {

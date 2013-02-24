@@ -60,7 +60,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Update(GameTime gameTime)
         {
-            this.player.Weapon.SetTurret(new Vector2(this.player.Position.X, this.player.Position.Y), this.player.Rotation);
             base.Update(gameTime);
         }
 
@@ -77,7 +76,9 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void Fire()
         {
             this.audioService.PlaySound("shot");
-            this.player.Weapon.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2, this.player.Rotation);
+
+            // Todo: Setting weapon rotation from service is pretty ugly..
+            this.player.Weapon.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2, this.player.Weapon.Rotation);
         }
 
         public void Thrust()
