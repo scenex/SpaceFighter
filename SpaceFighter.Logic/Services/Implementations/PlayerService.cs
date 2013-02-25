@@ -77,8 +77,9 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.audioService.PlaySound("shot");
 
-            // Todo: Setting weapon rotation from service is pretty ugly..
-            this.player.Weapon.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2, this.player.Weapon.Rotation);
+            // Todo: Setting weapon rotation from service is pretty ugly and magic numbers as well..
+            var magicNumber = 30;
+            this.player.Weapon.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2 - magicNumber, this.player.Weapon.Rotation);
         }
 
         public void Thrust()
