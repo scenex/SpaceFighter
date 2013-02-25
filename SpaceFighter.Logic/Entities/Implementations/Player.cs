@@ -32,7 +32,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         private int health;
 
-        private Weapon weapon; // <- make weapon aware of current entity position.
+        private Weapon weapon;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {

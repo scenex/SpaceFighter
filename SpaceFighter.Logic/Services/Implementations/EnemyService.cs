@@ -33,8 +33,13 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             get
             {
-                // Todo !
-                return this.enemies[0].Weapon.Shots;
+                var shots = new List<IShot>();
+                foreach (var enemy in this.enemies)
+                {
+                    shots.AddRange(enemy.Weapon.Shots);
+                }
+
+                return shots;
             }
         }
 
