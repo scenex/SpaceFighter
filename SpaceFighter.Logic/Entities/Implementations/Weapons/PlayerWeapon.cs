@@ -23,6 +23,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         public override void Initialize()
         {
+            this.Rotation = -MathHelper.PiOver2;
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
             base.Initialize();
         }
