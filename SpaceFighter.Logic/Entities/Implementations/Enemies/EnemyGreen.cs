@@ -61,8 +61,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         protected override void UpdateWeapon(TimeSpan elapsed)
         {
+            this.weapon.SetPosition(this.Position);
             this.weapon.SetRotation((float)this.AngleToPlayer);
-            this.shootingStrategy.Run(() => this.Weapon.FireWeapon(this.Position, this.Height / 2), elapsed);
+            this.shootingStrategy.Run(() => this.Weapon.FireWeapon(this.Height / 2), elapsed);
         }
 
         protected override void InitializeStateMachine()

@@ -79,7 +79,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             // Todo: Try to remove all params from Weapon's FireMethod method, since all information should be self containing.
             var tempMagicNumber = 30;
-            this.player.Weapon.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2 - tempMagicNumber);
+            this.player.Weapon.FireWeapon(player.Height / 2 - tempMagicNumber);
         }
 
         public void Thrust()
