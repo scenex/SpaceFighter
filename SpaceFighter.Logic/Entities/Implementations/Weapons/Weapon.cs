@@ -23,14 +23,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         {          
         }
 
-        public virtual float Rotation { get; protected set; }
-        public virtual Vector2 Position { get; protected set; }
+        public virtual float Rotation { get; set; }
+        public virtual Vector2 Position { get; set; }
 
         public abstract IList<IShot> Shots { get; }
         public abstract void FireWeapon();
-
-        public virtual void SetRotation(float angle) {}
-        public virtual void SetPosition(Vector2 pos) {}
 
         protected abstract void DrawShots();
         protected abstract void UpdateShots();

@@ -13,8 +13,8 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         void AddHealth(int amount);
 
         // hmm... is there a better way?
-        double AngleToPlayer { get; }
-        void UpdateAngleToPlayer(double angle);
+        float AngleToPlayer { get; }
+        void UpdateAngleToPlayer(float angle);
         void UpdateDistanceToPlayer(Vector2 distance);
     }
 }

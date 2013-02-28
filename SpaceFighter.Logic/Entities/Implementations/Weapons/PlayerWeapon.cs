@@ -51,16 +51,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                     this.Rotation));
         }
 
-        public override void SetPosition(Vector2 pos)
-        {
-            this.Position = pos;
-        }
-
-        public override void SetRotation(float angle)
-        {
-            this.Rotation += angle;
-        }
-
         protected override void UpdateShots()
         {
             foreach (var shot in this.shots)

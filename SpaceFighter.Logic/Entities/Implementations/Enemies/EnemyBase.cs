@@ -38,7 +38,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public int Health { get; protected set; }
         public float Rotation { get; private set; }
         public Vector2 Position { get; protected set; }
-        public double AngleToPlayer { get; private set; }
+        public float AngleToPlayer { get; private set; }
         public Color[] ColorData { get; private set; }
 
         public int Width
@@ -83,7 +83,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.Health += amount;
         }
 
-        public void UpdateAngleToPlayer(double angle)
+        public void UpdateAngleToPlayer(float angle)
         {
             this.AngleToPlayer = angle;
         }

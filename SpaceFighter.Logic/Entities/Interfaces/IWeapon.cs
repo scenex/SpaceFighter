@@ -9,12 +9,9 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
     public interface IWeapon
     {
-        float Rotation { get; }
-        Vector2 Position { get; }
+        Vector2 Position { get; set; }
+        float Rotation { get; set; }       
         IList<IShot> Shots { get; }
-
-        void SetRotation(float angle);
-        void SetPosition(Vector2 pos);
 
         void FireWeapon();
     }
