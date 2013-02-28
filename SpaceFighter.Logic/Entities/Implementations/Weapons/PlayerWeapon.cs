@@ -35,19 +35,19 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             base.LoadContent();
         }
 
-        public override void FireWeapon(Vector2 startPosition, int offset, double angle)
+        public override void FireWeapon(Vector2 startPosition, int offset)
         {
             this.shots.Add(
                 new Shot(
                      new Vector2(
-                        startPosition.X - (this.spriteShot.Width / 2.0f) + offset * ((float)Math.Cos(angle)),   // Center shot and then add r*cos(angle)
-                        startPosition.Y - (this.spriteShot.Height / 2.0f) + offset * ((float)Math.Sin(angle))),  // Center shot and then add r*sin(angle)
+                        startPosition.X - (this.spriteShot.Width / 2.0f) + offset * ((float)Math.Cos(this.Rotation)),   // Center shot and then add r*cos(angle)
+                        startPosition.Y - (this.spriteShot.Height / 2.0f) + offset * ((float)Math.Sin(this.Rotation))),  // Center shot and then add r*sin(angle)
                     
                     this.spriteShot.Width,
                     this.spriteShot.Height,
                     this.spriteDataCached,
                     20,
-                    angle));
+                    this.Rotation));
         }
 
         public override void SetPosition(Vector2 pos)

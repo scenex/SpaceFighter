@@ -77,9 +77,9 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.audioService.PlaySound("shot");
 
-            // Todo: Setting weapon rotation from service is pretty ugly and magic numbers as well..
-            var magicNumber = 30;
-            this.player.Weapon.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2 - magicNumber, this.player.Weapon.Rotation);
+            // Todo: Try to remove all params from Weapon's FireMethod method, since all information should be self containing.
+            var tempMagicNumber = 30;
+            this.player.Weapon.FireWeapon(new Vector2(this.player.Position.X, this.player.Position.Y), player.Height / 2 - tempMagicNumber);
         }
 
         public void Thrust()
