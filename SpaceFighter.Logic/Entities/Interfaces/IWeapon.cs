@@ -16,6 +16,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         void SetRotation(float angle);
         void SetPosition(Vector2 pos);
 
-        void FireWeapon(int offset);
+        void FireWeapon();
     }
 }

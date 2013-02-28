@@ -63,7 +63,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             this.weapon.SetPosition(this.Position);
             this.weapon.SetRotation((float)this.AngleToPlayer);
-            this.shootingStrategy.Run(() => this.Weapon.FireWeapon(this.Height / 2), elapsed);
+            this.shootingStrategy.Run(() => this.Weapon.FireWeapon(), elapsed);
         }
 
         protected override void InitializeStateMachine()

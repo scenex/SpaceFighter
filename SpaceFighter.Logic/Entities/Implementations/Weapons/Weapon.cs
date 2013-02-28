@@ -27,7 +27,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         public virtual Vector2 Position { get; protected set; }
 
         public abstract IList<IShot> Shots { get; }
-        public abstract void FireWeapon(int offset);
+        public abstract void FireWeapon();
 
         public virtual void SetRotation(float angle) {}
         public virtual void SetPosition(Vector2 pos) {}
