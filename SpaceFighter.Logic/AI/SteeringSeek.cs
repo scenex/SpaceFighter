@@ -8,9 +8,9 @@ namespace SpaceFighter.Logic.AI
 
     public class SteeringSeek : ISteering
     {
-        const float Mass = 1;
+        const float Mass = 50;
         const float MaxVelocity = 6;
-        const float MaxForce = 1;
+        const float MaxForce = 0.6f;
         const float MaxSpeed = 0.5f;
 
         Vector2 velocity;
