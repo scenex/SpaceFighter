@@ -32,7 +32,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         protected abstract void UpdatePosition();
         protected abstract void UpdateWeapon(TimeSpan elapsed);
         
-        public abstract bool IsAlive { get; }
         public abstract IWeapon Weapon { get; }
 
         public int Health { get; protected set; }

@@ -15,7 +15,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
     public class EnemyGreen : EnemyBase
     {
-        private bool isAlive;
         private ISteering steeringStrategy;
         private IShooting shootingStrategy;
 
@@ -23,7 +22,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         public EnemyGreen(Game game, Vector2 startPosition) : base(game, startPosition)
         {
-            this.isAlive = true;
             this.Health = 100;
 
             this.steeringStrategy = new SteeringSeek();
@@ -36,14 +34,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.Game.Components.Add(this.weapon);
 
             base.Initialize();
-        }
-
-        public override bool IsAlive
-        {
-            get
-            {
-                return this.isAlive;
-            }
         }
 
         public override IWeapon Weapon
@@ -83,7 +73,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             var dead = new State<Action<double>>(
                 EnemyState.Dead,
                 null,
-                () => this.isAlive = false,
+                () => this.Game.Components.Remove(this),
                 null);
 
             alive.AddTransition(dying, () => this.Health <= 0);
