@@ -62,7 +62,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         protected override void UpdateWeapon(TimeSpan elapsed)
         {
             this.weapon.Position = this.Position;
-            this.weapon.Rotation = this.AngleToPlayer;
+            this.weapon.Rotation = this.Rotation;
 
             if(this.stateMachine.CurrentState.Name.Equals(EnemyState.Alive))
             {
