@@ -217,7 +217,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-
             this.spriteManager = new SpriteManager(PlayerState.Alive, 105, 128);
 
             this.spriteManager.AddStillSprite(
@@ -250,6 +249,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
           
             this.stateMachine.Update();
             this.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);
+            this.weapon.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);
 
             if (this.stateMachine.CurrentState.Tag != null)
             {

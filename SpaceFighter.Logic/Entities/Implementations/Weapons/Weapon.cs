@@ -11,13 +11,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
     using SpaceFighter.Logic.Entities.Interfaces;
 
     public abstract class Weapon : DrawableGameComponent, IWeapon
-    {       
+    {
+        public SpriteManager spriteManager;
+
         protected SpriteBatch spriteBatch;
-        protected Color[] spriteDataCached;
+        protected Color[] spriteShotDataCached;
         protected Texture2D spriteShot;
-        protected Texture2D spriteTurret;
         protected string pathShot;
-        protected string pathTurret;
 
         protected Weapon(Game game) : base(game)
         {          
@@ -33,22 +33,17 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         protected abstract void UpdateShots();
 
         protected virtual void DrawTurret() {}
-        protected virtual void UpdateTurret() { }
+        protected virtual void UpdateTurret() {}
 
-        protected virtual void LoadTurret(string texturePath)
-        {
-            this.pathTurret = texturePath;            
-            this.spriteTurret = this.Game.Content.Load<Texture2D>(this.pathTurret);
-        }
-
+        protected virtual void LoadTurret() {}
         protected virtual void LoadShot(string texturePath)
         {
             this.pathShot = texturePath;
             this.spriteShot = this.Game.Content.Load<Texture2D>(this.pathShot);
 
             // Obtain color information for subsequent per pixel collision detection
-            this.spriteDataCached = new Color[this.spriteShot.Width * this.spriteShot.Height];
-            this.spriteShot.GetData(this.spriteDataCached);
+            this.spriteShotDataCached = new Color[this.spriteShot.Width * this.spriteShot.Height];
+            this.spriteShot.GetData(this.spriteShotDataCached);
         }
 
         protected override void LoadContent()

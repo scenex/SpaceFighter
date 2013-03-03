@@ -15,7 +15,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
     {
         private readonly IList<IShot> shots;
         private ICameraService cameraService;
-
+        
         public PlayerWeapon(Game game) : base(game)
         {
             this.shots = new List<IShot>();
@@ -30,8 +30,28 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         protected override void LoadContent()
         {
+            this.spriteManager = new SpriteManager(PlayerState.Respawn, 23, 48);
+            
+            this.spriteManager.AddStillSprite(
+                PlayerState.Alive,
+                this.Game.Content.Load<Texture2D>("Sprites/Turrets/Alive"));
+
+            this.spriteManager.AddStillSprite(
+                PlayerState.Dying,
+                this.Game.Content.Load<Texture2D>("Sprites/Turrets/Dead"));
+
+            this.spriteManager.AddStillSprite(
+                PlayerState.Dead,
+                this.Game.Content.Load<Texture2D>("Sprites/Turrets/Dead"));
+
+            this.spriteManager.AddStillSprite(
+                PlayerState.Respawn,
+                this.Game.Content.Load<Texture2D>("Sprites/Turrets/Alive"),
+                this.Game.Content.Load<Effect>("Shaders/Transparency"),
+                time => (float)(0.5f * Math.Sin(time * 20) + 0.5),
+                "param1");
+
             this.LoadShot("Sprites/Shot");
-            this.LoadTurret("Sprites/Turrets/Turret");
             base.LoadContent();
         }
 
@@ -46,7 +66,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                         this.Position.Y - (this.spriteShot.Height / 2.0f) + Offset * ((float)Math.Sin(this.Rotation))),  // Center shot and then add r*sin(angle)                   
                     this.spriteShot.Width,
                     this.spriteShot.Height,
-                    this.spriteDataCached,
+                    this.spriteShotDataCached,
                     20,
                     this.Rotation));
         }
@@ -94,16 +114,16 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                 null,
                 null,
                 null,
-                null,
+                this.spriteManager.GetCurrentShader(),
                 cameraService.GetTransformation());
 
             this.spriteBatch.Draw(
-                this.spriteTurret, 
+                this.spriteManager.GetCurrentSprite(), 
                 this.Position, 
                 null, 
                 Color.White, 
-                this.Rotation, 
-                new Vector2(this.spriteTurret.Width / 2.0f, this.spriteTurret.Height / 2.0f), 
+                this.Rotation,
+                new Vector2(this.spriteManager.GetCurrentSprite().Width / 2.0f, this.spriteManager.GetCurrentSprite().Height / 2.0f), 
                 1.0f, 
                 SpriteEffects.None, 
                 0.0f);

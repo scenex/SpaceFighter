@@ -32,7 +32,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                         this.Position.Y - (this.spriteShot.Height / 2.0f) + Offset * ((float)Math.Sin(this.Rotation))),  // Center shot and then add r*sin(angle)
                     this.spriteShot.Width,
                     this.spriteShot.Height,
-                    this.spriteDataCached,
+                    this.spriteShotDataCached,
                     25,
                     this.Rotation));
         }
