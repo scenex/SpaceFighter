@@ -63,7 +63,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             this.weapon.Position = this.Position;
             this.weapon.Rotation = this.AngleToPlayer;
-            this.shootingStrategy.Run(() => this.Weapon.FireWeapon(), elapsed);
+
+            if(this.stateMachine.CurrentState.Name.Equals(EnemyState.Alive))
+            {
+                this.shootingStrategy.Run(() => this.Weapon.FireWeapon(), elapsed);
+            }
         }
 
         protected override void InitializeStateMachine()
