@@ -5,9 +5,8 @@ Codename: 'Space Fighter' Backlog
 What's currently on:
 ==========
 
-- Player friction (movement smoothing)
-- Integrate background music
 - Weapon upgrade logic
+- Integrate background music
 
 
 What's next:
@@ -59,4 +58,5 @@ DONE:
 - State engine for enemies
 - Weapon architecture re-design (enemy -> weapon strategy)
 - Strategy pattern for enemy AI states
+- Player friction (linear movement smoothing)
 - Rotational weapon control (XBox)

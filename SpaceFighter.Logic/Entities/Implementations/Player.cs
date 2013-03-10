@@ -19,20 +19,17 @@ namespace SpaceFighter.Logic.Entities.Implementations
     public class Player : DrawableGameComponent, IPlayer
     {   
         private SpriteBatch spriteBatch;
-
-        private ICameraService cameraService;
-        
+        private ICameraService cameraService;       
         private StateMachine<Action<double>> stateMachine;
-
         private double deadToRespawnTimer;
-
         private int healthReplenishCounter;
-
         private SpriteManager spriteManager;
-
         private int health;
-
         private Weapon weapon;
+        private float thrustTotal;
+
+        private const float ThrustIncrement = 0.2f;
+        private const float ThrustFriction = 0.05f;
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
@@ -77,6 +74,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
             {
                 return this.health;
             }
+
             private set
             {
                 this.health = value;
@@ -112,14 +110,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
             }
         }
 
-        public void Thrust(int amount)
+        public void Thrust()
         {
-            this.Position =
-                Vector2.Add(
-                    new Vector2(
-                        (float)Math.Cos(this.Rotation) * amount,
-                        (float)Math.Sin(this.Rotation) * amount),
-                    this.Position);
+            this.thrustTotal += ThrustIncrement;
         }
 
         public void SetRotation(float angle)
@@ -155,6 +148,8 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 null,
                 delegate
                     {
+                        this.thrustTotal = 0;
+
                         if (this.TransitionToStateDying != null)
                         {
                             this.TransitionToStateDying(this, new StateChangedEventArgs(PlayerState.Alive, PlayerState.Dying));
@@ -244,6 +239,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public override void Update(GameTime gameTime)
         {
+            this.Position = Vector2.Add(new Vector2((float)Math.Cos(this.Rotation) * this.thrustTotal, (float)Math.Sin(this.Rotation) * this.thrustTotal), this.Position);
+            this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, 3.0f);
+
             this.weapon.Position = this.Position;
             this.cameraService.Position = this.Position;
           

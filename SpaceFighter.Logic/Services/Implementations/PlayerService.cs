@@ -81,7 +81,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void Thrust()
         {
-            this.player.Thrust(3);
+            this.player.Thrust();
         }
 
         public void ReportPlayerHit(IShot shot)

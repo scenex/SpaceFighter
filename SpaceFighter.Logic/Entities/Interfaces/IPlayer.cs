@@ -16,12 +16,10 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         event EventHandler<StateChangedEventArgs> TransitionToStateDead;
         event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
         event EventHandler<HealthChangedEventArgs> HealthChanged;
-                 
-        void SubtractHealth(int amount);
+
+        void Thrust();
         void AddHealth(int amount);
-
-        void SetRotation(float angle);   
-
-        void Thrust(int amount);
+        void SubtractHealth(int amount);       
+        void SetRotation(float angle);    
     }
 }
