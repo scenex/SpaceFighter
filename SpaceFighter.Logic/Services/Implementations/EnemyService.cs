@@ -38,6 +38,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(400, 400));
+            EnemyFactory.Create<EnemyGreen>(this.Game, new Vector2(600, 400));
             base.Initialize();
         }
 
