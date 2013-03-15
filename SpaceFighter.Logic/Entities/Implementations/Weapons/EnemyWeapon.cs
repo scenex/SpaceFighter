@@ -21,6 +21,18 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.shots = new List<IShot>();
         }
 
+        public override void Initialize()
+        {
+            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            this.LoadShot("Sprites/Shot");
+            base.LoadContent();
+        }
+
         public override void FireWeapon()
         {
             const int Offset = 108 / 2;
@@ -37,16 +49,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                     this.Rotation));
         }
 
-        public override void Initialize()
+        protected override void UpdateGameTime(GameTime gameTime)
         {
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
-            base.Initialize();
-        }
-
-        protected override void LoadContent()
-        {
-            this.LoadShot("Sprites/Shot");
-            base.LoadContent();
+            // Nothing to do here yet.
         }
 
         protected override void UpdateShots()

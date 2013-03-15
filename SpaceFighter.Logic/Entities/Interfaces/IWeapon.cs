@@ -4,6 +4,7 @@
 
 namespace SpaceFighter.Logic.Entities.Interfaces
 {
+    using System;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
@@ -14,5 +15,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         IList<IShot> Shots { get; }
 
         void FireWeapon();
+        event EventHandler<EventArgs> WeaponFired; 
     }
 }

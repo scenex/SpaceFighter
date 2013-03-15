@@ -4,6 +4,7 @@
 
 namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 {
+    using System;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -20,22 +21,25 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         protected string pathShot;
 
         protected Weapon(Game game) : base(game)
-        {          
+        {     
         }
 
-        public virtual float Rotation { get; set; }
-        public virtual Vector2 Position { get; set; }
+        public event EventHandler<EventArgs> WeaponFired;
 
         public abstract IList<IShot> Shots { get; }
+        public virtual float Rotation { get; set; }
+        public virtual Vector2 Position { get; set; }
+        
         public abstract void FireWeapon();
+        protected abstract void UpdateGameTime(GameTime gameTime);
 
         protected abstract void DrawShots();
-        protected abstract void UpdateShots();
+        protected abstract void UpdateShots();      
 
         protected virtual void DrawTurret() {}
         protected virtual void UpdateTurret() {}
-
         protected virtual void LoadTurret() {}
+
         protected virtual void LoadShot(string texturePath)
         {
             this.pathShot = texturePath;
@@ -53,7 +57,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         }
 
         public override void Update(GameTime gameTime)
-        {   
+        {
+            this.UpdateGameTime(gameTime);
             this.UpdateTurret();
             this.UpdateShots();
             
@@ -66,6 +71,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.DrawShots();
 
             base.Draw(gameTime);
+        }
+
+        protected void TriggerWeaponFiredEvent(object sender, EventArgs eventArgs)
+        {
+            if (this.WeaponFired != null)
+            {
+                this.WeaponFired(this, null);
+            }
         }
     }
 }

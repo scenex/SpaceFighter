@@ -55,12 +55,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.TransitionToStateAlive += this.OnTransitionToStateAlive;
             this.player.HealthChanged += this.OnHealthChanged;
 
-            base.Initialize();
-        }
+            this.player.Weapon.WeaponFired += this.OnWeaponFired;
 
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
+            base.Initialize();
         }
 
         public void RotateLeft()
@@ -75,7 +72,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void Fire()
         {
-            this.audioService.PlaySound("shot");
             this.player.Weapon.FireWeapon();
         }
 
@@ -139,6 +135,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 this.HealthChanged(this, healthChangedEventArgs);
             }
+        }
+
+        private void OnWeaponFired(object sender, EventArgs e)
+        {
+            this.audioService.PlaySound("shot");
         }
     }
 }

@@ -33,6 +33,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public Player(Game game, Vector2 startPosition) : base(game)
         {
+            this.weapon = new PlayerWeapon(this.Game) { DrawOrder = 1 };
+            this.Game.Components.Add(this.weapon);
+
             this.Health = 100;
             this.Rotation = -MathHelper.PiOver2;
             this.Position = startPosition;
@@ -132,9 +135,6 @@ namespace SpaceFighter.Logic.Entities.Implementations
 
         public override void Initialize()
         {
-            this.weapon = new PlayerWeapon(this.Game);
-            this.Game.Components.Add(this.weapon);
-
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
             
             this.InitializeStateMachine();
