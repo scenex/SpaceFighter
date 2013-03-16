@@ -2,14 +2,14 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Entities.Implementations
+namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 {
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Entities.Interfaces;
 
-    public class Shot : IShot
+    public class ShotA : IShot
     {
-        public Shot(Vector2 startPosition, int width, int height, Color[] colorData, int firePower, double angle)
+        public ShotA(Vector2 startPosition, int width, int height, Color[] colorData, int firePower, double angle)
         {           
             this.Position = startPosition;
             this.Width = width;

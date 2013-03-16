@@ -4,10 +4,10 @@
 
 namespace SpaceFighter.Logic.AI
 {
-    using Microsoft.Xna.Framework;
+    using System;
 
-    public interface ISteering
+    public interface IWeaponStrategy
     {
-        Vector2 Run(Vector2 position, Vector2 distance, float angle);
+        void Execute(Action action, TimeSpan elapsed);
     }
 }

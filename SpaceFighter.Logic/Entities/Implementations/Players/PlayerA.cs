@@ -2,21 +2,22 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Entities.Implementations
+namespace SpaceFighter.Logic.Entities.Implementations.Players
 {
     using System;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
-    using StateMachine;
+    using SpaceFighter.Logic.StateMachine;
 
     /// <summary>
     /// The spaceship class which represent the player's spaceship.
     /// </summary>
-    public class Player : DrawableGameComponent, IPlayer
+    public class PlayerA : DrawableGameComponent, IPlayer
     {   
         private SpriteBatch spriteBatch;
         private ICameraService cameraService;       
@@ -31,9 +32,9 @@ namespace SpaceFighter.Logic.Entities.Implementations
         private const float ThrustIncrement = 0.2f;
         private const float ThrustFriction = 0.05f;
 
-        public Player(Game game, Vector2 startPosition) : base(game)
+        public PlayerA(Game game, Vector2 startPosition) : base(game)
         {
-            this.weapon = new PlayerWeapon(this.Game) { DrawOrder = 1 };
+            this.weapon = new PlayerWeaponA(this.Game) { DrawOrder = 1 };
             this.Game.Components.Add(this.weapon);
 
             this.Health = 100;
@@ -266,7 +267,7 @@ namespace SpaceFighter.Logic.Entities.Implementations
                 null,
                 null,
                 this.spriteManager.GetCurrentShader(),
-                cameraService.GetTransformation());
+                this.cameraService.GetTransformation());
 
             this.spriteBatch.Draw(
                 this.spriteManager.GetCurrentSprite(),

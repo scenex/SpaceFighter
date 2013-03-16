@@ -8,12 +8,13 @@ namespace SpaceFighter.Logic.Services.Implementations
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Entities.Implementations;
+    using SpaceFighter.Logic.Entities.Implementations.Players;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class PlayerService : GameComponent, IPlayerService
     {
-        private Player player;
+        private PlayerA player;
         private IAudioService audioService;
 
         public PlayerService(Game game) : base(game)
@@ -46,7 +47,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.audioService = (IAudioService)this.Game.Services.GetService((typeof(IAudioService)));
 
-            this.player = new Player(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0)); // Todo: Eliminate magic number
+            this.player = new PlayerA(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0)); // Todo: Eliminate magic number
             this.Game.Components.Add(this.player);
 
             this.player.TransitionToStateDying += this.OnTransitionToStateDying;

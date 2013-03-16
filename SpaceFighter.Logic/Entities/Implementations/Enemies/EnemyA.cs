@@ -13,24 +13,24 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.StateMachine;
 
-    public class EnemyGreen : EnemyBase
+    public class EnemyA : EnemyBase
     {
-        private ISteering steeringStrategy;
-        private IShooting shootingStrategy;
+        private ISteeringStrategy steeringStrategy;
+        private IWeaponStrategy shootingStrategy;
 
         private Weapon weapon;
 
-        public EnemyGreen(Game game, Vector2 startPosition) : base(game, startPosition)
+        public EnemyA(Game game, Vector2 startPosition) : base(game, startPosition)
         {
             this.Health = 100;
 
-            this.steeringStrategy = new SteeringSeek();
-            this.shootingStrategy = new ShootingPeriodically();
+            this.steeringStrategy = new SteeringStrategySeek();
+            this.shootingStrategy = new WeaponStrategyPeriodically();
         }
 
         public override void Initialize()
         {
-            this.weapon = new EnemyWeapon(this.Game);
+            this.weapon = new EnemyWeaponA(this.Game);
             this.Game.Components.Add(this.weapon);
 
             base.Initialize();
@@ -53,7 +53,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             this.weapon.Position = this.Position;
             this.weapon.Rotation = this.Rotation;
-            this.shootingStrategy.Run(() => this.Weapon.FireWeapon(), elapsed);
+            this.shootingStrategy.Execute(() => this.Weapon.FireWeapon(), elapsed);
         }
 
         protected override void InitializeStateMachine()

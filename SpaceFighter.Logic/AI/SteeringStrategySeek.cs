@@ -6,7 +6,7 @@ namespace SpaceFighter.Logic.AI
 {
     using Microsoft.Xna.Framework;
 
-    public class SteeringSeek : ISteering
+    public class SteeringStrategySeek : ISteeringStrategy
     {
         const float Mass = 50;
         const float MaxVelocity = 6;

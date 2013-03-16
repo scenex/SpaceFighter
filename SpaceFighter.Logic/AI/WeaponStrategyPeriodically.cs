@@ -6,11 +6,11 @@ namespace SpaceFighter.Logic.AI
 {
     using System;
 
-    public class ShootingPeriodically : IShooting
+    public class WeaponStrategyPeriodically : IWeaponStrategy
     {
         private double elapsedMilliseconds;
 
-        public void Run(Action action, TimeSpan elapsed)
+        public void Execute(Action action, TimeSpan elapsed)
         {
             this.elapsedMilliseconds += elapsed.TotalMilliseconds;
             
