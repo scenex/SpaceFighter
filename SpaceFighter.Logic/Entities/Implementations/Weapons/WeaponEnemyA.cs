@@ -9,11 +9,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class EnemyWeaponA : Weapon
+    public class WeaponEnemyA : Weapon
     {
         private ICameraService cameraService;
 
-        public EnemyWeaponA(Game game) : base(game)
+        public WeaponEnemyA(Game game) : base(game)
         {
         }
 

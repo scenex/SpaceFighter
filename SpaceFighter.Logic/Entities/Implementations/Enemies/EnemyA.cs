@@ -8,7 +8,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    using SpaceFighter.Logic.AI;
+    using SpaceFighter.Logic.Entities.Implementations.Steering;
+    using SpaceFighter.Logic.Entities.Implementations.WeaponStrategies;
     using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.StateMachine;
@@ -30,7 +31,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         public override void Initialize()
         {
-            this.weapon = new EnemyWeaponA(this.Game);
+            this.weapon = new WeaponEnemyA(this.Game);
             this.Game.Components.Add(this.weapon);
 
             base.Initialize();

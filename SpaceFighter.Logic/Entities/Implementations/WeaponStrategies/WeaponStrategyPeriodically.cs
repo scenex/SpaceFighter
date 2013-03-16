@@ -2,9 +2,11 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.AI
+namespace SpaceFighter.Logic.Entities.Implementations.WeaponStrategies
 {
     using System;
+
+    using SpaceFighter.Logic.Entities.Interfaces;
 
     public class WeaponStrategyPeriodically : IWeaponStrategy
     {

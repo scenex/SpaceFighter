@@ -34,7 +34,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
 
         public PlayerA(Game game, Vector2 startPosition) : base(game)
         {
-            this.weapon = new PlayerWeaponA(this.Game) { DrawOrder = 1 };
+            this.weapon = new WeaponPlayerA(this.Game) { DrawOrder = 1 };
             this.Game.Components.Add(this.weapon);
 
             this.Health = 100;

@@ -42,20 +42,20 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="AI\ISteeringStrategy.cs" />
-    <Compile Include="AI\IWeaponStrategy.cs" />
-    <Compile Include="AI\SteeringStrategySeek.cs" />
-    <Compile Include="AI\WeaponStrategyPeriodically.cs" />
     <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />
     <Compile Include="EnemyState.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyA.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyBase.cs" />
     <Compile Include="Entities\Implementations\Players\PlayerA.cs" />
-    <Compile Include="Entities\Implementations\Weapons\EnemyWeaponA.cs" />
-    <Compile Include="Entities\Implementations\Weapons\PlayerWeaponA.cs" />
+    <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategySeek.cs" />
+    <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyPeriodically.cs" />
+    <Compile Include="Entities\Implementations\Weapons\WeaponEnemyA.cs" />
     <Compile Include="Entities\Implementations\Weapons\ShotA.cs" />
+    <Compile Include="Entities\Implementations\Weapons\WeaponPlayerA.cs" />
     <Compile Include="Entities\Interfaces\IEntity.cs" />
+    <Compile Include="Entities\Interfaces\ISteeringStrategy.cs" />
+    <Compile Include="Entities\Interfaces\IWeaponStrategy.cs" />
     <Compile Include="FramerateCounter.cs" />
     <Compile Include="Entities\Interfaces\IShot.cs" />
     <Compile Include="HealthChangedEventArgs.cs" />

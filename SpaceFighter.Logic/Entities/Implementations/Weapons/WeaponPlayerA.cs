@@ -9,13 +9,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class PlayerWeaponA : Weapon
+    public class WeaponPlayerA : Weapon
     {
         private ICameraService cameraService;
     
         private double elapsedShotInterval;
         
-        public PlayerWeaponA(Game game) : base(game)
+        public WeaponPlayerA(Game game) : base(game)
         {
         }
 

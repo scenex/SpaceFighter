@@ -2,12 +2,12 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.AI
+namespace SpaceFighter.Logic.Entities.Interfaces
 {
-    using System;
+    using Microsoft.Xna.Framework;
 
-    public interface IWeaponStrategy
+    public interface ISteeringStrategy
     {
-        void Execute(Action action, TimeSpan elapsed);
+        Vector2 Run(Vector2 position, Vector2 distance, float angle);
     }
 }
