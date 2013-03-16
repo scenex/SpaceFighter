@@ -21,12 +21,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         protected string pathShot;
 
         protected Weapon(Game game) : base(game)
-        {     
+        {
+            this.Shots = new List<IShot>();
         }
 
         public event EventHandler<EventArgs> WeaponFired;
 
-        public abstract IList<IShot> Shots { get; }
         public virtual float Rotation { get; set; }
         public virtual Vector2 Position { get; set; }
         
@@ -37,8 +37,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         protected abstract void UpdateShots();      
 
         protected virtual void DrawTurret() {}
-        protected virtual void UpdateTurret() {}
         protected virtual void LoadTurret() {}
+
+        public IList<IShot> Shots { get; protected set; }
 
         protected virtual void LoadShot(string texturePath)
         {
@@ -59,7 +60,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         public override void Update(GameTime gameTime)
         {
             this.UpdateGameTime(gameTime);
-            this.UpdateTurret();
             this.UpdateShots();
             
             base.Update(gameTime);
