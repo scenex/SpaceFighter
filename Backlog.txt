@@ -3,18 +3,17 @@ Codename: 'Space Fighter' Backlog
 
 
 What's currently on:
-==========
+====================
 
-- Weapon upgrade logic
+- Radial electromagnetic shock wave
 - Integrate background music
+- Swarm enemies
 
 
 What's next:
 ============
 
-- Swarm enemies
 - HUD with score, energy, lives, special weapons in title safe area
-- Radial electromagnetic shock wave
 - More accurate collision detection
 - Time system
 - Scoring system
@@ -44,6 +43,7 @@ What's next:
 
 DONE:
 =====
+
 - Eliminate performance issue on XBox when to much shots fly around
 - Enemy spline movement (manual programming)
 - 2D Camera movement
@@ -59,4 +59,5 @@ DONE:
 - Weapon architecture re-design (enemy -> weapon strategy)
 - Strategy pattern for enemy AI states
 - Player friction (linear movement smoothing)
+- Weapon upgrade logic
 - Rotational weapon control (XBox)
