@@ -42,11 +42,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             base.Initialize();
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
-
         public void ReportEnemyHit(IEnemy enemy, IShot shot)
         {
             enemy.SubtractHealth(shot.FirePower);
