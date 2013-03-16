@@ -5,6 +5,9 @@
 namespace SpaceFighter.Logic.Entities.Implementations.WeaponStrategies
 {
     using System;
+    using System.Collections.Generic;
+
+    using Microsoft.Xna.Framework;
 
     using SpaceFighter.Logic.Entities.Interfaces;
 
@@ -21,6 +24,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.WeaponStrategies
                 action.Invoke();
                 this.elapsedMilliseconds = 0;
             }            
+        }
+
+        public void Execute(Action firedEvent, double shotIntervalElapsed, IList<IShot> shots, Vector2 shotPosition, float shotRotation, int shotWidth, int shotHeight, Color[] shotColorInformation)
+        {
+            throw new NotImplementedException();
         }
     }
 }

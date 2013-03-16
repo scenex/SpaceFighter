@@ -77,12 +77,16 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         public void UpgradeWeapon()
         {
-            this.UpgradeLevel++;
+            // Todo: No Upper limit, just for testing purposes
+            if (this.UpgradeLevel < 2) 
+            {
+                this.UpgradeLevel++;
+            }
         }
 
         public void DowngradeWeapon()
         {
-            if (this.UpgradeLevel > 0)
+            if (this.UpgradeLevel > 1)
             {
                 this.UpgradeLevel--;
             }

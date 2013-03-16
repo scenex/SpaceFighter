@@ -100,6 +100,16 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.playerService.Thrust();
             }
 
+            if (this.currentKeyboardState.IsKeyDown(Keys.F1) && this.previousKeyboardState.IsKeyUp(Keys.F1))
+            {
+                this.playerService.Player.Weapon.DowngradeWeapon();
+            }
+
+            if (this.currentKeyboardState.IsKeyDown(Keys.F2) && this.previousKeyboardState.IsKeyUp(Keys.F2))
+            {
+                this.playerService.Player.Weapon.UpgradeWeapon();
+            }
+
             this.previousKeyboardState = this.currentKeyboardState;
         }
 
@@ -127,6 +137,16 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.playerService.Player.Weapon.Rotation += rotationDifference * 0.05f;
 
                 this.playerService.Fire();
+            }
+
+            if (this.currentGamePadState.Triggers.Left > 0.1f)
+            {
+                this.playerService.Player.Weapon.DowngradeWeapon();
+            }
+
+            if (this.currentGamePadState.Triggers.Right > 0.1f)
+            {
+                this.playerService.Player.Weapon.UpgradeWeapon();
             }
 
             this.previousGamePadState = this.currentGamePadState;

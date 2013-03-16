@@ -7,16 +7,26 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+
+    using SpaceFighter.Logic.Entities.Implementations.WeaponStrategies;
+    using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class WeaponPlayerA : Weapon
     {
         private ICameraService cameraService;
-    
+
+        private IWeaponStrategy weaponStrategy;
+        private readonly WeaponStrategyA1 weaponStrategyA1;
+        private readonly WeaponStrategyA2 weaponStrategyA2;
+
         private double elapsedShotInterval;
         
         public WeaponPlayerA(Game game) : base(game)
         {
+            this.weaponStrategy = new WeaponStrategyA1();
+            this.weaponStrategyA1 = new WeaponStrategyA1();
+            this.weaponStrategyA2 = new WeaponStrategyA2();
         }
 
         public override void Initialize()
@@ -57,64 +67,32 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         {
             switch (this.UpgradeLevel)
             {
-                // Todo: Move to strategy WeaponA1
-                case 0:
-                    if (this.elapsedShotInterval > 0.1)
-                    {
-                        const int Offset = 105 / 2 - 30;
-
-                        this.Shots.Add(
-                            new ShotA(
-                                 new Vector2(
-                                    this.Position.X - (this.SpriteShot.Width / 2.0f) + Offset * ((float)Math.Cos(this.Rotation)),   // Center shot and then add r*cos(angle)
-                                    this.Position.Y - (this.SpriteShot.Height / 2.0f) + Offset * ((float)Math.Sin(this.Rotation))),  // Center shot and then add r*sin(angle)                   
-                                this.SpriteShot.Width,
-                                this.SpriteShot.Height,
-                                this.SpriteShotDataCached,
-                                20,
-                                this.Rotation));
-
-                        this.elapsedShotInterval = 0;
-                        this.TriggerWeaponFiredEvent(this, null);
-                    }
-                break;
-
-                // Todo: Move to strategy WeaponA2
                 case 1:
-                    if (this.elapsedShotInterval > 0.1)
-                    {
-                        const int Offset = 105 / 2 - 30;
-
-                        this.Shots.Add(
-                            new ShotA(
-                                 new Vector2(
-                                    this.Position.X - (this.SpriteShot.Width / 2.0f) + Offset * ((float)Math.Cos(this.Rotation)) - 8,   // Center shot and then add r*cos(angle)
-                                    this.Position.Y - (this.SpriteShot.Height / 2.0f) + Offset * ((float)Math.Sin(this.Rotation))),  // Center shot and then add r*sin(angle)                   
-                                this.SpriteShot.Width,
-                                this.SpriteShot.Height,
-                                this.SpriteShotDataCached,
-                                20,
-                                this.Rotation));
-
-                         this.Shots.Add(
-                            new ShotA(
-                                 new Vector2(
-                                    this.Position.X - (this.SpriteShot.Width / 2.0f) + Offset * ((float)Math.Cos(this.Rotation)) + 8,   // Center shot and then add r*cos(angle)
-                                    this.Position.Y - (this.SpriteShot.Height / 2.0f) + Offset * ((float)Math.Sin(this.Rotation))),  // Center shot and then add r*sin(angle)                   
-                                this.SpriteShot.Width,
-                                this.SpriteShot.Height,
-                                this.SpriteShotDataCached,
-                                20,
-                                this.Rotation));
-
-                        this.elapsedShotInterval = 0;
-                        this.TriggerWeaponFiredEvent(this, null);
-                    }
+                    this.weaponStrategy = this.weaponStrategyA1;
+                    this.weaponStrategy.Execute(
+                        () => this.TriggerWeaponFiredEvent(this, null),
+                        this.elapsedShotInterval,
+                        this.Shots,
+                        this.Position,
+                        this.Rotation,
+                        this.SpriteShot.Width,
+                        this.SpriteShot.Height,
+                        this.SpriteShotDataCached);
                 break;
-                    
+
+                case 2:
+                    this.weaponStrategy = this.weaponStrategyA2;
+                    this.weaponStrategy.Execute(
+                        () => this.TriggerWeaponFiredEvent(this, null),
+                        this.elapsedShotInterval,
+                        this.Shots,
+                        this.Position,
+                        this.Rotation,
+                        this.SpriteShot.Width,
+                        this.SpriteShot.Height,
+                        this.SpriteShotDataCached);
+                break;   
             }
-
-
         }
 
         protected override void UpdateGameTime(GameTime gameTime)
@@ -174,7 +152,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                 SpriteEffects.None, 
                 0.0f);
             
-
             this.SpriteBatch.End();
         }
     }
