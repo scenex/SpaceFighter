@@ -10,11 +10,14 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
     public interface IWeapon
     {
+        event EventHandler<EventArgs> WeaponFired;
+
         Vector2 Position { get; set; }
         float Rotation { get; set; }       
         IList<IShot> Shots { get; }
 
         void FireWeapon();
-        event EventHandler<EventArgs> WeaponFired; 
+        void UpgradeWeapon();
+        void DowngradeWeapon();
     }
 }

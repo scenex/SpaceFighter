@@ -248,7 +248,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
           
             this.stateMachine.Update();
             this.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);
-            this.weapon.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);
+            this.weapon.SpriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);
 
             if (this.stateMachine.CurrentState.Tag != null)
             {

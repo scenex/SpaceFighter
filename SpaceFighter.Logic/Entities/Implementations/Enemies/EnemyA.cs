@@ -7,8 +7,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-
-    using SpaceFighter.Logic.Entities.Implementations.Steering;
+    using SpaceFighter.Logic.Entities.Implementations.SteeringStrategies;
     using SpaceFighter.Logic.Entities.Implementations.WeaponStrategies;
     using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;
@@ -26,7 +25,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.Health = 100;
 
             this.steeringStrategy = new SteeringStrategySeek();
-            this.shootingStrategy = new WeaponStrategyPeriodically();
+            this.shootingStrategy = new WeaponStrategyEnemyA();
         }
 
         public override void Initialize()
@@ -47,7 +46,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         protected override void UpdatePosition()
         {
-            this.Position = this.steeringStrategy.Run(this.Position, this.distanceToPlayer, this.Rotation);
+            this.Position = this.steeringStrategy.Execute(this.Position, this.distanceToPlayer, this.Rotation);
         }
 
         protected override void UpdateWeapon(TimeSpan elapsed)

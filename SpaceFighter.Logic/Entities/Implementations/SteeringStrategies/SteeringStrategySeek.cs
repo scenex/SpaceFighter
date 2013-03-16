@@ -2,7 +2,7 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Entities.Implementations.Steering
+namespace SpaceFighter.Logic.Entities.Implementations.SteeringStrategies
 {
     using Microsoft.Xna.Framework;
 
@@ -17,7 +17,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Steering
 
         Vector2 velocity;
 
-        public Vector2 Run(Vector2 position, Vector2 distance, float angle)
+        public Vector2 Execute(Vector2 position, Vector2 distance, float angle)
         {
             var desiredVelocity = Vector2.Normalize(distance) * MaxVelocity;
             var steering = Vector2.Subtract(desiredVelocity, this.velocity);

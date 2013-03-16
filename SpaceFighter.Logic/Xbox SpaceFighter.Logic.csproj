@@ -49,7 +49,9 @@
     <Compile Include="Entities\Implementations\Enemies\EnemyBase.cs" />
     <Compile Include="Entities\Implementations\Players\PlayerA.cs" />
     <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategySeek.cs" />
-    <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyPeriodically.cs" />
+    <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA1.cs" />
+    <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA2.cs" />
+    <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyEnemyA.cs" />
     <Compile Include="Entities\Implementations\Weapons\WeaponEnemyA.cs" />
     <Compile Include="Entities\Implementations\Weapons\ShotA.cs" />
     <Compile Include="Entities\Implementations\Weapons\WeaponPlayerA.cs" />

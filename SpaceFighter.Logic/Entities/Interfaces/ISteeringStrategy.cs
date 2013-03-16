@@ -8,6 +8,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
     public interface ISteeringStrategy
     {
-        Vector2 Run(Vector2 position, Vector2 distance, float angle);
+        Vector2 Execute(Vector2 position, Vector2 distance, float angle);
     }
 }

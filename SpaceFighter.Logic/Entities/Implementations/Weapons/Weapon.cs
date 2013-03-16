@@ -13,12 +13,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
     public abstract class Weapon : DrawableGameComponent, IWeapon
     {
-        public SpriteManager spriteManager;
+        public SpriteManager SpriteManager;
 
-        protected SpriteBatch spriteBatch;
-        protected Color[] spriteShotDataCached;
-        protected Texture2D spriteShot;
-        protected string pathShot;
+        protected SpriteBatch SpriteBatch;
+        protected Color[] SpriteShotDataCached;
+        protected Texture2D SpriteShot;
+        protected string PathShot;
+        protected int UpgradeLevel = 1;
 
         protected Weapon(Game game) : base(game)
         {
@@ -31,6 +32,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         public virtual Vector2 Position { get; set; }
         
         public abstract void FireWeapon();
+
         protected abstract void UpdateGameTime(GameTime gameTime);
 
         protected abstract void DrawShots();
@@ -43,17 +45,17 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         protected virtual void LoadShot(string texturePath)
         {
-            this.pathShot = texturePath;
-            this.spriteShot = this.Game.Content.Load<Texture2D>(this.pathShot);
+            this.PathShot = texturePath;
+            this.SpriteShot = this.Game.Content.Load<Texture2D>(this.PathShot);
 
             // Obtain color information for subsequent per pixel collision detection
-            this.spriteShotDataCached = new Color[this.spriteShot.Width * this.spriteShot.Height];
-            this.spriteShot.GetData(this.spriteShotDataCached);
+            this.SpriteShotDataCached = new Color[this.SpriteShot.Width * this.SpriteShot.Height];
+            this.SpriteShot.GetData(this.SpriteShotDataCached);
         }
 
         protected override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);        
+            this.SpriteBatch = new SpriteBatch(this.GraphicsDevice);        
             base.LoadContent();
         }
 
@@ -71,6 +73,19 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.DrawShots();
 
             base.Draw(gameTime);
+        }
+
+        public void UpgradeWeapon()
+        {
+            this.UpgradeLevel++;
+        }
+
+        public void DowngradeWeapon()
+        {
+            if (this.UpgradeLevel > 0)
+            {
+                this.UpgradeLevel--;
+            }
         }
 
         protected void TriggerWeaponFiredEvent(object sender, EventArgs eventArgs)

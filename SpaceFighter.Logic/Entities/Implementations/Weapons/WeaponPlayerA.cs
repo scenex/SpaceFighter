@@ -28,21 +28,21 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         protected override void LoadContent()
         {
-            this.spriteManager = new SpriteManager(PlayerState.Respawn, 23, 48);
+            this.SpriteManager = new SpriteManager(PlayerState.Respawn, 23, 48);
             
-            this.spriteManager.AddStillSprite(
+            this.SpriteManager.AddStillSprite(
                 PlayerState.Alive,
                 this.Game.Content.Load<Texture2D>("Sprites/Turrets/Alive"));
 
-            this.spriteManager.AddStillSprite(
+            this.SpriteManager.AddStillSprite(
                 PlayerState.Dying,
                 this.Game.Content.Load<Texture2D>("Sprites/Turrets/Dead"));
 
-            this.spriteManager.AddStillSprite(
+            this.SpriteManager.AddStillSprite(
                 PlayerState.Dead,
                 this.Game.Content.Load<Texture2D>("Sprites/Turrets/Dead"));
 
-            this.spriteManager.AddStillSprite(
+            this.SpriteManager.AddStillSprite(
                 PlayerState.Respawn,
                 this.Game.Content.Load<Texture2D>("Sprites/Turrets/Alive"),
                 this.Game.Content.Load<Effect>("Shaders/Transparency"),
@@ -55,24 +55,66 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         public override void FireWeapon()
         {
-            if (this.elapsedShotInterval > 0.1)
+            switch (this.UpgradeLevel)
             {
-                const int Offset = 105 / 2 - 30;
+                // Todo: Move to strategy WeaponA1
+                case 0:
+                    if (this.elapsedShotInterval > 0.1)
+                    {
+                        const int Offset = 105 / 2 - 30;
 
-                this.Shots.Add(
-                    new ShotA(
-                         new Vector2(
-                            this.Position.X - (this.spriteShot.Width / 2.0f) + Offset * ((float)Math.Cos(this.Rotation)),   // Center shot and then add r*cos(angle)
-                            this.Position.Y - (this.spriteShot.Height / 2.0f) + Offset * ((float)Math.Sin(this.Rotation))),  // Center shot and then add r*sin(angle)                   
-                        this.spriteShot.Width,
-                        this.spriteShot.Height,
-                        this.spriteShotDataCached,
-                        20,
-                        this.Rotation));
+                        this.Shots.Add(
+                            new ShotA(
+                                 new Vector2(
+                                    this.Position.X - (this.SpriteShot.Width / 2.0f) + Offset * ((float)Math.Cos(this.Rotation)),   // Center shot and then add r*cos(angle)
+                                    this.Position.Y - (this.SpriteShot.Height / 2.0f) + Offset * ((float)Math.Sin(this.Rotation))),  // Center shot and then add r*sin(angle)                   
+                                this.SpriteShot.Width,
+                                this.SpriteShot.Height,
+                                this.SpriteShotDataCached,
+                                20,
+                                this.Rotation));
 
-                this.elapsedShotInterval = 0;
-                this.TriggerWeaponFiredEvent(this, null);
+                        this.elapsedShotInterval = 0;
+                        this.TriggerWeaponFiredEvent(this, null);
+                    }
+                break;
+
+                // Todo: Move to strategy WeaponA2
+                case 1:
+                    if (this.elapsedShotInterval > 0.1)
+                    {
+                        const int Offset = 105 / 2 - 30;
+
+                        this.Shots.Add(
+                            new ShotA(
+                                 new Vector2(
+                                    this.Position.X - (this.SpriteShot.Width / 2.0f) + Offset * ((float)Math.Cos(this.Rotation)) - 8,   // Center shot and then add r*cos(angle)
+                                    this.Position.Y - (this.SpriteShot.Height / 2.0f) + Offset * ((float)Math.Sin(this.Rotation))),  // Center shot and then add r*sin(angle)                   
+                                this.SpriteShot.Width,
+                                this.SpriteShot.Height,
+                                this.SpriteShotDataCached,
+                                20,
+                                this.Rotation));
+
+                         this.Shots.Add(
+                            new ShotA(
+                                 new Vector2(
+                                    this.Position.X - (this.SpriteShot.Width / 2.0f) + Offset * ((float)Math.Cos(this.Rotation)) + 8,   // Center shot and then add r*cos(angle)
+                                    this.Position.Y - (this.SpriteShot.Height / 2.0f) + Offset * ((float)Math.Sin(this.Rotation))),  // Center shot and then add r*sin(angle)                   
+                                this.SpriteShot.Width,
+                                this.SpriteShot.Height,
+                                this.SpriteShotDataCached,
+                                20,
+                                this.Rotation));
+
+                        this.elapsedShotInterval = 0;
+                        this.TriggerWeaponFiredEvent(this, null);
+                    }
+                break;
+                    
             }
+
+
         }
 
         protected override void UpdateGameTime(GameTime gameTime)
@@ -93,7 +135,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         protected override void DrawShots()
         {
-            this.spriteBatch.Begin(
+            this.SpriteBatch.Begin(
                 SpriteSortMode.BackToFront,
                 BlendState.AlphaBlend,
                 null,
@@ -104,36 +146,36 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
             foreach (var shot in this.Shots)
             {
-                this.spriteBatch.Draw(this.spriteShot, shot.Position, Color.White);
+                this.SpriteBatch.Draw(this.SpriteShot, shot.Position, Color.White);
             }
 
-            this.spriteBatch.End();
+            this.SpriteBatch.End();
         }
 
         protected override void DrawTurret()
         {
-            this.spriteBatch.Begin(
+            this.SpriteBatch.Begin(
                 SpriteSortMode.BackToFront,
                 BlendState.AlphaBlend,
                 null,
                 null,
                 null,
-                this.spriteManager.GetCurrentShader(),
+                this.SpriteManager.GetCurrentShader(),
                 cameraService.GetTransformation());
 
-            this.spriteBatch.Draw(
-                this.spriteManager.GetCurrentSprite(), 
+            this.SpriteBatch.Draw(
+                this.SpriteManager.GetCurrentSprite(), 
                 this.Position, 
                 null, 
                 Color.White, 
                 this.Rotation,
-                new Vector2(this.spriteManager.GetCurrentSprite().Width / 2.0f, this.spriteManager.GetCurrentSprite().Height / 2.0f), 
+                new Vector2(this.SpriteManager.GetCurrentSprite().Width / 2.0f, this.SpriteManager.GetCurrentSprite().Height / 2.0f), 
                 1.0f, 
                 SpriteEffects.None, 
                 0.0f);
             
 
-            this.spriteBatch.End();
+            this.SpriteBatch.End();
         }
     }
 }
