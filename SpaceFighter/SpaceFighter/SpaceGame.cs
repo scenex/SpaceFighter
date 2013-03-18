@@ -5,6 +5,7 @@
 namespace SpaceFighter
 {
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
     using SpaceFighter.Logic;
     using SpaceFighter.Logic.Input.Implementation;
@@ -16,8 +17,12 @@ namespace SpaceFighter
     /// </summary>
     public class SpaceGame : Game
     {
+        SpriteBatch spriteBatch;
+        private Effect shader;
+
         private const int ScreenWidth = 1280;
         private const int ScreenHeight = 720;
+        private RenderTarget2D renderTarget;
 
         private readonly GraphicsDeviceManager graphics;
 
@@ -40,12 +45,12 @@ namespace SpaceFighter
         {   
             this.graphics.PreferredBackBufferWidth = ScreenWidth;
             this.graphics.PreferredBackBufferHeight = ScreenHeight;
-            this.IsMouseVisible = true;
+            this.IsMouseVisible = true; 
+           
+            this.renderTarget = new RenderTarget2D(this.GraphicsDevice, ScreenWidth, ScreenHeight);
             this.graphics.ApplyChanges();
 
             this.RegisterGameServices();
-
-            Components.Add(new FramerateCounter(this));
 
             #if WINDOWS
                 ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputKeyboard());
@@ -53,7 +58,14 @@ namespace SpaceFighter
                 ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputGamepad());
             #endif
 
+            Components.Add(new FramerateCounter(this));
             base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.shader = this.Content.Load<Effect>("Shaders/Prototype");
         }
 
         private void RegisterGameServices()
@@ -101,8 +113,24 @@ namespace SpaceFighter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            // Render to rendertarget
+            this.graphics.GraphicsDevice.SetRenderTarget(this.renderTarget);          
             GraphicsDevice.Clear(Color.Black);
             base.Draw(gameTime);
+            this.graphics.GraphicsDevice.SetRenderTarget(null);
+
+            // Render rendertarget to backbuffer
+            spriteBatch.Begin(
+                SpriteSortMode.BackToFront,
+                BlendState.AlphaBlend,
+                null,
+                null,
+                null,
+                this.shader);
+
+            spriteBatch.Draw(this.renderTarget, this.renderTarget.Bounds, Color.White);
+            
+            spriteBatch.End();
         }
     }
 }
