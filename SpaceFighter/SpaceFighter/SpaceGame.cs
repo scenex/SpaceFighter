@@ -24,6 +24,8 @@ namespace SpaceFighter
         private const int ScreenHeight = 720;
         private RenderTarget2D renderTarget;
 
+        private float elapsed;
+
         private readonly GraphicsDeviceManager graphics;
 
         /// <summary>
@@ -105,6 +107,13 @@ namespace SpaceFighter
             var audioService = new AudioService(this);
             this.Services.AddService(typeof(IAudioService), audioService);
             this.Components.Add(audioService);
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            this.elapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            this.shader.Parameters["elapsed"].SetValue(this.elapsed);
+            base.Update(gameTime);
         }
 
         /// <summary>

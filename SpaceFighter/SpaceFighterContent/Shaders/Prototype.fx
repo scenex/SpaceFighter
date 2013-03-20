@@ -3,11 +3,12 @@
 // -----------------------------------------------------------------------
 
 sampler s0;
+float elapsed;
 
 float4 PixelShaderPrototype(float2 coords: TEXCOORD0) : COLOR0
 {
-	coords.x += sin(coords.x * 10) * 0.05f;
-	coords.y += cos(coords.y * 10) * 0.05f;
+	coords.x += sin(coords.x + elapsed) * 0.05f;
+	coords.y += cos(coords.y + elapsed) * 0.05f;
 	float4 color = tex2D(s0, coords);  
 	return color;
 }
