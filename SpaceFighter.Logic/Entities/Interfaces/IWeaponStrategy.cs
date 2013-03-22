@@ -14,7 +14,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
             Action action, 
             TimeSpan elapsed);
 
-        void Execute(Action firedEvent, 
+        bool Execute(Action firedEvent, 
             double shotIntervalElapsed, 
             IList<IShot> shots, 
             Vector2 shotPosition, 

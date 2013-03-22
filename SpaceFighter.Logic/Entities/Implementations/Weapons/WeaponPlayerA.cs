@@ -69,7 +69,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             {
                 case 1:
                     this.weaponStrategy = this.weaponStrategyA1;
-                    this.weaponStrategy.Execute(
+
+                    if (this.weaponStrategy.Execute(
                         () => this.TriggerWeaponFiredEvent(this, null),
                         this.elapsedShotInterval,
                         this.Shots,
@@ -77,12 +78,17 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                         this.Rotation,
                         this.SpriteShot.Width,
                         this.SpriteShot.Height,
-                        this.SpriteShotDataCached);
+                        this.SpriteShotDataCached))
+                    {
+                        this.elapsedShotInterval = 0;
+                    }
+                    
                 break;
 
                 case 2:
                     this.weaponStrategy = this.weaponStrategyA2;
-                    this.weaponStrategy.Execute(
+
+                    if (this.weaponStrategy.Execute(
                         () => this.TriggerWeaponFiredEvent(this, null),
                         this.elapsedShotInterval,
                         this.Shots,
@@ -90,8 +96,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                         this.Rotation,
                         this.SpriteShot.Width,
                         this.SpriteShot.Height,
-                        this.SpriteShotDataCached);
-                break;   
+                        this.SpriteShotDataCached))
+                    {
+                        this.elapsedShotInterval = 0;
+                    }
+
+                    break;   
             }
         }
 

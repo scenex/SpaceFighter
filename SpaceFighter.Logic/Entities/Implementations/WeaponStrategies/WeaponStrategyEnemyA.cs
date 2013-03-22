@@ -26,7 +26,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.WeaponStrategies
             }            
         }
 
-        public void Execute(Action firedEvent, double shotIntervalElapsed, IList<IShot> shots, Vector2 shotPosition, float shotRotation, int shotWidth, int shotHeight, Color[] shotColorInformation)
+        public bool Execute(Action firedEvent, double shotIntervalElapsed, IList<IShot> shots, Vector2 shotPosition, float shotRotation, int shotWidth, int shotHeight, Color[] shotColorInformation)
         {
             throw new NotImplementedException();
         }

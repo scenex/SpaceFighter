@@ -17,7 +17,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.WeaponStrategies
             action.Invoke();
         }
 
-        public void Execute(Action firedEvent, double shotIntervalElapsed, IList<IShot> shots, Vector2 shotPosition, float shotRotation, int shotWidth, int shotHeight, Color[] shotColorInformation)
+        public bool Execute(Action firedEvent, double shotIntervalElapsed, IList<IShot> shots, Vector2 shotPosition, float shotRotation, int shotWidth, int shotHeight, Color[] shotColorInformation)
         {
             if (shotIntervalElapsed > 0.1)
             {
@@ -45,9 +45,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.WeaponStrategies
                         20,
                         shotRotation));
 
-                shotIntervalElapsed = 0;
                 firedEvent.Invoke();
+                return true;
             }
+
+            return false;
         }
     }
 }
