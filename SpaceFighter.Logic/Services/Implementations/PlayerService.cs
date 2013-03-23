@@ -47,7 +47,12 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.audioService = (IAudioService)this.Game.Services.GetService((typeof(IAudioService)));
 
-            this.player = new PlayerA(this.Game, new Vector2((this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 16, (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - 0)); // Todo: Eliminate magic number
+            this.player = new PlayerA
+                (this.Game, 
+                new Vector2(
+                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) + 40, 
+                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) + 300)); // Todo: Eliminate magic numbers
+
             this.Game.Components.Add(this.player);
 
             this.player.TransitionToStateDying += this.OnTransitionToStateDying;
