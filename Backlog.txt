@@ -5,9 +5,9 @@ Codename: 'Space Fighter' Backlog
 What's currently on:
 ====================
 
-- Radial electromagnetic shock wave
-- Integrate background music
 - Swarm enemies
+- Shot trails
+- Radial electromagnetic shock wave
 
 
 What's next:
@@ -61,3 +61,4 @@ DONE:
 - Player friction (linear movement smoothing)
 - Weapon upgrade logic
 - Rotational weapon control (XBox)
+- Integrate background music
