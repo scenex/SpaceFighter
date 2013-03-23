@@ -67,7 +67,7 @@ namespace SpaceFighter
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
-            this.shader = this.Content.Load<Effect>("Shaders/Prototype");
+            this.shader = this.Content.Load<Effect>("Shaders/Circle");
         }
 
         private void RegisterGameServices()
@@ -112,7 +112,7 @@ namespace SpaceFighter
         protected override void Update(GameTime gameTime)
         {
             this.elapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.shader.Parameters["elapsed"].SetValue(this.elapsed);
+            //this.shader.Parameters["circleRadius"].SetValue(this.elapsed);
             base.Update(gameTime);
         }
 
@@ -135,8 +135,8 @@ namespace SpaceFighter
                 null,
                 null,
                 null,
-                //this.shader);
-                null);
+                this.shader);
+                //null);
 
             spriteBatch.Draw(this.renderTarget, this.renderTarget.Bounds, Color.White);
             
