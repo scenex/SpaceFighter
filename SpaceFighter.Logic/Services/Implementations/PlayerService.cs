@@ -7,7 +7,6 @@ namespace SpaceFighter.Logic.Services.Implementations
     using System;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
-    using SpaceFighter.Logic.Entities.Implementations;
     using SpaceFighter.Logic.Entities.Implementations.Players;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
@@ -60,7 +59,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
             this.player.TransitionToStateAlive += this.OnTransitionToStateAlive;
             this.player.HealthChanged += this.OnHealthChanged;
-
             this.player.Weapon.WeaponFired += this.OnWeaponFired;
 
             base.Initialize();

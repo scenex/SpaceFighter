@@ -16,8 +16,8 @@ Global Settings
     Header File = SpaceFighter.Sound.h;
     Exclude Category Names = 0;
     Exclude Variable Names = 0;
-    Last Modified Low = 2824414378;
-    Last Modified High = 30277026;
+    Last Modified Low = 3714322808;
+    Last Modified High = 30287839;
 
     Category
     {
@@ -219,18 +219,20 @@ Global Settings
 Wave Bank
 {
     Name = Wave Bank;
-    Xbox File = Xbox\Wave Bank.xwb;
-    Windows File = Win\Wave Bank.xwb;
-    Xbox Bank Path Edited = 0;
-    Windows Bank Path Edited = 0;
+    Xbox File = ..\SpaceFighter\SpaceFighterContent\Sounds\Xbox\Wave Bank.xwb;
+    Windows File = ..\SpaceFighter\SpaceFighterContent\Sounds\Win\Wave Bank.xwb;
+    Xbox Bank Path Edited = 1;
+    Windows Bank Path Edited = 1;
     Seek Tables = 1;
     Compression Preset Name = <none>;
-    Xbox Bank Last Modified Low = 2824474382;
-    Xbox Bank Last Modified High = 30277026;
-    PC Bank Last Modified Low = 2072292997;
-    PC Bank Last Modified High = 30277025;
-    Bank Last Revised Low = 2072292997;
-    Bank Last Revised High = 30277025;
+    Xbox Bank Last Modified Low = 2480852257;
+    Xbox Bank Last Modified High = 30287839;
+    PC Bank Last Modified Low = 2127312036;
+    PC Bank Last Modified High = 30287839;
+    Header Last Modified Low = 0;
+    Header Last Modified High = 0;
+    Bank Last Revised Low = 1368278621;
+    Bank Last Revised High = 30287839;
 
     Wave
     {
@@ -277,17 +279,40 @@ Wave Bank
             Last Modified High = 30277023;
         }
     }
+
+    Wave
+    {
+        Name = music2;
+        File = ..\Artwork\Sounds\music2.wav;
+        Build Settings Last Modified Low = 2984156247;
+        Build Settings Last Modified High = 30287836;
+
+        Cache
+        {
+            Format Tag = 0;
+            Channels = 2;
+            Sampling Rate = 44100;
+            Bits Per Sample = 1;
+            Play Region Offset = 44;
+            Play Region Length = 30137856;
+            Loop Region Offset = 0;
+            Loop Region Length = 0;
+            File Type = 1;
+            Last Modified Low = 4211949568;
+            Last Modified High = 30287792;
+        }
+    }
 }
 
 Sound Bank
 {
     Name = Sound Bank;
-    Xbox File = Xbox\Sound Bank.xsb;
-    Windows File = Win\Sound Bank.xsb;
-    Xbox Bank Path Edited = 0;
-    Windows Bank Path Edited = 0;
-    Bank Last Modified Low = 2824524385;
-    Bank Last Modified High = 30277026;
+    Xbox File = ..\SpaceFighter\SpaceFighterContent\Sounds\Xbox\Sound Bank.xsb;
+    Windows File = ..\SpaceFighter\SpaceFighterContent\Sounds\Win\Sound Bank.xsb;
+    Xbox Bank Path Edited = 1;
+    Windows Bank Path Edited = 1;
+    Bank Last Modified Low = 3714362810;
+    Bank Last Modified High = 30287839;
     Header Last Modified High = 0;
     Header Last Modified Low = 0;
 
@@ -385,6 +410,53 @@ Sound Bank
         }
     }
 
+    Sound
+    {
+        Name = music2;
+        Volume = -1200;
+        Pitch = 0;
+        Priority = 0;
+
+        Category Entry
+        {
+            Name = Default;
+        }
+
+        Track
+        {
+            Volume = 0;
+            Use Filter = 0;
+
+            Play Wave Event
+            {
+                Break Loop = 0;
+                Use Speaker Position = 0;
+                Use Center Speaker = 1;
+                New Speaker Position On Loop = 1;
+                Speaker Position Angle = 0.000000;
+                Speaker Position Arc = 0.000000;
+
+                Event Header
+                {
+                    Timestamp = 0;
+                    Relative = 0;
+                    Random Recurrence = 0;
+                    Random Offset = 0;
+                }
+
+                Wave Entry
+                {
+                    Bank Name = Wave Bank;
+                    Bank Index = 0;
+                    Entry Name = music2;
+                    Entry Index = 2;
+                    Weight = 255;
+                    Weight Min = 0;
+                }
+            }
+        }
+    }
+
     Cue
     {
         Name = explosion;
@@ -420,6 +492,26 @@ Sound Bank
         {
             Name = shot;
             Index = 1;
+            Weight Min = 0;
+            Weight Max = 255;
+        }
+    }
+
+    Cue
+    {
+        Name = music2;
+
+        Variation
+        {
+            Variation Type = 3;
+            Variation Table Type = 1;
+            New Variation on Loop = 0;
+        }
+
+        Sound Entry
+        {
+            Name = music2;
+            Index = 2;
             Weight Min = 0;
             Weight Max = 255;
         }

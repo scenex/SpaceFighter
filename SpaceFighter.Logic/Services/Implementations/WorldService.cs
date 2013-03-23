@@ -20,7 +20,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private SpriteBatch spriteBatch;
 
         private ICameraService cameraService;
-
+        private IAudioService audioService;
         private readonly List<Texture2D> spriteList = new List<Texture2D>();
 
         public WorldService(Game game) : base(game)
@@ -46,12 +46,15 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            this.audioService = (IAudioService)this.Game.Services.GetService(typeof(IAudioService));
+            
+            this.LoadWorld();
             base.Initialize();
         }
 
         public void LoadWorld()
         {
-            throw new NotImplementedException();
+            this.audioService.PlaySound("music2");
         }
 
         public void GetCollidableElements()
