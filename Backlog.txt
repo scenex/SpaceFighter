@@ -5,14 +5,16 @@ Codename: 'Space Fighter' Backlog
 What's currently on:
 ====================
 
-- Swarm enemies
-- Shot trails
-- Radial electromagnetic shock wave
+- Wandering steering behavior
+- Wire up state engine with steering/swarm behaviors
+- Glowing edges and trails for shots
+- Configurable particle system
 
 
 What's next:
 ============
 
+- Radial electromagnetic shock wave
 - HUD with score, energy, lives, special weapons in title safe area
 - More accurate collision detection
 - Time system
@@ -39,6 +41,8 @@ What's next:
 - Collision detection with terrain
 
 - Game restart
+
+- Farseer physics integration
 
 
 DONE:
