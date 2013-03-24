@@ -50,6 +50,7 @@
     <Compile Include="Entities\Implementations\Players\PlayerA.cs" />
     <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategyFlee.cs" />
     <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategySeek.cs" />
+    <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategyWander.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA1.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA2.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyEnemyA.cs" />

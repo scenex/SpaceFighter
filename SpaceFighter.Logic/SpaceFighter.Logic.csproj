@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategyFlee.cs" />
+    <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategyWander.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA1.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA2.cs" />
     <Compile Include="Entities\Interfaces\IWeaponStrategy.cs" />
