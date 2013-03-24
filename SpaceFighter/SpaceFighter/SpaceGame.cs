@@ -135,8 +135,8 @@ namespace SpaceFighter
                 null,
                 null,
                 null,
-                this.shader);
-                //null);
+                //this.shader);
+                null);
 
             spriteBatch.Draw(this.renderTarget, this.renderTarget.Bounds, Color.White);
             

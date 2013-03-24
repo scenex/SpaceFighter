@@ -16,6 +16,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     public class EnemyA : EnemyBase
     {
         private ISteeringStrategy steeringStrategy;
+        private SteeringStrategySeek steeringStrategySeek;
+        private SteeringStrategyFlee steeringStrategyFlee;
+
         private IWeaponStrategy shootingStrategy;
 
         private Weapon weapon;
@@ -23,9 +26,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public EnemyA(Game game, Vector2 startPosition) : base(game, startPosition)
         {
             this.Health = 100;
-
-            this.steeringStrategy = new SteeringStrategySeek();
             this.shootingStrategy = new WeaponStrategyEnemyA();
+
+            this.steeringStrategySeek = new SteeringStrategySeek();
+            this.steeringStrategyFlee = new SteeringStrategyFlee();
+            this.steeringStrategy = this.steeringStrategySeek;           
         }
 
         public override void Initialize()

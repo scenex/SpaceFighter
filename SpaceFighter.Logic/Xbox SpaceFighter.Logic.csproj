@@ -48,6 +48,7 @@
     <Compile Include="Entities\Implementations\Enemies\EnemyA.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyBase.cs" />
     <Compile Include="Entities\Implementations\Players\PlayerA.cs" />
+    <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategyFlee.cs" />
     <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategySeek.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA1.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA2.cs" />
