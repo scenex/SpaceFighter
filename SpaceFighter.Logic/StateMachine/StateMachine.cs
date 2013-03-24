@@ -4,6 +4,10 @@
 
 namespace SpaceFighter.Logic.StateMachine
 {
+    /// <summary>
+    /// State machine from:
+    /// http://astroboid.com/2011/05/xna-ai-finite-state-machine.html
+    /// </summary>
     public class StateMachine<T>
     {
         public StateMachine(State<T> currentState)
