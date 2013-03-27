@@ -18,6 +18,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private ISteeringStrategy steeringStrategy;
         private SteeringStrategySeek steeringStrategySeek;
         private SteeringStrategyFlee steeringStrategyFlee;
+        private SteeringStrategyWander steeringStrategyWander;
 
         private IWeaponStrategy shootingStrategy;
 
@@ -30,7 +31,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             this.steeringStrategySeek = new SteeringStrategySeek();
             this.steeringStrategyFlee = new SteeringStrategyFlee();
-            this.steeringStrategy = this.steeringStrategySeek;           
+            this.steeringStrategyWander = new SteeringStrategyWander();
+
+            this.steeringStrategy = this.steeringStrategyWander;           
         }
 
         public override void Initialize()
