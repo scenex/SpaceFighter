@@ -153,7 +153,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             
             this.UpdatePosition();
             this.UpdateWeapon(gameTime.ElapsedGameTime);
-            this.Rotation = (float)Math.Atan2(this.Position.Y - previousPositionY, this.Position.X - previousPositionX);
+            this.Rotation = (float)Math.Atan2(this.Position.Y - previousPositionY, this.Position.X - previousPositionX); // Some kind of smoothing here?
 
             base.Update(gameTime);
         }

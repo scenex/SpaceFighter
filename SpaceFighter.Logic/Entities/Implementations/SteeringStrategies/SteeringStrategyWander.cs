@@ -25,7 +25,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.SteeringStrategies
 
         Vector2 velocity = new Vector2(-1,-2);
 
-        public Vector2 Execute(Vector2 position, Vector2 distance, float angle)
+        public Vector2 Execute(Vector2 position, Vector2 distance)
         {
             var circleCenter = velocity;
             circleCenter.Normalize();

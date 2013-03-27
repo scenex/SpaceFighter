@@ -16,7 +16,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.SteeringStrategies
 
         Vector2 velocity;
 
-        public Vector2 Execute(Vector2 position, Vector2 distance, float angle)
+        public Vector2 Execute(Vector2 position, Vector2 distance)
         {
             var desiredVelocity = Vector2.Normalize(distance) * MaxVelocity;
             var steering = Vector2.Subtract(desiredVelocity, this.velocity);
