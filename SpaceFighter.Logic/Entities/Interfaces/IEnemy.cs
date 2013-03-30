@@ -11,9 +11,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         void SubtractHealth(int amount);
         void AddHealth(int amount);
 
-        // hmm... is there a better way?
-        float AngleToPlayer { get; }
-        void UpdateAngleToPlayer(float angle);
+        // Todo: Move to separate service?
         void UpdatePlayerPosition(Vector2 position);
     }
 }

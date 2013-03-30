@@ -33,7 +33,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.steeringStrategyFlee = new SteeringStrategyFlee();
             this.steeringStrategyWander = new SteeringStrategyWander();
 
-            this.steeringStrategy = this.steeringStrategyWander;           
+            this.steeringStrategy = this.steeringStrategySeek;           
         }
 
         public override void Initialize()

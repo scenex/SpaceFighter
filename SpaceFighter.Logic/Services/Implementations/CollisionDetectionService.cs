@@ -76,19 +76,9 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.CheckCollisionsBetweenPlayerAndBounds();
             }
 
-            this.UpdateEnemyAngleToPlayer(); // Todo: Consider if this calculation is done at the right place
-            this.UpdatePlayerPositionForEnemies(); // Todo: Dito
+            this.UpdatePlayerPositionForEnemies(); // Todo: Move to separate service?
 
             base.Update(gameTime);
-        }
-
-        private void UpdateEnemyAngleToPlayer()
-        {
-            foreach (var enemy in this.enemyService.Enemies.ToList())
-            {
-                var angle = Math.Atan2((enemy.Origin.Y - playerService.Player.Origin.Y), (enemy.Origin.X - playerService.Player.Origin.X)) + MathHelper.Pi; // Todo: why MathHelper.Pi?
-                enemy.UpdateAngleToPlayer((float)angle);
-            }
         }
 
         private void UpdatePlayerPositionForEnemies()

@@ -34,12 +34,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         
         public abstract IWeapon Weapon { get; }
 
+
         public int Health { get; protected set; }
         public float Rotation { get; private set; }
-        public Vector2 Position { get; protected set; }
-        public float AngleToPlayer { get; private set; }
+        public Vector2 Position { get; protected set; }        
         public Color[] ColorData { get; private set; }
-
+        
         public int Width
         {
             get
@@ -80,11 +80,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public void AddHealth(int amount)
         {
             this.Health += amount;
-        }
-
-        public void UpdateAngleToPlayer(float angle)
-        {
-            this.AngleToPlayer = angle;
         }
 
         public void UpdatePlayerPosition(Vector2 position)
@@ -153,7 +148,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             
             this.UpdatePosition();
             this.UpdateWeapon(gameTime.ElapsedGameTime);
-            this.Rotation = (float)Math.Atan2(this.Position.Y - previousPositionY, this.Position.X - previousPositionX); // Some kind of smoothing here?
+            this.Rotation = (float)Math.Atan2(this.Position.Y - previousPositionY, this.Position.X - previousPositionX); // Todo: Add some kind of smoothing here, so steering behavior like wandering are not too jittery..
 
             base.Update(gameTime);
         }
