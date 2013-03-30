@@ -14,6 +14,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         // hmm... is there a better way?
         float AngleToPlayer { get; }
         void UpdateAngleToPlayer(float angle);
-        void UpdateDistanceToPlayer(Vector2 distance);
+        void UpdatePlayerPosition(Vector2 position);
     }
 }

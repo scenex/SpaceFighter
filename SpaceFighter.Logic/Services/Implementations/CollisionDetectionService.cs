@@ -77,7 +77,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
 
             this.UpdateEnemyAngleToPlayer(); // Todo: Consider if this calculation is done at the right place
-            this.UpdateEnemyDistanceToPlayer();
+            this.UpdatePlayerPositionForEnemies(); // Todo: Dito
 
             base.Update(gameTime);
         }
@@ -91,14 +91,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        private void UpdateEnemyDistanceToPlayer()
+        private void UpdatePlayerPositionForEnemies()
         {
             foreach (var enemy in this.enemyService.Enemies.ToList())
-            {                
-                enemy.UpdateDistanceToPlayer(
-                    new Vector2(
-                        this.playerService.Player.Position.X - enemy.Position.X, 
-                        this.playerService.Player.Position.Y - enemy.Position.Y));
+            {
+                enemy.UpdatePlayerPosition(new Vector2(this.playerService.Player.Position.X, this.playerService.Player.Position.Y));
             }
         }
 

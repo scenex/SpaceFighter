@@ -16,7 +16,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private SpriteBatch spriteBatch;
 
         private ICameraService cameraService;
-        protected Vector2 distanceToPlayer;      
+        protected Vector2 playerPosition;      
 
         protected StateMachine<Action<double>> stateMachine;
         protected SpriteManager spriteManager;
@@ -87,9 +87,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.AngleToPlayer = angle;
         }
 
-        public void UpdateDistanceToPlayer(Vector2 distance)
+        public void UpdatePlayerPosition(Vector2 position)
         {
-            this.distanceToPlayer = distance;
+            this.playerPosition = position;
         }
 
         public override void Initialize()

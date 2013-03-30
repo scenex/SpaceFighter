@@ -54,7 +54,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         protected override void UpdatePosition()
         {
-            this.Position = this.steeringStrategy.Execute(this.Position, this.distanceToPlayer);
+            this.Position = this.steeringStrategy.Execute(this.Position, this.playerPosition);
         }
 
         protected override void UpdateWeapon(TimeSpan elapsed)
