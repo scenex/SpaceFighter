@@ -76,17 +76,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.CheckCollisionsBetweenPlayerAndBounds();
             }
 
-            this.UpdatePlayerPositionForEnemies(); // Todo: Move to separate service?
-
             base.Update(gameTime);
-        }
-
-        private void UpdatePlayerPositionForEnemies()
-        {
-            foreach (var enemy in this.enemyService.Enemies.ToList())
-            {
-                enemy.UpdatePlayerPosition(new Vector2(this.playerService.Player.Position.X, this.playerService.Player.Position.Y));
-            }
         }
 
         private void CheckCollisionsBetweenEnemiesShotsAndPlayer()

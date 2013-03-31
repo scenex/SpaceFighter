@@ -15,8 +15,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     {
         private SpriteBatch spriteBatch;
 
-        private ICameraService cameraService;
-        protected Vector2 playerPosition;      
+        private ICameraService cameraService;    
 
         protected StateMachine<Action<double>> stateMachine;
         protected SpriteManager spriteManager;
@@ -34,10 +33,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         
         public abstract IWeapon Weapon { get; }
 
+        public Vector2 PlayerPosition { get; set; }
+        public Vector2 Position { get; protected set; }
 
         public int Health { get; protected set; }
         public float Rotation { get; private set; }
-        public Vector2 Position { get; protected set; }        
         public Color[] ColorData { get; private set; }
         
         public int Width
@@ -80,11 +80,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public void AddHealth(int amount)
         {
             this.Health += amount;
-        }
-
-        public void UpdatePlayerPosition(Vector2 position)
-        {
-            this.playerPosition = position;
         }
 
         public override void Initialize()

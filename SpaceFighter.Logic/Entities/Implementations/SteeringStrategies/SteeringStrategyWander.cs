@@ -27,10 +27,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.SteeringStrategies
 
         public Vector2 Execute(Vector2 enemyPosition, Vector2 playerPosition)
         {
-            if (playerPosition.Length() < 150)
-            {
-                
-            }
+            return enemyPosition;
 
             // Todo: Optimize, remove jitter and avoid walls.
             //var circleCenter = velocity;
@@ -55,7 +52,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.SteeringStrategies
             //this.velocity = this.velocity.Truncate(MaxVelocity);
 
             //return enemyPosition + this.velocity;
-            return enemyPosition;
         }
     }
 }

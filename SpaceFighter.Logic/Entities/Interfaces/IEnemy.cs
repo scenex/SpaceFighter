@@ -8,10 +8,9 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
     public interface IEnemy : IEntity
     {
+        Vector2 PlayerPosition { get; set; }
+
         void SubtractHealth(int amount);
         void AddHealth(int amount);
-
-        // Todo: Move to separate service?
-        void UpdatePlayerPosition(Vector2 position);
     }
 }

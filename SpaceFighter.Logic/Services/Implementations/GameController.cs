@@ -5,6 +5,8 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
+    using System.Linq;
+
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Services.Interfaces;
 
@@ -41,6 +43,20 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.HealthChanged += this.OnHealthChanged;
             
             base.Initialize();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            this.UpdatePlayerPositionForEnemies();
+            base.Update(gameTime);
+        }
+
+        private void UpdatePlayerPositionForEnemies()
+        {
+            foreach (var enemy in this.enemyService.Enemies.ToList())
+            {
+                enemy.PlayerPosition = this.playerService.Player.Position;
+            }
         }
 
         private void OnTransitionToStateDying(object sender, EventArgs eventArgs)
