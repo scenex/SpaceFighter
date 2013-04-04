@@ -39,6 +39,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public int Health { get; protected set; }
         public float Rotation { get; private set; }
         public Color[] ColorData { get; private set; }
+
+        public bool IsHealthSubtracted { get; protected set; }
+        public bool IsHealthAdded { get; protected set; }
         
         public int Width
         {
@@ -75,11 +78,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public void SubtractHealth(int amount)
         {
             this.Health -= amount;
+            this.IsHealthSubtracted = true;
         }
 
         public void AddHealth(int amount)
         {
             this.Health += amount;
+            this.IsHealthAdded = true;
         }
 
         public override void Initialize()

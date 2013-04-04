@@ -15,25 +15,22 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
     public class EnemyA : EnemyBase
     {
-        private ISteeringStrategy steeringStrategy;
-        private SteeringStrategySeek steeringStrategySeek;
-        private SteeringStrategyFlee steeringStrategyFlee;
-        private SteeringStrategyWander steeringStrategyWander;
+        private Weapon weapon;
 
         private IWeaponStrategy shootingStrategy;
 
-        private Weapon weapon;
+        private ISteeringStrategy steeringStrategy;
+        private readonly SteeringStrategySeek steeringStrategySeek;
+        private readonly SteeringStrategyFlee steeringStrategyFlee;
+        private readonly SteeringStrategyWander steeringStrategyWander;
 
         public EnemyA(Game game, Vector2 startPosition) : base(game, startPosition)
         {
             this.Health = 100;
-            this.shootingStrategy = new WeaponStrategyEnemyA();
 
             this.steeringStrategySeek = new SteeringStrategySeek();
             this.steeringStrategyFlee = new SteeringStrategyFlee();
-            this.steeringStrategyWander = new SteeringStrategyWander();
-
-            this.steeringStrategy = this.steeringStrategySeek;           
+            this.steeringStrategyWander = new SteeringStrategyWander();           
         }
 
         public override void Initialize()
@@ -54,14 +51,21 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         protected override void UpdatePosition()
         {
-            this.Position = this.steeringStrategy.Execute(this.Position, this.PlayerPosition);
+            if (this.steeringStrategy != null)
+            {
+                this.Position = this.steeringStrategy.Execute(this.Position, this.PlayerPosition);    
+            }
         }
 
         protected override void UpdateWeapon(TimeSpan elapsed)
         {
             this.weapon.Position = this.Position;
             this.weapon.Rotation = this.Rotation;
-            this.shootingStrategy.Execute(() => this.Weapon.FireWeapon(), elapsed);
+
+            if (this.shootingStrategy != null)
+            {
+                this.shootingStrategy.Execute(() => this.Weapon.FireWeapon(), elapsed);
+            }
         }
 
         protected override void InitializeStateMachine()
@@ -72,10 +76,56 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 null,
                 null);
 
+            var patrol = new State<Action<double>>(
+                EnemyState.Patrol,
+                null,
+                delegate
+                    {
+                        this.steeringStrategy = this.steeringStrategyWander;
+                        this.shootingStrategy = null;
+
+                        this.IsHealthAdded = false;
+                        this.IsHealthSubtracted = false;
+                    },             
+                null);
+
+            var attack = new State<Action<double>>(
+                EnemyState.Attack,
+                null,
+                delegate
+                    {
+                        this.steeringStrategy = this.steeringStrategySeek;
+                        this.shootingStrategy = new WeaponStrategyEnemyA();
+
+                        this.IsHealthAdded = false;
+                        this.IsHealthSubtracted = false;
+                    },  
+                null);
+
+            var retreat = new State<Action<double>>(
+                EnemyState.Retreat,
+                null,
+                delegate
+                    {
+                        this.steeringStrategy = this.steeringStrategyFlee;
+                        this.shootingStrategy = null;
+
+                        this.IsHealthAdded = false;
+                        this.IsHealthSubtracted = false;
+                    },  
+                null);
+
             var dying = new State<Action<double>>(
                 EnemyState.Dying,
                 null,
-                null,
+                delegate
+                    {
+                        this.steeringStrategy = null;
+                        this.shootingStrategy = null;
+
+                        this.IsHealthAdded = false;
+                        this.IsHealthSubtracted = false;
+                    },
                 null);
 
             var dead = new State<Action<double>>(
@@ -84,7 +134,20 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 () => this.Game.Components.Remove(this),
                 null);
 
-            alive.AddTransition(dying, () => this.Health <= 0);
+            alive.AddTransition(patrol, () => true);
+
+            patrol.AddTransition(attack, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() < 250);
+            patrol.AddTransition(retreat, () => this.IsHealthSubtracted);
+            patrol.AddTransition(dying, () => this.Health <= 0);
+
+            attack.AddTransition(retreat, () => this.IsHealthSubtracted);
+            attack.AddTransition(patrol, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() > 250);
+            attack.AddTransition(dying, () => this.Health <= 0);
+
+            //retreat.AddTransition(attack, () => ...); <- Should that be even possible?
+            retreat.AddTransition(patrol, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() > 250);
+            retreat.AddTransition(dying, () => this.Health <= 0);
+
             dying.AddTransition(dead, () => this.spriteManager.IsAnimationDone(this.stateMachine.CurrentState.Name));
 
             this.stateMachine = new StateMachine<Action<double>>(alive);
@@ -96,6 +159,18 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             this.spriteManager.AddStillSprite(
                 EnemyState.Alive,
+                this.Game.Content.Load<Texture2D>("Sprites/Enemy/Alive"));
+
+            this.spriteManager.AddStillSprite(
+                EnemyState.Patrol,
+                this.Game.Content.Load<Texture2D>("Sprites/Enemy/Alive"));
+
+            this.spriteManager.AddStillSprite(
+                EnemyState.Attack,
+                this.Game.Content.Load<Texture2D>("Sprites/Enemy/Alive"));
+
+            this.spriteManager.AddStillSprite(
+                EnemyState.Retreat,
                 this.Game.Content.Load<Texture2D>("Sprites/Enemy/Alive"));
 
             this.spriteManager.AddAnimatedSprite(

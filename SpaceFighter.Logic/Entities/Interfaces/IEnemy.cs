@@ -12,5 +12,8 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
         void SubtractHealth(int amount);
         void AddHealth(int amount);
+
+        bool IsHealthSubtracted { get; }
+        bool IsHealthAdded { get; }
     }
 }

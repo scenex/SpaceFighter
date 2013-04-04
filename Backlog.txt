@@ -6,7 +6,6 @@ What's currently on:
 ====================
 
 - Wandering steering behavior
-- Wire up state engine with steering/swarm behaviors
 - Glowing edges and trails for shots
 - Configurable particle system
 
@@ -66,3 +65,4 @@ DONE:
 - Weapon upgrade logic
 - Rotational weapon control (XBox)
 - Integrate background music
+- Wire up state engine with steering behaviors
