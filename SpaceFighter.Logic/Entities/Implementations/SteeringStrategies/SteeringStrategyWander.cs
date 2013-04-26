@@ -17,7 +17,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.SteeringStrategies
 
         const int CircleDistance = 6;
         const int CircleRadius = 8;
-        double AngleChange = 1;
+        double AngleChange = 1.0f;
 
         double wanderAngle = 0;
 
@@ -27,31 +27,31 @@ namespace SpaceFighter.Logic.Entities.Implementations.SteeringStrategies
 
         public Vector2 Execute(Vector2 enemyPosition, Vector2 playerPosition)
         {
-            return enemyPosition;
+            //return enemyPosition;
 
             // Todo: Optimize, remove jitter and avoid walls.
-            //var circleCenter = velocity;
-            //circleCenter.Normalize();
-            //circleCenter = Vector2.Multiply(circleCenter, CircleDistance);
+            var circleCenter = velocity;
+            circleCenter.Normalize();
+            circleCenter = Vector2.Multiply(circleCenter, CircleDistance);
 
-            //var displacement = new Vector2(0, -1);
-            //displacement = Vector2.Multiply(displacement, CircleRadius);
+            var displacement = new Vector2(0, -1);
+            displacement = Vector2.Multiply(displacement, CircleRadius);
 
-            //displacement.X = (float)Math.Cos(wanderAngle) * displacement.Length();
-            //displacement.Y = (float)Math.Sin(wanderAngle) * displacement.Length();
+            displacement.X = (float)Math.Cos(wanderAngle) * displacement.Length();
+            displacement.Y = (float)Math.Sin(wanderAngle) * displacement.Length();
 
-            //wanderAngle += random.Next() * this.AngleChange - this.AngleChange * .5;
+            wanderAngle += random.Next(0, 359) * this.AngleChange * 5;
 
-            //// steering aka wanderForce
-            //var steering = Vector2.Add(circleCenter, displacement);
+            // steering aka wanderForce
+            var steering = Vector2.Add(circleCenter, displacement);
 
-            //steering = steering.Truncate(MaxForce);
-            //steering = Vector2.Divide(steering, Mass);
+            steering = steering.Truncate(MaxForce);
+            steering = Vector2.Divide(steering, Mass);
 
-            //this.velocity = Vector2.Add(this.velocity, steering);
-            //this.velocity = this.velocity.Truncate(MaxVelocity);
+            this.velocity = Vector2.Add(this.velocity, steering);
+            this.velocity = this.velocity.Truncate(MaxVelocity);
 
-            //return enemyPosition + this.velocity;
+            return enemyPosition + this.velocity;
         }
     }
 }
