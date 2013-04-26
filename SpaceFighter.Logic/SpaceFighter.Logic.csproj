@@ -92,14 +92,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategyFlee.cs" />
-    <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategyWander.cs" />
+    <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyFlee.cs" />
+    <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyPathfinding.cs" />
+    <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyWander.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA1.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA2.cs" />
     <Compile Include="Entities\Interfaces\IWeaponStrategy.cs" />
-    <Compile Include="Entities\Interfaces\ISteeringStrategy.cs" />
+    <Compile Include="Entities\Interfaces\IBehaviourStrategy.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyEnemyA.cs" />
-    <Compile Include="Entities\Implementations\SteeringStrategies\SteeringStrategySeek.cs" />
+    <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategySeek.cs" />
     <Compile Include="EnemyState.cs" />
     <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Entities\Interfaces\IEntity.cs" />
     <Compile Include="FramerateCounter.cs" />
     <Compile Include="Entities\Interfaces\IShot.cs" />
+    <Compile Include="Global\WorldMap.cs" />
     <Compile Include="HealthChangedEventArgs.cs" />
     <Compile Include="Input\Implementation\InputGamepad.cs" />
     <Compile Include="Input\Implementation\InputKeyboard.cs" />

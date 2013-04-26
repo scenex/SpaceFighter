@@ -2,12 +2,12 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Entities.Interfaces
+namespace SpaceFighter.Logic.Global
 {
-    using Microsoft.Xna.Framework;
-
-    public interface ISteeringStrategy
+    // Yes, globals are ugly.
+    public static class WorldMap
     {
-        Vector2 Execute(Vector2 enemyPosition, Vector2 playerPosition);
+        public static int[,] Map { get; set; }
+        public static int TileSize { get; set; }
     }
 }

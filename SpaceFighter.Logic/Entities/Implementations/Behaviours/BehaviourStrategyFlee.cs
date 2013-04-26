@@ -1,13 +1,13 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Entities.Implementations.SteeringStrategies
+namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
 {
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Entities.Interfaces;
 
-    public class SteeringStrategySeek : ISteeringStrategy
+    public class BehaviourStrategyFlee : IBehaviourStrategy
     {
         const float Mass = 50;
         const float MaxVelocity = 6;
@@ -19,7 +19,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.SteeringStrategies
         public Vector2 Execute(Vector2 enemyPosition, Vector2 playerPosition)
         {
             var distance = new Vector2(playerPosition.X - enemyPosition.X, playerPosition.Y - enemyPosition.Y);
-            var desiredVelocity = Vector2.Normalize(distance) * MaxVelocity;
+            var desiredVelocity = Vector2.Normalize(distance * -1) * MaxVelocity;
             var steering = Vector2.Subtract(desiredVelocity, this.velocity);
 
             steering = steering.Truncate(MaxForce);
@@ -27,7 +27,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.SteeringStrategies
 
             this.velocity = Vector2.Add(this.velocity, steering);
             this.velocity = this.velocity.Truncate(MaxSpeed);
-            
+
             return enemyPosition + this.velocity;
         }
     }

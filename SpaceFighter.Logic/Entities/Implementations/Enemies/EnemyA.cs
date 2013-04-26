@@ -7,7 +7,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using SpaceFighter.Logic.Entities.Implementations.SteeringStrategies;
+
+    using SpaceFighter.Logic.Entities.Implementations.Behaviours;
     using SpaceFighter.Logic.Entities.Implementations.WeaponStrategies;
     using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;
@@ -19,18 +20,20 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private IWeaponStrategy shootingStrategy;
 
-        private ISteeringStrategy steeringStrategy;
-        private readonly SteeringStrategySeek steeringStrategySeek;
-        private readonly SteeringStrategyFlee steeringStrategyFlee;
-        private readonly SteeringStrategyWander steeringStrategyWander;
+        private IBehaviourStrategy behaviourStrategy;
+        private readonly BehaviourStrategySeek behaviourStrategySeek;
+        private readonly BehaviourStrategyFlee behaviourStrategyFlee;
+        private readonly BehaviourStrategyWander behaviourStrategyWander;
+        private readonly BehaviourStrategyPathfinding behaviourStrategyPathfinding;
 
         public EnemyA(Game game, Vector2 startPosition) : base(game, startPosition)
         {
             this.Health = 100;
 
-            this.steeringStrategySeek = new SteeringStrategySeek();
-            this.steeringStrategyFlee = new SteeringStrategyFlee();
-            this.steeringStrategyWander = new SteeringStrategyWander();           
+            this.behaviourStrategySeek = new BehaviourStrategySeek();
+            this.behaviourStrategyFlee = new BehaviourStrategyFlee();
+            this.behaviourStrategyWander = new BehaviourStrategyWander();
+            this.behaviourStrategyPathfinding = new BehaviourStrategyPathfinding();
         }
 
         public override void Initialize()
@@ -51,9 +54,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         protected override void UpdatePosition()
         {
-            if (this.steeringStrategy != null)
+            if (this.behaviourStrategy != null)
             {
-                this.Position = this.steeringStrategy.Execute(this.Position, this.PlayerPosition);    
+                this.Position = this.behaviourStrategy.Execute(this.Position, this.PlayerPosition);    
             }
         }
 
@@ -81,7 +84,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 null,
                 delegate
                     {
-                        this.steeringStrategy = this.steeringStrategyWander;
+                        this.behaviourStrategy = this.behaviourStrategyWander;
                         this.shootingStrategy = null;
 
                         this.IsHealthAdded = false;
@@ -94,7 +97,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 null,
                 delegate
                     {
-                        this.steeringStrategy = this.steeringStrategySeek;
+                        this.behaviourStrategy = this.behaviourStrategySeek;
                         this.shootingStrategy = new WeaponStrategyEnemyA();
 
                         this.IsHealthAdded = false;
@@ -107,7 +110,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 null,
                 delegate
                     {
-                        this.steeringStrategy = this.steeringStrategyFlee;
+                        this.behaviourStrategy = this.behaviourStrategyFlee;
                         this.shootingStrategy = null;
 
                         this.IsHealthAdded = false;
@@ -120,7 +123,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 null,
                 delegate
                     {
-                        this.steeringStrategy = null;
+                        this.behaviourStrategy = null;
                         this.shootingStrategy = null;
 
                         this.IsHealthAdded = false;

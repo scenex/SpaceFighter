@@ -9,6 +9,8 @@ namespace SpaceFighter.Logic.Services.Implementations
     using System.Linq;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+
+    using SpaceFighter.Logic.Global;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class WorldService : DrawableGameComponent, IWorldService
@@ -41,6 +43,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             verticalTileCount = tileMap.GetUpperBound(0) + 1;
             horizontalTileCount = tileMap.GetUpperBound(1) + 1;
+
+            WorldMap.Map = this.tileMap;
+            WorldMap.TileSize = TileSize;
         }
 
         public override void Initialize()
@@ -103,9 +108,9 @@ namespace SpaceFighter.Logic.Services.Implementations
                 null,
                 cameraService.GetTransformation());
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < verticalTileCount; i++)
                 {
-                    for (int j = 0; j < 17; j++)
+                    for (int j = 0; j < horizontalTileCount; j++)
                     {
                         this.spriteBatch.Draw(this.spriteList[this.tileMap[i, j]], new Vector2(j * TileSize, i * TileSize), Color.White);
                     }
