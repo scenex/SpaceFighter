@@ -11,7 +11,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
     public class BehaviourStrategyPathfinding : IBehaviourStrategy
     {
         private int[,] worldMap;
-        private int tileSize;
+        private readonly int tileSize;
 
         private int sourceTile;
         private int destinationTile;

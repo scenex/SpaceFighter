@@ -107,6 +107,10 @@ namespace SpaceFighter
             var audioService = new AudioService(this);
             this.Services.AddService(typeof(IAudioService), audioService);
             this.Components.Add(audioService);
+
+            var debugService = new DebugService(this);
+            this.Services.AddService(typeof(IDebugService), debugService);
+            this.Components.Add(debugService);
         }
 
         protected override void Update(GameTime gameTime)

@@ -10,14 +10,15 @@ namespace SpaceFighter.Logic.Services.Implementations
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class GameController : GameComponent, IGameController
+    public class GameController : DrawableGameComponent, IGameController
     {
         private ICollisionDetectionService collisionDetectionService;
         private IPlayerService playerService;
         private IEnemyService enemyService;
         private IInputService inputService;
-
         private IHeadUpDisplayService headUpDisplay;
+        private IWorldService worldService;
+        private IDebugService debugService;
 
         public GameController(Game game) : base(game)
         {
@@ -30,6 +31,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
             this.inputService = (IInputService)this.Game.Services.GetService(typeof(IInputService));
             this.headUpDisplay = (IHeadUpDisplayService)this.Game.Services.GetService(typeof(IHeadUpDisplayService));
+            this.worldService = (IWorldService)this.Game.Services.GetService(typeof(IWorldService));
+            this.debugService = (IDebugService)this.Game.Services.GetService(typeof(IDebugService));
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
@@ -49,6 +52,12 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.UpdatePlayerPositionForEnemies();
             base.Update(gameTime);
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            this.debugService.DrawRectangle(new Rectangle(((int)playerService.Player.Position.X / 80) * 80, ((int)playerService.Player.Position.Y / 80) * 80, 80, 80));
+            base.Draw(gameTime);
         }
 
         private void UpdatePlayerPositionForEnemies()
