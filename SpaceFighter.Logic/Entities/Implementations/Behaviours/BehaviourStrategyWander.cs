@@ -25,9 +25,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
 
         Vector2 velocity = new Vector2(-1,-2);
 
-        public Vector2 Execute(Vector2 enemyPosition, Vector2 playerPosition)
+        public Vector2 Execute(Vector2 source, Vector2 destination)
         {
-            //return enemyPosition;
+            //return source;
 
             // Todo: Optimize, remove jitter and avoid walls.
             var circleCenter = velocity;
@@ -51,7 +51,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
             this.velocity = Vector2.Add(this.velocity, steering);
             this.velocity = this.velocity.Truncate(MaxVelocity);
 
-            return enemyPosition + this.velocity;
+            return source + this.velocity;
         }
     }
 }

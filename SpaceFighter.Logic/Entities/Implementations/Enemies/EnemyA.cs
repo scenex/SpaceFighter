@@ -84,7 +84,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 null,
                 delegate
                     {
-                        this.behaviourStrategy = this.behaviourStrategyWander;
+                        this.behaviourStrategy = this.behaviourStrategyPathfinding;
                         this.shootingStrategy = null;
 
                         this.IsHealthAdded = false;

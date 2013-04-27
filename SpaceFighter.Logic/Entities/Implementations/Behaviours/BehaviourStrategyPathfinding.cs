@@ -4,7 +4,6 @@
 
 namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
 {
-    using System;
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Global;
@@ -14,15 +13,21 @@ namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
         private int[,] worldMap;
         private int tileSize;
 
+        private int sourceTile;
+        private int destinationTile;
+
         public BehaviourStrategyPathfinding()
         {
             worldMap = WorldMap.Map;
             tileSize = WorldMap.TileSize;
         }
 
-        public Vector2 Execute(Vector2 enemyPosition, Vector2 playerPosition)
+        public Vector2 Execute(Vector2 source, Vector2 destination)
         {
-            throw new NotImplementedException();
+            this.sourceTile = ((int)source.X / tileSize) + ((int)source.Y / tileSize) * 17;
+            this.destinationTile = ((int)destination.X / tileSize) + ((int)destination.Y / tileSize) * 17;
+
+            return source;
         }
     }
 }

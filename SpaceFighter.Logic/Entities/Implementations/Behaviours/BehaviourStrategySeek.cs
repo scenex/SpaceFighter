@@ -16,9 +16,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
 
         Vector2 velocity;
 
-        public Vector2 Execute(Vector2 enemyPosition, Vector2 playerPosition)
+        public Vector2 Execute(Vector2 source, Vector2 destination)
         {
-            var distance = new Vector2(playerPosition.X - enemyPosition.X, playerPosition.Y - enemyPosition.Y);
+            var distance = new Vector2(destination.X - source.X, destination.Y - source.Y);
             var desiredVelocity = Vector2.Normalize(distance) * MaxVelocity;
             var steering = Vector2.Subtract(desiredVelocity, this.velocity);
 
@@ -28,7 +28,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
             this.velocity = Vector2.Add(this.velocity, steering);
             this.velocity = this.velocity.Truncate(MaxSpeed);
             
-            return enemyPosition + this.velocity;
+            return source + this.velocity;
         }
     }
 }
