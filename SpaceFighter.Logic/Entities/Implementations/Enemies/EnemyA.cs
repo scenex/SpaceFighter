@@ -84,6 +84,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 null,
                 delegate
                     {
+                        //this.behaviourStrategy = this.behaviourStrategyWander;
                         this.behaviourStrategy = this.behaviourStrategyPathfinding;
                         this.shootingStrategy = null;
 
@@ -97,7 +98,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 null,
                 delegate
                     {
-                        this.behaviourStrategy = this.behaviourStrategySeek;
+                        //this.behaviourStrategy = this.behaviourStrategySeek;
+                        this.behaviourStrategy = this.behaviourStrategyPathfinding;
                         this.shootingStrategy = new WeaponStrategyEnemyA();
 
                         this.IsHealthAdded = false;
@@ -110,7 +112,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 null,
                 delegate
                     {
-                        this.behaviourStrategy = this.behaviourStrategyFlee;
+                        //this.behaviourStrategy = this.behaviourStrategyFlee;
+                        this.behaviourStrategy = this.behaviourStrategyPathfinding;
                         this.shootingStrategy = null;
 
                         this.IsHealthAdded = false;
