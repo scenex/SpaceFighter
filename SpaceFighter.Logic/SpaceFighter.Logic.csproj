@@ -92,6 +92,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AStar.cs" />
+    <Compile Include="XboxExtensions.cs" />
     <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyFlee.cs" />
     <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyPathfinding.cs" />
     <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyWander.cs" />

@@ -25,7 +25,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
 
         Vector2 velocity = new Vector2(-1,-2);
 
-        public Vector2 Execute(Vector2 source, Vector2 destination)
+        public Vector2 Execute(Vector2 source, Vector2 target)
         {
             //return source;
 

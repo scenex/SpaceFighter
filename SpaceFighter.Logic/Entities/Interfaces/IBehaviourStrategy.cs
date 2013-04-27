@@ -8,6 +8,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
     public interface IBehaviourStrategy
     {
-        Vector2 Execute(Vector2 source, Vector2 destination);
+        Vector2 Execute(Vector2 source, Vector2 target);
     }
 }

@@ -22,10 +22,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
             tileSize = WorldMap.TileSize;
         }
 
-        public Vector2 Execute(Vector2 source, Vector2 destination)
+        public Vector2 Execute(Vector2 source, Vector2 target)
         {
             this.sourceTile = ((int)source.X / tileSize) + ((int)source.Y / tileSize) * 17;
-            this.destinationTile = ((int)destination.X / tileSize) + ((int)destination.Y / tileSize) * 17;
+            this.destinationTile = ((int)target.X / tileSize) + ((int)target.Y / tileSize) * 17;
 
             return source;
         }

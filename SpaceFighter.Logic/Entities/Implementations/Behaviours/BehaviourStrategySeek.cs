@@ -16,9 +16,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
 
         Vector2 velocity;
 
-        public Vector2 Execute(Vector2 source, Vector2 destination)
+        public Vector2 Execute(Vector2 source, Vector2 target)
         {
-            var distance = new Vector2(destination.X - source.X, destination.Y - source.Y);
+            var distance = new Vector2(target.X - source.X, target.Y - source.Y);
             var desiredVelocity = Vector2.Normalize(distance) * MaxVelocity;
             var steering = Vector2.Subtract(desiredVelocity, this.velocity);
 
