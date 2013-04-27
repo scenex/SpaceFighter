@@ -59,7 +59,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void LoadWorld()
         {
-            this.audioService.PlaySound("music2");
+            // DISABLE MUSIC WHILE DEVELOPMENT
+            // this.audioService.PlaySound("music2");
         }
 
         public void GetCollidableElements()
