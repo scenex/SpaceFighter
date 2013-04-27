@@ -9,6 +9,8 @@ namespace SpaceFighter.Tests
     using System.Linq;
     using FluentAssertions;
     using SpaceFighter.Logic;
+
+    using Xunit;
     using Xunit.Extensions;
 
     public class AStarTests
@@ -59,10 +61,28 @@ namespace SpaceFighter.Tests
         InlineData(24, new[] { 18, 19, 20, 23, 25 }),
         InlineData(25, new[] { 19, 20, 24 }),
         ]
-        public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputed(int pos, int[] nodes)
+        public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputedReturned(int pos, int[] nodes)
         {
             var actual = this.testee.GetAdjacentNodes(pos);
             actual.Should().OnlyContain(item => nodes.ToList().Contains(item));
+        }
+
+        [Fact]
+        public void AStar_WhenInitiated_ThenStoreStartingPointInOpenList()
+        {
+            
+        }
+
+        [Fact]
+        public void AStar_WhenSetAdjacentNodes_ThenAddToOpenList()
+        {
+            
+        }
+
+        [Fact]
+        public void AStar_WhenSetAdjacentNodes_ThenSetStartingPointAsParentInEachNode()
+        {
+            
         }
     }
 }
