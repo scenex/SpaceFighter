@@ -84,6 +84,24 @@ namespace SpaceFighter.Tests
         {
             
         }
+
+        [Fact]
+        public void AStar_WhenSetAdjacentNodes_ThenCorrectlyCumputeG() // 10 for horizontal-vertical | 14 for diagonal.
+        {
+            
+        }
+
+        [Fact]
+        public void AStar_WhenSetAdjacentNodes_ThenCorrectlyCumputeH() // Distance to target, 10 each node.
+        {
+
+        }
+
+        [Fact]
+        public void AStar_WhenSetAdjacentNodes_ThenCorrectlyCumputeF() // F = G + H
+        {
+
+        }
     }
 }
 
