@@ -6,10 +6,10 @@
 
 namespace SpaceFighter.Tests
 {
+    using System.Collections.Generic;
     using System.Linq;
     using FluentAssertions;
-    using SpaceFighter.Logic;
-
+    using SpaceFighter.Logic.Pathfinding;
     using Xunit;
     using Xunit.Extensions;
 
@@ -17,7 +17,10 @@ namespace SpaceFighter.Tests
     {
         private readonly int[,] tileMap;
         private readonly AStar testee;
-        
+
+        private readonly Node source = new Node(1);
+        private readonly Node target = new Node(2);
+
         public AStarTests()
         {
             // 0x00 -> Walkable
@@ -31,7 +34,7 @@ namespace SpaceFighter.Tests
                     { 0x00, 0x00, 0x00, 0x00, 0x00 }
                 };
 
-            this.testee = new AStar(1, 2, this.tileMap, 80);
+            this.testee = new AStar(source, target, this.tileMap);
         }
 
         [Theory,
@@ -61,46 +64,57 @@ namespace SpaceFighter.Tests
         InlineData(24, new[] { 18, 19, 20, 23, 25 }),
         InlineData(25, new[] { 19, 20, 24 }),
         ]
-        public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputedReturned(int pos, int[] nodes)
+        public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputedReturned(int src, int[] nodes)
         {
-            var actual = this.testee.GetAdjacentNodes(pos);
+            var actual = this.testee.GetAdjacentNodes(src);
             actual.Should().OnlyContain(item => nodes.ToList().Contains(item));
         }
 
         [Fact]
         public void AStar_WhenInitiated_ThenStoreStartingPointInOpenList()
         {
-            
+            this.testee.OpenList.Should().OnlyContain(item => item == source);
         }
 
         [Fact]
         public void AStar_WhenSetAdjacentNodes_ThenAddToOpenList()
         {
-            
+            var nodes = new List<Node> { new Node(2), new Node(3) };
+
+            this.testee.SetAdjacentNodes(source, nodes);
+            this.testee.OpenList.Should().Contain(nodes);
+        }
+
+        [Fact]
+        public void AStar_WhenSetAdjacentNodes_ThenAddToOpenListUniquely()
+        {
+            var nodes = new List<Node> { new Node(2), new Node(2) };
+
+            this.testee.SetAdjacentNodes(source, nodes);
+            this.testee.OpenList.Should().ContainSingle(node => node.Position == 2);
         }
 
         [Fact]
         public void AStar_WhenSetAdjacentNodes_ThenSetStartingPointAsParentInEachNode()
         {
-            
+            var nodes = new List<Node> { new Node(2), new Node(3), new Node(4) };
+            this.testee.SetAdjacentNodes(source, nodes);
+            this.testee.OpenList.Should().Contain(node => node.Parent == source.Position);
         }
 
-        [Fact]
+        [Fact(Skip = "Todo: Implementation")]
         public void AStar_WhenSetAdjacentNodes_ThenCorrectlyCumputeG() // 10 for horizontal-vertical | 14 for diagonal.
-        {
-            
+        {           
         }
 
-        [Fact]
+        [Fact(Skip = "Todo: Implementation")]
         public void AStar_WhenSetAdjacentNodes_ThenCorrectlyCumputeH() // Distance to target, 10 each node.
         {
-
         }
 
-        [Fact]
+        [Fact(Skip = "Todo: Implementation")]
         public void AStar_WhenSetAdjacentNodes_ThenCorrectlyCumputeF() // F = G + H
         {
-
         }
     }
 }

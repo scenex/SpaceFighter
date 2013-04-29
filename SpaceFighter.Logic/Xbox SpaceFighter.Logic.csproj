@@ -42,7 +42,6 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="AStar.cs" />
     <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />
     <Compile Include="EnemyState.cs" />
@@ -69,6 +68,9 @@
     <Compile Include="Input\Implementation\InputGamepad.cs" />
     <Compile Include="Input\Implementation\InputKeyboard.cs" />
     <Compile Include="Input\Interfaces\IInput.cs" />
+    <Compile Include="Pathfinding\AStar.cs" />
+    <Compile Include="Pathfinding\Node.cs" />
+    <Compile Include="Pathfinding\NodeComparer.cs" />
     <Compile Include="PlayerHitEventArgs.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="PrimitiveBatch.cs" />

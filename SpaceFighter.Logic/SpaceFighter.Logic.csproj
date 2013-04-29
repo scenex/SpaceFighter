@@ -92,7 +92,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AStar.cs" />
+    <Compile Include="Pathfinding\AStar.cs" />
+    <Compile Include="Pathfinding\Node.cs" />
+    <Compile Include="Pathfinding\NodeComparer.cs" />
     <Compile Include="XboxExtensions.cs" />
     <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyFlee.cs" />
     <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyPathfinding.cs" />

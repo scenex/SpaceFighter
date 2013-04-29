@@ -2,29 +2,29 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic
+namespace SpaceFighter.Logic.Pathfinding
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     // ReSharper disable InconsistentNaming
 
     public class AStar
     {
         int[,] levelMap;
-        int tileSize;
 
-        private readonly int source;
-        private readonly int target;
+        private readonly Node source;
+        private readonly Node target;
 
         private readonly int horizontalTileCount;
         private readonly int verticalTileCount;
 
-        private readonly List<int> openList = new List<int>();
+        private readonly List<Node> openList = new List<Node>();
+        private readonly List<Node> closedList = new List<Node>();
 
-        public AStar(int source, int target, int[,] levelMap, int tileSize)
+        public AStar(Node source, Node target, int[,] levelMap)
         {
             this.levelMap = levelMap;
-            this.tileSize = tileSize;
             this.source = source;
             this.target = target;
 
@@ -34,11 +34,19 @@ namespace SpaceFighter.Logic
             this.OpenList.Add(source);
         }
 
-        public List<int> OpenList
+        public List<Node> OpenList
         {
             get
             {
                 return this.openList;
+            }
+        }
+
+        public List<Node> ClosedList
+        {
+            get
+            {
+                return this.closedList;
             }
         }
 
@@ -56,8 +64,20 @@ namespace SpaceFighter.Logic
                     this.GetNodeW(position)
                 };
 
-            nodes.RemoveAll2(node => node == 0); // Native List<T>.RemoveAll() not supported on Xbox360
+            // Native List<T>.RemoveAll() not supported on Xbox360
+            nodes.RemoveAll2(node => node == 0);
+
             return nodes.ToArray();
+        }
+
+        public void SetAdjacentNodes(Node src, List<Node> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                node.Parent = src.Position;
+            }
+
+            this.OpenList.AddRange(nodes.Distinct(new NodeComparer()));
         }
 
         public int GetNodeNW(int position)
