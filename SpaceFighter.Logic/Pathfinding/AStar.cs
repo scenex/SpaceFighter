@@ -4,6 +4,7 @@
 
 namespace SpaceFighter.Logic.Pathfinding
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -31,7 +32,7 @@ namespace SpaceFighter.Logic.Pathfinding
             verticalTileCount = levelMap.GetUpperBound(0) + 1;
             horizontalTileCount = levelMap.GetUpperBound(1) + 1;
 
-            this.OpenList.Add(source);
+            //this.OpenList.Add(source);
         }
 
         public List<Node> OpenList
@@ -77,7 +78,31 @@ namespace SpaceFighter.Logic.Pathfinding
                 node.Parent = src.Position;
             }
 
-            this.OpenList.AddRange(nodes.Distinct(new NodeComparer()));
+            this.openList.AddRange(nodes.Distinct(new NodeComparer()));
+        }
+
+        public void SetCurrentNode(Node node)
+        {
+            this.openList.Remove(node);
+            this.closedList.Add(node);
+        }
+
+        public void ComputeOpenListCostH(Node sourceNode, Node targetNode) // Manhattan method
+        {
+            var targetX = targetNode.Position % horizontalTileCount;
+            if (targetX == 0) { targetX = horizontalTileCount; }
+
+            var targetY = (targetNode.Position / horizontalTileCount);
+
+            foreach (var node in openList)
+            {
+                var sourceX = node.Position % horizontalTileCount;
+                if (sourceX == 0) { sourceX = horizontalTileCount; }
+
+                var sourceY = (node.Position / horizontalTileCount);
+
+                node.H = 10*(Math.Abs(targetX - sourceX) + Math.Abs(targetY - sourceY));
+            }
         }
 
         public int GetNodeNW(int position)

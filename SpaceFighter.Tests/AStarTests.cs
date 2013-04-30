@@ -62,8 +62,7 @@ namespace SpaceFighter.Tests
         InlineData(22, new[] { 16, 17, 18, 21, 23 }),
         InlineData(23, new[] { 17, 18, 19, 22, 24 }),
         InlineData(24, new[] { 18, 19, 20, 23, 25 }),
-        InlineData(25, new[] { 19, 20, 24 }),
-        ]
+        InlineData(25, new[] { 19, 20, 24 }),]
         public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputedReturned(int src, int[] nodes)
         {
             var actual = this.testee.GetAdjacentNodes(src);
@@ -71,9 +70,11 @@ namespace SpaceFighter.Tests
         }
 
         [Fact]
-        public void AStar_WhenInitiated_ThenStoreStartingPointInOpenList()
+        public void AStar_WhenSetCurrentNode_ThenPutItIntoClosedList()
         {
-            this.testee.OpenList.Should().OnlyContain(item => item == source);
+            var node = new Node(2);
+            this.testee.SetCurrentNode(node);
+            this.testee.ClosedList.Should().Contain(n => n.Position == node.Position);
         }
 
         [Fact]
@@ -102,9 +103,23 @@ namespace SpaceFighter.Tests
             this.testee.OpenList.Should().Contain(node => node.Parent == source.Position);
         }
 
+        [Fact]
+        public void AStar_WhenComputeOpenListCostH_ThenShouldCorrectlyApplyManhattanMethod()
+        {
+            var sourceNode = new Node(9);
+            var adjacentNodes = new List<Node> { new Node(10) };
+            var targetNode = new Node(20);
+
+            this.testee.SetAdjacentNodes(sourceNode, adjacentNodes);
+            this.testee.ComputeOpenListCostH(sourceNode, targetNode);
+
+            this.testee.OpenList.Single().H.Should().Be(20);
+        }
+
         [Fact(Skip = "Todo: Implementation")]
         public void AStar_WhenSetAdjacentNodes_ThenCorrectlyCumputeG() // 10 for horizontal-vertical | 14 for diagonal.
-        {           
+        {
+            
         }
 
         [Fact(Skip = "Todo: Implementation")]
