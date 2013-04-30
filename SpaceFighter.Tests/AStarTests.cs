@@ -38,31 +38,32 @@ namespace SpaceFighter.Tests
         }
 
         [Theory,
-        InlineData(1, new[] { 2, 6, 7 }),
+        InlineData(0, new[] { 1, 5, 6 }),
+        InlineData(1, new[] { 0, 2, 5, 6, 7 }),
         InlineData(2, new[] { 1, 3, 6, 7, 8 }),
         InlineData(3, new[] { 2, 4, 7, 8, 9 }),
-        InlineData(4, new[] { 3, 5, 8, 9, 10 }),
-        InlineData(5, new[] { 4, 9, 10 }),
-        InlineData(6, new[] { 1, 2, 7, 11, 12 }),
+        InlineData(4, new[] { 3, 8, 9 }),
+        InlineData(5, new[] { 0, 1, 6, 10, 11 }),
+        InlineData(6, new[] { 0, 1, 2, 5, 7, 10, 11, 12 }),
         InlineData(7, new[] { 1, 2, 3, 6, 8, 11, 12, 13 }),
         InlineData(8, new[] { 2, 3, 4, 7, 9, 12, 13, 14 }),
-        InlineData(9, new[] { 3, 4, 5, 8, 10, 13, 14, 15 }),
-        InlineData(10, new[] { 4, 5, 9, 14, 15 }),
-        InlineData(11, new[] { 6, 7, 12, 16, 17 }),
+        InlineData(9, new[] { 3, 4, 8, 13, 14 }),
+        InlineData(10, new[] { 5, 6, 11, 15, 16 }),
+        InlineData(11, new[] { 5, 6, 7, 10, 12, 15, 16, 17 }),
         InlineData(12, new[] { 6, 7, 8, 11, 13, 16, 17, 18 }),
         InlineData(13, new[] { 7, 8, 9, 12, 14, 17, 18, 19 }),
-        InlineData(14, new[] { 8, 9, 10, 13, 15, 18, 19, 20 }),
-        InlineData(15, new[] { 9, 10, 14, 19, 20 }),
-        InlineData(16, new[] { 11, 12, 17, 21, 22 }),
+        InlineData(14, new[] { 8, 9, 13, 18, 19 }),
+        InlineData(15, new[] { 10, 11, 16, 20, 21 }),
+        InlineData(16, new[] { 10, 11, 12, 15, 17, 20, 21, 22 }),
         InlineData(17, new[] { 11, 12, 13, 16, 18, 21, 22, 23 }),
         InlineData(18, new[] { 12, 13, 14, 17, 19, 22, 23, 24 }),
-        InlineData(19, new[] { 13, 14, 15, 18, 20, 23, 24, 25 }),
-        InlineData(20, new[] { 14, 15, 19, 24, 25 }),
-        InlineData(21, new[] { 16, 17, 22 }),
+        InlineData(19, new[] { 13, 14, 18, 23, 24 }),
+        InlineData(20, new[] { 15, 16, 21 }),
+        InlineData(21, new[] { 15, 16, 17, 20, 22 }),
         InlineData(22, new[] { 16, 17, 18, 21, 23 }),
         InlineData(23, new[] { 17, 18, 19, 22, 24 }),
-        InlineData(24, new[] { 18, 19, 20, 23, 25 }),
-        InlineData(25, new[] { 19, 20, 24 }),]
+        InlineData(24, new[] { 18, 19, 23 }),
+        ]
         public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputedReturned(int src, int[] nodes)
         {
             var actual = this.testee.GetAdjacentNodes(src);
@@ -106,14 +107,14 @@ namespace SpaceFighter.Tests
         [Fact]
         public void AStar_WhenComputeOpenListCostH_ThenShouldCorrectlyApplyManhattanMethod()
         {
-            var sourceNode = new Node(9);
+            var sourceNode = new Node(5);
             var adjacentNodes = new List<Node> { new Node(10) };
-            var targetNode = new Node(20);
+            var targetNode = new Node(21);
 
             this.testee.SetAdjacentNodes(sourceNode, adjacentNodes);
-            this.testee.ComputeOpenListCostH(sourceNode, targetNode);
+            this.testee.ComputeOpenListCostH(targetNode);
 
-            this.testee.OpenList.Single().H.Should().Be(20);
+            this.testee.OpenList.Single().H.Should().Be(30);
         }
 
         [Fact(Skip = "Todo: Implementation")]
