@@ -4,6 +4,8 @@
 
 namespace SpaceFighter.Logic.Services.Interfaces
 {
+    using System.Collections.Generic;
+
     public interface IWorldService
     {
         int LevelWidth { get; }
@@ -12,6 +14,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         int[,] Map { get; }
 
         void LoadWorld();
-        void GetCollidableElements();
+        IEnumerable<int> GetCollidableTileIndices();
+        IEnumerable<int> GetNonCollidableTileIndices();
     }
 }

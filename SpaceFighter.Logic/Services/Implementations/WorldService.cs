@@ -90,9 +90,40 @@ namespace SpaceFighter.Logic.Services.Implementations
             // this.audioService.PlaySound("music2");
         }
 
-        public void GetCollidableElements()
+        public IEnumerable<int> GetCollidableTileIndices()
         {
-            throw new NotImplementedException();
+            var collidableTileIndices = new List<int>();
+
+            for (var i = 0; i < this.verticalTileCount; i++)
+            {
+                for (var j = 0; j < this.horizontalTileCount; j++)
+                {
+                    if (this.tileMap[i,j] != 0)
+                    {
+                        collidableTileIndices.Add(i * horizontalTileCount + j);
+                    }
+                }
+            }
+
+            return collidableTileIndices;
+        }
+
+        public IEnumerable<int> GetNonCollidableTileIndices()
+        {
+            var nonCollidableTileIndices = new List<int>();
+
+            for (var i = 0; i < this.verticalTileCount; i++)
+            {
+                for (var j = 0; j < this.horizontalTileCount; j++)
+                {
+                    if (this.tileMap[i, j] == 0)
+                    {
+                        nonCollidableTileIndices.Add(i * horizontalTileCount + j);
+                    }
+                }
+            }
+
+            return nonCollidableTileIndices;
         }
 
         protected override void LoadContent()
