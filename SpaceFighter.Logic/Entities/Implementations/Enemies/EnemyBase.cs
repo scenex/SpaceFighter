@@ -15,7 +15,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     {
         private SpriteBatch spriteBatch;
 
-        private ICameraService cameraService;    
+        private ICameraService cameraService;
+        private IWorldService worldService;
 
         protected StateMachine<Action<double>> stateMachine;
         protected SpriteManager spriteManager;
@@ -42,7 +43,15 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         public bool IsHealthSubtracted { get; protected set; }
         public bool IsHealthAdded { get; protected set; }
-        
+
+        public IWorldService WorldService
+        {
+            get
+            {
+                return this.worldService;
+            }
+        }
+
         public int Width
         {
             get
@@ -90,6 +99,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public override void Initialize()
         {
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            this.worldService = (IWorldService)this.Game.Services.GetService(typeof(IWorldService));
+
             this.InitializeStateMachine();
             base.Initialize();
         }

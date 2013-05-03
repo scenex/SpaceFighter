@@ -7,8 +7,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-
-    using SpaceFighter.Logic.Entities.Implementations.Behaviours;
+    using SpaceFighter.Logic.Behaviours.Implementations;
+    using SpaceFighter.Logic.Behaviours.Interfaces;
     using SpaceFighter.Logic.Entities.Implementations.WeaponStrategies;
     using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;

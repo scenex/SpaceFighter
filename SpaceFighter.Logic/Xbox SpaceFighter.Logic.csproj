@@ -42,13 +42,14 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="Behaviours\Implementations\BehaviourStrategyFlee.cs" />
+    <Compile Include="Behaviours\Implementations\BehaviourStrategyPathfinding.cs" />
+    <Compile Include="Behaviours\Implementations\BehaviourStrategySeek.cs" />
+    <Compile Include="Behaviours\Implementations\BehaviourStrategyWander.cs" />
+    <Compile Include="Behaviours\Interfaces\IBehaviourStrategy.cs" />
     <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />
     <Compile Include="EnemyState.cs" />
-    <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyFlee.cs" />
-    <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyPathfinding.cs" />
-    <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategySeek.cs" />
-    <Compile Include="Entities\Implementations\Behaviours\BehaviourStrategyWander.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyA.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyBase.cs" />
     <Compile Include="Entities\Implementations\Players\PlayerA.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="Entities\Implementations\Weapons\WeaponEnemyA.cs" />
     <Compile Include="Entities\Implementations\Weapons\ShotA.cs" />
     <Compile Include="Entities\Implementations\Weapons\WeaponPlayerA.cs" />
-    <Compile Include="Entities\Interfaces\IBehaviourStrategy.cs" />
     <Compile Include="Entities\Interfaces\IEntity.cs" />
     <Compile Include="Entities\Interfaces\IWeaponStrategy.cs" />
     <Compile Include="FramerateCounter.cs" />

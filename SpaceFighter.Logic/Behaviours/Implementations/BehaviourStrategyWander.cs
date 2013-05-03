@@ -2,11 +2,11 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Entities.Implementations.Behaviours
+namespace SpaceFighter.Logic.Behaviours.Implementations
 {
     using System;
     using Microsoft.Xna.Framework;
-    using SpaceFighter.Logic.Entities.Interfaces;
+    using SpaceFighter.Logic.Behaviours.Interfaces;
 
     public class BehaviourStrategyWander : IBehaviourStrategy
     {
