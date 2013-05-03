@@ -6,9 +6,9 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
 {
     using System;
     using Microsoft.Xna.Framework;
-    using SpaceFighter.Logic.Behaviours.Interfaces;
+    using SpaceFighter.Logic.Services.Interfaces;
 
-    public class BehaviourStrategyWander : IBehaviourStrategy
+    public class BehaviourStrategyWander : BehaviourStrategy
     {
         const float Mass = 20;
         const float MaxVelocity = 2;
@@ -25,7 +25,11 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
 
         Vector2 velocity = new Vector2(-1,-2);
 
-        public Vector2 Execute(Vector2 source, Vector2 target)
+        public BehaviourStrategyWander(IWorldService worldService) : base(worldService)
+        {
+        }
+
+        public override Vector2 Execute(Vector2 source, Vector2 target)
         {
             //return source;
 

@@ -9,13 +9,11 @@ namespace SpaceFighter.Logic.Services.Implementations
     using System.Linq;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-
-    using SpaceFighter.Logic.Global;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class WorldService : DrawableGameComponent, IWorldService
     {
-        private const int TileSize = 80;
+        private int tileSize = 80;
         private readonly int[,] tileMap;
         private readonly int horizontalTileCount;
         private readonly int verticalTileCount;
@@ -43,9 +41,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             verticalTileCount = tileMap.GetUpperBound(0) + 1;
             horizontalTileCount = tileMap.GetUpperBound(1) + 1;
-
-            WorldMap.Map = this.tileMap;
-            WorldMap.TileSize = TileSize;
         }
 
         public override void Initialize()
@@ -57,15 +52,20 @@ namespace SpaceFighter.Logic.Services.Implementations
             base.Initialize();
         }
 
-        public void LoadWorld()
+        public int TileSize
         {
-            // DISABLE MUSIC WHILE DEVELOPMENT
-            // this.audioService.PlaySound("music2");
+            get
+            {
+                return this.tileSize;
+            }
         }
 
-        public void GetCollidableElements()
+        public int[,] Map
         {
-            throw new NotImplementedException();
+            get
+            {
+                return this.tileMap;
+            }
         }
 
         public int LevelWidth
@@ -82,6 +82,17 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 return this.verticalTileCount * TileSize;
             }
+        }
+
+        public void LoadWorld()
+        {
+            // DISABLE MUSIC WHILE DEVELOPMENT
+            // this.audioService.PlaySound("music2");
+        }
+
+        public void GetCollidableElements()
+        {
+            throw new NotImplementedException();
         }
 
         protected override void LoadContent()

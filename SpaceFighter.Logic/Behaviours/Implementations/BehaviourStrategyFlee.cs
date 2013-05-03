@@ -5,9 +5,9 @@
 namespace SpaceFighter.Logic.Behaviours.Implementations
 {
     using Microsoft.Xna.Framework;
-    using SpaceFighter.Logic.Behaviours.Interfaces;
+    using SpaceFighter.Logic.Services.Interfaces;
 
-    public class BehaviourStrategyFlee : IBehaviourStrategy
+    public class BehaviourStrategyFlee : BehaviourStrategy
     {
         const float Mass = 50;
         const float MaxVelocity = 6;
@@ -16,7 +16,11 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
 
         Vector2 velocity;
 
-        public Vector2 Execute(Vector2 source, Vector2 target)
+        public BehaviourStrategyFlee(IWorldService worldService) : base(worldService)
+        {
+        }
+
+        public override Vector2 Execute(Vector2 source, Vector2 target)
         {
             var distance = new Vector2(target.X - source.X, target.Y - source.Y);
             var desiredVelocity = Vector2.Normalize(distance * -1) * MaxVelocity;

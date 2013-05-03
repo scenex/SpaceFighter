@@ -5,27 +5,26 @@
 namespace SpaceFighter.Logic.Behaviours.Implementations
 {
     using Microsoft.Xna.Framework;
-    using SpaceFighter.Logic.Behaviours.Interfaces;
-    using SpaceFighter.Logic.Global;
+    using SpaceFighter.Logic.Services.Interfaces;
 
-    public class BehaviourStrategyPathfinding : IBehaviourStrategy
+    public class BehaviourStrategyPathfinding : BehaviourStrategy
     {
-        private int[,] worldMap;
+        private readonly int[,] map;
         private readonly int tileSize;
 
         private int sourceTile;
         private int destinationTile;
 
-        public BehaviourStrategyPathfinding()
+        public BehaviourStrategyPathfinding(IWorldService worldService) : base(worldService)
         {
-            worldMap = WorldMap.Map;
-            tileSize = WorldMap.TileSize;
+            this.map = this.WorldService.Map;
+            this.tileSize = this.WorldService.TileSize;
         }
 
-        public Vector2 Execute(Vector2 source, Vector2 target)
+        public override Vector2 Execute(Vector2 source, Vector2 target)
         {
-            this.sourceTile = ((int)source.X / tileSize) + ((int)source.Y / tileSize) * (worldMap.GetUpperBound(1) + 1);
-            this.destinationTile = ((int)target.X / tileSize) + ((int)target.Y / tileSize) * (worldMap.GetUpperBound(1) + 1);
+            this.sourceTile = ((int)source.X / tileSize) + ((int)source.Y / tileSize) * (this.map.GetUpperBound(1) + 1);
+            this.destinationTile = ((int)target.X / tileSize) + ((int)target.Y / tileSize) * (this.map.GetUpperBound(1) + 1);
 
             return source;
         }

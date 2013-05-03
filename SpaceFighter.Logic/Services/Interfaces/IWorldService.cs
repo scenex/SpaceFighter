@@ -8,6 +8,8 @@ namespace SpaceFighter.Logic.Services.Interfaces
     {
         int LevelWidth { get; }
         int LevelHeight { get; }
+        int TileSize { get; }
+        int[,] Map { get; }
 
         void LoadWorld();
         void GetCollidableElements();

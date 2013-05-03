@@ -30,10 +30,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             this.Health = 100;
 
-            this.behaviourStrategySeek = new BehaviourStrategySeek();
-            this.behaviourStrategyFlee = new BehaviourStrategyFlee();
-            this.behaviourStrategyWander = new BehaviourStrategyWander();
-            this.behaviourStrategyPathfinding = new BehaviourStrategyPathfinding();
+            this.behaviourStrategySeek = new BehaviourStrategySeek(this.WorldService);
+            this.behaviourStrategyFlee = new BehaviourStrategyFlee(this.WorldService);
+            this.behaviourStrategyWander = new BehaviourStrategyWander(this.WorldService);
+            this.behaviourStrategyPathfinding = new BehaviourStrategyPathfinding(this.WorldService);
         }
 
         public override void Initialize()

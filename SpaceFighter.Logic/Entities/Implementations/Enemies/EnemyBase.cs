@@ -15,8 +15,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     {
         private SpriteBatch spriteBatch;
 
-        private ICameraService cameraService;
-        private IWorldService worldService;
+        private readonly ICameraService cameraService;
+        private readonly IWorldService worldService;
 
         protected StateMachine<Action<double>> stateMachine;
         protected SpriteManager spriteManager;
@@ -25,6 +25,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             this.Position = startPosition;           
             this.Game.Components.Add(this);
+
+            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
+            this.worldService = (IWorldService)this.Game.Services.GetService(typeof(IWorldService));
         }
 
         protected abstract void InitializeStateMachine();
@@ -98,9 +101,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         public override void Initialize()
         {
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
-            this.worldService = (IWorldService)this.Game.Services.GetService(typeof(IWorldService));
-
             this.InitializeStateMachine();
             base.Initialize();
         }
