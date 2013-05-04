@@ -126,6 +126,13 @@ namespace SpaceFighter.Logic.Services.Implementations
             return nonCollidableTileIndices;
         }
 
+        public Vector2 GetCenterPositionFromTile(int tileIndex)
+        {
+            return new Vector2(
+                (tileIndex % this.horizontalTileCount) * this.tileSize + (this.tileSize / 2),
+                (tileIndex / this.horizontalTileCount) * this.tileSize + (this.tileSize / 2));
+        }
+
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);

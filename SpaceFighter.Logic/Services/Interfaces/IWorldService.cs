@@ -6,6 +6,8 @@ namespace SpaceFighter.Logic.Services.Interfaces
 {
     using System.Collections.Generic;
 
+    using Microsoft.Xna.Framework;
+
     public interface IWorldService
     {
         int LevelWidth { get; }
@@ -16,5 +18,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void LoadWorld();
         IEnumerable<int> GetCollidableTileIndices();
         IEnumerable<int> GetNonCollidableTileIndices();
+
+        Vector2 GetCenterPositionFromTile(int tileIndex);
     }
 }
