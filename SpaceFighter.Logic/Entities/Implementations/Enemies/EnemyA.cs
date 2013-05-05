@@ -17,7 +17,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     public class EnemyA : EnemyBase
     {
         private Weapon weapon;
-
         private IWeaponStrategy shootingStrategy;
 
         private IBehaviourStrategy behaviourStrategy;
@@ -25,6 +24,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private readonly BehaviourStrategyFlee behaviourStrategyFlee;
         private readonly BehaviourStrategyWander behaviourStrategyWander;
         private readonly BehaviourStrategyPathfinding behaviourStrategyPathfinding;
+
+        private Vector2 targetPosition;
 
         public EnemyA(Game game, Vector2 startPosition) : base(game, startPosition)
         {
@@ -56,7 +57,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             if (this.behaviourStrategy != null)
             {
-                this.Position = this.behaviourStrategy.Execute(this.Position, this.PlayerPosition);    
+                this.Position = this.behaviourStrategy.Execute(this.Position, this.targetPosition);
             }
         }
 
@@ -81,7 +82,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             var patrol = new State<Action<double>>(
                 EnemyState.Patrol,
-                null,
+                delegate { this.targetPosition = this.WorldService.GetCenterPositionFromTile(16); },
                 delegate
                     {
                         //this.behaviourStrategy = this.behaviourStrategyWander;
@@ -95,11 +96,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             var attack = new State<Action<double>>(
                 EnemyState.Attack,
-                null,
+                delegate { this.targetPosition = this.PlayerPosition; },
                 delegate
                     {
-                        //this.behaviourStrategy = this.behaviourStrategySeek;
-                        this.behaviourStrategy = this.behaviourStrategyPathfinding;
+                        this.behaviourStrategy = this.behaviourStrategySeek;
+                        //this.behaviourStrategy = this.behaviourStrategyPathfinding;
                         this.shootingStrategy = new WeaponStrategyEnemyA();
 
                         this.IsHealthAdded = false;
@@ -109,11 +110,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             var retreat = new State<Action<double>>(
                 EnemyState.Retreat,
-                null,
+                delegate { this.targetPosition = this.PlayerPosition; },
                 delegate
                     {
-                        //this.behaviourStrategy = this.behaviourStrategyFlee;
-                        this.behaviourStrategy = this.behaviourStrategyPathfinding;
+                        this.behaviourStrategy = this.behaviourStrategyFlee;
+                        //this.behaviourStrategy = this.behaviourStrategyPathfinding;
                         this.shootingStrategy = null;
 
                         this.IsHealthAdded = false;

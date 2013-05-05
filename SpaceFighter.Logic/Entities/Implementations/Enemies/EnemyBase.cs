@@ -152,6 +152,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public override void Update(GameTime gameTime)
         {
             this.stateMachine.Update();
+
+            if (this.stateMachine.CurrentState.Tag != null)
+            {
+                this.stateMachine.CurrentState.Tag(gameTime.ElapsedGameTime.TotalMilliseconds);
+            }
+
             this.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);
            
             var previousPositionX = this.Position.X;
