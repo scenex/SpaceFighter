@@ -8,10 +8,11 @@ namespace SpaceFighter.Logic
 
     public static class Vector2Extensions
     {
-        public static Vector2 Truncate(this Vector2 vector2, float amount)
+        public static Vector2 Truncate(this Vector2 vector, float max)
         {
-            vector2.Normalize();
-            return Vector2.Multiply(vector2, amount);
+            var i = max / vector.Length();
+            i = i < 1.0 ? 1.0f : i;
+            return Vector2.Multiply(vector, i);
         }
     }
 }
