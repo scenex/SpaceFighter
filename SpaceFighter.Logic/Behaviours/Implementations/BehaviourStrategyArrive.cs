@@ -7,25 +7,19 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class BehaviourStrategyPathfinding : BehaviourStrategy
+    public class BehaviourStrategyArrive : BehaviourStrategy
     {
         const float Mass = 2;
         const float MaxVelocity = 3;
         const float MaxForce = 0.6f;
         Vector2 velocity;
 
-        private readonly int[,] map;
-        private readonly int tileSize;
-
-        public BehaviourStrategyPathfinding(IWorldService worldService) : base(worldService)
+        public BehaviourStrategyArrive(IWorldService worldService): base(worldService)
         {
-            this.map = this.WorldService.Map;
-            this.tileSize = this.WorldService.TileSize;
         }
 
         public override Vector2 Execute(Vector2 source, Vector2 target)
         {
-            // *** ARRIVAL ***
             var distance = new Vector2(target.X - source.X, target.Y - source.Y);
             var desiredVelocity = Vector2.Normalize(distance);
 
@@ -47,7 +41,6 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
             this.velocity = this.velocity.Truncate(MaxVelocity);
 
             return source + this.velocity;
-            // ************
         }
     }
 }

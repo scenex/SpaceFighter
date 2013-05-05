@@ -10,14 +10,13 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
 
     public class BehaviourStrategyWander : BehaviourStrategy
     {
-        const float Mass = 20;
-        const float MaxVelocity = 2;
-        const float MaxForce = 5.4f;
-        const float MaxSpeed = 0.5f;
+        const float Mass = 2;
+        const float MaxVelocity = 3;
+        const float MaxForce = 0.6f;
 
         const int CircleDistance = 6;
         const int CircleRadius = 8;
-        double AngleChange = 1.0f;
+        const double AngleChange = 1.0f;
 
         double wanderAngle = 0;
 
@@ -44,7 +43,7 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
             displacement.X = (float)Math.Cos(wanderAngle) * displacement.Length();
             displacement.Y = (float)Math.Sin(wanderAngle) * displacement.Length();
 
-            wanderAngle += random.Next(0, 359) * this.AngleChange * 5;
+            wanderAngle += random.Next(0, 359) * AngleChange * 5;
 
             // steering aka wanderForce
             var steering = Vector2.Add(circleCenter, displacement);

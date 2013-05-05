@@ -43,6 +43,7 @@
   <ItemGroup />
   <ItemGroup>
     <Compile Include="Behaviours\Implementations\BehaviourStrategy.cs" />
+    <Compile Include="Behaviours\Implementations\BehaviourStrategyArrive.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyFlee.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyPathfinding.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategySeek.cs" />
