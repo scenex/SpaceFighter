@@ -13,6 +13,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.StateMachine;
+    using System.Linq;
 
     public class EnemyA : EnemyBase
     {
@@ -26,6 +27,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private readonly BehaviourStrategyPathfinding behaviourStrategyPathfinding;
 
         private Vector2 targetPosition;
+        private readonly Random random = new Random();
+        int tileIndexToNavigate;
 
         public EnemyA(Game game, Vector2 startPosition) : base(game, startPosition)
         {
@@ -35,6 +38,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.behaviourStrategyFlee = new BehaviourStrategyFlee(this.WorldService);
             this.behaviourStrategyWander = new BehaviourStrategyWander(this.WorldService);
             this.behaviourStrategyPathfinding = new BehaviourStrategyPathfinding(this.WorldService);
+
+            this.tileIndexToNavigate = 16;
         }
 
         public override void Initialize()
@@ -58,6 +63,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             if (this.behaviourStrategy != null)
             {
                 this.Position = this.behaviourStrategy.Execute(this.Position, this.targetPosition);
+
+                if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < 1)
+                {
+                    tileIndexToNavigate = this.WorldService.GetNonCollidableTileIndices().ElementAt(
+                        this.random.Next(0, this.WorldService.GetNonCollidableTileIndicesCount() - 1));
+                }
             }
         }
 
@@ -82,7 +93,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             var patrol = new State<Action<double>>(
                 EnemyState.Patrol,
-                delegate { this.targetPosition = this.WorldService.GetCenterPositionFromTile(16); },
+                delegate { this.targetPosition = this.WorldService.GetCenterPositionFromTile(tileIndexToNavigate); },
                 delegate
                     {
                         //this.behaviourStrategy = this.behaviourStrategyWander;

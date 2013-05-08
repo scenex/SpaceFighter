@@ -4,7 +4,6 @@
 
 namespace SpaceFighter.Logic.Services.Implementations
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Xna.Framework;
@@ -22,6 +21,9 @@ namespace SpaceFighter.Logic.Services.Implementations
         private ICameraService cameraService;
         private IAudioService audioService;
         private readonly List<Texture2D> spriteList = new List<Texture2D>();
+
+        private List<int> collidableTileIndices;
+        private List<int> nonCollidableTileIndices;
 
         public WorldService(Game game) : base(game)
         {
@@ -92,15 +94,18 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public IEnumerable<int> GetCollidableTileIndices()
         {
-            var collidableTileIndices = new List<int>();
-
-            for (var i = 0; i < this.verticalTileCount; i++)
+            if (this.collidableTileIndices == null)
             {
-                for (var j = 0; j < this.horizontalTileCount; j++)
+                this.collidableTileIndices = new List<int>();
+
+                for (var i = 0; i < this.verticalTileCount; i++)
                 {
-                    if (this.tileMap[i,j] != 0)
+                    for (var j = 0; j < this.horizontalTileCount; j++)
                     {
-                        collidableTileIndices.Add(i * horizontalTileCount + j);
+                        if (this.tileMap[i,j] != 0)
+                        {
+                            this.collidableTileIndices.Add(i * horizontalTileCount + j);
+                        }
                     }
                 }
             }
@@ -110,20 +115,33 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public IEnumerable<int> GetNonCollidableTileIndices()
         {
-            var nonCollidableTileIndices = new List<int>();
-
-            for (var i = 0; i < this.verticalTileCount; i++)
+            if (this.nonCollidableTileIndices == null)
             {
-                for (var j = 0; j < this.horizontalTileCount; j++)
+                nonCollidableTileIndices = new List<int>();
+
+                for (var i = 0; i < this.verticalTileCount; i++)
                 {
-                    if (this.tileMap[i, j] == 0)
+                    for (var j = 0; j < this.horizontalTileCount; j++)
                     {
-                        nonCollidableTileIndices.Add(i * horizontalTileCount + j);
+                        if (this.tileMap[i, j] == 0)
+                        {
+                            this.nonCollidableTileIndices.Add(i * horizontalTileCount + j);
+                        }
                     }
                 }
             }
 
             return nonCollidableTileIndices;
+        }
+
+        public int GetCollidableTileIndicesCount()
+        {
+            return this.GetCollidableTileIndices().Count();
+        }
+
+        public int GetNonCollidableTileIndicesCount()
+        {
+            return this.GetNonCollidableTileIndices().Count();
         }
 
         public Vector2 GetCenterPositionFromTile(int tileIndex)

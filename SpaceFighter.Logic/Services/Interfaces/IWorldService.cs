@@ -16,8 +16,12 @@ namespace SpaceFighter.Logic.Services.Interfaces
         int[,] Map { get; }
 
         void LoadWorld();
+
         IEnumerable<int> GetCollidableTileIndices();
         IEnumerable<int> GetNonCollidableTileIndices();
+
+        int GetCollidableTileIndicesCount();
+        int GetNonCollidableTileIndicesCount();
 
         Vector2 GetCenterPositionFromTile(int tileIndex);
     }
