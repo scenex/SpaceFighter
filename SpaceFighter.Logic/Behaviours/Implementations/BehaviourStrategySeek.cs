@@ -10,7 +10,7 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
     public class BehaviourStrategySeek : BehaviourStrategy
     {
         const float Mass = 50;
-        const float MaxVelocity = 6;
+        const float MaxVelocity = 3;
         const float MaxForce = 0.6f;
         const float MaxSpeed = 0.5f;
         Vector2 velocity;
