@@ -34,7 +34,7 @@ namespace SpaceFighter.Tests
                     { 0x00, 0x00, 0x00, 0x00, 0x00 }
                 };
 
-            this.testee = new AStar(source, target, this.tileMap);
+            this.testee = new AStar(this.tileMap);
         }
 
         [Theory,
@@ -62,12 +62,11 @@ namespace SpaceFighter.Tests
         InlineData(21, new[] { 15, 16, 17, 20, 22 }),
         InlineData(22, new[] { 16, 17, 18, 21, 23 }),
         InlineData(23, new[] { 17, 18, 19, 22, 24 }),
-        InlineData(24, new[] { 18, 19, 23 }),
-        ]
-        public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputedReturned(int src, int[] nodes)
+        InlineData(24, new[] { 18, 19, 23 })]
+        public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputedReturned(int nodePosition, int[] nodes)
         {
-            var actual = this.testee.GetAdjacentNodes(src);
-            actual.Should().OnlyContain(item => nodes.ToList().Contains(item));
+            var actual = this.testee.GetAdjacentNodes(new Node(nodePosition));
+            actual.Should().OnlyContain(item => nodes.ToList().Contains(item.Position));
         }
 
         [Fact]

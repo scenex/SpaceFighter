@@ -14,8 +14,7 @@ namespace SpaceFighter.Logic.Pathfinding
     {
         int[,] levelMap;
 
-        private readonly Node source;
-        private readonly Node target;
+        private List<Node> Nodes; 
 
         private readonly int horizontalTileCount;
         private readonly int verticalTileCount;
@@ -23,16 +22,19 @@ namespace SpaceFighter.Logic.Pathfinding
         private readonly List<Node> openList = new List<Node>();
         private readonly List<Node> closedList = new List<Node>();
 
-        public AStar(Node source, Node target, int[,] levelMap)
+        public AStar(int[,] levelMap)
         {
-            this.levelMap = levelMap;
-            this.source = source;
-            this.target = target;
+            //this.levelMap = levelMap;
+            this.Nodes = new List<Node>();
 
             verticalTileCount = levelMap.GetUpperBound(0) + 1;
             horizontalTileCount = levelMap.GetUpperBound(1) + 1;
 
-            //this.OpenList.Add(source);
+            // Create and initialize nodes with their positions
+            for (var i = 0; i < levelMap.Length; i++) // TODO: FIX CORRECT LENGTH
+            {
+                this.Nodes.Add(new Node(i));
+            }
         }
 
         public List<Node> OpenList
@@ -51,24 +53,40 @@ namespace SpaceFighter.Logic.Pathfinding
             }
         }
 
-        public int[] GetAdjacentNodes(int position)
+        // WORK IN PROGRESS
+        public void SolvePath(Node start, Node end)
         {
-            var nodes = new List<int>
+            this.openList.Clear();
+            this.openList.Add(start);
+
+            this.closedList.Clear();
+
+            while (!this.Nodes.Contains(end) || this.Nodes.Count == 0)
+            {
+                this.openList.AddRange(this.GetAdjacentNodes(start));
+            }
+        }
+
+        public List<Node> GetAdjacentNodes(Node current)
+        {
+            var nodePositions = new List<int>
                 {
-                    this.GetNodeNW(position),
-                    this.GetNodeN(position),
-                    this.GetNodeNE(position),
-                    this.GetNodeE(position),
-                    this.GetNodeSE(position),
-                    this.GetNodeS(position),
-                    this.GetNodeSW(position),
-                    this.GetNodeW(position)
+                    this.GetNodePositionNW(current.Position),
+                    this.GetNodePositionN(current.Position),
+                    this.GetNodePositionNE(current.Position),
+                    this.GetNodePositionE(current.Position),
+                    this.GetNodePositionSE(current.Position),
+                    this.GetNodePositionS(current.Position),
+                    this.GetNodePositionSW(current.Position),
+                    this.GetNodePositionW(current.Position)
                 };
 
             // Native List<T>.RemoveAll() not supported on Xbox360
-            nodes.RemoveAll2(node => node == -1);
+            nodePositions.RemoveAll2(nodePosition => nodePosition == -1);
 
-            return nodes.ToArray();
+            var adjacentNodes = this.Nodes.Where(node => nodePositions.Contains(node.Position));
+
+            return adjacentNodes.ToList();
         }
 
         public void SetAdjacentNodes(Node sourceNode, List<Node> adjacentNodes)
@@ -101,7 +119,7 @@ namespace SpaceFighter.Logic.Pathfinding
             }
         }
 
-        public int GetNodeNW(int position)
+        public int GetNodePositionNW(int position)
         {
             if (position - horizontalTileCount - 1 < 0 || position % horizontalTileCount - 1 < 0)
             {
@@ -111,7 +129,7 @@ namespace SpaceFighter.Logic.Pathfinding
             return position - horizontalTileCount - 1;
         }
 
-        public int GetNodeN(int position)
+        public int GetNodePositionN(int position)
         {
             if (position - horizontalTileCount < 0)
             {
@@ -121,7 +139,7 @@ namespace SpaceFighter.Logic.Pathfinding
             return position - horizontalTileCount;
         }
 
-        public int GetNodeNE(int position)
+        public int GetNodePositionNE(int position)
         {
             if (position % horizontalTileCount == horizontalTileCount - 1 || position - horizontalTileCount + 1 < 0)
             {
@@ -131,7 +149,7 @@ namespace SpaceFighter.Logic.Pathfinding
             return position - horizontalTileCount + 1;
         }
 
-        public int GetNodeE(int position)
+        public int GetNodePositionE(int position)
         {
             if ((position + 1) % horizontalTileCount == 0)
             {
@@ -141,7 +159,7 @@ namespace SpaceFighter.Logic.Pathfinding
             return position + 1;
         }
 
-        public int GetNodeSE(int position)
+        public int GetNodePositionSE(int position)
         {
             if ((position + horizontalTileCount + 1) % horizontalTileCount == 0 || position + horizontalTileCount + 1 > horizontalTileCount * verticalTileCount)
             {
@@ -151,7 +169,7 @@ namespace SpaceFighter.Logic.Pathfinding
             return position + horizontalTileCount + 1;
         }
 
-        public int GetNodeS(int position)
+        public int GetNodePositionS(int position)
         {
             if (position + horizontalTileCount > horizontalTileCount * verticalTileCount - 1)
             {
@@ -161,7 +179,7 @@ namespace SpaceFighter.Logic.Pathfinding
             return position + horizontalTileCount;
         }
 
-        public int GetNodeSW(int position)
+        public int GetNodePositionSW(int position)
         {
             if ((position + horizontalTileCount - 1) % horizontalTileCount == horizontalTileCount - 1 || position + horizontalTileCount - 1 > horizontalTileCount * verticalTileCount - 1)
             {
@@ -171,7 +189,7 @@ namespace SpaceFighter.Logic.Pathfinding
             return position + horizontalTileCount - 1;
         }
 
-        public int GetNodeW(int position)
+        public int GetNodePositionW(int position)
         {
             if (position % horizontalTileCount == 0)
             {
