@@ -100,7 +100,7 @@ namespace SpaceFighter.Tests
         {
             var nodes = new List<Node> { new Node(2), new Node(3), new Node(4) };
             this.testee.SetAdjacentNodes(source, nodes);
-            this.testee.OpenList.Should().Contain(node => node.Parent == source.Position);
+            this.testee.OpenList.Should().Contain(node => node.Parent == source);
         }
 
         [Fact]

@@ -61,9 +61,29 @@ namespace SpaceFighter.Logic.Pathfinding
 
             this.closedList.Clear();
 
-            while (!this.Nodes.Contains(end) || this.Nodes.Count == 0)
+            while (!this.Nodes.Contains(end) || this.Nodes.Count > 0)
             {
                 this.openList.AddRange(this.GetAdjacentNodes(start));
+                var current = this.openList.First(node => node.F > 0);
+                
+                this.openList.Remove(current);
+                this.closedList.Add(current);
+
+                var currentAdjacentNodes = this.GetAdjacentNodes(current);
+
+                foreach (var adjacentNode in currentAdjacentNodes)
+                {
+                    if (!this.closedList.Contains(adjacentNode))
+                    {
+                        if (!this.openList.Contains(adjacentNode))
+                        {
+                            this.openList.Add(adjacentNode);
+                            adjacentNode.Parent = current;
+
+                            // Calculate F,G,H for adjacentNode
+                        }
+                    }
+                }
             }
         }
 
@@ -93,7 +113,7 @@ namespace SpaceFighter.Logic.Pathfinding
         {
             foreach (var node in adjacentNodes)
             {
-                node.Parent = sourceNode.Position;
+                node.Parent = sourceNode;
             }
 
             this.openList.AddRange(adjacentNodes.Distinct(new NodeComparer()));

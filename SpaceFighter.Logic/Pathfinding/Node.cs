@@ -12,7 +12,7 @@ namespace SpaceFighter.Logic.Pathfinding
         }
 
         public int Position { get; private set; }
-        public int Parent { get; set; }
+        public Node Parent { get; set; }
 
         public int F { get; set; }
         public int G { get; set; }
