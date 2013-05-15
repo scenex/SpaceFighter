@@ -103,17 +103,15 @@ namespace SpaceFighter.Tests
             this.testee.OpenList.Should().Contain(node => node.Parent == source);
         }
 
-        [Fact]
-        public void AStar_WhenComputeOpenListCostH_ThenShouldCorrectlyApplyManhattanMethod()
+        [Fact(Skip = "Check for validity")]
+        public void AStar_WhenCostH_ThenShouldCorrectlyApplyManhattanMethod()
         {
             var sourceNode = new Node(5);
-            var adjacentNodes = new List<Node> { new Node(10) };
             var targetNode = new Node(21);
 
-            this.testee.SetAdjacentNodes(sourceNode, adjacentNodes);
-            this.testee.ComputeOpenListCostH(targetNode);
+            var result = this.testee.ComputeCostH(sourceNode, targetNode);
 
-            this.testee.OpenList.Single().H.Should().Be(30);
+            result.Should().Be(40);
         }
 
         [Fact(Skip = "Todo: Implementation")]

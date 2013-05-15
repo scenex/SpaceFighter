@@ -54,16 +54,16 @@ namespace SpaceFighter.Logic.Pathfinding
         }
 
         // WORK IN PROGRESS
-        public void SolvePath(Node start, Node end)
+        public void SolvePath(Node startNode, Node endNode)
         {
             this.openList.Clear();
-            this.openList.Add(start);
+            this.openList.Add(startNode);
 
             this.closedList.Clear();
 
-            while (!this.Nodes.Contains(end) || this.Nodes.Count > 0)
+            while (!this.Nodes.Contains(endNode) || this.Nodes.Count > 0)
             {
-                this.openList.AddRange(this.GetAdjacentNodes(start));
+                this.openList.AddRange(this.GetAdjacentNodes(startNode));
                 var current = this.openList.First(node => node.F > 0);
                 
                 this.openList.Remove(current);
@@ -80,7 +80,9 @@ namespace SpaceFighter.Logic.Pathfinding
                             this.openList.Add(adjacentNode);
                             adjacentNode.Parent = current;
 
-                            // Calculate F,G,H for adjacentNode
+                            adjacentNode.H = this.ComputeCostH(adjacentNode, endNode);
+                            adjacentNode.G = this.ComputeCostG(adjacentNode, endNode);
+                            adjacentNode.F = this.ComputeCostF(adjacentNode, endNode);
                         }
                     }
                 }
@@ -125,18 +127,26 @@ namespace SpaceFighter.Logic.Pathfinding
             this.closedList.Add(node);
         }
 
-        public void ComputeOpenListCostH(Node targetNode) // Manhattan method
+        private int ComputeCostF(Node adjacentNode, Node endNode)
+        {
+            throw new NotImplementedException();
+        }
+
+        private int ComputeCostG(Node adjacentNode, Node endNode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ComputeCostH(Node sourceNode, Node targetNode)
         {
             var targetX = targetNode.Position % horizontalTileCount;
-            var targetY = (targetNode.Position / horizontalTileCount);
+            var targetY = targetNode.Position / horizontalTileCount;
 
-            foreach (var node in openList)
-            {
-                var sourceX = node.Position % horizontalTileCount;
-                var sourceY = (node.Position / horizontalTileCount);
+            var sourceX = sourceNode.Position % horizontalTileCount;
+            var sourceY = sourceNode.Position / horizontalTileCount;
 
-                node.H = 10*(Math.Abs(targetX - sourceX) + Math.Abs(targetY - sourceY));
-            }
+            // Manhattan method
+            return 10*(Math.Abs(targetX - sourceX) + Math.Abs(targetY - sourceY));
         }
 
         public int GetNodePositionNW(int position)
