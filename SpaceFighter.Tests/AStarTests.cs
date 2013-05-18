@@ -106,8 +106,8 @@ namespace SpaceFighter.Tests
         [Fact]
         public void AStar_SolvePath()
         {
-            var start = new Node(3);
-            var end = new Node(3);
+            var start = new Node(0);
+            var end = new Node(7);
             this.testee.SolvePath(start, end);
         }
 

@@ -12,26 +12,21 @@ namespace SpaceFighter.Logic.Pathfinding
 
     public class AStar
     {
-        int[,] levelMap;
-
-        private List<Node> Nodes; 
-
+        private readonly List<Node> Nodes; 
         private readonly int horizontalTileCount;
         private readonly int verticalTileCount;
-
         private readonly List<Node> openList = new List<Node>();
         private readonly List<Node> closedList = new List<Node>();
 
         public AStar(int[,] levelMap)
         {
-            //this.levelMap = levelMap;
             this.Nodes = new List<Node>();
 
             verticalTileCount = levelMap.GetUpperBound(0) + 1;
             horizontalTileCount = levelMap.GetUpperBound(1) + 1;
 
-            // Create and initialize nodes with their positions
-            for (var i = 0; i < levelMap.Length; i++) // TODO: FIX CORRECT LENGTH
+            // Create and initialize nodes with their positions (Determining if block passable?)
+            for (var i = 0; i < levelMap.Length; i++)
             {
                 this.Nodes.Add(new Node(i));
             }
@@ -54,7 +49,7 @@ namespace SpaceFighter.Logic.Pathfinding
         }
 
         // WORK IN PROGRESS
-        public void SolvePath(Node startNode, Node endNode)
+        public Node SolvePath(Node startNode, Node endNode)
         {
             this.openList.Clear();
             this.closedList.Clear();
@@ -66,11 +61,12 @@ namespace SpaceFighter.Logic.Pathfinding
 
             while (this.openList.Count > 0)
             {
-                var current = this.openList.First(node => node.F >= 0);
+                var current = this.openList.OrderBy(node => node.F).First();
 
                 if (current == endNode)
                 {
-                    // Reconstruct Path    
+                    // Reconstruct path by traversing parents while != null
+                    return current;
                 }
 
                 this.openList.Remove(current);
@@ -90,41 +86,17 @@ namespace SpaceFighter.Logic.Pathfinding
                         neighbour.G = g_score_temp;
                         neighbour.Parent = current;
                     }
-                    else // (!this.openList.Contains(neighbour) && !this.closedList.Contains(neighbour))
+                    else if (!this.openList.Contains(neighbour) && !this.closedList.Contains(neighbour))
                     {
                         this.openList.Add(neighbour);
-                        neighbour.G = this.ComputeCostG(neighbour, current);
+                        neighbour.Parent = current;
+                        neighbour.G = current.G + this.ComputeCostG(neighbour, current);
                         neighbour.H = this.ComputeCostH(neighbour, endNode);
                     }
-
-
-
-
-                    //if (!this.closedList.Contains(neighbour))
-                    //{
-                    //    if (!this.openList.Contains(neighbour))
-                    //    {
-                    //        this.openList.Add(neighbour);
-                    //        neighbour.Parent = current;
-
-                    //        neighbour.H = this.ComputeCostH(neighbour, endNode);
-                    //        neighbour.G = this.ComputeCostG(neighbour, endNode);
-                    //        neighbour.F = neighbour.G + neighbour.H;
-                    //    }
-                    //    else
-                    //    {
-                            
-                            
-                    //        if (g_score_temp < neighbour.G)
-                    //        {
-                    //            neighbour.Parent = current;
-                    //            neighbour.G = this.ComputeCostG(neighbour, endNode);
-                    //            neighbour.F = neighbour.G + neighbour.H;
-                    //        }
-                    //    }
-                    //}
                 }
             }
+
+            return null;
         }
 
         public List<Node> GetNeighbourNodes(Node current)
@@ -167,8 +139,17 @@ namespace SpaceFighter.Logic.Pathfinding
 
         private int ComputeCostG(Node sourceNode, Node targetNode)
         {
-            // Todo: Implementation
-            return 0;
+            // Vertical or horizontal -> Cost 10
+            if (sourceNode.Position == targetNode.Position + 1 ||
+                sourceNode.Position == targetNode.Position - 1 ||
+                sourceNode.Position == targetNode.Position + horizontalTileCount ||
+                sourceNode.Position == targetNode.Position - horizontalTileCount)
+            {
+                return 10;
+            }
+
+            // Diagonal -> Cost 14
+            return 14;
         }
 
         public int ComputeCostH(Node sourceNode, Node targetNode)
