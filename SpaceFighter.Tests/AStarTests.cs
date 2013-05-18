@@ -65,7 +65,7 @@ namespace SpaceFighter.Tests
         InlineData(24, new[] { 18, 19, 23 })]
         public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputedReturned(int nodePosition, int[] nodes)
         {
-            var actual = this.testee.GetAdjacentNodes(new Node(nodePosition));
+            var actual = this.testee.GetNeighbourNodes(new Node(nodePosition));
             actual.Should().OnlyContain(item => nodes.ToList().Contains(item.Position));
         }
 
@@ -101,6 +101,14 @@ namespace SpaceFighter.Tests
             var nodes = new List<Node> { new Node(2), new Node(3), new Node(4) };
             this.testee.SetAdjacentNodes(source, nodes);
             this.testee.OpenList.Should().Contain(node => node.Parent == source);
+        }
+
+        [Fact]
+        public void AStar_SolvePath()
+        {
+            var start = new Node(3);
+            var end = new Node(3);
+            this.testee.SolvePath(start, end);
         }
 
         [Fact(Skip = "Check for validity")]

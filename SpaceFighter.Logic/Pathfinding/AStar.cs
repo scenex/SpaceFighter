@@ -57,39 +57,77 @@ namespace SpaceFighter.Logic.Pathfinding
         public void SolvePath(Node startNode, Node endNode)
         {
             this.openList.Clear();
+            this.closedList.Clear();
+            
             this.openList.Add(startNode);
 
-            this.closedList.Clear();
+            startNode.G = 0;
+            startNode.H = this.ComputeCostH(startNode, endNode);
 
-            while (!this.Nodes.Contains(endNode) || this.Nodes.Count > 0)
+            while (this.openList.Count > 0)
             {
-                this.openList.AddRange(this.GetAdjacentNodes(startNode));
-                var current = this.openList.First(node => node.F > 0);
-                
+                var current = this.openList.First(node => node.F >= 0);
+
+                if (current == endNode)
+                {
+                    // Reconstruct Path    
+                }
+
                 this.openList.Remove(current);
                 this.closedList.Add(current);
-
-                var currentAdjacentNodes = this.GetAdjacentNodes(current);
-
-                foreach (var adjacentNode in currentAdjacentNodes)
+                   
+                foreach (var neighbour in this.GetNeighbourNodes(current))
                 {
-                    if (!this.closedList.Contains(adjacentNode))
+                    var g_score_temp = current.G + this.ComputeCostG(current, neighbour);
+                    
+                    if (this.closedList.Contains(neighbour) && g_score_temp < neighbour.G)
                     {
-                        if (!this.openList.Contains(adjacentNode))
-                        {
-                            this.openList.Add(adjacentNode);
-                            adjacentNode.Parent = current;
-
-                            adjacentNode.H = this.ComputeCostH(adjacentNode, endNode);
-                            adjacentNode.G = this.ComputeCostG(adjacentNode, endNode);
-                            adjacentNode.F = this.ComputeCostF(adjacentNode, endNode);
-                        }
+                        neighbour.G = g_score_temp;
+                        neighbour.Parent = current;
                     }
+                    else if (this.openList.Contains(neighbour) && g_score_temp < neighbour.G)
+                    {
+                        neighbour.G = g_score_temp;
+                        neighbour.Parent = current;
+                    }
+                    else // (!this.openList.Contains(neighbour) && !this.closedList.Contains(neighbour))
+                    {
+                        this.openList.Add(neighbour);
+                        neighbour.G = this.ComputeCostG(neighbour, current);
+                        neighbour.H = this.ComputeCostH(neighbour, endNode);
+                    }
+
+
+
+
+                    //if (!this.closedList.Contains(neighbour))
+                    //{
+                    //    if (!this.openList.Contains(neighbour))
+                    //    {
+                    //        this.openList.Add(neighbour);
+                    //        neighbour.Parent = current;
+
+                    //        neighbour.H = this.ComputeCostH(neighbour, endNode);
+                    //        neighbour.G = this.ComputeCostG(neighbour, endNode);
+                    //        neighbour.F = neighbour.G + neighbour.H;
+                    //    }
+                    //    else
+                    //    {
+                            
+                            
+                    //        if (g_score_temp < neighbour.G)
+                    //        {
+                    //            neighbour.Parent = current;
+                    //            neighbour.G = this.ComputeCostG(neighbour, endNode);
+                    //            neighbour.F = neighbour.G + neighbour.H;
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }
 
-        public List<Node> GetAdjacentNodes(Node current)
+        public List<Node> GetNeighbourNodes(Node current)
         {
             var nodePositions = new List<int>
                 {
@@ -127,14 +165,10 @@ namespace SpaceFighter.Logic.Pathfinding
             this.closedList.Add(node);
         }
 
-        private int ComputeCostF(Node adjacentNode, Node endNode)
+        private int ComputeCostG(Node sourceNode, Node targetNode)
         {
-            throw new NotImplementedException();
-        }
-
-        private int ComputeCostG(Node adjacentNode, Node endNode)
-        {
-            throw new NotImplementedException();
+            // Todo: Implementation
+            return 0;
         }
 
         public int ComputeCostH(Node sourceNode, Node targetNode)

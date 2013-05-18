@@ -14,8 +14,25 @@ namespace SpaceFighter.Logic.Pathfinding
         public int Position { get; private set; }
         public Node Parent { get; set; }
 
-        public int F { get; set; }
         public int G { get; set; }
         public int H { get; set; }
+
+        public int F
+        {
+            get
+            {
+                return G + H;
+            }
+        }
+
+        public static bool operator ==(Node a, Node b)
+        {
+            return a.Position == b.Position;
+        }
+
+        public static bool operator !=(Node a, Node b)
+        {
+            return !(a == b);
+        }
     }
 }
