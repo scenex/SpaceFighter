@@ -116,7 +116,7 @@ namespace SpaceFighter.Logic.Pathfinding
             // Native List<T>.RemoveAll() not supported on Xbox360
             nodePositions.RemoveAll2(nodePosition => nodePosition == -1);
 
-            var adjacentNodes = this.Nodes.Where(node => nodePositions.Contains(node.Position));
+            var adjacentNodes = this.Nodes.Where(node => nodePositions.Contains(node.Position) && node.Walkable);
 
             return adjacentNodes.ToList();
         }

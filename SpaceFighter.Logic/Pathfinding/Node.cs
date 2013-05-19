@@ -25,6 +25,15 @@ namespace SpaceFighter.Logic.Pathfinding
             }
         }
 
+        public bool Walkable
+        {
+            get
+            {
+                // Todo
+                return true;
+            }
+        }
+
         public static bool operator ==(Node a, Node b)
         {
             return a.Position == b.Position;
