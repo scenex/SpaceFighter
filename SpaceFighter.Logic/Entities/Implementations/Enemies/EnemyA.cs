@@ -36,12 +36,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             this.Health = 100;
 
-            this.behaviourStrategySeek = new BehaviourStrategySeek(terrainService);
-            this.behaviourStrategyFlee = new BehaviourStrategyFlee(terrainService);
-            this.behaviourStrategyWander = new BehaviourStrategyWander(terrainService);
-            this.behaviourStrategyPathfinding = new BehaviourStrategyPathfinding(terrainService);
+            this.behaviourStrategySeek = new BehaviourStrategySeek();
+            this.behaviourStrategyFlee = new BehaviourStrategyFlee();
+            this.behaviourStrategyWander = new BehaviourStrategyWander();
+            this.behaviourStrategyPathfinding = new BehaviourStrategyPathfinding();
             
-            this.tileIndexToNavigate = 16;
+            this.tileIndexToNavigate = 16; // TODO: Move in TerrainService
         }
 
         public override void Initialize()
@@ -64,6 +64,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             get
             {
+                // TODO
                 throw new NotImplementedException();
             }
         }
@@ -76,6 +77,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
                 if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < 1)
                 {
+                    // TODO: Move in TerrainService
                     tileIndexToNavigate = this.TerrainService.GetNonCollidableTileIndices().ElementAt(
                         this.random.Next(0, this.TerrainService.GetNonCollidableTileIndicesCount() - 1));
                 }

@@ -6,7 +6,6 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
 {
     using System;
     using Microsoft.Xna.Framework;
-    using SpaceFighter.Logic.Services.Interfaces;
 
     public class BehaviourStrategyWander : BehaviourStrategy
     {
@@ -23,10 +22,6 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
         readonly Random random = new Random();
 
         Vector2 velocity = new Vector2(-1,-2);
-
-        public BehaviourStrategyWander(ITerrainService worldService) : base(worldService)
-        {
-        }
 
         public override Vector2 Execute(Vector2 source, Vector2 target)
         {

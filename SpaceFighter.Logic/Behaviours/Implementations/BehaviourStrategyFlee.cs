@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic.Behaviours.Implementations
 {
     using Microsoft.Xna.Framework;
-    using SpaceFighter.Logic.Services.Interfaces;
 
     public class BehaviourStrategyFlee : BehaviourStrategy
     {
@@ -15,10 +14,6 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
         const float MaxSpeed = 0.5f;
 
         Vector2 velocity;
-
-        public BehaviourStrategyFlee(ITerrainService worldService) : base(worldService)
-        {
-        }
 
         public override Vector2 Execute(Vector2 source, Vector2 target)
         {

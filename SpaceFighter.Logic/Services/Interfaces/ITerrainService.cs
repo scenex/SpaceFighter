@@ -15,8 +15,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
         int TileSize { get; }
         int[,] Map { get; }
 
-        void LoadWorld();
-
         IEnumerable<int> GetCollidableTileIndices();
         IEnumerable<int> GetNonCollidableTileIndices();
 

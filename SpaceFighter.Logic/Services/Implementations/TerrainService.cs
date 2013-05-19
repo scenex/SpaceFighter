@@ -19,7 +19,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private SpriteBatch spriteBatch;
 
         private ICameraService cameraService;
-        private IAudioService audioService;
+
         private readonly List<Texture2D> spriteList = new List<Texture2D>();
 
         private List<int> collidableTileIndices;
@@ -48,9 +48,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
-            this.audioService = (IAudioService)this.Game.Services.GetService(typeof(IAudioService));
-            
-            this.LoadWorld();
             base.Initialize();
         }
 
@@ -84,12 +81,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 return this.verticalTileCount * TileSize;
             }
-        }
-
-        public void LoadWorld()
-        {
-            // DISABLE MUSIC WHILE DEVELOPMENT
-            // this.audioService.PlaySound("music2");
         }
 
         public IEnumerable<int> GetCollidableTileIndices()

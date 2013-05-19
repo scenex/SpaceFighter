@@ -17,8 +17,9 @@ namespace SpaceFighter.Logic.Services.Implementations
         private IEnemyService enemyService;
         private IInputService inputService;
         private IHeadUpDisplayService headUpDisplay;
-        private ITerrainService worldService;
+        private ITerrainService terrainService;
         private IDebugService debugService;
+        private IAudioService audioService;
 
         public GameController(Game game) : base(game)
         {
@@ -31,8 +32,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
             this.inputService = (IInputService)this.Game.Services.GetService(typeof(IInputService));
             this.headUpDisplay = (IHeadUpDisplayService)this.Game.Services.GetService(typeof(IHeadUpDisplayService));
-            this.worldService = (ITerrainService)this.Game.Services.GetService(typeof(ITerrainService));
+            this.terrainService = (ITerrainService)this.Game.Services.GetService(typeof(ITerrainService));
             this.debugService = (IDebugService)this.Game.Services.GetService(typeof(IDebugService));
+            this.audioService = (IAudioService)this.Game.Services.GetService(typeof(IAudioService));
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
@@ -44,6 +46,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
             this.playerService.TransitionToStateAlive += this.OnTransitionToStateAlive;
             this.playerService.HealthChanged += this.OnHealthChanged;
+
+            // DISABLE MUSIC WHILE DEVELOPMENT
+            // this.audioService.PlaySound("music2");
             
             base.Initialize();
         }

@@ -15,15 +15,6 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
         const float MaxSpeed = 0.5f;
         Vector2 velocity;
 
-        private readonly int[,] map;
-        private readonly int tileSize;
-
-        public BehaviourStrategyPathfinding(ITerrainService worldService) : base(worldService)
-        {
-            this.map = this.WorldService.Map;
-            this.tileSize = this.WorldService.TileSize;
-        }
-
         public override Vector2 Execute(Vector2 source, Vector2 target)
         {
             // *** ARRIVAL ***
