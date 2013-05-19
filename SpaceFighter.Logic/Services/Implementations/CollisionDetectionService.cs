@@ -16,7 +16,7 @@ namespace SpaceFighter.Logic.Services.Implementations
     {
         private IPlayerService playerService;
         private IEnemyService enemyService;
-        private IWorldService worldService;
+        private ITerrainService worldService;
 
         private bool isCollisionDetectionActive;
 
@@ -49,7 +49,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
             this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
-            this.worldService = (IWorldService)this.Game.Services.GetService(typeof(IWorldService));
+            this.worldService = (ITerrainService)this.Game.Services.GetService(typeof(ITerrainService));
 
             this.levelBoundsRectangle = new Rectangle(0, 0, this.worldService.LevelWidth, this.worldService.LevelHeight);
 

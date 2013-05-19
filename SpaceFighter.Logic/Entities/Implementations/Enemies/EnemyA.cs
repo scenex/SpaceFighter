@@ -5,15 +5,17 @@
 namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Behaviours.Implementations;
     using SpaceFighter.Logic.Behaviours.Interfaces;
-    using SpaceFighter.Logic.Entities.Implementations.WeaponStrategies;
     using SpaceFighter.Logic.Entities.Implementations.Weapons;
+    using SpaceFighter.Logic.Entities.Implementations.WeaponStrategies;
     using SpaceFighter.Logic.Entities.Interfaces;
+    using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
-    using System.Linq;
 
     public class EnemyA : EnemyBase
     {
@@ -30,15 +32,15 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private readonly Random random = new Random();
         int tileIndexToNavigate;
 
-        public EnemyA(Game game, Vector2 startPosition) : base(game, startPosition)
+        public EnemyA(Game game, ITerrainService terrainService, Vector2 startPosition) : base(game, terrainService, startPosition)
         {
             this.Health = 100;
 
-            this.behaviourStrategySeek = new BehaviourStrategySeek(this.WorldService);
-            this.behaviourStrategyFlee = new BehaviourStrategyFlee(this.WorldService);
-            this.behaviourStrategyWander = new BehaviourStrategyWander(this.WorldService);
-            this.behaviourStrategyPathfinding = new BehaviourStrategyPathfinding(this.WorldService);
-
+            this.behaviourStrategySeek = new BehaviourStrategySeek(terrainService);
+            this.behaviourStrategyFlee = new BehaviourStrategyFlee(terrainService);
+            this.behaviourStrategyWander = new BehaviourStrategyWander(terrainService);
+            this.behaviourStrategyPathfinding = new BehaviourStrategyPathfinding(terrainService);
+            
             this.tileIndexToNavigate = 16;
         }
 
@@ -58,6 +60,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             }
         }
 
+        public override Queue<Vector2> Waypoints
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         protected override void UpdatePosition()
         {
             if (this.behaviourStrategy != null)
@@ -66,8 +76,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
                 if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < 1)
                 {
-                    tileIndexToNavigate = this.WorldService.GetNonCollidableTileIndices().ElementAt(
-                        this.random.Next(0, this.WorldService.GetNonCollidableTileIndicesCount() - 1));
+                    tileIndexToNavigate = this.TerrainService.GetNonCollidableTileIndices().ElementAt(
+                        this.random.Next(0, this.TerrainService.GetNonCollidableTileIndicesCount() - 1));
                 }
             }
         }
@@ -93,7 +103,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             var patrol = new State<Action<double>>(
                 EnemyState.Patrol,
-                delegate { this.targetPosition = this.WorldService.GetCenterPositionFromTile(tileIndexToNavigate); },
+                delegate { this.targetPosition = this.TerrainService.GetCenterPositionFromTile(tileIndexToNavigate); },
                 delegate
                     {
                         //this.behaviourStrategy = this.behaviourStrategyWander;

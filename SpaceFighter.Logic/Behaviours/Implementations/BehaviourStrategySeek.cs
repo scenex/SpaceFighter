@@ -15,7 +15,7 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
         const float MaxSpeed = 0.5f;
         Vector2 velocity;
 
-        public BehaviourStrategySeek(IWorldService worldService) : base(worldService)
+        public BehaviourStrategySeek(ITerrainService worldService) : base(worldService)
         {
         }
 

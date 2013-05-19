@@ -8,7 +8,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
     using Microsoft.Xna.Framework;
 
-    public interface IWorldService
+    public interface ITerrainService
     {
         int LevelWidth { get; }
         int LevelHeight { get; }

@@ -6,15 +6,15 @@ namespace SpaceFighter.Logic.Services.Implementations
 {
     using System.Collections.Generic;
     using System.Linq;
-
     using Microsoft.Xna.Framework;
-
     using SpaceFighter.Logic.Entities.Implementations.Enemies;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class EnemyService : GameComponent, IEnemyService
     {
+        private ITerrainService terrainService;
+
         public EnemyService(Game game) : base(game)
         {
         }
@@ -37,8 +37,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            EnemyFactory.Create<EnemyA>(this.Game, new Vector2(400, 400));
-            //EnemyFactory.Create<EnemyA>(this.Game, new Vector2(600, 400));
+            this.terrainService = (ITerrainService)this.Game.Services.GetService(typeof(ITerrainService));
+
+            EnemyFactory.Create<EnemyA>(this.Game, this.terrainService, new Vector2(400, 400));
             base.Initialize();
         }
 

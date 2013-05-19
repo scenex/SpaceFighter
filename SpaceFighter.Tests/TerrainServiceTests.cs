@@ -9,13 +9,13 @@ namespace SpaceFighter.Tests
 
     using Xunit;
 
-    public class WorldServiceTests
+    public class TerrainServiceTests
     {
-        private readonly IWorldService testee;
+        private readonly ITerrainService testee;
 
-        public WorldServiceTests()
+        public TerrainServiceTests()
         {
-            this.testee = new WorldService(null);
+            this.testee = new TerrainService(null);
         }
     }
 }

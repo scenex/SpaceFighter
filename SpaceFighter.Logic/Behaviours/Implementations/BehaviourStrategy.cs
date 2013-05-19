@@ -10,9 +10,9 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
 
     public abstract class BehaviourStrategy : IBehaviourStrategy
     {
-        protected IWorldService WorldService { get; private set; }
+        protected ITerrainService WorldService { get; private set; }
 
-        protected BehaviourStrategy(IWorldService worldService)
+        protected BehaviourStrategy(ITerrainService worldService)
         {
             this.WorldService = worldService;
         }

@@ -18,7 +18,7 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
         private readonly int[,] map;
         private readonly int tileSize;
 
-        public BehaviourStrategyPathfinding(IWorldService worldService) : base(worldService)
+        public BehaviourStrategyPathfinding(ITerrainService worldService) : base(worldService)
         {
             this.map = this.WorldService.Map;
             this.tileSize = this.WorldService.TileSize;

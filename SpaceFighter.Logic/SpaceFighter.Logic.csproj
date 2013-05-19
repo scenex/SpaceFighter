@@ -143,7 +143,7 @@
     <Compile Include="Services\Implementations\EnemyService.cs" />
     <Compile Include="Services\Implementations\GameController.cs" />
     <Compile Include="Services\Implementations\InputService.cs" />
-    <Compile Include="Services\Implementations\WorldService.cs" />
+    <Compile Include="Services\Implementations\TerrainService.cs" />
     <Compile Include="Services\Interfaces\ICameraService.cs" />
     <Compile Include="Services\Interfaces\ICollisionDetectionService.cs" />
     <Compile Include="Services\Interfaces\IEnemyService.cs" />
@@ -153,7 +153,7 @@
     <Compile Include="Services\Implementations\PlayerService.cs" />
     <Compile Include="Entities\Implementations\Weapons\ShotA.cs" />
     <Compile Include="Entities\Implementations\Weapons\Weapon.cs" />
-    <Compile Include="Services\Interfaces\IWorldService.cs" />
+    <Compile Include="Services\Interfaces\ITerrainService.cs" />
     <Compile Include="StateMachine\State.cs" />
     <Compile Include="StateMachine\StateMachine.cs" />
     <Compile Include="StateMachine\Transition.cs" />

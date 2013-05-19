@@ -10,7 +10,7 @@ namespace SpaceFighter.Logic.Services.Implementations
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class WorldService : DrawableGameComponent, IWorldService
+    public class TerrainService : DrawableGameComponent, ITerrainService
     {
         private int tileSize = 80;
         private readonly int[,] tileMap;
@@ -25,7 +25,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private List<int> collidableTileIndices;
         private List<int> nonCollidableTileIndices;
 
-        public WorldService(Game game) : base(game)
+        public TerrainService(Game game) : base(game)
         {
             this.tileMap = new[,]
                 {

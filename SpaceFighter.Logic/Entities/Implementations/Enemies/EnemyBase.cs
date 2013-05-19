@@ -5,6 +5,8 @@
 namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {
     using System;
+    using System.Collections.Generic;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Entities.Interfaces;
@@ -16,18 +18,18 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private SpriteBatch spriteBatch;
 
         private readonly ICameraService cameraService;
-        private readonly IWorldService worldService;
+        private readonly ITerrainService terrainService;
 
         protected StateMachine<Action<double>> stateMachine;
         protected SpriteManager spriteManager;
 
-        protected EnemyBase(Game game, Vector2 startPosition) : base(game)
+        protected EnemyBase(Game game, ITerrainService terrainService, Vector2 startPosition) : base(game)
         {
             this.Position = startPosition;           
             this.Game.Components.Add(this);
-
+            
+            this.terrainService = terrainService;
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
-            this.worldService = (IWorldService)this.Game.Services.GetService(typeof(IWorldService));
         }
 
         protected abstract void InitializeStateMachine();
@@ -36,6 +38,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         protected abstract void UpdateWeapon(TimeSpan elapsed);
         
         public abstract IWeapon Weapon { get; }
+        public abstract Queue<Vector2> Waypoints { get; }
 
         public Vector2 PlayerPosition { get; set; }
         public Vector2 Position { get; protected set; }
@@ -47,11 +50,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public bool IsHealthSubtracted { get; protected set; }
         public bool IsHealthAdded { get; protected set; }
 
-        public IWorldService WorldService
+        protected ITerrainService TerrainService
         {
             get
             {
-                return this.worldService;
+                return this.terrainService;
             }
         }
 

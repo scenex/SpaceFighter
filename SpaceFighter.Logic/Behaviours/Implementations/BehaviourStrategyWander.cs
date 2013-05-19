@@ -24,7 +24,7 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
 
         Vector2 velocity = new Vector2(-1,-2);
 
-        public BehaviourStrategyWander(IWorldService worldService) : base(worldService)
+        public BehaviourStrategyWander(ITerrainService worldService) : base(worldService)
         {
         }
 

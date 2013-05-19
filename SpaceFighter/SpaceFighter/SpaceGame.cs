@@ -92,8 +92,8 @@ namespace SpaceFighter
             this.Services.AddService(typeof(IEnemyService), enemyService);
             this.Components.Add(enemyService);
 
-            var worldService = new WorldService(this);
-            this.Services.AddService(typeof(IWorldService), worldService);
+            var worldService = new TerrainService(this);
+            this.Services.AddService(typeof(ITerrainService), worldService);
             this.Components.Add(worldService);
 
             var cameraService = new CameraService(this);

@@ -16,7 +16,7 @@ namespace SpaceFighter.Logic.Behaviours.Implementations
 
         Vector2 velocity;
 
-        public BehaviourStrategyFlee(IWorldService worldService) : base(worldService)
+        public BehaviourStrategyFlee(ITerrainService worldService) : base(worldService)
         {
         }
 
