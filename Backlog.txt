@@ -5,9 +5,10 @@ Codename: 'Space Fighter' Backlog
 What's currently on:
 ====================
 
-- Wandering steering behavior
+- A* path finding
+- Xbox controller under Windows
 - Glowing edges and trails for shots
-- Configurable particle system
+- Particle system for explosions
 
 
 What's next:
@@ -66,3 +67,4 @@ DONE:
 - Rotational weapon control (XBox)
 - Integrate background music
 - Wire up state engine with steering behaviors
+- Wandering steering behavior (buggy)
