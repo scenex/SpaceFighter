@@ -6,7 +6,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Behaviours.Implementations;
@@ -28,9 +27,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private readonly BehaviourStrategyWander behaviourStrategyWander;
         private readonly BehaviourStrategyPathfinding behaviourStrategyPathfinding;
 
-        private Vector2 targetPosition;
-        private readonly Random random = new Random();
-        int tileIndexToNavigate;
+        private Vector2 targetPosition;       
 
         public EnemyA(Game game, ITerrainService terrainService, Vector2 startPosition) : base(game, terrainService, startPosition)
         {
@@ -40,8 +37,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.behaviourStrategyFlee = new BehaviourStrategyFlee();
             this.behaviourStrategyWander = new BehaviourStrategyWander();
             this.behaviourStrategyPathfinding = new BehaviourStrategyPathfinding();
-            
-            this.tileIndexToNavigate = 16; // TODO: Move in TerrainService
         }
 
         public override void Initialize()
@@ -75,11 +70,16 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             {
                 this.Position = this.behaviourStrategy.Execute(this.Position, this.targetPosition);
 
+                // End position reached?
                 if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < 1)
                 {
-                    // TODO: Move in TerrainService
-                    tileIndexToNavigate = this.TerrainService.GetNonCollidableTileIndices().ElementAt(
-                        this.random.Next(0, this.TerrainService.GetNonCollidableTileIndicesCount() - 1));
+                    // Todo: 
+                    // Set destination tile of path in TerrainService.
+                    // Fill Waypoints with data computed from TerrainService (path)
+                    // Track arrival at individual waypoint and dequeue from Waypoints
+                    // When Waypoints empty then set new tile as destination tile and calc path to there and save individual tiles in Waypoints.
+                    // Repeat
+                    this.TerrainService.SetRandomNonCollidableTileIndex();
                 }
             }
         }
@@ -105,7 +105,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             var patrol = new State<Action<double>>(
                 EnemyState.Patrol,
-                delegate { this.targetPosition = this.TerrainService.GetCenterPositionFromTile(tileIndexToNavigate); },
+                delegate { this.targetPosition = this.TerrainService.GetCenterPositionFromCurrentTile(); }, // Todo: Get position of next waypoint
                 delegate
                     {
                         //this.behaviourStrategy = this.behaviourStrategyWander;

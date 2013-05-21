@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic.Services.Interfaces
 {
     using System.Collections.Generic;
-
     using Microsoft.Xna.Framework;
 
     public interface ITerrainService
@@ -15,12 +14,14 @@ namespace SpaceFighter.Logic.Services.Interfaces
         int TileSize { get; }
         int[,] Map { get; }
 
+        void SetRandomNonCollidableTileIndex();
+
         IEnumerable<int> GetCollidableTileIndices();
         IEnumerable<int> GetNonCollidableTileIndices();
 
         int GetCollidableTileIndicesCount();
         int GetNonCollidableTileIndicesCount();
 
-        Vector2 GetCenterPositionFromTile(int tileIndex);
+        Vector2 GetCenterPositionFromCurrentTile();
     }
 }

@@ -4,6 +4,7 @@
 
 namespace SpaceFighter.Logic.Services.Implementations
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Xna.Framework;
@@ -16,12 +17,14 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly int[,] tileMap;
         private readonly int horizontalTileCount;
         private readonly int verticalTileCount;
+        int tileIndexToNavigate;
+
         private SpriteBatch spriteBatch;
 
         private ICameraService cameraService;
 
         private readonly List<Texture2D> spriteList = new List<Texture2D>();
-
+        private readonly Random random = new Random();
         private List<int> collidableTileIndices;
         private List<int> nonCollidableTileIndices;
 
@@ -83,6 +86,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
+        public void SetRandomNonCollidableTileIndex()
+        {
+            this.tileIndexToNavigate = this.GetNonCollidableTileIndices().ElementAt(this.random.Next(0, this.GetNonCollidableTileIndicesCount() - 1));
+        }
+
         public IEnumerable<int> GetCollidableTileIndices()
         {
             if (this.collidableTileIndices == null)
@@ -135,11 +143,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             return this.GetNonCollidableTileIndices().Count();
         }
 
-        public Vector2 GetCenterPositionFromTile(int tileIndex)
+        public Vector2 GetCenterPositionFromCurrentTile()
         {
             return new Vector2(
-                (tileIndex % this.horizontalTileCount) * this.tileSize + (this.tileSize / 2),
-                (tileIndex / this.horizontalTileCount) * this.tileSize + (this.tileSize / 2));
+                (tileIndexToNavigate % this.horizontalTileCount) * this.tileSize + (this.tileSize / 2),
+                (tileIndexToNavigate / this.horizontalTileCount) * this.tileSize + (this.tileSize / 2));
         }
 
         protected override void LoadContent()
