@@ -5,13 +5,22 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     using SpaceFighter.Logic.Services.Interfaces;
 
+    /// <summary>
+    /// Todo: Level drawing happening here in GameController, is it the right place?
+    /// </summary>
     public class GameController : DrawableGameComponent, IGameController
     {
+        private SpriteBatch spriteBatch;
+        private readonly List<Texture2D> spriteList = new List<Texture2D>();
+
         private ICollisionDetectionService collisionDetectionService;
         private IPlayerService playerService;
         private IEnemyService enemyService;
@@ -20,6 +29,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private ITerrainService terrainService;
         private IDebugService debugService;
         private IAudioService audioService;
+        private ICameraService cameraService;
 
         public GameController(Game game) : base(game)
         {
@@ -35,6 +45,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.terrainService = (ITerrainService)this.Game.Services.GetService(typeof(ITerrainService));
             this.debugService = (IDebugService)this.Game.Services.GetService(typeof(IDebugService));
             this.audioService = (IAudioService)this.Game.Services.GetService(typeof(IAudioService));
+            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
@@ -49,8 +60,22 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             // DISABLE MUSIC WHILE DEVELOPMENT
             // this.audioService.PlaySound("music2");
-            
+
             base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
+
+            var tileList = this.Game.Content.Load<List<string>>("manifest").Where(x => x.StartsWith(@"Sprites\L1\")).ToList();
+
+            foreach (var tile in tileList)
+            {
+                spriteList.Add(this.Game.Content.Load<Texture2D>(tile));
+            }
+
+            base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -61,7 +86,27 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Draw(GameTime gameTime)
         {
-            this.debugService.DrawRectangle(new Rectangle(((int)playerService.Player.Position.X / 80) * 80, ((int)playerService.Player.Position.Y / 80) * 80, 80, 80));
+            // this.debugService.DrawRectangle(new Rectangle(((int)playerService.Player.Position.X / 80) * 80, ((int)playerService.Player.Position.Y / 80) * 80, 80, 80));
+            
+            this.spriteBatch.Begin(
+                SpriteSortMode.BackToFront,
+                BlendState.AlphaBlend,
+                null,
+                null,
+                null,
+                null,
+                cameraService.GetTransformation());
+
+            for (int i = 0; i < this.terrainService.VerticalTileCount; i++)
+            {
+                for (int j = 0; j < this.terrainService.HorizontalTileCount; j++)
+                {
+                    this.spriteBatch.Draw(this.spriteList[this.terrainService.Map[i, j]], new Vector2(j * this.terrainService.TileSize, i * this.terrainService.TileSize), Color.White);
+                }
+            }
+
+            this.spriteBatch.End();
+
             base.Draw(gameTime);
         }
 

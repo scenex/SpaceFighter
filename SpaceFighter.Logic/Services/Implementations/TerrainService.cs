@@ -8,29 +8,20 @@ namespace SpaceFighter.Logic.Services.Implementations
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class TerrainService : DrawableGameComponent, ITerrainService
+    public class TerrainService : ITerrainService
     {
-        private int tileSize = 80;
-        private readonly int[,] tileMap;
-        private readonly int horizontalTileCount;
-        private readonly int verticalTileCount;
         int tileIndexToNavigate;
 
-        private SpriteBatch spriteBatch;
-
-        private ICameraService cameraService;
-
-        private readonly List<Texture2D> spriteList = new List<Texture2D>();
         private readonly Random random = new Random();
         private List<int> collidableTileIndices;
         private List<int> nonCollidableTileIndices;
 
-        public TerrainService(Game game) : base(game)
+        public TerrainService()
         {
-            this.tileMap = new[,]
+            TileSize = 80;
+            this.Map = new[,]
                 {
                     { 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05 },
                     { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02, 0x02, 0x03, 0x00, 0x00, 0x00, 0x00, 0x05 },
@@ -44,37 +35,20 @@ namespace SpaceFighter.Logic.Services.Implementations
                     { 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05 }
                 };
 
-            verticalTileCount = tileMap.GetUpperBound(0) + 1;
-            horizontalTileCount = tileMap.GetUpperBound(1) + 1;
+            this.VerticalTileCount = this.Map.GetUpperBound(0) + 1;
+            this.HorizontalTileCount = this.Map.GetUpperBound(1) + 1;
         }
 
-        public override void Initialize()
-        {
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
-            base.Initialize();
-        }
-
-        public int TileSize
-        {
-            get
-            {
-                return this.tileSize;
-            }
-        }
-
-        public int[,] Map
-        {
-            get
-            {
-                return this.tileMap;
-            }
-        }
+        public int TileSize { get; private set; }
+        public int[,] Map { get; private set; }
+        public int VerticalTileCount { get; private set; }
+        public int HorizontalTileCount { get; private set; }
 
         public int LevelWidth
         {
             get
             {
-                return this.horizontalTileCount * TileSize;
+                return this.HorizontalTileCount * TileSize;
             }
         }
 
@@ -82,8 +56,13 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             get
             {
-                return this.verticalTileCount * TileSize;
+                return this.VerticalTileCount * TileSize;
             }
+        }
+
+        // IGameComponent
+        public void Initialize()
+        {
         }
 
         public void SetRandomNonCollidableTileIndex()
@@ -97,13 +76,13 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 this.collidableTileIndices = new List<int>();
 
-                for (var i = 0; i < this.verticalTileCount; i++)
+                for (var i = 0; i < this.VerticalTileCount; i++)
                 {
-                    for (var j = 0; j < this.horizontalTileCount; j++)
+                    for (var j = 0; j < this.HorizontalTileCount; j++)
                     {
-                        if (this.tileMap[i,j] != 0)
+                        if (this.Map[i,j] != 0)
                         {
-                            this.collidableTileIndices.Add(i * horizontalTileCount + j);
+                            this.collidableTileIndices.Add(i * this.HorizontalTileCount + j);
                         }
                     }
                 }
@@ -118,13 +97,13 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 nonCollidableTileIndices = new List<int>();
 
-                for (var i = 0; i < this.verticalTileCount; i++)
+                for (var i = 0; i < this.VerticalTileCount; i++)
                 {
-                    for (var j = 0; j < this.horizontalTileCount; j++)
+                    for (var j = 0; j < this.HorizontalTileCount; j++)
                     {
-                        if (this.tileMap[i, j] == 0)
+                        if (this.Map[i, j] == 0)
                         {
-                            this.nonCollidableTileIndices.Add(i * horizontalTileCount + j);
+                            this.nonCollidableTileIndices.Add(i * this.HorizontalTileCount + j);
                         }
                     }
                 }
@@ -146,46 +125,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         public Vector2 GetCenterPositionFromCurrentTile()
         {
             return new Vector2(
-                (tileIndexToNavigate % this.horizontalTileCount) * this.tileSize + (this.tileSize / 2),
-                (tileIndexToNavigate / this.horizontalTileCount) * this.tileSize + (this.tileSize / 2));
-        }
-
-        protected override void LoadContent()
-        {
-            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-
-            var tileList = this.Game.Content.Load<List<string>>("manifest").Where(x => x.StartsWith(@"Sprites\L1\")).ToList();
-
-            foreach (var tile in tileList)
-            {
-                spriteList.Add(this.Game.Content.Load<Texture2D>(tile));
-            }
-
-            base.LoadContent();
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            this.spriteBatch.Begin(
-                SpriteSortMode.BackToFront, 
-                BlendState.AlphaBlend,
-                null,
-                null,
-                null,
-                null,
-                cameraService.GetTransformation());
-
-                for (int i = 0; i < verticalTileCount; i++)
-                {
-                    for (int j = 0; j < horizontalTileCount; j++)
-                    {
-                        this.spriteBatch.Draw(this.spriteList[this.tileMap[i, j]], new Vector2(j * TileSize, i * TileSize), Color.White);
-                    }
-                }
-
-            this.spriteBatch.End();
-
-            base.Draw(gameTime);
+                (tileIndexToNavigate % this.HorizontalTileCount) * this.TileSize + (this.TileSize / 2),
+                (tileIndexToNavigate / this.HorizontalTileCount) * this.TileSize + (this.TileSize / 2));
         }
     }
 }
