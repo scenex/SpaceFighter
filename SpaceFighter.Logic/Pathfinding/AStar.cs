@@ -8,27 +8,37 @@ namespace SpaceFighter.Logic.Pathfinding
     using System.Collections.Generic;
     using System.Linq;
 
+    using Microsoft.Xna.Framework;
+
     // ReSharper disable InconsistentNaming
 
     public class AStar
     {
-        private readonly List<Node> Nodes; 
+        public readonly List<Node> Nodes;
+
+        private readonly int tileSize;
         private readonly int horizontalTileCount;
         private readonly int verticalTileCount;
+
         private readonly List<Node> openList = new List<Node>();
         private readonly List<Node> closedList = new List<Node>();
 
-        public AStar(int[,] levelMap)
+        readonly Queue<Vector2> path = new Queue<Vector2>();
+        private bool IsPathFound;
+
+        public AStar(int[,] levelMap, int tileSize)
         {
+            this.tileSize = tileSize;
             this.Nodes = new List<Node>();
 
             verticalTileCount = levelMap.GetUpperBound(0) + 1;
             horizontalTileCount = levelMap.GetUpperBound(1) + 1;
 
-            // Create and initialize nodes with their positions (Determining if block passable?)
+            // Create and initialize nodes with their indices (Determining if block passable?)
             for (var i = 0; i < levelMap.Length; i++)
             {
-                this.Nodes.Add(new Node(i));
+                var node = new Node(i) { Position = this.IndexToCenterPosition(i) };
+                this.Nodes.Add(node);
             }
         }
 
@@ -48,12 +58,40 @@ namespace SpaceFighter.Logic.Pathfinding
             }
         }
 
-        // WORK IN PROGRESS
+        public Queue<Vector2> SolvePath(Vector2 startPosition, Vector2 endPosition)
+        {
+            var startNode = this.Nodes.Single(node => node.Index == this.PositionToIndex(startPosition));
+            var endNode = this.Nodes.Single(node => node.Index == this.PositionToIndex(endPosition));
+
+            this.path.Clear();
+            this.IsPathFound = false;
+
+            var result = this.SolvePath(startNode, endNode);
+
+            this.ReconstructPath(result);
+
+            return new Queue<Vector2>(this.path.Reverse());
+        }
+
+        public void ReconstructPath(Node node)
+        {
+            var current = node.Parent;
+
+            while (current != null && !IsPathFound)
+            {
+                this.path.Enqueue(current.Position);
+                this.ReconstructPath(current);
+            }
+
+            IsPathFound = true;
+        }
+
         public Node SolvePath(Node startNode, Node endNode)
         {
             this.openList.Clear();
             this.closedList.Clear();
-            
+
+            startNode.Parent = null;
             this.openList.Add(startNode);
 
             startNode.G = 0;
@@ -65,7 +103,6 @@ namespace SpaceFighter.Logic.Pathfinding
 
                 if (current == endNode)
                 {
-                    // Reconstruct path by traversing parents while != null
                     return current;
                 }
 
@@ -101,22 +138,22 @@ namespace SpaceFighter.Logic.Pathfinding
 
         public List<Node> GetNeighbourNodes(Node current)
         {
-            var nodePositions = new List<int>
+            var nodeIndices = new List<int>
                 {
-                    this.GetNodePositionNW(current.Position),
-                    this.GetNodePositionN(current.Position),
-                    this.GetNodePositionNE(current.Position),
-                    this.GetNodePositionE(current.Position),
-                    this.GetNodePositionSE(current.Position),
-                    this.GetNodePositionS(current.Position),
-                    this.GetNodePositionSW(current.Position),
-                    this.GetNodePositionW(current.Position)
+                    this.GetNodeIndexNW(current.Index),
+                    this.GetNodeIndexN(current.Index),
+                    this.GetNodeIndexNE(current.Index),
+                    this.GetNodeIndexE(current.Index),
+                    this.GetNodeIndexSE(current.Index),
+                    this.GetNodeIndexS(current.Index),
+                    this.GetNodeIndexSW(current.Index),
+                    this.GetNodeIndexW(current.Index)
                 };
 
             // Native List<T>.RemoveAll() not supported on Xbox360
-            nodePositions.RemoveAll2(nodePosition => nodePosition == -1);
+            nodeIndices.RemoveAll2(nodeIndex => nodeIndex == -1);
 
-            var adjacentNodes = this.Nodes.Where(node => nodePositions.Contains(node.Position) && node.Walkable);
+            var adjacentNodes = this.Nodes.Where(node => nodeIndices.Contains(node.Index) && node.Walkable);
 
             return adjacentNodes.ToList();
         }
@@ -140,10 +177,10 @@ namespace SpaceFighter.Logic.Pathfinding
         private int ComputeCostG(Node sourceNode, Node targetNode)
         {
             // Vertical or horizontal -> Cost 10
-            if (sourceNode.Position == targetNode.Position + 1 ||
-                sourceNode.Position == targetNode.Position - 1 ||
-                sourceNode.Position == targetNode.Position + horizontalTileCount ||
-                sourceNode.Position == targetNode.Position - horizontalTileCount)
+            if (sourceNode.Index == targetNode.Index + 1 ||
+                sourceNode.Index == targetNode.Index - 1 ||
+                sourceNode.Index == targetNode.Index + horizontalTileCount ||
+                sourceNode.Index == targetNode.Index - horizontalTileCount)
             {
                 return 10;
             }
@@ -154,94 +191,109 @@ namespace SpaceFighter.Logic.Pathfinding
 
         public int ComputeCostH(Node sourceNode, Node targetNode)
         {
-            var targetX = targetNode.Position % horizontalTileCount;
-            var targetY = targetNode.Position / horizontalTileCount;
+            var targetX = targetNode.Index % horizontalTileCount;
+            var targetY = targetNode.Index / horizontalTileCount;
 
-            var sourceX = sourceNode.Position % horizontalTileCount;
-            var sourceY = sourceNode.Position / horizontalTileCount;
+            var sourceX = sourceNode.Index % horizontalTileCount;
+            var sourceY = sourceNode.Index / horizontalTileCount;
 
             // Manhattan method
             return 10*(Math.Abs(targetX - sourceX) + Math.Abs(targetY - sourceY));
         }
 
-        public int GetNodePositionNW(int position)
+        public int GetNodeIndexNW(int index)
         {
-            if (position - horizontalTileCount - 1 < 0 || position % horizontalTileCount - 1 < 0)
+            if (index - horizontalTileCount - 1 < 0 || index % horizontalTileCount - 1 < 0)
             {
                 return -1;
             }
 
-            return position - horizontalTileCount - 1;
+            return index - horizontalTileCount - 1;
         }
 
-        public int GetNodePositionN(int position)
+        public int GetNodeIndexN(int index)
         {
-            if (position - horizontalTileCount < 0)
+            if (index - horizontalTileCount < 0)
             {
                 return -1;
             }
 
-            return position - horizontalTileCount;
+            return index - horizontalTileCount;
         }
 
-        public int GetNodePositionNE(int position)
+        public int GetNodeIndexNE(int index)
         {
-            if (position % horizontalTileCount == horizontalTileCount - 1 || position - horizontalTileCount + 1 < 0)
+            if (index % horizontalTileCount == horizontalTileCount - 1 || index - horizontalTileCount + 1 < 0)
             {
                 return -1;
             }
 
-            return position - horizontalTileCount + 1;
+            return index - horizontalTileCount + 1;
         }
 
-        public int GetNodePositionE(int position)
+        public int GetNodeIndexE(int index)
         {
-            if ((position + 1) % horizontalTileCount == 0)
+            if ((index + 1) % horizontalTileCount == 0)
             {
                 return -1;
             }
 
-            return position + 1;
+            return index + 1;
         }
 
-        public int GetNodePositionSE(int position)
+        public int GetNodeIndexSE(int index)
         {
-            if ((position + horizontalTileCount + 1) % horizontalTileCount == 0 || position + horizontalTileCount + 1 > horizontalTileCount * verticalTileCount)
+            if ((index + horizontalTileCount + 1) % horizontalTileCount == 0 || index + horizontalTileCount + 1 > horizontalTileCount * verticalTileCount)
             {
                 return -1;
             }
 
-            return position + horizontalTileCount + 1;
+            return index + horizontalTileCount + 1;
         }
 
-        public int GetNodePositionS(int position)
+        public int GetNodeIndexS(int index)
         {
-            if (position + horizontalTileCount > horizontalTileCount * verticalTileCount - 1)
+            if (index + horizontalTileCount > horizontalTileCount * verticalTileCount - 1)
             {
                 return -1;
             }
 
-            return position + horizontalTileCount;
+            return index + horizontalTileCount;
         }
 
-        public int GetNodePositionSW(int position)
+        public int GetNodeIndexSW(int index)
         {
-            if ((position + horizontalTileCount - 1) % horizontalTileCount == horizontalTileCount - 1 || position + horizontalTileCount - 1 > horizontalTileCount * verticalTileCount - 1)
+            if ((index + horizontalTileCount - 1) % horizontalTileCount == horizontalTileCount - 1 || index + horizontalTileCount - 1 > horizontalTileCount * verticalTileCount - 1)
             {
                 return -1;
             }
 
-            return position + horizontalTileCount - 1;
+            return index + horizontalTileCount - 1;
         }
 
-        public int GetNodePositionW(int position)
+        public int GetNodeIndexW(int index)
         {
-            if (position % horizontalTileCount == 0)
+            if (index % horizontalTileCount == 0)
             {
                 return -1;
             }
 
-            return position - 1;
+            return index - 1;
+        }
+
+        private Vector2 IndexToCenterPosition(int index)
+        {
+            return new Vector2(
+                (index % this.horizontalTileCount) * this.tileSize + (this.tileSize / 2),
+                (index / this.horizontalTileCount) * this.tileSize + (this.tileSize / 2));
+        }
+
+        private int PositionToIndex(Vector2 position)
+        {
+            var x = (int)position.X / this.tileSize;
+            var y = (int)position.Y / this.tileSize;
+
+            return x + y * this.horizontalTileCount;
         }
     }
 

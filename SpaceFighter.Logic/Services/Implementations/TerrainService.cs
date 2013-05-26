@@ -8,19 +8,23 @@ namespace SpaceFighter.Logic.Services.Implementations
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Xna.Framework;
+
+    using SpaceFighter.Logic.Pathfinding;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class TerrainService : ITerrainService
     {
-        int tileIndexToNavigate;
-
         private readonly Random random = new Random();
         private List<int> collidableTileIndices;
         private List<int> nonCollidableTileIndices;
+        private int tileIndexToNavigate;
+
+        private readonly AStar pathfinder;
 
         public TerrainService()
         {
-            TileSize = 80;
+            this.TileSize = 80;
+
             this.Map = new[,]
                 {
                     { 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05 },
@@ -34,6 +38,8 @@ namespace SpaceFighter.Logic.Services.Implementations
                     { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x07, 0x08, 0x08, 0x09, 0x00, 0x05 },
                     { 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05 }
                 };
+
+            this.pathfinder = new AStar(this.Map, this.TileSize);
 
             this.VerticalTileCount = this.Map.GetUpperBound(0) + 1;
             this.HorizontalTileCount = this.Map.GetUpperBound(1) + 1;
@@ -65,12 +71,19 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
         }
 
-        public void SetRandomNonCollidableTileIndex()
+        public void SetRandomTargetTile()
         {
             this.tileIndexToNavigate = this.GetNonCollidableTileIndices().ElementAt(this.random.Next(0, this.GetNonCollidableTileIndicesCount() - 1));
         }
 
-        public IEnumerable<int> GetCollidableTileIndices()
+        public Queue<Vector2> GetPathToTargetTile(Vector2 sourcePosition)
+        {
+            return this.pathfinder.SolvePath(
+                sourcePosition, 
+                this.pathfinder.Nodes.First(node => node.Index == this.tileIndexToNavigate).Position);
+        }
+
+        private IEnumerable<int> GetCollidableTileIndices()
         {
             if (this.collidableTileIndices == null)
             {
@@ -91,7 +104,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             return collidableTileIndices;
         }
 
-        public IEnumerable<int> GetNonCollidableTileIndices()
+        private IEnumerable<int> GetNonCollidableTileIndices()
         {
             if (this.nonCollidableTileIndices == null)
             {
@@ -112,21 +125,14 @@ namespace SpaceFighter.Logic.Services.Implementations
             return nonCollidableTileIndices;
         }
 
-        public int GetCollidableTileIndicesCount()
+        private int GetCollidableTileIndicesCount()
         {
             return this.GetCollidableTileIndices().Count();
         }
 
-        public int GetNonCollidableTileIndicesCount()
+        private int GetNonCollidableTileIndicesCount()
         {
             return this.GetNonCollidableTileIndices().Count();
-        }
-
-        public Vector2 GetCenterPositionFromCurrentTile()
-        {
-            return new Vector2(
-                (tileIndexToNavigate % this.HorizontalTileCount) * this.TileSize + (this.TileSize / 2),
-                (tileIndexToNavigate / this.HorizontalTileCount) * this.TileSize + (this.TileSize / 2));
         }
     }
 }

@@ -11,12 +11,12 @@ namespace SpaceFighter.Logic.Pathfinding
     {
         public bool Equals(Node x, Node y)
         {
-            return x.Position == y.Position;
+            return x.Index == y.Index;
         }
 
         public int GetHashCode(Node obj)
         {
-            var hash = obj.Position.GetHashCode();
+            var hash = obj.Index.GetHashCode();
             return hash;
         }
     }

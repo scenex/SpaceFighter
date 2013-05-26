@@ -27,7 +27,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private readonly BehaviourStrategyWander behaviourStrategyWander;
         private readonly BehaviourStrategyPathfinding behaviourStrategyPathfinding;
 
-        private Vector2 targetPosition;       
+        private Vector2 targetPosition;
+
+        private Queue<Vector2> waypoints = new Queue<Vector2>();
 
         public EnemyA(Game game, ITerrainService terrainService, Vector2 startPosition) : base(game, terrainService, startPosition)
         {
@@ -44,6 +46,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.weapon = new WeaponEnemyA(this.Game);
             this.Game.Components.Add(this.weapon);
 
+            this.TerrainService.SetRandomTargetTile();
+            this.waypoints = this.TerrainService.GetPathToTargetTile(this.Position);
+
             base.Initialize();
         }
 
@@ -59,8 +64,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         {
             get
             {
-                // TODO
-                throw new NotImplementedException();
+                return this.waypoints;
             }
         }
 
@@ -70,16 +74,24 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             {
                 this.Position = this.behaviourStrategy.Execute(this.Position, this.targetPosition);
 
-                // End position reached?
+                // Target position reached?
                 if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < 1)
                 {
-                    // Todo: 
-                    // Set destination tile of path in TerrainService.
-                    // Fill Waypoints with data computed from TerrainService (path)
-                    // Track arrival at individual waypoint and dequeue from Waypoints
-                    // When Waypoints empty then set new tile as destination tile and calc path to there and save individual tiles in Waypoints.
-                    // Repeat
-                    this.TerrainService.SetRandomNonCollidableTileIndex();
+                    if (this.waypoints.Count == 0)
+                    {
+                        this.TerrainService.SetRandomTargetTile();
+                        this.waypoints = this.TerrainService.GetPathToTargetTile(this.Position);
+                    }
+                    else
+                    {
+                        this.waypoints.Dequeue();
+
+                        if (this.waypoints.Count == 0)
+                        {
+                            this.TerrainService.SetRandomTargetTile();
+                            this.waypoints = this.TerrainService.GetPathToTargetTile(this.Position);
+                        }
+                    }
                 }
             }
         }
@@ -105,7 +117,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             var patrol = new State<Action<double>>(
                 EnemyState.Patrol,
-                delegate { this.targetPosition = this.TerrainService.GetCenterPositionFromCurrentTile(); }, // Todo: Get position of next waypoint
+                delegate { this.targetPosition = this.waypoints.Peek(); },
                 delegate
                     {
                         //this.behaviourStrategy = this.behaviourStrategyWander;

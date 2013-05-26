@@ -18,14 +18,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         int TileSize { get; }
         int[,] Map { get; }
 
-        void SetRandomNonCollidableTileIndex();
-
-        IEnumerable<int> GetCollidableTileIndices();
-        IEnumerable<int> GetNonCollidableTileIndices();
-
-        int GetCollidableTileIndicesCount();
-        int GetNonCollidableTileIndicesCount();
-
-        Vector2 GetCenterPositionFromCurrentTile();
+        void SetRandomTargetTile();
+        Queue<Vector2> GetPathToTargetTile(Vector2 sourcePosition);
     }
 }

@@ -16,6 +16,8 @@ namespace SpaceFighter.Tests
     public class AStarTests
     {
         private readonly int[,] tileMap;
+        private readonly int tileSize = 80;
+
         private readonly AStar testee;
 
         private readonly Node source = new Node(1);
@@ -34,7 +36,7 @@ namespace SpaceFighter.Tests
                     { 0x00, 0x00, 0x00, 0x00, 0x00 }
                 };
 
-            this.testee = new AStar(this.tileMap);
+            this.testee = new AStar(this.tileMap, this.tileSize);
         }
 
         [Theory,
@@ -63,10 +65,10 @@ namespace SpaceFighter.Tests
         InlineData(22, new[] { 16, 17, 18, 21, 23 }),
         InlineData(23, new[] { 17, 18, 19, 22, 24 }),
         InlineData(24, new[] { 18, 19, 23 })]
-        public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputedReturned(int nodePosition, int[] nodes)
+        public void GetAdjacentNodes_WhenRequested_ThenCorrectlyComputedReturned(int nodeIndex, int[] nodes)
         {
-            var actual = this.testee.GetNeighbourNodes(new Node(nodePosition));
-            actual.Should().OnlyContain(item => nodes.ToList().Contains(item.Position));
+            var actual = this.testee.GetNeighbourNodes(new Node(nodeIndex));
+            actual.Should().OnlyContain(item => nodes.ToList().Contains(item.Index));
         }
 
         [Fact]
@@ -74,7 +76,7 @@ namespace SpaceFighter.Tests
         {
             var node = new Node(2);
             this.testee.SetCurrentNode(node);
-            this.testee.ClosedList.Should().Contain(n => n.Position == node.Position);
+            this.testee.ClosedList.Should().Contain(n => n.Index == node.Index);
         }
 
         [Fact]
@@ -92,7 +94,7 @@ namespace SpaceFighter.Tests
             var nodes = new List<Node> { new Node(2), new Node(2) };
 
             this.testee.SetAdjacentNodes(source, nodes);
-            this.testee.OpenList.Should().ContainSingle(node => node.Position == 2);
+            this.testee.OpenList.Should().ContainSingle(node => node.Index == 2);
         }
 
         [Fact]
