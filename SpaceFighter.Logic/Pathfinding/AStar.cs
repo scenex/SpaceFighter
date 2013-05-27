@@ -34,10 +34,16 @@ namespace SpaceFighter.Logic.Pathfinding
             verticalTileCount = levelMap.GetUpperBound(0) + 1;
             horizontalTileCount = levelMap.GetUpperBound(1) + 1;
 
-            // Create and initialize nodes with their indices (Determining if block passable?)
+            // Create and initialize nodes with their indices
             for (var i = 0; i < levelMap.Length; i++)
             {
                 var node = new Node(i) { Position = this.IndexToCenterPosition(i) };
+                
+                if (levelMap[i / this.horizontalTileCount, i % this.horizontalTileCount] == 0)
+                {
+                    node.Walkable = true;
+                }
+
                 this.Nodes.Add(node);
             }
         }

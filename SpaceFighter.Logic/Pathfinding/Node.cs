@@ -15,8 +15,8 @@ namespace SpaceFighter.Logic.Pathfinding
 
         public int Index { get; private set; }
         public Vector2 Position { get; set; }
-
         public Node Parent { get; set; }
+        public bool Walkable { get; set; }
 
         public int G { get; set; }
         public int H { get; set; }
@@ -26,15 +26,6 @@ namespace SpaceFighter.Logic.Pathfinding
             get
             {
                 return G + H;
-            }
-        }
-
-        public bool Walkable
-        {
-            get
-            {
-                // Todo
-                return true;
             }
         }
 
