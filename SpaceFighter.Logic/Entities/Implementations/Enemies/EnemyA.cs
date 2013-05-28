@@ -29,7 +29,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private Queue<Vector2> waypoints = new Queue<Vector2>();
 
-        public EnemyA(Game game, ITerrainService terrainService, Vector2 startPosition) : base(game, terrainService, startPosition)
+        public EnemyA(Game game, IPathFindingService pathFindingService, Vector2 startPosition) : base(game, pathFindingService, startPosition)
         {
             this.Health = 100;
 
@@ -42,7 +42,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.weapon = new WeaponEnemyA(this.Game);
             this.Game.Components.Add(this.weapon);
 
-            this.waypoints = this.TerrainService.GetPathToRandomTile(this.Position);
+            this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);
 
             base.Initialize();
         }
@@ -70,11 +70,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 this.Position = this.behaviourStrategy.Execute(this.Position, this.targetPosition);
 
                 // Target position reached?
-                if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < TerrainService.TileSize / 2.0)
+                if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < 40) // Todo: Magic number -> TileSize: 80 / 2 = 40
                 {
                     if (this.waypoints.Count == 0)
                     {
-                        this.waypoints = this.TerrainService.GetPathToRandomTile(this.Position);
+                        this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);
                     }
                     else
                     {
@@ -82,7 +82,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
                         if (this.waypoints.Count == 0)
                         {
-                            this.waypoints = this.TerrainService.GetPathToRandomTile(this.Position);
+                            this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);
                         }
                     }
                 }

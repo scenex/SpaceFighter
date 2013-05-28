@@ -18,17 +18,17 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private SpriteBatch spriteBatch;
 
         private readonly ICameraService cameraService;
-        private readonly ITerrainService terrainService;
+        private readonly IPathFindingService pathFindingService;
 
         protected StateMachine<Action<double>> stateMachine;
         protected SpriteManager spriteManager;
 
-        protected EnemyBase(Game game, ITerrainService terrainService, Vector2 startPosition) : base(game)
+        protected EnemyBase(Game game, IPathFindingService pathFindingService, Vector2 startPosition) : base(game)
         {
             this.Position = startPosition;           
             this.Game.Components.Add(this);
-            
-            this.terrainService = terrainService;
+
+            this.pathFindingService = pathFindingService;
             this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
         }
 
@@ -50,11 +50,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public bool IsHealthSubtracted { get; protected set; }
         public bool IsHealthAdded { get; protected set; }
 
-        protected ITerrainService TerrainService
+        protected IPathFindingService PathFindingService
         {
             get
             {
-                return this.terrainService;
+                return this.pathFindingService;
             }
         }
 

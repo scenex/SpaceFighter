@@ -39,7 +39,13 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.terrainService = (ITerrainService)this.Game.Services.GetService(typeof(ITerrainService));
 
-            EnemyFactory.Create<EnemyA>(this.Game, this.terrainService, new Vector2(400, 400));
+            IPathFindingService pathFindingService = new PathFindingService(
+                this.terrainService.Map,
+                this.terrainService.TileSize,
+                this.terrainService.HorizontalTileCount,
+                this.terrainService.VerticalTileCount);
+
+            EnemyFactory.Create<EnemyA>(this.Game, pathFindingService, new Vector2(400, 400));
             base.Initialize();
         }
 

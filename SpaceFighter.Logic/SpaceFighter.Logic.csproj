@@ -97,6 +97,8 @@
     <Compile Include="Pathfinding\AStar.cs" />
     <Compile Include="Pathfinding\Node.cs" />
     <Compile Include="Pathfinding\NodeComparer.cs" />
+    <Compile Include="Services\Implementations\PathFindingService.cs" />
+    <Compile Include="Services\Interfaces\IPathFindingService.cs" />
     <Compile Include="XboxExtensions.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyFlee.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyWander.cs" />
