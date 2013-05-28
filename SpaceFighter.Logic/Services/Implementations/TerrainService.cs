@@ -78,9 +78,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public Queue<Vector2> GetPathToTargetTile(Vector2 sourcePosition)
         {
-            return this.pathfinder.SolvePath(
-                sourcePosition, 
-                this.pathfinder.Nodes.First(node => node.Index == this.tileIndexToNavigate).Position);
+            return this.pathfinder.SolvePath(sourcePosition, this.tileIndexToNavigate);
         }
 
         private IEnumerable<int> GetCollidableTileIndices()
