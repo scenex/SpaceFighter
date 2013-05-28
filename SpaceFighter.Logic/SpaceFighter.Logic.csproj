@@ -99,7 +99,6 @@
     <Compile Include="Pathfinding\NodeComparer.cs" />
     <Compile Include="XboxExtensions.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyFlee.cs" />
-    <Compile Include="Behaviours\Implementations\BehaviourStrategyPathfinding.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyWander.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA1.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA2.cs" />

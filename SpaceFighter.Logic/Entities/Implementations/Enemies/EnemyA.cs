@@ -24,8 +24,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private IBehaviourStrategy behaviourStrategy;
         private readonly BehaviourStrategySeek behaviourStrategySeek;
         private readonly BehaviourStrategyFlee behaviourStrategyFlee;
-        private readonly BehaviourStrategyWander behaviourStrategyWander;
-        private readonly BehaviourStrategyPathfinding behaviourStrategyPathfinding;
 
         private Vector2 targetPosition;
 
@@ -37,8 +35,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             this.behaviourStrategySeek = new BehaviourStrategySeek();
             this.behaviourStrategyFlee = new BehaviourStrategyFlee();
-            this.behaviourStrategyWander = new BehaviourStrategyWander();
-            this.behaviourStrategyPathfinding = new BehaviourStrategyPathfinding();
         }
 
         public override void Initialize()
@@ -75,7 +71,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 this.Position = this.behaviourStrategy.Execute(this.Position, this.targetPosition);
 
                 // Target position reached?
-                if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < 1)
+                if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < TerrainService.TileSize / 2.0)
                 {
                     if (this.waypoints.Count == 0)
                     {
@@ -121,7 +117,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 delegate
                     {
                         //this.behaviourStrategy = this.behaviourStrategyWander;
-                        this.behaviourStrategy = this.behaviourStrategyPathfinding;
+                        //this.behaviourStrategy = this.behaviourStrategyPathfinding;
+                        this.behaviourStrategy = this.behaviourStrategySeek;
                         this.shootingStrategy = null;
 
                         this.IsHealthAdded = false;
@@ -178,16 +175,16 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             alive.AddTransition(patrol, () => true);
 
-            patrol.AddTransition(attack, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() < 250);
+            patrol.AddTransition(attack, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() < 200);
             patrol.AddTransition(retreat, () => this.IsHealthSubtracted);
             patrol.AddTransition(dying, () => this.Health <= 0);
 
             attack.AddTransition(retreat, () => this.IsHealthSubtracted);
-            attack.AddTransition(patrol, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() > 250);
+            attack.AddTransition(patrol, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() > 200);
             attack.AddTransition(dying, () => this.Health <= 0);
 
             //retreat.AddTransition(attack, () => ...); <- Should that be even possible?
-            retreat.AddTransition(patrol, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() > 250);
+            retreat.AddTransition(patrol, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() > 200);
             retreat.AddTransition(dying, () => this.Health <= 0);
 
             dying.AddTransition(dead, () => this.spriteManager.IsAnimationDone(this.stateMachine.CurrentState.Name));
