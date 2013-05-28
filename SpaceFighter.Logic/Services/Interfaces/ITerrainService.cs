@@ -18,7 +18,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
         int TileSize { get; }
         int[,] Map { get; }
 
-        void SetRandomTargetTile();
-        Queue<Vector2> GetPathToTargetTile(Vector2 sourcePosition);
+        Queue<Vector2> GetPathToRandomTile(Vector2 sourcePosition);
     }
 }

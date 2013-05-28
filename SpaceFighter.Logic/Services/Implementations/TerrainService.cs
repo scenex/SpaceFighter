@@ -71,14 +71,15 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
         }
 
-        public void SetRandomTargetTile()
+        public Queue<Vector2> GetPathToRandomTile(Vector2 sourcePosition)
         {
-            this.tileIndexToNavigate = this.GetNonCollidableTileIndices().ElementAt(this.random.Next(0, this.GetNonCollidableTileIndicesCount() - 1));
+            this.SetRandomTile();
+            return this.pathfinder.SolvePath(sourcePosition, this.tileIndexToNavigate);
         }
 
-        public Queue<Vector2> GetPathToTargetTile(Vector2 sourcePosition)
+        private void SetRandomTile()
         {
-            return this.pathfinder.SolvePath(sourcePosition, this.tileIndexToNavigate);
+            this.tileIndexToNavigate = this.GetNonCollidableTileIndices().ElementAt(this.random.Next(0, this.GetNonCollidableTileIndicesCount() - 1));
         }
 
         private IEnumerable<int> GetCollidableTileIndices()

@@ -42,8 +42,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.weapon = new WeaponEnemyA(this.Game);
             this.Game.Components.Add(this.weapon);
 
-            this.TerrainService.SetRandomTargetTile();
-            this.waypoints = this.TerrainService.GetPathToTargetTile(this.Position);
+            this.waypoints = this.TerrainService.GetPathToRandomTile(this.Position);
 
             base.Initialize();
         }
@@ -75,8 +74,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 {
                     if (this.waypoints.Count == 0)
                     {
-                        this.TerrainService.SetRandomTargetTile();
-                        this.waypoints = this.TerrainService.GetPathToTargetTile(this.Position);
+                        this.waypoints = this.TerrainService.GetPathToRandomTile(this.Position);
                     }
                     else
                     {
@@ -84,8 +82,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
                         if (this.waypoints.Count == 0)
                         {
-                            this.TerrainService.SetRandomTargetTile();
-                            this.waypoints = this.TerrainService.GetPathToTargetTile(this.Position);
+                            this.waypoints = this.TerrainService.GetPathToRandomTile(this.Position);
                         }
                     }
                 }
@@ -116,8 +113,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 delegate { this.targetPosition = this.waypoints.Peek(); },
                 delegate
                     {
-                        //this.behaviourStrategy = this.behaviourStrategyWander;
-                        //this.behaviourStrategy = this.behaviourStrategyPathfinding;
                         this.behaviourStrategy = this.behaviourStrategySeek;
                         this.shootingStrategy = null;
 
@@ -132,7 +127,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 delegate
                     {
                         this.behaviourStrategy = this.behaviourStrategySeek;
-                        //this.behaviourStrategy = this.behaviourStrategyPathfinding;
                         this.shootingStrategy = new WeaponStrategyEnemyA();
 
                         this.IsHealthAdded = false;
@@ -146,7 +140,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 delegate
                     {
                         this.behaviourStrategy = this.behaviourStrategyFlee;
-                        //this.behaviourStrategy = this.behaviourStrategyPathfinding;
                         this.shootingStrategy = null;
 
                         this.IsHealthAdded = false;
