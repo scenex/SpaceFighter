@@ -50,5 +50,54 @@ namespace SpaceFighter.Logic.Pathfinding
         {
             return !(a == b);
         }
+
+        public bool Equals(Node other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return other.Index == this.Index && other.Position.Equals(this.Position) && Equals(other.Parent, this.Parent) && other.Walkable.Equals(this.Walkable) && other.G == this.G && other.H == this.H;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != typeof(Node))
+            {
+                return false;
+            }
+
+            return Equals((Node)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = this.Index;
+                result = (result * 397) ^ this.Position.GetHashCode();
+                result = (result * 397) ^ (this.Parent != null ? this.Parent.GetHashCode() : 0);
+                result = (result * 397) ^ this.Walkable.GetHashCode();
+                result = (result * 397) ^ this.G;
+                result = (result * 397) ^ this.H;
+                return result;
+            }
+        }
     }
 }
