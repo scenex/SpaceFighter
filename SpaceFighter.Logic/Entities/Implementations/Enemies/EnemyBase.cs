@@ -15,6 +15,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
     public abstract class EnemyBase : DrawableGameComponent, IEnemy
     {
+        private Texture2D pixel;
         private SpriteBatch spriteBatch;
 
         private readonly ICameraService cameraService;
@@ -113,11 +114,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         /// </summary>
         protected override void LoadContent()
         {
+            this.pixel = this.Game.Content.Load<Texture2D>("Sprites/Debugging/Pixel");
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
             this.LoadSprites();
             this.UpdateSpriteColorData();
-
             base.LoadContent();
         }
 
@@ -146,6 +147,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 1.0f, 
                 SpriteEffects.None, 
                 0.0f);
+
+            // For path finding debugging purposes only
+            foreach (var waypoint in Waypoints)
+            {
+                this.spriteBatch.Draw(this.pixel, waypoint, Color.White);
+            }
 
             this.spriteBatch.End();
 
