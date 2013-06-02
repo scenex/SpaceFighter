@@ -17,7 +17,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         private KeyboardState previousKeyboardState;
 
         private GamePadState currentGamePadState;
-        private GamePadState previousGamePadState;
 
         private IPlayerService playerService;
         private IInput input;
@@ -56,6 +55,15 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void SetInputDevice(IInput inputDevice)
         {
             this.input = inputDevice;
+        }
+
+        public bool IsGamePadConnected
+        {
+            get
+            {
+                this.currentGamePadState = this.currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
+                return this.currentGamePadState.IsConnected;
+            }
         }
 
         public void Disable()
@@ -148,8 +156,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 this.playerService.Player.Weapon.UpgradeWeapon();
             }
-
-            this.previousGamePadState = this.currentGamePadState;
         }
     }
 }

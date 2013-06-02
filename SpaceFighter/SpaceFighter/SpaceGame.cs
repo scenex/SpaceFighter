@@ -54,10 +54,17 @@ namespace SpaceFighter
 
             this.RegisterGameServices();
 
-            #if WINDOWS
-                ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputKeyboard());
-            #elif XBOX
+            #if WINDOWS           
+            if(((IInputService)(this.Services.GetService(typeof(IInputService)))).IsGamePadConnected)
+            {
                 ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputGamepad());
+            }
+            else
+            {
+                ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputKeyboard());
+            }            
+            #elif XBOX
+            ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputGamepad());
             #endif
 
             Components.Add(new FramerateCounter(this));

@@ -10,9 +10,11 @@ namespace SpaceFighter.Logic.Services.Interfaces
     public interface IInputService
     {
         void SetInputDevice(IInput inputDevice);
+
+        bool IsGamePadConnected { get; }
         Type InputDeviceType { get; }
 
         void Disable();
-        void Enable();      
+        void Enable();
     }
 }
