@@ -23,7 +23,7 @@ namespace SpaceFighter.Logic.Pathfinding
         private readonly List<Node> openList = new List<Node>();
         private readonly List<Node> closedList = new List<Node>();
 
-        readonly Queue<Vector2> path = new Queue<Vector2>();
+        private Queue<Vector2> path = new Queue<Vector2>();
         private bool IsPathFound;
 
         public AStar(int[,] levelMap, int tileSize)
@@ -130,6 +130,12 @@ namespace SpaceFighter.Logic.Pathfinding
 
         private void ReconstructPath(Node node)
         {
+            if (node == null)
+            {
+                this.path = new Queue<Vector2>();
+                return;
+            }
+
             var current = node.Parent;
 
             while (current != null && !IsPathFound)

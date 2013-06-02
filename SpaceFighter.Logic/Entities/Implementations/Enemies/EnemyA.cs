@@ -74,13 +74,15 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 {
                     if (this.waypoints.Count == 0)
                     {
-                        this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);
+                        while (this.waypoints.Count == 0)
+                        {
+                            this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);
+                        }
                     }
                     else
                     {
                         this.waypoints.Dequeue();
-
-                        if (this.waypoints.Count == 0)
+                        while (this.waypoints.Count == 0)
                         {
                             this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);
                         }
