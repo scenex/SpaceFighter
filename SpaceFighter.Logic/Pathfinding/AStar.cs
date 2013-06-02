@@ -149,17 +149,63 @@ namespace SpaceFighter.Logic.Pathfinding
 
         private IEnumerable<Node> GetNeighbourNodes(Node current)
         {
-            var nodeIndices = new List<int>
-                {
-                    this.GetNodeIndexNW(current.Index),
-                    this.GetNodeIndexN(current.Index),
-                    this.GetNodeIndexNE(current.Index),
-                    this.GetNodeIndexE(current.Index),
-                    this.GetNodeIndexSE(current.Index),
-                    this.GetNodeIndexS(current.Index),
-                    this.GetNodeIndexSW(current.Index),
-                    this.GetNodeIndexW(current.Index)
-                };
+            var nodeIndices = new List<int>();
+
+            //var nodeIndices = new List<int>
+            //    {
+            //        this.GetNodeIndexN(current.Index),
+            //        this.GetNodeIndexNE(current.Index),
+            //        this.GetNodeIndexE(current.Index),
+            //        this.GetNodeIndexSE(current.Index),
+            //        this.GetNodeIndexS(current.Index),                   
+            //        this.GetNodeIndexSW(current.Index),                    
+            //        this.GetNodeIndexW(current.Index),
+            //        this.GetNodeIndexNW(current.Index),
+            //    };
+
+            if (this.GetNodeIndexN(current.Index) != -1)
+            {               
+                nodeIndices.Add(this.GetNodeIndexN(current.Index));
+            }
+            else
+            {
+                nodeIndices.Add(this.GetNodeIndexNW(current.Index));
+                nodeIndices.Add(this.GetNodeIndexN(current.Index));
+                nodeIndices.Add(this.GetNodeIndexNE(current.Index));
+            }
+
+            if (this.GetNodeIndexE(current.Index) != -1)
+            {
+                nodeIndices.Add(this.GetNodeIndexE(current.Index));
+            }
+            else
+            {
+                nodeIndices.Add(this.GetNodeIndexNE(current.Index));
+                nodeIndices.Add(this.GetNodeIndexE(current.Index));
+                nodeIndices.Add(this.GetNodeIndexSE(current.Index));
+            }
+
+            if (this.GetNodeIndexS(current.Index) != -1)
+            {
+                nodeIndices.Add(this.GetNodeIndexS(current.Index));
+            }
+            else
+            {
+                nodeIndices.Add(this.GetNodeIndexSE(current.Index));
+                nodeIndices.Add(this.GetNodeIndexS(current.Index));
+                nodeIndices.Add(this.GetNodeIndexSW(current.Index));
+            }
+
+            if (this.GetNodeIndexW(current.Index) != -1)
+            {
+                nodeIndices.Add(this.GetNodeIndexW(current.Index));
+            }
+            else
+            {
+                nodeIndices.Add(this.GetNodeIndexSW(current.Index));
+                nodeIndices.Add(this.GetNodeIndexW(current.Index));
+                nodeIndices.Add(this.GetNodeIndexNW(current.Index));
+            }
 
             // Native List<T>.RemoveAll() not supported on Xbox360
             nodeIndices.RemoveAll2(nodeIndex => nodeIndex == -1);
