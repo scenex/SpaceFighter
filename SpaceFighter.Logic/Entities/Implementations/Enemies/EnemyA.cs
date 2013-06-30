@@ -189,7 +189,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         protected override void LoadSprites()
         {
-            this.spriteManager = new SpriteManager(EnemyState.Alive, 108, 128);
+            this.spriteManager = new SpriteManager(EnemyState.Alive, 80, 80);
 
             this.spriteManager.AddStillSprite(
                 EnemyState.Alive,

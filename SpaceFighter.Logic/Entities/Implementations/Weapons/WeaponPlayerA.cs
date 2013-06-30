@@ -38,7 +38,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         protected override void LoadContent()
         {
-            this.SpriteManager = new SpriteManager(PlayerState.Respawn, 23, 48);
+            this.SpriteManager = new SpriteManager(PlayerState.Respawn, 14, 30);
             
             this.SpriteManager.AddStillSprite(
                 PlayerState.Alive,
