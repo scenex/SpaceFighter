@@ -25,28 +25,40 @@ namespace SpaceFighter.Logic.Services.Implementations
         private IPlayerService playerService;
         private IEnemyService enemyService;
         private IInputService inputService;
+
+        private readonly IHeadUpDisplayService headUpDisplayService;
+
         private IHeadUpDisplayService headUpDisplay;
         private ITerrainService terrainService;
         private IDebugService debugService;
         private IAudioService audioService;
         private ICameraService cameraService;
 
-        public GameController(Game game) : base(game)
+        public GameController(
+            Game game,
+            ICollisionDetectionService collisionDetectionService,
+            IPlayerService playerService,
+            IEnemyService enemyService,
+            IInputService inputService,
+            IHeadUpDisplayService headUpDisplayService,
+            ITerrainService terrainService,
+            IDebugService debugService,
+            IAudioService audioService,
+            ICameraService cameraService) : base(game)
         {
+            this.collisionDetectionService = collisionDetectionService;
+            this.playerService = playerService;
+            this.enemyService = enemyService;
+            this.inputService = inputService;
+            this.headUpDisplayService = headUpDisplayService;
+            this.terrainService = terrainService;
+            this.debugService = debugService;
+            this.audioService = audioService;
+            this.cameraService = cameraService;
         }
 
         public override void Initialize()
         {
-            this.collisionDetectionService = (ICollisionDetectionService)this.Game.Services.GetService(typeof(ICollisionDetectionService));
-            this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
-            this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
-            this.inputService = (IInputService)this.Game.Services.GetService(typeof(IInputService));
-            this.headUpDisplay = (IHeadUpDisplayService)this.Game.Services.GetService(typeof(IHeadUpDisplayService));
-            this.terrainService = (ITerrainService)this.Game.Services.GetService(typeof(ITerrainService));
-            this.debugService = (IDebugService)this.Game.Services.GetService(typeof(IDebugService));
-            this.audioService = (IAudioService)this.Game.Services.GetService(typeof(IAudioService));
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
-
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
             this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;

@@ -2,12 +2,10 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic.Services.Interfaces
+namespace SpaceFighter.Logic
 {
-    using Microsoft.Xna.Framework;
-
-    public interface IAudioService : IGameComponent
+    // Marker interface for the game instace used for Ninject.
+    public interface ISpaceGame
     {
-        void PlaySound(string cue);
     }
 }

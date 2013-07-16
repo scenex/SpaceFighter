@@ -4,7 +4,9 @@
 
 namespace SpaceFighter.Logic.Services.Interfaces
 {
-    public interface IHeadUpDisplayService
+    using Microsoft.Xna.Framework;
+
+    public interface IHeadUpDisplayService : IGameComponent
     {
         int Health { get; set; }
     }

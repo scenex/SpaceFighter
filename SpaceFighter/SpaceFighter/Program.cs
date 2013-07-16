@@ -4,7 +4,16 @@
 
 namespace SpaceFighter
 {
-#if WINDOWS || XBOX
+    using System;
+
+    using Microsoft.Xna.Framework;
+
+    using Ninject;
+
+    using SpaceFighter.Logic;
+    using SpaceFighter.Logic.Services.Implementations;
+    using SpaceFighter.Logic.Services.Interfaces;
+
     static class Program
     {
         /// <summary>
@@ -12,12 +21,35 @@ namespace SpaceFighter
         /// </summary>
         static void Main(string[] args)
         {
-            using (var game = new SpaceGame())
+            IKernel kernel = new StandardKernel();
+
+            kernel.Bind<ISpaceGame>().To<SpaceGame>();
+
+            //kernel.Bind<GraphicsDeviceManager>().ToSelf();
+
+            kernel.Bind<IServiceProvider>().To<ServiceProviderWrapper>();
+
+            kernel.Bind<IGameController>().To<GameController>();
+            kernel.Bind<IInputService>().To<InputService>();
+            kernel.Bind<ICollisionDetectionService>().To<CollisionDetectionService>();
+            kernel.Bind<IPlayerService>().To<PlayerService>();
+            kernel.Bind<IEnemyService>().To<EnemyService>();
+            kernel.Bind<ITerrainService>().To<TerrainService>();
+            kernel.Bind<ICameraService>().To<CameraService>();
+            kernel.Bind<IHeadUpDisplayService>().To<HeadUpDisplayService>();
+            kernel.Bind<IAudioService>().To<AudioService>();
+            kernel.Bind<IDebugService>().To<DebugService>();
+
+            var spacegame = kernel.Get<ISpaceGame>() as SpaceGame;
+
+            using (spacegame)
             {
-                game.Run();
+                if (spacegame != null)
+                {
+                    spacegame.Run();
+                }
             }
         }
     }
-#endif
 }
 
