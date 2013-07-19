@@ -6,12 +6,9 @@ namespace SpaceFighter.Logic.Services.Interfaces
 {
     using System;
     using System.Collections.Generic;
-
-    using Microsoft.Xna.Framework;
-
     using SpaceFighter.Logic.Entities.Interfaces;
 
-    public interface IPlayerService : IGameComponent
+    public interface IPlayerService
     {
         event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
         event EventHandler<StateChangedEventArgs> TransitionToStateDying;

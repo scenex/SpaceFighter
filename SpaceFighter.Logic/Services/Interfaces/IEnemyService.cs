@@ -5,12 +5,9 @@
 namespace SpaceFighter.Logic.Services.Interfaces
 {
     using System.Collections.Generic;
-
-    using Microsoft.Xna.Framework;
-
     using SpaceFighter.Logic.Entities.Interfaces;
 
-    public interface IEnemyService : IGameComponent
+    public interface IEnemyService
     {
         IEnumerable<IEnemy> Enemies { get; }
         IEnumerable<IShot> Shots { get; } 

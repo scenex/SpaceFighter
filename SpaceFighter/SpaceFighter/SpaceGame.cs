@@ -2,36 +2,21 @@
 // (c) Cataclysm Game Studios 2012
 // -----------------------------------------------------------------------
 
-namespace SpaceFighter.Logic
+namespace SpaceFighter
 {
-
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using SpaceFighter.Logic;
     using SpaceFighter.Logic.Input.Implementation;
+    using SpaceFighter.Logic.Services.Implementations;
     using SpaceFighter.Logic.Services.Interfaces;
 
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class SpaceGame : Game, ISpaceGame
+    public class SpaceGame : Game
     {
-        private GraphicsDeviceManager graphics;
-        private GameServiceContainer gameServiceContainer = new GameServiceContainer();
-
-        private readonly GraphicsDeviceManager graphicsDeviceManager;
-
-        private readonly IGameController gameController;
-        private readonly IInputService inputService;
-        private readonly ICollisionDetectionService collisionDetectionService;
-        private readonly IPlayerService playerService;
-        private readonly IEnemyService enemyService;
-        private readonly ITerrainService terrainService;
-        private readonly ICameraService cameraService;
-        private readonly IHeadUpDisplayService headUpDisplayService;
-        private readonly IAudioService audioService;
-        private readonly IDebugService debugService;
-
         SpriteBatch spriteBatch;
         private Effect shader;
 
@@ -41,33 +26,15 @@ namespace SpaceFighter.Logic
 
         private float elapsed;
 
+        private readonly GraphicsDeviceManager graphics;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SpaceGame"/> class.
         /// </summary>
-        public SpaceGame(
-            //GraphicsDeviceManager graphicsDeviceManager,
-            IGameController gameController,
-            IInputService inputService,
-            ICollisionDetectionService collisionDetectionService,
-            IPlayerService playerService,
-            IEnemyService enemyService,
-            ITerrainService terrainService,
-            ICameraService cameraService,
-            IHeadUpDisplayService headUpDisplayService,
-            IAudioService audioService,
-            IDebugService debugService)
+        public SpaceGame()
         {
-            //this.graphicsDeviceManager = graphicsDeviceManager;
-            this.gameController = gameController;
-            this.inputService = inputService;
-            this.collisionDetectionService = collisionDetectionService;
-            this.playerService = playerService;
-            this.enemyService = enemyService;
-            this.terrainService = terrainService;
-            this.cameraService = cameraService;
-            this.headUpDisplayService = headUpDisplayService;
-            this.audioService = audioService;
-            this.debugService = debugService;
+            this.graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
         }
 
         /// <summary>
@@ -77,49 +44,13 @@ namespace SpaceFighter.Logic
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize()
-        {
-            this.graphics = new GraphicsDeviceManager(this);
-            
-            //this.graphics = graphicsDeviceManager;
-            this.Content.RootDirectory = "Content";
-
-            this.Services.AddService(typeof(IGameController), gameController);
-            Components.Add(gameController);
-
-            this.Services.AddService(typeof(IInputService), inputService);
-            this.Components.Add(inputService);
-
-            this.Services.AddService(typeof(ICollisionDetectionService), collisionDetectionService);
-            this.Components.Add(collisionDetectionService);
-
-            this.Services.AddService(typeof(IPlayerService), playerService);
-            this.Components.Add(playerService);
-
-            this.Services.AddService(typeof(IEnemyService), enemyService);
-            this.Components.Add(enemyService);
-
-            this.Services.AddService(typeof(ITerrainService), terrainService);
-            this.Components.Add(terrainService);
-
-            this.Services.AddService(typeof(ICameraService), cameraService);
-            this.Components.Add(cameraService);
-
-            this.Services.AddService(typeof(IHeadUpDisplayService), headUpDisplayService);
-            this.Components.Add(headUpDisplayService);
-
-            this.Services.AddService(typeof(IAudioService), audioService);
-            this.Components.Add(audioService);
-
-            this.Services.AddService(typeof(IDebugService), debugService);
-            this.Components.Add(debugService);
-
-
+        {   
             this.graphics.PreferredBackBufferWidth = ScreenWidth;
             this.graphics.PreferredBackBufferHeight = ScreenHeight;
             this.IsMouseVisible = true; 
-            
-            this.graphics.ApplyChanges();
+           
             this.renderTarget = new RenderTarget2D(this.GraphicsDevice, ScreenWidth, ScreenHeight);
+            this.graphics.ApplyChanges();
 
             this.RegisterGameServices();
 
@@ -148,7 +79,45 @@ namespace SpaceFighter.Logic
 
         private void RegisterGameServices()
         {
+            var gameController = new GameController(this);
+            this.Services.AddService(typeof(IGameController), gameController);
+            Components.Add(gameController);
 
+            var inputService = new InputService(this);
+            this.Services.AddService(typeof(IInputService), inputService);
+            this.Components.Add(inputService);
+
+            var collisionDetectionService = new CollisionDetectionService(this);
+            this.Services.AddService(typeof(ICollisionDetectionService), collisionDetectionService);
+            this.Components.Add(collisionDetectionService);
+
+            var playerService = new PlayerService(this);
+            this.Services.AddService(typeof(IPlayerService), playerService);
+            this.Components.Add(playerService);
+
+            var enemyService = new EnemyService(this);
+            this.Services.AddService(typeof(IEnemyService), enemyService);
+            this.Components.Add(enemyService);
+
+            var terrainService = new TerrainService();
+            this.Services.AddService(typeof(ITerrainService), terrainService);
+            this.Components.Add(terrainService);
+
+            var cameraService = new CameraService(this);
+            this.Services.AddService(typeof(ICameraService), cameraService);
+            this.Components.Add(cameraService);
+
+            var headUpDisplayService = new HeadUpDisplayService(this);
+            this.Services.AddService(typeof(IHeadUpDisplayService), headUpDisplayService);
+            this.Components.Add(headUpDisplayService);
+
+            var audioService = new AudioService(this);
+            this.Services.AddService(typeof(IAudioService), audioService);
+            this.Components.Add(audioService);
+
+            var debugService = new DebugService(this);
+            this.Services.AddService(typeof(IDebugService), debugService);
+            this.Components.Add(debugService);
         }
 
         protected override void Update(GameTime gameTime)

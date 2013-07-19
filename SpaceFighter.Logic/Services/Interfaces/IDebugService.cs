@@ -6,7 +6,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
 {
     using Microsoft.Xna.Framework;
 
-    public interface IDebugService : IGameComponent
+    public interface IDebugService
     {
         void DrawRectangle(Rectangle rect);
     }

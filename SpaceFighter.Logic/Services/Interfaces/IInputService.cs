@@ -5,12 +5,9 @@
 namespace SpaceFighter.Logic.Services.Interfaces
 {
     using System;
-
-    using Microsoft.Xna.Framework;
-
     using SpaceFighter.Logic.Input.Interfaces;
 
-    public interface IInputService : IGameComponent
+    public interface IInputService
     {
         void SetInputDevice(IInput inputDevice);
 

@@ -13,7 +13,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>Reach</XnaProfile>
+    <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>2817c5d9-53ab-4d12-85f0-dbb7f077e463</XnaCrossPlatformGroupID>
     <XnaOutputType>Library</XnaOutputType>
   </PropertyGroup>
@@ -73,9 +73,6 @@
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Ninject">
-      <HintPath>..\Libs\Ninject\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -97,14 +94,11 @@
   <ItemGroup>
     <Compile Include="Behaviours\Implementations\BehaviourStrategy.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyArrive.cs" />
-    <Compile Include="ISpaceGame.cs" />
     <Compile Include="Pathfinding\AStar.cs" />
     <Compile Include="Pathfinding\Node.cs" />
     <Compile Include="Pathfinding\NodeComparer.cs" />
-    <Compile Include="ServiceProviderWrapper.cs" />
     <Compile Include="Services\Implementations\PathFindingService.cs" />
     <Compile Include="Services\Interfaces\IPathFindingService.cs" />
-    <Compile Include="SpaceGame.cs" />
     <Compile Include="XboxExtensions.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyFlee.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyWander.cs" />

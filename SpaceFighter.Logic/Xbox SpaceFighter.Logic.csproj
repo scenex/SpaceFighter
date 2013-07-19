@@ -68,14 +68,12 @@
     <Compile Include="Input\Implementation\InputGamepad.cs" />
     <Compile Include="Input\Implementation\InputKeyboard.cs" />
     <Compile Include="Input\Interfaces\IInput.cs" />
-    <Compile Include="ISpaceGame.cs" />
     <Compile Include="Pathfinding\AStar.cs" />
     <Compile Include="Pathfinding\Node.cs" />
     <Compile Include="Pathfinding\NodeComparer.cs" />
     <Compile Include="PlayerHitEventArgs.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="PrimitiveBatch.cs" />
-    <Compile Include="ServiceProviderWrapper.cs" />
     <Compile Include="Services\Implementations\AudioService.cs" />
     <Compile Include="Services\Implementations\CameraService.cs" />
     <Compile Include="Services\Implementations\CollisionDetectionService.cs" />
@@ -104,7 +102,6 @@
     <Compile Include="Entities\Implementations\Weapons\Weapon.cs" />
     <Compile Include="Services\Interfaces\ITerrainService.cs" />
     <Compile Include="Shader.cs" />
-    <Compile Include="SpaceGame.cs" />
     <Compile Include="SpriteManager.cs" />
     <Compile Include="StateChangedEventArgs.cs" />
     <Compile Include="StateMachine\State.cs" />

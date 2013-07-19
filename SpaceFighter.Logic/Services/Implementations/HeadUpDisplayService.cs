@@ -10,23 +10,15 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class HeadUpDisplayService : DrawableGameComponent, IHeadUpDisplayService
     {
-        private readonly Game game;
-
-        private PrimitiveBatch primitiveBatch;
+        private readonly PrimitiveBatch primitiveBatch;
 
         public HeadUpDisplayService(Game game) : base(game)
         {
-            this.game = game;
             this.Health = 100;
+            this.primitiveBatch = new PrimitiveBatch(game.GraphicsDevice);
         }
 
         public int Health { get; set; }
-
-        public override void Initialize()
-        {   
-            base.Initialize();
-            this.primitiveBatch = new PrimitiveBatch(game.GraphicsDevice);
-        }
 
         public override void Draw(GameTime gameTime)
         {
