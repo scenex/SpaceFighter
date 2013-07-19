@@ -4,7 +4,9 @@
 
 namespace SpaceFighter.Logic.Services.Interfaces
 {
-    public interface IGameController
+    using Microsoft.Xna.Framework;
+
+    public interface IGameController : IGameComponent
     {
     }
 }

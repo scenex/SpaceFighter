@@ -17,15 +17,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         private Rectangle rectangle;
         private Texture2D texture;
 
-        public DebugService(Game game) : base(game)
+        public DebugService(Game game, ICameraService cameraService) : base(game)
         {
+            this.cameraService = cameraService;
             this.rectangle = new Rectangle();
-        }
-
-        public override void Initialize()
-        {
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
-            base.Initialize();
         }
 
         protected override void  LoadContent()

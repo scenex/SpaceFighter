@@ -16,8 +16,12 @@ namespace SpaceFighter.Logic.Services.Implementations
         private PlayerA player;
         private IAudioService audioService;
 
-        public PlayerService(Game game) : base(game)
+        private readonly IPlayerFactory playerFactory;
+
+        public PlayerService(Game game, IAudioService audioService, IPlayerFactory playerFactory) : base(game)
         {
+            this.audioService = audioService;
+            this.playerFactory = playerFactory;
         }
 
         public event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
@@ -44,13 +48,10 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.audioService = (IAudioService)this.Game.Services.GetService((typeof(IAudioService)));
-
-            this.player = new PlayerA
-                (this.Game, 
+            this.player = this.playerFactory.Create(
                 new Vector2(
                     (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) + 40, 
-                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) + 300)); // Todo: Eliminate magic numbers
+                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) + 300)); // Todo: Eliminate magic numbers)
 
             this.Game.Components.Add(this.player);
 

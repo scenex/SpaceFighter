@@ -22,8 +22,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         private double elapsedShotInterval;
         
-        public WeaponPlayerA(Game game) : base(game)
+        public WeaponPlayerA(Game game, ICameraService cameraService) : base(game)
         {
+            this.cameraService = cameraService;
+
             this.weaponStrategy = new WeaponStrategyA1();
             this.weaponStrategyA1 = new WeaponStrategyA1();
             this.weaponStrategyA2 = new WeaponStrategyA2();
@@ -32,7 +34,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         public override void Initialize()
         {
             this.Rotation = -MathHelper.PiOver2;
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
             base.Initialize();
         }
 

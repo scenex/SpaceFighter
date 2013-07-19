@@ -6,7 +6,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
 {
     using Microsoft.Xna.Framework;
 
-    public interface ICameraService
+    public interface ICameraService : IGameComponent
     {
         Vector2 Position { get; set; }
         float Zoom { get; set; }

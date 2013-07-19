@@ -22,8 +22,15 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private Rectangle levelBoundsRectangle;
 
-        public CollisionDetectionService(Game game) : base(game)
+        public CollisionDetectionService(
+            Game game,
+            IPlayerService playerService,
+            IEnemyService enemyService,
+            ITerrainService terrainService) : base(game)
         {
+            this.playerService = playerService;
+            this.enemyService = enemyService;
+            this.terrainService = terrainService;
         }
 
         public event EventHandler<EventArgs> PlayerEnemyHit;
@@ -47,10 +54,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         /// </summary>
         public override void Initialize()
         {
-            this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
-            this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
-            this.terrainService = (ITerrainService)this.Game.Services.GetService(typeof(ITerrainService));
-
             this.levelBoundsRectangle = new Rectangle(0, 0, this.terrainService.LevelWidth, this.terrainService.LevelHeight);
 
             this.isCollisionDetectionActive = true;

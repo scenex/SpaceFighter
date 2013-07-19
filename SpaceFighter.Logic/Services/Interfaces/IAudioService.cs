@@ -4,7 +4,9 @@
 
 namespace SpaceFighter.Logic.Services.Interfaces
 {
-    public interface IAudioService
+    using Microsoft.Xna.Framework;
+
+    public interface IAudioService : IGameComponent
     {
         void PlaySound(string cue);
     }

@@ -17,6 +17,18 @@ namespace SpaceFighter
     /// </summary>
     public class SpaceGame : Game
     {
+        IPlayerFactory playerFactory;
+        ITerrainService terrainService;
+        IHeadUpDisplayService headUpDisplayService;
+        IAudioService audioService;
+        IPlayerService playerService;
+        IInputService inputService;
+        IEnemyService enemyService;
+        ICollisionDetectionService collisionDetectionService;
+        ICameraService cameraService;
+        IDebugService debugService;
+        IGameController gameController;
+
         SpriteBatch spriteBatch;
         private Effect shader;
 
@@ -52,19 +64,19 @@ namespace SpaceFighter
             this.renderTarget = new RenderTarget2D(this.GraphicsDevice, ScreenWidth, ScreenHeight);
             this.graphics.ApplyChanges();
 
-            this.RegisterGameServices();
+            this.ComposeServices();
 
             #if WINDOWS           
-            if(((IInputService)(this.Services.GetService(typeof(IInputService)))).IsGamePadConnected)
+            if(this.inputService.IsGamePadConnected)
             {
-                ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputGamepad());
+                this.inputService.SetInputDevice(new InputGamepad());
             }
             else
             {
-                ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputKeyboard());
+                this.inputService.SetInputDevice(new InputKeyboard());
             }            
             #elif XBOX
-            ((IInputService)(this.Services.GetService(typeof(IInputService)))).SetInputDevice(new InputGamepad());
+                this.inputService.SetInputDevice(new InputGamepad());
             #endif
 
             Components.Add(new FramerateCounter(this));
@@ -77,47 +89,45 @@ namespace SpaceFighter
             this.shader = this.Content.Load<Effect>("Shaders/Circle");
         }
 
-        private void RegisterGameServices()
-        {
-            var gameController = new GameController(this);
-            this.Services.AddService(typeof(IGameController), gameController);
-            Components.Add(gameController);
+        private void ComposeServices()
+        {            
+            //var translation = new Vector3(
+            //    (this.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - (this.playerService.Player.Width / 2) + 62,
+            //    (this.GraphicsDevice.PresentationParameters.BackBufferHeight / 2)- (this.playerService.Player.Height / 2) + 32, 0);
 
-            var inputService = new InputService(this);
-            this.Services.AddService(typeof(IInputService), inputService);
-            this.Components.Add(inputService);
-
-            var collisionDetectionService = new CollisionDetectionService(this);
-            this.Services.AddService(typeof(ICollisionDetectionService), collisionDetectionService);
-            this.Components.Add(collisionDetectionService);
-
-            var playerService = new PlayerService(this);
-            this.Services.AddService(typeof(IPlayerService), playerService);
-            this.Components.Add(playerService);
-
-            var enemyService = new EnemyService(this);
-            this.Services.AddService(typeof(IEnemyService), enemyService);
-            this.Components.Add(enemyService);
-
-            var terrainService = new TerrainService();
-            this.Services.AddService(typeof(ITerrainService), terrainService);
-            this.Components.Add(terrainService);
-
-            var cameraService = new CameraService(this);
-            this.Services.AddService(typeof(ICameraService), cameraService);
+            var translation = new Vector3(
+                (this.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - (80 / 2) + 62,
+                (this.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) - (80 / 2) + 32, 0); // Todo: Find solution for magic constants
+            cameraService = new CameraService(this, translation);
             this.Components.Add(cameraService);
 
-            var headUpDisplayService = new HeadUpDisplayService(this);
-            this.Services.AddService(typeof(IHeadUpDisplayService), headUpDisplayService);
+            terrainService = new TerrainService();
+            this.Components.Add(terrainService);
+            
+            headUpDisplayService = new HeadUpDisplayService(this);
             this.Components.Add(headUpDisplayService);
 
-            var audioService = new AudioService(this);
-            this.Services.AddService(typeof(IAudioService), audioService);
+            audioService = new AudioService(this);
             this.Components.Add(audioService);
+          
+            playerFactory = new PlayerFactory(this, this.cameraService);
+            playerService = new PlayerService(this, audioService, playerFactory);
+            this.Components.Add(playerService);
 
-            var debugService = new DebugService(this);
-            this.Services.AddService(typeof(IDebugService), debugService);
+            inputService = new InputService(this, playerService);
+            this.Components.Add(inputService);
+
+            enemyService = new EnemyService(this, cameraService, terrainService);
+            this.Components.Add(enemyService);
+            
+            collisionDetectionService = new CollisionDetectionService(this, playerService, enemyService, terrainService);
+            this.Components.Add(collisionDetectionService);
+
+            debugService = new DebugService(this, cameraService);
             this.Components.Add(debugService);
+
+            gameController = new GameController(this, collisionDetectionService, playerService, enemyService, inputService, headUpDisplayService, terrainService, debugService, audioService, cameraService);
+            Components.Add(gameController);
         }
 
         protected override void Update(GameTime gameTime)

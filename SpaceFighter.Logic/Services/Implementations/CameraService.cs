@@ -9,15 +9,16 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class CameraService : GameComponent, ICameraService
     {
+        private readonly Vector3 translation;
+
         protected float zoom; 
         public Matrix transform; 
         public Vector2 position;
         protected float rotation;
 
-        private IPlayerService playerService;
-
-        public CameraService(Game game) : base(game)
+        public CameraService(Game game, Vector3 translation) : base(game)
         {
+            this.translation = translation;
             this.zoom = 1.0f;
             this.rotation = 0.0f;
             this.position = Vector2.Zero;
@@ -48,7 +49,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
             base.Initialize();
         }
 
@@ -58,10 +58,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                         new Vector3(-this.position.X, -this.position.Y, 0)) *
                             Matrix.CreateRotationZ(Rotation) *
                             Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
-                            Matrix.CreateTranslation(new Vector3(
-                                (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - (this.playerService.Player.Width / 2) + 62, // Todo: Remove magic numbers
-                                (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) - (this.playerService.Player.Height / 2) + 32, 
-                                0)); 
+                            Matrix.CreateTranslation(translation); 
         }
     }
 }

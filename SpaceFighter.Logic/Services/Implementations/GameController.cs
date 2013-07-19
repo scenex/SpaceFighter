@@ -18,6 +18,8 @@ namespace SpaceFighter.Logic.Services.Implementations
     /// </summary>
     public class GameController : DrawableGameComponent, IGameController
     {
+        public IAudioService AudioService { get; set; }
+
         private SpriteBatch spriteBatch;
         private readonly List<Texture2D> spriteList = new List<Texture2D>();
 
@@ -25,28 +27,39 @@ namespace SpaceFighter.Logic.Services.Implementations
         private IPlayerService playerService;
         private IEnemyService enemyService;
         private IInputService inputService;
-        private IHeadUpDisplayService headUpDisplay;
+
+        private readonly IHeadUpDisplayService headUpDisplayService;
+
         private ITerrainService terrainService;
         private IDebugService debugService;
         private IAudioService audioService;
         private ICameraService cameraService;
 
-        public GameController(Game game) : base(game)
+        public GameController(
+            Game game,
+            ICollisionDetectionService collisionDetectionService,
+            IPlayerService playerService,
+            IEnemyService enemyService,
+            IInputService inputService,
+            IHeadUpDisplayService headUpDisplayService,
+            ITerrainService terrainService,
+            IDebugService debugService,
+            IAudioService audioService,
+            ICameraService cameraService) : base(game)
         {
+            this.AudioService = audioService;
+            this.collisionDetectionService = collisionDetectionService;
+            this.playerService = playerService;
+            this.enemyService = enemyService;
+            this.inputService = inputService;
+            this.headUpDisplayService = headUpDisplayService;
+            this.terrainService = terrainService;
+            this.debugService = debugService;
+            this.cameraService = cameraService;
         }
 
         public override void Initialize()
         {
-            this.collisionDetectionService = (ICollisionDetectionService)this.Game.Services.GetService(typeof(ICollisionDetectionService));
-            this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
-            this.enemyService = (IEnemyService)this.Game.Services.GetService(typeof(IEnemyService));
-            this.inputService = (IInputService)this.Game.Services.GetService(typeof(IInputService));
-            this.headUpDisplay = (IHeadUpDisplayService)this.Game.Services.GetService(typeof(IHeadUpDisplayService));
-            this.terrainService = (ITerrainService)this.Game.Services.GetService(typeof(ITerrainService));
-            this.debugService = (IDebugService)this.Game.Services.GetService(typeof(IDebugService));
-            this.audioService = (IAudioService)this.Game.Services.GetService(typeof(IAudioService));
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
-
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
             this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
@@ -141,7 +154,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void OnHealthChanged(object sender, HealthChangedEventArgs healthChangedEventArgs)
         {
-            this.headUpDisplay.Health = healthChangedEventArgs.NewHealth;
+            this.headUpDisplayService.Health = healthChangedEventArgs.NewHealth;
         }
 
         private void OnEnemyHit(object sender, EnemyHitEventArgs e)
@@ -154,19 +167,19 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.enemyService.RemoveShot(e.Shot);
             this.playerService.ReportPlayerHit(e.Shot);
-            this.headUpDisplay.Health = this.playerService.Player.Health;
+            this.headUpDisplayService.Health = this.playerService.Player.Health;
         }
 
         private void OnPlayerEnemyHit(object sender, EventArgs e)
         {
             this.playerService.ReportPlayerHit(100);
-            this.headUpDisplay.Health = this.playerService.Player.Health;
+            this.headUpDisplayService.Health = this.playerService.Player.Health;
         }
 
         private void OnBoundaryHit(object sender, EventArgs e)
         {
             this.playerService.ReportPlayerHit(100);
-            this.headUpDisplay.Health = this.playerService.Player.Health;
+            this.headUpDisplayService.Health = this.playerService.Player.Health;
         }
     }
 }

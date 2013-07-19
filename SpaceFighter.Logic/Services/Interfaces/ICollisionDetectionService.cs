@@ -6,7 +6,9 @@ namespace SpaceFighter.Logic.Services.Interfaces
 {
     using System;
 
-    public interface ICollisionDetectionService
+    using Microsoft.Xna.Framework;
+
+    public interface ICollisionDetectionService : IGameComponent
     {
         event EventHandler<EventArgs> PlayerEnemyHit;
         event EventHandler<EnemyHitEventArgs> EnemyHit;

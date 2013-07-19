@@ -11,9 +11,9 @@ namespace SpaceFighter.Logic
 
     public static class EnemyFactory
     {
-        public static T Create<T>(Game game, IPathFindingService pathFindingService, Vector2 startPosition) where T : EnemyBase
+        public static T Create<T>(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition) where T : EnemyBase
         {
-            return (T)Activator.CreateInstance(typeof(T), game, pathFindingService, startPosition);
+            return (T)Activator.CreateInstance(typeof(T), game, cameraService, pathFindingService, startPosition);
         }
     }
 }

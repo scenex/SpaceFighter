@@ -18,6 +18,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
     public class EnemyA : EnemyBase
     {
+        private readonly ICameraService cameraService;
+
+        private readonly IPathFindingService pathFindingService;
+
         private Weapon weapon;
         private IWeaponStrategy shootingStrategy;
 
@@ -29,17 +33,20 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private Queue<Vector2> waypoints = new Queue<Vector2>();
 
-        public EnemyA(Game game, IPathFindingService pathFindingService, Vector2 startPosition) : base(game, pathFindingService, startPosition)
+        public EnemyA(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition) : base(game, cameraService, pathFindingService, startPosition)
         {
             this.Health = 100;
 
+            this.cameraService = cameraService;
+            this.pathFindingService = pathFindingService;
+            
             this.behaviourStrategySeek = new BehaviourStrategySeek();
             this.behaviourStrategyFlee = new BehaviourStrategyFlee();
         }
 
         public override void Initialize()
         {
-            this.weapon = new WeaponEnemyA(this.Game);
+            this.weapon = new WeaponEnemyA(this.Game, this.cameraService); // Todo: Factory
             this.Game.Components.Add(this.weapon);
 
             this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);

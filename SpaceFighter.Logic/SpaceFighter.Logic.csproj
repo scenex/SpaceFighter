@@ -94,9 +94,11 @@
   <ItemGroup>
     <Compile Include="Behaviours\Implementations\BehaviourStrategy.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyArrive.cs" />
+    <Compile Include="IPlayerFactory.cs" />
     <Compile Include="Pathfinding\AStar.cs" />
     <Compile Include="Pathfinding\Node.cs" />
     <Compile Include="Pathfinding\NodeComparer.cs" />
+    <Compile Include="PlayerFactory.cs" />
     <Compile Include="Services\Implementations\PathFindingService.cs" />
     <Compile Include="Services\Interfaces\IPathFindingService.cs" />
     <Compile Include="XboxExtensions.cs" />

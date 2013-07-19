@@ -68,9 +68,11 @@
     <Compile Include="Input\Implementation\InputGamepad.cs" />
     <Compile Include="Input\Implementation\InputKeyboard.cs" />
     <Compile Include="Input\Interfaces\IInput.cs" />
+    <Compile Include="IPlayerFactory.cs" />
     <Compile Include="Pathfinding\AStar.cs" />
     <Compile Include="Pathfinding\Node.cs" />
     <Compile Include="Pathfinding\NodeComparer.cs" />
+    <Compile Include="PlayerFactory.cs" />
     <Compile Include="PlayerHitEventArgs.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="PrimitiveBatch.cs" />

@@ -24,13 +24,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         protected StateMachine<Action<double>> stateMachine;
         protected SpriteManager spriteManager;
 
-        protected EnemyBase(Game game, IPathFindingService pathFindingService, Vector2 startPosition) : base(game)
+        protected EnemyBase(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition) : base(game)
         {
             this.Position = startPosition;           
             this.Game.Components.Add(this);
 
+            this.cameraService = cameraService;
             this.pathFindingService = pathFindingService;
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
         }
 
         protected abstract void InitializeStateMachine();

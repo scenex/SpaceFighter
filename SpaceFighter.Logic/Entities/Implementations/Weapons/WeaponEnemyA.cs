@@ -13,13 +13,15 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
     {
         private ICameraService cameraService;
 
-        public WeaponEnemyA(Game game) : base(game)
+        public WeaponEnemyA(
+            Game game,
+            ICameraService cameraService) : base(game)
         {
+            this.cameraService = cameraService;
         }
 
         public override void Initialize()
         {
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
             base.Initialize();
         }
 

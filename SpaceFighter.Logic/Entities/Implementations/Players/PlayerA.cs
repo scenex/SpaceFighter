@@ -32,9 +32,15 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
         private const float ThrustIncrement = 0.2f;
         private const float ThrustFriction = 0.05f;
 
-        public PlayerA(Game game, Vector2 startPosition) : base(game)
+        public PlayerA(
+            Game game, 
+            ICameraService cameraService,
+            Vector2 startPosition
+            ) : base(game)
         {
-            this.weapon = new WeaponPlayerA(this.Game) { DrawOrder = 1 };
+            this.cameraService = cameraService;
+
+            this.weapon = new WeaponPlayerA(this.Game, this.cameraService) { DrawOrder = 1 }; // Todo: Factory
             this.Game.Components.Add(this.weapon);
 
             this.Health = 100;
@@ -135,9 +141,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
         }
 
         public override void Initialize()
-        {
-            this.cameraService = (ICameraService)this.Game.Services.GetService(typeof(ICameraService));
-            
+        {          
             this.InitializeStateMachine();
             base.Initialize();
         }

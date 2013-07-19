@@ -13,10 +13,14 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class EnemyService : GameComponent, IEnemyService
     {
+        private readonly ICameraService cameraService;
+
         private ITerrainService terrainService;
 
-        public EnemyService(Game game) : base(game)
+        public EnemyService(Game game, ICameraService cameraService, ITerrainService terrainService) : base(game)
         {
+            this.cameraService = cameraService;
+            this.terrainService = terrainService;
         }
 
         public IEnumerable<IEnemy> Enemies
@@ -37,15 +41,13 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.terrainService = (ITerrainService)this.Game.Services.GetService(typeof(ITerrainService));
-
             IPathFindingService pathFindingService = new PathFindingService(
                 this.terrainService.Map,
                 this.terrainService.TileSize,
                 this.terrainService.HorizontalTileCount,
                 this.terrainService.VerticalTileCount);
 
-            EnemyFactory.Create<EnemyA>(this.Game, pathFindingService, new Vector2(400, 400));
+            EnemyFactory.Create<EnemyA>(this.Game, this.cameraService, pathFindingService, new Vector2(400, 400)); // Todo: Move TerrainService and CameraService into factory.
             base.Initialize();
         }
 

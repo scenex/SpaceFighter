@@ -23,13 +23,13 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private bool isInputDeviceActive;
 
-        public InputService(Game game) : base(game)
+        public InputService(Game game, IPlayerService playerService) : base(game)
         {
+            this.playerService = playerService;
         }
 
         public override void Initialize()
         {
-            this.playerService = (IPlayerService)this.Game.Services.GetService(typeof(IPlayerService));
             this.isInputDeviceActive = true;
 
             base.Initialize();
