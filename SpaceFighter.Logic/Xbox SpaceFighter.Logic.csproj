@@ -65,6 +65,7 @@
     <Compile Include="FramerateCounter.cs" />
     <Compile Include="Entities\Interfaces\IShot.cs" />
     <Compile Include="HealthChangedEventArgs.cs" />
+    <Compile Include="IEnemyFactory.cs" />
     <Compile Include="Input\Implementation\InputGamepad.cs" />
     <Compile Include="Input\Implementation\InputKeyboard.cs" />
     <Compile Include="Input\Interfaces\IInput.cs" />

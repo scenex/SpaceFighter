@@ -14,8 +14,8 @@ namespace SpaceFighter.Logic.Services.Implementations
     public class PlayerService : GameComponent, IPlayerService
     {
         private PlayerA player;
-        private IAudioService audioService;
 
+        private readonly IAudioService audioService;
         private readonly IPlayerFactory playerFactory;
 
         public PlayerService(Game game, IAudioService audioService, IPlayerFactory playerFactory) : base(game)

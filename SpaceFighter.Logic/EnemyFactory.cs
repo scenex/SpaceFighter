@@ -7,11 +7,34 @@ namespace SpaceFighter.Logic
     using System;
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Entities.Implementations.Enemies;
+    using SpaceFighter.Logic.Services.Implementations;
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public static class EnemyFactory
+    public class EnemyFactory : IEnemyFactory
     {
-        public static T Create<T>(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition) where T : EnemyBase
+        private readonly Game game;
+
+        private readonly ICameraService cameraService;
+
+        private readonly IPathFindingService pathFindingService;
+
+        private readonly ITerrainService terrainService;
+
+        public EnemyFactory(Game game, ICameraService cameraService, ITerrainService terrainService)
+        {
+            this.game = game;
+            this.cameraService = cameraService;
+            this.terrainService = terrainService;
+            this.pathFindingService = pathFindingService;
+            
+            this.pathFindingService = new PathFindingService(
+                this.terrainService.Map,
+                this.terrainService.TileSize,
+                this.terrainService.HorizontalTileCount,
+                this.terrainService.VerticalTileCount);
+        }
+
+        public T Create<T>(Vector2 startPosition) where T : EnemyBase
         {
             return (T)Activator.CreateInstance(typeof(T), game, cameraService, pathFindingService, startPosition);
         }

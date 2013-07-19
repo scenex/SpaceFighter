@@ -18,6 +18,8 @@ namespace SpaceFighter
     public class SpaceGame : Game
     {
         IPlayerFactory playerFactory;
+        IEnemyFactory enemyFactory;
+
         ITerrainService terrainService;
         IHeadUpDisplayService headUpDisplayService;
         IAudioService audioService;
@@ -109,16 +111,17 @@ namespace SpaceFighter
 
             audioService = new AudioService(this);
             this.Components.Add(audioService);
-          
+
+            enemyFactory = new EnemyFactory(this, cameraService, terrainService);
+            enemyService = new EnemyService(this, enemyFactory);
+            this.Components.Add(enemyService);
+
             playerFactory = new PlayerFactory(this, this.cameraService);
             playerService = new PlayerService(this, audioService, playerFactory);
             this.Components.Add(playerService);
 
             inputService = new InputService(this, playerService);
             this.Components.Add(inputService);
-
-            enemyService = new EnemyService(this, cameraService, terrainService);
-            this.Components.Add(enemyService);
             
             collisionDetectionService = new CollisionDetectionService(this, playerService, enemyService, terrainService);
             this.Components.Add(collisionDetectionService);

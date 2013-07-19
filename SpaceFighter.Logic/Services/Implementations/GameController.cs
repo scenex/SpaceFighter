@@ -18,23 +18,19 @@ namespace SpaceFighter.Logic.Services.Implementations
     /// </summary>
     public class GameController : DrawableGameComponent, IGameController
     {
-        public IAudioService AudioService { get; set; }
-
         private SpriteBatch spriteBatch;
         private readonly List<Texture2D> spriteList = new List<Texture2D>();
 
-        private ICollisionDetectionService collisionDetectionService;
-        private IPlayerService playerService;
-        private IEnemyService enemyService;
-        private IInputService inputService;
-
+        private readonly ICollisionDetectionService collisionDetectionService;
+        private readonly IPlayerService playerService;
+        private readonly IEnemyService enemyService;
+        private readonly IInputService inputService;
         private readonly IHeadUpDisplayService headUpDisplayService;
-
-        private ITerrainService terrainService;
+        private readonly ITerrainService terrainService;
+        private readonly ICameraService cameraService;
         private IDebugService debugService;
         private IAudioService audioService;
-        private ICameraService cameraService;
-
+        
         public GameController(
             Game game,
             ICollisionDetectionService collisionDetectionService,
@@ -47,7 +43,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             IAudioService audioService,
             ICameraService cameraService) : base(game)
         {
-            this.AudioService = audioService;
+            this.audioService = audioService;
             this.collisionDetectionService = collisionDetectionService;
             this.playerService = playerService;
             this.enemyService = enemyService;
