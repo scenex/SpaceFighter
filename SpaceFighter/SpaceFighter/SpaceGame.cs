@@ -7,10 +7,13 @@ namespace SpaceFighter
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using SpaceFighter.GameStates;
     using SpaceFighter.Logic;
     using SpaceFighter.Logic.Input.Implementation;
     using SpaceFighter.Logic.Services.Implementations;
     using SpaceFighter.Logic.Services.Interfaces;
+
+    using Nuclex.Game.States;
 
     /// <summary>
     /// This is the main type for your game
@@ -36,11 +39,13 @@ namespace SpaceFighter
 
         private const int ScreenWidth = 1280;
         private const int ScreenHeight = 720;
-        private RenderTarget2D renderTarget;
+        //private RenderTarget2D renderTarget;
 
         private float elapsed;
 
         private readonly GraphicsDeviceManager graphics;
+
+        private readonly GameStateManager gameStateManager = new GameStateManager();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpaceGame"/> class.
@@ -63,7 +68,7 @@ namespace SpaceFighter
             this.graphics.PreferredBackBufferHeight = ScreenHeight;
             this.IsMouseVisible = true; 
            
-            this.renderTarget = new RenderTarget2D(this.GraphicsDevice, ScreenWidth, ScreenHeight);
+            //this.renderTarget = new RenderTarget2D(this.GraphicsDevice, ScreenWidth, ScreenHeight);
             this.graphics.ApplyChanges();
 
             this.ComposeServices();
@@ -82,13 +87,16 @@ namespace SpaceFighter
             #endif
 
             Components.Add(new FramerateCounter(this));
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
-            this.shader = this.Content.Load<Effect>("Shaders/Circle");
+            //this.shader = this.Content.Load<Effect>("Shaders/Circle");
+
+            this.gameStateManager.Switch(new GameplayGameState(this));
         }
 
         private void ComposeServices()
@@ -101,42 +109,41 @@ namespace SpaceFighter
                 (this.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - (80 / 2) + 62,
                 (this.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) - (80 / 2) + 32, 0); // Todo: Find solution for magic constants
             cameraService = new CameraService(this, translation);
-            this.Components.Add(cameraService);
+            this.Services.AddService(typeof(ICameraService), cameraService);
 
             terrainService = new TerrainService();
-            this.Components.Add(terrainService);
-            
+            this.Services.AddService(typeof(ITerrainService), terrainService);
+
             headUpDisplayService = new HeadUpDisplayService(this);
-            this.Components.Add(headUpDisplayService);
+            this.Services.AddService(typeof(IHeadUpDisplayService), headUpDisplayService);
 
             audioService = new AudioService(this);
-            this.Components.Add(audioService);
+            this.Services.AddService(typeof(IAudioService), audioService);
 
             enemyFactory = new EnemyFactory(this, cameraService, terrainService);
             enemyService = new EnemyService(this, enemyFactory);
-            this.Components.Add(enemyService);
+            this.Services.AddService(typeof(IEnemyService), enemyService);
 
             playerFactory = new PlayerFactory(this, this.cameraService);
             playerService = new PlayerService(this, audioService, playerFactory);
-            this.Components.Add(playerService);
+            this.Services.AddService(typeof(IPlayerService), playerService);
 
             inputService = new InputService(this, playerService);
-            this.Components.Add(inputService);
-            
+            this.Services.AddService(typeof(IInputService), inputService);
+
             collisionDetectionService = new CollisionDetectionService(this, playerService, enemyService, terrainService);
-            this.Components.Add(collisionDetectionService);
+            this.Services.AddService(typeof(ICollisionDetectionService), collisionDetectionService);
 
             debugService = new DebugService(this, cameraService);
-            this.Components.Add(debugService);
+            this.Services.AddService(typeof(IDebugService), debugService);
 
             gameController = new GameController(this, collisionDetectionService, playerService, enemyService, inputService, headUpDisplayService, terrainService, debugService, audioService, cameraService);
-            Components.Add(gameController);
+            this.Services.AddService(typeof(IGameController), gameController);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            this.elapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //this.shader.Parameters["circleRadius"].SetValue(this.elapsed);
+            this.gameStateManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -146,25 +153,46 @@ namespace SpaceFighter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            // Render to rendertarget
-            this.graphics.GraphicsDevice.SetRenderTarget(this.renderTarget);          
-            GraphicsDevice.Clear(Color.Black);
+            this.gameStateManager.Draw(gameTime);
             base.Draw(gameTime);
-            this.graphics.GraphicsDevice.SetRenderTarget(null);
-
-            // Render rendertarget to backbuffer
-            spriteBatch.Begin(
-                SpriteSortMode.BackToFront,
-                BlendState.AlphaBlend,
-                null,
-                null,
-                null,
-                //this.shader);
-                null);
-
-            spriteBatch.Draw(this.renderTarget, this.renderTarget.Bounds, Color.White);
-            
-            spriteBatch.End();
         }
+
+        #region Post Processing Shader
+        
+        //protected override void Update(GameTime gameTime)
+        //{
+        //    //this.elapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        //    //this.shader.Parameters["circleRadius"].SetValue(this.elapsed);
+
+        //    //gameStateManager.Push(new GameplayGameState()); <= Hook in here
+        //    base.Update(gameTime);
+        //}
+
+        ///// <summary>
+        ///// This is called when the game should draw itself.
+        ///// </summary>
+        ///// <param name="gameTime">Provides a snapshot of timing values.</param>
+        //protected override void Draw(GameTime gameTime)
+        //{
+        //    // Render to rendertarget
+        //    //this.graphics.GraphicsDevice.SetRenderTarget(this.renderTarget);          
+        //    //GraphicsDevice.Clear(Color.Black);
+        //    base.Draw(gameTime);
+        //    //this.graphics.GraphicsDevice.SetRenderTarget(null);
+
+        //    // Render rendertarget to backbuffer
+        //    //spriteBatch.Begin(
+        //    //    SpriteSortMode.BackToFront,
+        //    //    BlendState.AlphaBlend,
+        //    //    null,
+        //    //    null,
+        //    //    null,
+        //    //    //this.shader);
+        //    //    null);
+        //    //spriteBatch.Draw(this.renderTarget, this.renderTarget.Bounds, Color.White);            
+        //    //spriteBatch.End();
+        //}
+
+        #endregion
     }
 }

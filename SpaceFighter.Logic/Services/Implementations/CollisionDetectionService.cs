@@ -14,9 +14,9 @@ namespace SpaceFighter.Logic.Services.Implementations
     /// </summary>
     public class CollisionDetectionService : GameComponent, ICollisionDetectionService
     {
-        private IPlayerService playerService;
-        private IEnemyService enemyService;
-        private ITerrainService terrainService;
+        private readonly IPlayerService playerService;
+        private readonly IEnemyService enemyService;
+        private readonly ITerrainService terrainService;
 
         private bool isCollisionDetectionActive;
 

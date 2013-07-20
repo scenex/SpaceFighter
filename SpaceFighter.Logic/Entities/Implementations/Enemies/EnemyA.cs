@@ -22,7 +22,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private readonly IPathFindingService pathFindingService;
 
-        private Weapon weapon;
+        private readonly Weapon weapon;
         private IWeaponStrategy shootingStrategy;
 
         private IBehaviourStrategy behaviourStrategy;
@@ -42,15 +42,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             
             this.behaviourStrategySeek = new BehaviourStrategySeek();
             this.behaviourStrategyFlee = new BehaviourStrategyFlee();
+
+            this.weapon = new WeaponEnemyA(this.Game, this.cameraService); // Todo: Factory
+            this.Game.Components.Add(this.weapon);
         }
 
         public override void Initialize()
         {
-            this.weapon = new WeaponEnemyA(this.Game, this.cameraService); // Todo: Factory
-            this.Game.Components.Add(this.weapon);
-
             this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);
-
             base.Initialize();
         }
 

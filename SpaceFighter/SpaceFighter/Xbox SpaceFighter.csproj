@@ -59,6 +59,9 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="GameStates\GameplayGameState.cs" />
+    <Compile Include="GameStates\IntroGameState.cs" />
+    <Compile Include="GameStates\MenuGameState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SpaceGame.cs" />
@@ -135,6 +138,12 @@
     </Reference>
     <Reference Include="mscorlib">
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Nuclex.Game">
+      <HintPath>..\..\Libs\Nuclex\Xbox\Nuclex.Game.dll</HintPath>
+    </Reference>
+    <Reference Include="Nuclex.Support">
+      <HintPath>..\..\Libs\Nuclex\Xbox\Nuclex.Support.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
