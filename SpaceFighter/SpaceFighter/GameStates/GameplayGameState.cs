@@ -66,6 +66,8 @@ namespace SpaceFighter.GameStates
             {
                 component.Initialize();
             }
+
+            this.gameController.StartGame();
             
             base.OnEntered();
         }

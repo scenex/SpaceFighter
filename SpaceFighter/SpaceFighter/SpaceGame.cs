@@ -4,8 +4,9 @@
 
 namespace SpaceFighter
 {
+    using System;
+
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
 
     using SpaceFighter.GameStates;
     using SpaceFighter.Logic;
@@ -34,18 +35,17 @@ namespace SpaceFighter
         IDebugService debugService;
         IGameController gameController;
 
-        SpriteBatch spriteBatch;
-        private Effect shader;
+        private readonly GraphicsDeviceManager graphics;
+        private readonly GameStateManager gameStateManager = new GameStateManager();
+        IntroGameState introGameState;
+
+        //SpriteBatch spriteBatch;
+        //private Effect shader;
+        //private float elapsed;
+        //private RenderTarget2D renderTarget;
 
         private const int ScreenWidth = 1280;
         private const int ScreenHeight = 720;
-        //private RenderTarget2D renderTarget;
-
-        private float elapsed;
-
-        private readonly GraphicsDeviceManager graphics;
-
-        private readonly GameStateManager gameStateManager = new GameStateManager();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpaceGame"/> class.
@@ -88,26 +88,26 @@ namespace SpaceFighter
 
             Components.Add(new FramerateCounter(this));
 
+            this.introGameState = new IntroGameState(this);
+            this.introGameState.Finished += IntroGameStateOnFinished;
+            this.gameStateManager.Switch(introGameState);
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            //this.spriteBatch = new SpriteBatch(GraphicsDevice);
             //this.shader = this.Content.Load<Effect>("Shaders/Circle");
-
-            this.gameStateManager.Switch(new GameplayGameState(this));
         }
 
         private void ComposeServices()
         {            
-            //var translation = new Vector3(
-            //    (this.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - (this.playerService.Player.Width / 2) + 62,
-            //    (this.GraphicsDevice.PresentationParameters.BackBufferHeight / 2)- (this.playerService.Player.Height / 2) + 32, 0);
-
             var translation = new Vector3(
-                (this.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - (80 / 2) + 62,
-                (this.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) - (80 / 2) + 32, 0); // Todo: Find solution for magic constants
+                (this.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - (80 / 2) + 62,  // (this.playerService.Player.Width / 2) + 62
+                (this.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) - (80 / 2) + 32, // (this.playerService.Player.Height / 2) + 32
+                0); 
+
             cameraService = new CameraService(this, translation);
             this.Services.AddService(typeof(ICameraService), cameraService);
 
@@ -141,6 +141,12 @@ namespace SpaceFighter
             this.Services.AddService(typeof(IGameController), gameController);
         }
 
+        private void IntroGameStateOnFinished(object sender, EventArgs eventArgs)
+        {
+            this.introGameState.Finished -= this.IntroGameStateOnFinished;
+            this.gameStateManager.Switch(new GameplayGameState(this));
+        }
+
         protected override void Update(GameTime gameTime)
         {
             this.gameStateManager.Update(gameTime);
@@ -153,6 +159,7 @@ namespace SpaceFighter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            this.GraphicsDevice.Clear(Color.Black);
             this.gameStateManager.Draw(gameTime);
             base.Draw(gameTime);
         }

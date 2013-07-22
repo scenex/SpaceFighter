@@ -7,12 +7,10 @@ namespace SpaceFighter.Logic
     using System;
 
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
 
     public class FramerateCounter : DrawableGameComponent
     {
-        readonly ContentManager content;
         SpriteBatch spriteBatch;
         SpriteFont spriteFont;
 
@@ -20,26 +18,20 @@ namespace SpaceFighter.Logic
         int frameCounter;
         TimeSpan elapsedTime = TimeSpan.Zero;
 
-
-        public FramerateCounter(Game game)
-            : base(game)
+        public FramerateCounter(Game game) : base(game)
         {
-            this.content = new ContentManager(game.Services);
         }
-
 
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.spriteFont = this.content.Load<SpriteFont>(@"Content\FramerateFont");
+            this.spriteFont = this.Game.Content.Load<SpriteFont>(@"FramerateFont");
         }
-
 
         protected override void UnloadContent()
         {
-            this.content.Unload();
-        }
 
+        }
 
         public override void Update(GameTime gameTime)
         {
@@ -52,7 +44,6 @@ namespace SpaceFighter.Logic
                 this.frameCounter = 0;
             }
         }
-
 
         public override void Draw(GameTime gameTime)
         {

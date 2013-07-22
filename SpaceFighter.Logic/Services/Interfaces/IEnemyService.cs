@@ -16,5 +16,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         IEnumerable<IShot> Shots { get; } 
         void ReportEnemyHit(IEnemy enemy, IShot shot);
         void RemoveShot(IShot shot);
+
+        void SpawnEnemies();
     }
 }

@@ -18,7 +18,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         public EnemyService(Game game, IEnemyFactory enemyFactory) : base(game)
         {
             this.enemyFactory = enemyFactory;
-            this.enemyFactory.Create<EnemyA>(new Vector2(400, 400));
         }
 
         public IEnumerable<IEnemy> Enemies
@@ -37,9 +36,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        public override void Initialize()
+        public void SpawnEnemies()
         {
-            base.Initialize();
+            this.enemyFactory.Create<EnemyA>(new Vector2(400, 400));
         }
 
         public void ReportEnemyHit(IEnemy enemy, IShot shot)

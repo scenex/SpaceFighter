@@ -25,7 +25,6 @@ namespace SpaceFighter.Logic
             this.game = game;
             this.cameraService = cameraService;
             this.terrainService = terrainService;
-            this.pathFindingService = pathFindingService;
             
             this.pathFindingService = new PathFindingService(
                 this.terrainService.Map,

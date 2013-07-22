@@ -30,5 +30,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void RotateRight();
         void Fire();
         void Thrust();
+
+        void SpawnPlayer();
     }
 }

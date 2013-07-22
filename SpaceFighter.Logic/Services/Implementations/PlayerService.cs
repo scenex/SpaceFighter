@@ -22,13 +22,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.audioService = audioService;
             this.playerFactory = playerFactory;
-
-            this.player = this.playerFactory.Create(
-                new Vector2(
-                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) + 40,
-                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) + 300)); // Todo: Eliminate magic numbers)
-
-            this.Game.Components.Add(this.player);
         }
 
         public event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
@@ -55,6 +48,16 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
+            base.Initialize();
+        }
+
+        public void SpawnPlayer()
+        {
+            this.player = this.playerFactory.Create(
+                new Vector2(
+                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) + 40,
+                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) + 300)); // Todo: Eliminate magic numbers)
+
             this.player.TransitionToStateDying += this.OnTransitionToStateDying;
             this.player.TransitionToStateDead += this.OnTransitionToStateDead;
             this.player.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
@@ -62,7 +65,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.HealthChanged += this.OnHealthChanged;
             this.player.Weapon.WeaponFired += this.OnWeaponFired;
 
-            base.Initialize();
+            this.Game.Components.Add(this.player);
         }
 
         public void RotateLeft()
