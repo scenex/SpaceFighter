@@ -66,28 +66,12 @@ namespace SpaceFighter
         {   
             this.graphics.PreferredBackBufferWidth = ScreenWidth;
             this.graphics.PreferredBackBufferHeight = ScreenHeight;
-            this.IsMouseVisible = true; 
-           
+            this.IsMouseVisible = true;         
             //this.renderTarget = new RenderTarget2D(this.GraphicsDevice, ScreenWidth, ScreenHeight);
             this.graphics.ApplyChanges();
 
             this.ComposeServices();
-
-            #if WINDOWS           
-            if(this.inputService.IsGamePadConnected)
-            {
-                this.inputService.SetInputDevice(new InputGamepad());
-            }
-            else
-            {
-                this.inputService.SetInputDevice(new InputKeyboard());
-            }            
-            #elif XBOX
-                this.inputService.SetInputDevice(new InputGamepad());
-            #endif
-
-            Components.Add(new FramerateCounter(this));
-
+           
             this.introGameState = new IntroGameState(this);
             this.introGameState.Finished += IntroGameStateOnFinished;
             this.gameStateManager.Switch(introGameState);

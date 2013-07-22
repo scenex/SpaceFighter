@@ -8,18 +8,19 @@ namespace SpaceFighter.Logic.Services.Implementations
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
 
+    using SpaceFighter.Logic.Input.Implementation;
     using SpaceFighter.Logic.Input.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class InputService : GameComponent, IInputService
     {
+        private readonly IPlayerService playerService;
+        private IInput input;
+
         private KeyboardState currentKeyboardState;
         private KeyboardState previousKeyboardState;
 
         private GamePadState currentGamePadState;
-
-        private IPlayerService playerService;
-        private IInput input;
 
         private bool isInputDeviceActive;
 
@@ -30,7 +31,21 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.isInputDeviceActive = true;
+            #if WINDOWS
+            if (IsGamePadConnected)
+            {
+                this.SetInputDevice(new InputGamepad());
+                this.Enable();
+            }
+            else
+            {
+                this.SetInputDevice(new InputKeyboard());
+                this.Enable();
+            }
+            #elif XBOX
+                this.SetInputDevice(new InputGamepad());
+                this.Enable();
+            #endif
 
             base.Initialize();
         }

@@ -8,6 +8,7 @@ namespace SpaceFighter.GameStates
 
     using Nuclex.Game.States;
 
+    using SpaceFighter.Logic;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class GameplayGameState : GameState
@@ -32,6 +33,8 @@ namespace SpaceFighter.GameStates
 
         protected override void OnEntered()
         {
+            this.game.Components.Add(new FramerateCounter(this.game));
+
             this.terrainService = this.game.Services.GetService(typeof(ITerrainService)) as ITerrainService;
             this.game.Components.Add(this.terrainService);
 
@@ -61,11 +64,6 @@ namespace SpaceFighter.GameStates
 
             this.gameController = this.game.Services.GetService(typeof(IGameController)) as IGameController;
             this.game.Components.Add(this.gameController);
-
-            foreach (var component in this.game.Components)
-            {
-                component.Initialize();
-            }
 
             this.gameController.StartGame();
             
