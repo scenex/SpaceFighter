@@ -115,6 +115,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationStateEngine.cs" />
     <Compile Include="GameStates\GameplayGameState.cs" />
     <Compile Include="GameStates\IntroGameState.cs" />
     <Compile Include="GameStates\MenuGameState.cs" />

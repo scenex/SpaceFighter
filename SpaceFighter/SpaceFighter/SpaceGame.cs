@@ -4,18 +4,11 @@
 
 namespace SpaceFighter
 {
-    using System;
-
     using Microsoft.Xna.Framework;
 
-    using SpaceFighter.GameStates;
     using SpaceFighter.Logic;
     using SpaceFighter.Logic.Services.Implementations;
     using SpaceFighter.Logic.Services.Interfaces;
-
-    using Nuclex.Game.States;
-
-    using SpaceFighter.Logic.StateMachine;
 
     /// <summary>
     /// This is the main type for your game
@@ -38,11 +31,7 @@ namespace SpaceFighter
 
         private readonly GraphicsDeviceManager graphics;
 
-        private readonly GameStateManager gameStateManager = new GameStateManager();
-
-        private StateMachine<Action<double>> applicationStateMachine;
-
-        private double elapsedTime;
+        private ApplicationStateEngine applicationStateEngine;
 
         //SpriteBatch spriteBatch;
         //private Effect shader;
@@ -77,29 +66,7 @@ namespace SpaceFighter
 
             this.ComposeServices();
 
-            // Setup application state machine
-            var intro = new State<Action<double>>(
-                "Intro", 
-                null,
-                null, 
-                () => this.gameStateManager.Pop());
-
-            var menu = new State<Action<double>>(
-                "Menu",
-                null,
-                () => this.gameStateManager.Push(new MenuGameState(this)),
-                () => this.gameStateManager.Pop());
-
-            var gameplay = new State<Action<double>>(
-                "Gameplay",
-                null,
-                () => this.gameStateManager.Push(new GameplayGameState(this)),
-                () => this.gameStateManager.Pop());
-
-            intro.AddTransition(menu, () => this.elapsedTime > 4000);
-            menu.AddTransition(gameplay, () => this.elapsedTime > 8000);
-            
-            this.applicationStateMachine = new StateMachine<Action<double>>(intro);
+            this.applicationStateEngine = new ApplicationStateEngine(this);
 
             base.Initialize();
         }
@@ -152,15 +119,7 @@ namespace SpaceFighter
 
         protected override void Update(GameTime gameTime)
         {
-            if (this.gameStateManager.ActiveState == null)
-            {
-                this.gameStateManager.Push(new IntroGameState(this));
-            }
-
-            elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
-            this.gameStateManager.Update(gameTime);
-            this.applicationStateMachine.Update();
-            
+            this.applicationStateEngine.Update(gameTime);            
             base.Update(gameTime);
         }
 
@@ -171,7 +130,8 @@ namespace SpaceFighter
         protected override void Draw(GameTime gameTime)
         {
             this.GraphicsDevice.Clear(Color.Black);
-            this.gameStateManager.Draw(gameTime);
+
+            this.applicationStateEngine.Draw(gameTime);
             base.Draw(gameTime);
         }
 
