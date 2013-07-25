@@ -10,11 +10,12 @@ namespace SpaceFighter
 
     using SpaceFighter.GameStates;
     using SpaceFighter.Logic;
-    using SpaceFighter.Logic.Input.Implementation;
     using SpaceFighter.Logic.Services.Implementations;
     using SpaceFighter.Logic.Services.Interfaces;
 
     using Nuclex.Game.States;
+
+    using SpaceFighter.Logic.StateMachine;
 
     /// <summary>
     /// This is the main type for your game
@@ -36,8 +37,12 @@ namespace SpaceFighter
         IGameController gameController;
 
         private readonly GraphicsDeviceManager graphics;
+
         private readonly GameStateManager gameStateManager = new GameStateManager();
-        IntroGameState introGameState;
+
+        private StateMachine<Action<double>> applicationStateMachine;
+
+        private double elapsedTime;
 
         //SpriteBatch spriteBatch;
         //private Effect shader;
@@ -71,10 +76,30 @@ namespace SpaceFighter
             this.graphics.ApplyChanges();
 
             this.ComposeServices();
-           
-            this.introGameState = new IntroGameState(this);
-            this.introGameState.Finished += IntroGameStateOnFinished;
-            this.gameStateManager.Switch(introGameState);
+
+            // Setup application state machine
+            var intro = new State<Action<double>>(
+                "Intro", 
+                null,
+                null, 
+                () => this.gameStateManager.Pop());
+
+            var menu = new State<Action<double>>(
+                "Menu",
+                null,
+                () => this.gameStateManager.Push(new MenuGameState(this)),
+                () => this.gameStateManager.Pop());
+
+            var gameplay = new State<Action<double>>(
+                "Gameplay",
+                null,
+                () => this.gameStateManager.Push(new GameplayGameState(this)),
+                () => this.gameStateManager.Pop());
+
+            intro.AddTransition(menu, () => this.elapsedTime > 4000);
+            menu.AddTransition(gameplay, () => this.elapsedTime > 8000);
+            
+            this.applicationStateMachine = new StateMachine<Action<double>>(intro);
 
             base.Initialize();
         }
@@ -125,15 +150,17 @@ namespace SpaceFighter
             this.Services.AddService(typeof(IGameController), gameController);
         }
 
-        private void IntroGameStateOnFinished(object sender, EventArgs eventArgs)
-        {
-            this.introGameState.Finished -= this.IntroGameStateOnFinished;
-            this.gameStateManager.Switch(new GameplayGameState(this));
-        }
-
         protected override void Update(GameTime gameTime)
         {
+            if (this.gameStateManager.ActiveState == null)
+            {
+                this.gameStateManager.Push(new IntroGameState(this));
+            }
+
+            elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
             this.gameStateManager.Update(gameTime);
+            this.applicationStateMachine.Update();
+            
             base.Update(gameTime);
         }
 

@@ -4,8 +4,6 @@
 
 namespace SpaceFighter.GameStates
 {
-    using System;
-
     using Microsoft.Xna.Framework;
 
     using Nuclex.Game.States;
@@ -16,9 +14,6 @@ namespace SpaceFighter.GameStates
     {
         private readonly Game game;
         private IntroScreen introScreen;
-
-        public event EventHandler Finished;
-        private double elapsedTime;
 
         public IntroGameState(Game game)
         {
@@ -44,15 +39,7 @@ namespace SpaceFighter.GameStates
         /// <param name="gameTime">Provides a snapshot of the Game's timing values</param>
         public override void Update(GameTime gameTime)
         {
-            elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (elapsedTime > 4000)
-            {
-                if (this.Finished != null)
-                {
-                    this.Finished(this, EventArgs.Empty);
-                }
-            }
         }
     }
 }
