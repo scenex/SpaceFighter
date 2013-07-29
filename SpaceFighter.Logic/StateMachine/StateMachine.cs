@@ -13,6 +13,11 @@ namespace SpaceFighter.Logic.StateMachine
         public StateMachine(State<T> currentState)
         {
             CurrentState = currentState;
+
+            if (CurrentState.OnEnter != null)
+            {
+                CurrentState.OnEnter();
+            }
         }
 
         public State<T> CurrentState { get; private set; }
