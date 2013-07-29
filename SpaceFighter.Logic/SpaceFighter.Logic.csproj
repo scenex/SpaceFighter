@@ -94,6 +94,8 @@
   <ItemGroup>
     <Compile Include="Behaviours\Implementations\BehaviourStrategy.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyArrive.cs" />
+    <Compile Include="EventAggregator.cs" />
+    <Compile Include="GameStateEngine.cs" />
     <Compile Include="IEnemyFactory.cs" />
     <Compile Include="IPlayerFactory.cs" />
     <Compile Include="Pathfinding\AStar.cs" />

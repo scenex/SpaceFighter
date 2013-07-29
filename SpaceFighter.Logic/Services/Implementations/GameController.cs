@@ -18,6 +18,8 @@ namespace SpaceFighter.Logic.Services.Implementations
     /// </summary>
     public class GameController : DrawableGameComponent, IGameController
     {
+        private GameStateEngine gameStateEngine;
+
         private bool isGameStarted;
         private SpriteBatch spriteBatch;
         private readonly List<Texture2D> spriteList = new List<Texture2D>();
@@ -57,11 +59,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            base.Initialize();
-        }
+            this.gameStateEngine = new GameStateEngine();
 
-        public void StartGame()
-        {
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
             this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
@@ -73,8 +72,13 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.TransitionToStateAlive += this.OnTransitionToStateAlive;
             this.playerService.HealthChanged += this.OnHealthChanged;
 
+            base.Initialize();
+        }
+
+        public void StartGame()
+        {
             // DISABLE MUSIC WHILE DEVELOPMENT
-            this.audioService.PlaySound("music2");
+            // this.audioService.PlaySound("music2");
 
             this.playerService.SpawnPlayer();
             this.enemyService.SpawnEnemies();
@@ -98,11 +102,12 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Update(GameTime gameTime)
         {
-            if(this.isGameStarted)
+            if (this.isGameStarted)
             {
                 this.UpdatePlayerPositionForEnemies();
+                this.gameStateEngine.Update(this.playerService.Player.Health);
             }
-            
+
             base.Update(gameTime);
         }
 
