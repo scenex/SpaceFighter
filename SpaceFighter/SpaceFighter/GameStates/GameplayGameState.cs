@@ -82,7 +82,7 @@ namespace SpaceFighter.GameStates
         /// <param name="gameTime">Provides a snapshot of the Game's timing values</param>
         public override void Update(GameTime gameTime)
         {
-
+            // Components do their own updating...
         }
     }
 }

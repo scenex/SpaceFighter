@@ -12,6 +12,7 @@ namespace SpaceFighter
 
     using SpaceFighter.GameStates;
     using SpaceFighter.Logic.EventManager;
+    using SpaceFighter.Logic.Screens;
     using SpaceFighter.Logic.StateMachine;
 
     public class ApplicationStateEngine
@@ -22,6 +23,12 @@ namespace SpaceFighter
         private readonly StateMachine<Action<double>> applicationStateMachine;
         private double elapsedTime;
 
+        private MenuGameState menuGameState;
+        private IntroGameState introGameState;
+        private GameplayGameState gameplayGameState;
+
+        private string selectedMenuItem;
+
         public ApplicationStateEngine(Game game)
         {
             this.game = game;
@@ -29,24 +36,48 @@ namespace SpaceFighter
             var intro = new State<Action<double>>(
                 "Intro",
                 null,
-                () => this.gameStateManager.Push(new IntroGameState(this.game)),
+                delegate
+                    {
+                        this.introGameState = new IntroGameState(this.game);
+                        this.gameStateManager.Push(this.introGameState);
+                    }, 
                 () => this.gameStateManager.Pop());
 
             var menu = new State<Action<double>>(
                 "Menu",
                 null,
-                () => this.gameStateManager.Push(new MenuGameState(this.game)),
-                () => this.gameStateManager.Pop());
+                delegate
+                    {
+                        this.menuGameState = new MenuGameState(this.game);
+                        this.menuGameState.MenuItemSelected += this.OnMenuItemSelected;
+                        this.gameStateManager.Push(this.menuGameState);
+                    }, 
+                delegate
+                    {
+                        this.menuGameState.MenuItemSelected -= this.OnMenuItemSelected;
+                        this.gameStateManager.Pop();
+                    });
 
             var gameplay = new State<Action<double>>(
                 "Gameplay",
                 null,
-                () => this.gameStateManager.Push(new GameplayGameState(this.game)),
+                delegate
+                    {
+                        this.gameplayGameState = new GameplayGameState(this.game);
+                        this.gameStateManager.Push(this.gameplayGameState);
+                    }, 
                 () => this.gameStateManager.Pop());
 
-            intro.AddTransition(menu, () => this.elapsedTime > 4000);
-            menu.AddTransition(gameplay, () => this.elapsedTime > 8000);
+            var exit = new State<Action<double>>(
+                "Exit",
+                null,
+                () => this.game.Exit(),
+                null);
 
+            intro.AddTransition(menu, () => this.elapsedTime > 4000);
+            menu.AddTransition(gameplay, () => this.selectedMenuItem == MenuItems.StartGame);
+            menu.AddTransition(exit, () => this.selectedMenuItem == MenuItems.ExitGame);
+            
             this.applicationStateMachine = new StateMachine<Action<double>>(intro);
 
             EventAggregator.Subscribe(this, "GameOver");
@@ -69,6 +100,11 @@ namespace SpaceFighter
         {
             this.gameStateManager.Pop();
             this.gameStateManager.Push(new MenuGameState(this.game));
+        }
+
+        private void OnMenuItemSelected(object sender, MenuItemSelectedEventArgs menuItemSelectedEventArgs)
+        {
+            this.selectedMenuItem = menuItemSelectedEventArgs.SelectedMenuItem;
         }
     }
 }
