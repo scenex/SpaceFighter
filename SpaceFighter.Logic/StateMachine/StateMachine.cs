@@ -27,14 +27,25 @@ namespace SpaceFighter.Logic.StateMachine
             for (int i = 0; i < CurrentState.Transitions.Count; i++)
             {
                 Transition<T> t = CurrentState.Transitions[i];
+
                 if (t.Condition())
                 {
-                    if (CurrentState.OnExit != null) CurrentState.OnExit();
+                    if (CurrentState.OnExit != null)
+                    {
+                        CurrentState.OnExit();
+                    }
+                        
                     CurrentState = t.NextState;
-                    if (CurrentState.OnEnter != null) CurrentState.OnEnter();
+
+                    if (CurrentState.OnEnter != null)
+                    {
+                        CurrentState.OnEnter();
+                    }
+                        
                     return true;
                 }
             }
+
             return false;
         }
     }
