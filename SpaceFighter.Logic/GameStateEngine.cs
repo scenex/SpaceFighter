@@ -11,7 +11,6 @@ namespace SpaceFighter.Logic
     public class GameStateEngine
     {
         private readonly StateMachine<Action<int>> gameStateMachine;
-        p
 
         private int health;
 
