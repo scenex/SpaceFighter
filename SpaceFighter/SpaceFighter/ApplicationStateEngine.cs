@@ -11,6 +11,7 @@ namespace SpaceFighter
     using Nuclex.Game.States;
 
     using SpaceFighter.GameStates;
+    using SpaceFighter.Logic.EventManager;
     using SpaceFighter.Logic.StateMachine;
 
     public class ApplicationStateEngine
@@ -28,7 +29,7 @@ namespace SpaceFighter
             var intro = new State<Action<double>>(
                 "Intro",
                 null,
-                null,
+                () => this.gameStateManager.Push(new IntroGameState(this.game)),
                 () => this.gameStateManager.Pop());
 
             var menu = new State<Action<double>>(
@@ -47,15 +48,12 @@ namespace SpaceFighter
             menu.AddTransition(gameplay, () => this.elapsedTime > 8000);
 
             this.applicationStateMachine = new StateMachine<Action<double>>(intro);
+
+            EventAggregator.Subscribe(this, "GameOver");
         }
 
         public void Update(GameTime gameTime)
         {
-            if (this.gameStateManager.ActiveState == null)
-            {
-                this.gameStateManager.Push(new IntroGameState(this.game));
-            }
-
             this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
             this.gameStateManager.Update(gameTime);
             this.applicationStateMachine.Update();
@@ -64,6 +62,13 @@ namespace SpaceFighter
         public void Draw(GameTime gameTime)
         {
             this.gameStateManager.Draw(gameTime);
+        }
+
+        [Subscription("GameOver")]
+        public void GameOverSubscriptionHandler()
+        {
+            this.gameStateManager.Pop();
+            this.gameStateManager.Push(new MenuGameState(this.game));
         }
     }
 }

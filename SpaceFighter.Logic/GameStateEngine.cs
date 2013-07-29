@@ -6,6 +6,7 @@ namespace SpaceFighter.Logic
 {
     using System;
 
+    using SpaceFighter.Logic.EventManager;
     using SpaceFighter.Logic.StateMachine;
 
     public class GameStateEngine
@@ -25,17 +26,11 @@ namespace SpaceFighter.Logic
             var gameOver = new State<Action<int>>(
                 "GameOver",
                 null,
-                OnEnter,
+                () => EventAggregator.Fire(this, "GameOver"),
                 null);
 
             gameStarted.AddTransition(gameOver, () => this.health == 0);
             this.gameStateMachine = new StateMachine<Action<int>>(gameStarted);
-        }
-
-        private void OnEnter()
-        {
-            // Todo
-            // Notify application state engine about Game Over
         }
 
         public void Update(int remainingHealth)
