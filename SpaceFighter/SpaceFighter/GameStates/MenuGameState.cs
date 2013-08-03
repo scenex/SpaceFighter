@@ -11,10 +11,15 @@ namespace SpaceFighter.GameStates
     using Nuclex.Game.States;
 
     using SpaceFighter.Logic.Screens;
+    using SpaceFighter.Logic.Services.Implementations;
+    using SpaceFighter.Logic.Services.Interfaces;
 
     public class MenuGameState : GameState, IDrawable
     {
         private readonly Game game;
+
+        private readonly IInputService inputService;
+
         private MenuScreen menuScreen;
 
         public event EventHandler<MenuItemSelectedEventArgs> MenuItemSelected;
@@ -25,15 +30,21 @@ namespace SpaceFighter.GameStates
         public bool Visible { get; private set; }
         public int DrawOrder { get; private set; }
 
-        public MenuGameState(Game game)
+        public MenuGameState(Game game, IInputService inputService)
         {
             this.game = game;
+
+            this.inputService = inputService;
+
             this.Visible = true;
         }
 
         protected override void OnEntered()
         {
-            this.menuScreen = new MenuScreen(this.game);
+            this.inputService.InputStateHandling = InputStateHandling.Menu;
+            this.game.Components.Add(this.inputService);
+
+            this.menuScreen = new MenuScreen(this.game, this.inputService);
             this.menuScreen.Initialize();
 
             this.menuScreen.MenuItemSelected += this.OnMenuItemSelected;
@@ -43,6 +54,8 @@ namespace SpaceFighter.GameStates
 
         protected override void OnLeaving()
         {
+            this.game.Components.Remove(this.inputService);
+
             this.menuScreen.MenuItemSelected -= this.OnMenuItemSelected;
             base.OnLeaving();
         }

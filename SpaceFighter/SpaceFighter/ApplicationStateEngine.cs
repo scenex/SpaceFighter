@@ -13,11 +13,23 @@ namespace SpaceFighter
     using SpaceFighter.GameStates;
     using SpaceFighter.Logic.EventManager;
     using SpaceFighter.Logic.Screens;
+    using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
 
     public class ApplicationStateEngine
     {
         private readonly Game game;
+
+        private readonly ITerrainService terrainService;
+        private readonly IHeadUpDisplayService headUpDisplayService;
+        private readonly IAudioService audioService;
+        private readonly IPlayerService playerService;
+        private readonly IInputService inputService;
+        private readonly IEnemyService enemyService;
+        private readonly ICollisionDetectionService collisionDetectionService;
+        private readonly ICameraService cameraService;
+        private readonly IDebugService debugService;
+        private readonly IGameController gameController;
 
         private readonly GameStateManager gameStateManager = new GameStateManager();
         private readonly StateMachine<Action<double>> applicationStateMachine;
@@ -29,9 +41,30 @@ namespace SpaceFighter
 
         private string selectedMenuItem;
 
-        public ApplicationStateEngine(Game game)
+        public ApplicationStateEngine(
+            Game game, 
+            ITerrainService terrainService,
+            IHeadUpDisplayService headUpDisplayService,
+            IAudioService audioService,
+            IPlayerService playerService,
+            IInputService inputService,
+            IEnemyService enemyService,
+            ICollisionDetectionService collisionDetectionService,
+            ICameraService cameraService,
+            IDebugService debugService,
+            IGameController gameController)
         {
             this.game = game;
+            this.terrainService = terrainService;
+            this.headUpDisplayService = headUpDisplayService;
+            this.audioService = audioService;
+            this.playerService = playerService;
+            this.inputService = inputService;
+            this.enemyService = enemyService;
+            this.collisionDetectionService = collisionDetectionService;
+            this.cameraService = cameraService;
+            this.debugService = debugService;
+            this.gameController = gameController;
 
             var intro = new State<Action<double>>(
                 "Intro",
@@ -48,7 +81,7 @@ namespace SpaceFighter
                 null,
                 delegate
                     {
-                        this.menuGameState = new MenuGameState(this.game);
+                        this.menuGameState = new MenuGameState(this.game, this.inputService);
                         this.menuGameState.MenuItemSelected += this.OnMenuItemSelected;
                         this.gameStateManager.Push(this.menuGameState);
                     }, 
@@ -63,7 +96,19 @@ namespace SpaceFighter
                 null,
                 delegate
                     {
-                        this.gameplayGameState = new GameplayGameState(this.game);
+                        this.gameplayGameState = new GameplayGameState(
+                            this.game,
+                            this.terrainService,
+                            this.headUpDisplayService,
+                            this.audioService,
+                            this.playerService,
+                            this.inputService,
+                            this.enemyService,
+                            this.collisionDetectionService,
+                            this.cameraService,
+                            this.debugService,
+                            this.gameController);
+
                         this.gameStateManager.Push(this.gameplayGameState);
                     }, 
                 () => this.gameStateManager.Pop());
@@ -99,7 +144,7 @@ namespace SpaceFighter
         public void GameOverSubscriptionHandler()
         {
             this.gameStateManager.Pop();
-            this.gameStateManager.Push(new MenuGameState(this.game));
+            this.gameStateManager.Push(new MenuGameState(this.game, this.inputService));
         }
 
         private void OnMenuItemSelected(object sender, MenuItemSelectedEventArgs menuItemSelectedEventArgs)

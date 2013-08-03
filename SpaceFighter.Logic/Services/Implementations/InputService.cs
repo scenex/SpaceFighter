@@ -15,6 +15,7 @@ namespace SpaceFighter.Logic.Services.Implementations
     public class InputService : GameComponent, IInputService
     {
         private readonly IPlayerService playerService;
+
         private IInput input;
 
         private KeyboardState currentKeyboardState;
@@ -35,32 +36,46 @@ namespace SpaceFighter.Logic.Services.Implementations
             if (IsGamePadConnected)
             {
                 this.SetInputDevice(new InputGamepad());
-                this.Enable();
             }
             else
             {
                 this.SetInputDevice(new InputKeyboard());
-                this.Enable();
             }
             #elif XBOX
                 this.SetInputDevice(new InputGamepad());
-                this.Enable();
             #endif
-
+            
+            this.Enable();
             base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
-            if(this.isInputDeviceActive)
+            if (this.isInputDeviceActive)
             {
                 if (this.input.DeviceType == typeof(Keyboard))
                 {
-                    this.ProcessInputKeyboard();
+                    if (this.InputStateHandling == InputStateHandling.Gameplay)
+                    {
+                        this.ProcessInputKeyboardGameplay();
+                    }
+
+                    if (this.InputStateHandling == InputStateHandling.Menu)
+                    {
+                        this.ProcessInputKeyboardMenu();
+                    }
                 }
                 else if (this.input.DeviceType == typeof(GamePad))
                 {
-                    this.ProcessInputGamepad();
+                    if (this.InputStateHandling == InputStateHandling.Gameplay)
+                    {
+                        this.ProcessInputGamepadGameplay();
+                    }
+
+                    if (this.InputStateHandling == InputStateHandling.Menu)
+                    {
+                        this.ProcessInputGamepadMenu();
+                    }
                 }
             }
 
@@ -99,7 +114,13 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        private void ProcessInputKeyboard()
+        public InputStateHandling InputStateHandling { get; set; }
+
+        public bool IsSelectionMoveUp { get; set; }
+        public bool IsSelectionMoveDown { get; set; }
+        public bool IsSelectionConfirmed { get; set; }
+
+        private void ProcessInputKeyboardGameplay()
         {
             this.currentKeyboardState = Keyboard.GetState();
 
@@ -136,7 +157,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.previousKeyboardState = this.currentKeyboardState;
         }
 
-        private void ProcessInputGamepad()
+        private void ProcessInputGamepadGameplay()
         {
             this.currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
 
@@ -172,5 +193,38 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.playerService.Player.Weapon.UpgradeWeapon();
             }
         }
+
+        private void ProcessInputKeyboardMenu()
+        {
+            this.currentKeyboardState = Keyboard.GetState();
+
+            if (this.currentKeyboardState.IsKeyDown(Keys.Up))
+            {
+                this.IsSelectionMoveUp = true;
+            }
+
+            if (this.currentKeyboardState.IsKeyDown(Keys.Down))
+            {
+                this.IsSelectionMoveDown = true;
+            }
+
+            if (this.currentKeyboardState.IsKeyDown(Keys.Space))
+            {
+                this.IsSelectionConfirmed = true;
+            }
+
+            this.previousKeyboardState = this.currentKeyboardState;
+        }
+
+        private void ProcessInputGamepadMenu()
+        {
+            
+        }
+    }
+
+    public enum InputStateHandling
+    {
+        Menu,
+        Gameplay
     }
 }

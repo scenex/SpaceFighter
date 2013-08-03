@@ -9,15 +9,20 @@ namespace SpaceFighter.Logic.Screens
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using SpaceFighter.Logic.Services.Interfaces;
+
     public class MenuScreen : DrawableGameComponent
     {
+        private readonly IInputService inputService;
+
         private SpriteBatch spriteBatch;
         private SpriteFont spriteFont;
 
         public event EventHandler<MenuItemSelectedEventArgs> MenuItemSelected;
 
-        public MenuScreen(Game game) : base(game)
+        public MenuScreen(Game game, IInputService inputService) : base(game)
         {
+            this.inputService = inputService;
         }
 
         public override void Initialize()
@@ -42,7 +47,10 @@ namespace SpaceFighter.Logic.Screens
         {
             if (this.MenuItemSelected != null)
             {
-                this.MenuItemSelected(this, new MenuItemSelectedEventArgs(MenuItems.StartGame));
+                if (this.inputService.IsSelectionConfirmed)
+                {
+                    this.MenuItemSelected(this, new MenuItemSelectedEventArgs(MenuItems.StartGame));
+                }
             }
             
             base.Update(gameTime);

@@ -80,6 +80,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             // DISABLE MUSIC WHILE DEVELOPMENT
             // this.audioService.PlaySound("music2");
 
+            this.inputService.InputStateHandling = InputStateHandling.Gameplay;
+
             this.playerService.SpawnPlayer();
             this.enemyService.SpawnEnemies();
 

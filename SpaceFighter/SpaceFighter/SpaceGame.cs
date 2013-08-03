@@ -66,7 +66,18 @@ namespace SpaceFighter
 
             this.ComposeServices();
 
-            this.applicationStateEngine = new ApplicationStateEngine(this);
+            this.applicationStateEngine = new ApplicationStateEngine(
+                this,
+                this.terrainService,
+                this.headUpDisplayService,
+                this.audioService,
+                this.playerService,
+                this.inputService,
+                this.enemyService,
+                this.collisionDetectionService,
+                this.cameraService,
+                this.debugService,
+                this.gameController);
 
             base.Initialize();
         }
@@ -84,37 +95,60 @@ namespace SpaceFighter
                 (this.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) - (80 / 2) + 32, // (this.playerService.Player.Height / 2) + 32
                 0); 
 
-            cameraService = new CameraService(this, translation);
-            this.Services.AddService(typeof(ICameraService), cameraService);
+            cameraService = new CameraService(
+                this, 
+                translation);
 
             terrainService = new TerrainService();
-            this.Services.AddService(typeof(ITerrainService), terrainService);
 
-            headUpDisplayService = new HeadUpDisplayService(this);
-            this.Services.AddService(typeof(IHeadUpDisplayService), headUpDisplayService);
+            headUpDisplayService = new HeadUpDisplayService(
+                this);
 
-            audioService = new AudioService(this);
-            this.Services.AddService(typeof(IAudioService), audioService);
+            audioService = new AudioService(
+                this);
 
-            enemyFactory = new EnemyFactory(this, cameraService, terrainService);
-            enemyService = new EnemyService(this, enemyFactory);
-            this.Services.AddService(typeof(IEnemyService), enemyService);
+            enemyFactory = new EnemyFactory(this, 
+                cameraService, 
+                terrainService);
 
-            playerFactory = new PlayerFactory(this, this.cameraService);
-            playerService = new PlayerService(this, audioService, playerFactory);
-            this.Services.AddService(typeof(IPlayerService), playerService);
+            enemyService = new EnemyService(
+                this, 
+                enemyFactory);
 
-            inputService = new InputService(this, playerService);
-            this.Services.AddService(typeof(IInputService), inputService);
+            playerFactory = new PlayerFactory(
+                this, 
+                this.cameraService);
 
-            collisionDetectionService = new CollisionDetectionService(this, playerService, enemyService, terrainService);
-            this.Services.AddService(typeof(ICollisionDetectionService), collisionDetectionService);
+            playerService = new PlayerService(
+                this, 
+                audioService, 
+                playerFactory);
 
-            debugService = new DebugService(this, cameraService);
-            this.Services.AddService(typeof(IDebugService), debugService);
+            inputService = new InputService(
+                this, 
+                playerService);
 
-            gameController = new GameController(this, collisionDetectionService, playerService, enemyService, inputService, headUpDisplayService, terrainService, debugService, audioService, cameraService);
-            this.Services.AddService(typeof(IGameController), gameController);
+            collisionDetectionService = new CollisionDetectionService(
+                this, 
+                playerService, 
+                enemyService, 
+                terrainService);
+
+            debugService = new DebugService(
+                this, 
+                cameraService);
+
+            gameController = new GameController(
+                this, 
+                collisionDetectionService, 
+                playerService, 
+                enemyService, 
+                inputService, 
+                headUpDisplayService, 
+                terrainService, 
+                debugService, 
+                audioService, 
+                cameraService);
         }
 
         protected override void Update(GameTime gameTime)

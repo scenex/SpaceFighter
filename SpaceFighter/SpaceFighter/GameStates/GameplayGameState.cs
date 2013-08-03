@@ -15,54 +15,56 @@ namespace SpaceFighter.GameStates
     {
         private readonly Game game;
 
-        ITerrainService terrainService;
-        IHeadUpDisplayService headUpDisplayService;
-        IAudioService audioService;
-        IPlayerService playerService;
-        IInputService inputService;
-        IEnemyService enemyService;
-        ICollisionDetectionService collisionDetectionService;
-        ICameraService cameraService;
-        IDebugService debugService;
-        IGameController gameController;
+        readonly ITerrainService terrainService;
+        readonly IHeadUpDisplayService headUpDisplayService;
+        readonly IAudioService audioService;
+        readonly IPlayerService playerService;
+        readonly IInputService inputService;
+        readonly IEnemyService enemyService;
+        readonly ICollisionDetectionService collisionDetectionService;
+        readonly ICameraService cameraService;
+        readonly IDebugService debugService;
+        readonly IGameController gameController;
 
-        public GameplayGameState(Game game)
+        public GameplayGameState(
+            Game game,
+            ITerrainService terrainService,
+            IHeadUpDisplayService headUpDisplayService,
+            IAudioService audioService,
+            IPlayerService playerService,
+            IInputService inputService,
+            IEnemyService enemyService,
+            ICollisionDetectionService collisionDetectionService,
+            ICameraService cameraService,
+            IDebugService debugService,
+            IGameController gameController)
         {
             this.game = game;
+            this.terrainService = terrainService;
+            this.headUpDisplayService = headUpDisplayService;
+            this.audioService = audioService;
+            this.playerService = playerService;
+            this.inputService = inputService;
+            this.enemyService = enemyService;
+            this.collisionDetectionService = collisionDetectionService;
+            this.cameraService = cameraService;
+            this.debugService = debugService;
+            this.gameController = gameController;
         }
 
         protected override void OnEntered()
         {
             this.game.Components.Add(new FramerateCounter(this.game));
 
-            this.terrainService = this.game.Services.GetService(typeof(ITerrainService)) as ITerrainService;
             this.game.Components.Add(this.terrainService);
-
-            this.headUpDisplayService = this.game.Services.GetService(typeof(IHeadUpDisplayService)) as IHeadUpDisplayService;
             this.game.Components.Add(this.headUpDisplayService);
-
-            this.audioService = this.game.Services.GetService(typeof(IAudioService)) as IAudioService;
             this.game.Components.Add(this.audioService);
-
-            this.playerService = this.game.Services.GetService(typeof(IPlayerService)) as IPlayerService;
             this.game.Components.Add(this.playerService);
-
-            this.inputService = this.game.Services.GetService(typeof(IInputService)) as IInputService;
             this.game.Components.Add(this.inputService);
-
-            this.enemyService = this.game.Services.GetService(typeof(IEnemyService)) as IEnemyService;
             this.game.Components.Add(this.enemyService);
-
-            this.collisionDetectionService = this.game.Services.GetService(typeof(ICollisionDetectionService)) as ICollisionDetectionService;
             this.game.Components.Add(this.collisionDetectionService);
-
-            this.cameraService = this.game.Services.GetService(typeof(ICameraService)) as ICameraService;
             this.game.Components.Add(this.cameraService);
-
-            this.debugService = this.game.Services.GetService(typeof(IDebugService)) as IDebugService;
             this.game.Components.Add(this.debugService);
-
-            this.gameController = this.game.Services.GetService(typeof(IGameController)) as IGameController;
             this.game.Components.Add(this.gameController);
 
             this.gameController.StartGame();
