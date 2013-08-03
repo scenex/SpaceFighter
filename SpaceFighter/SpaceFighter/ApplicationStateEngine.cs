@@ -41,6 +41,8 @@ namespace SpaceFighter
 
         private string selectedMenuItem;
 
+        private bool isGameOver;
+
         public ApplicationStateEngine(
             Game game, 
             ITerrainService terrainService,
@@ -81,13 +83,19 @@ namespace SpaceFighter
                 null,
                 delegate
                     {
-                        this.menuGameState = new MenuGameState(this.game, this.inputService);
+                        this.isGameOver = false;
+
+                        this.menuGameState = new MenuGameState(
+                            this.game, 
+                            this.inputService);
+
                         this.menuGameState.MenuItemSelected += this.OnMenuItemSelected;
                         this.gameStateManager.Push(this.menuGameState);
                     }, 
                 delegate
                     {
                         this.menuGameState.MenuItemSelected -= this.OnMenuItemSelected;
+                        this.selectedMenuItem = MenuItems.None;
                         this.gameStateManager.Pop();
                     });
 
@@ -122,6 +130,7 @@ namespace SpaceFighter
             intro.AddTransition(menu, () => this.elapsedTime > 4000);
             menu.AddTransition(gameplay, () => this.selectedMenuItem == MenuItems.StartGame);
             menu.AddTransition(exit, () => this.selectedMenuItem == MenuItems.ExitGame);
+            gameplay.AddTransition(menu, () => this.isGameOver);
             
             this.applicationStateMachine = new StateMachine<Action<double>>(intro);
 
@@ -143,8 +152,7 @@ namespace SpaceFighter
         [Subscription("GameOver")]
         public void GameOverSubscriptionHandler()
         {
-            this.gameStateManager.Pop();
-            this.gameStateManager.Push(new MenuGameState(this.game, this.inputService));
+            this.isGameOver = true;
         }
 
         private void OnMenuItemSelected(object sender, MenuItemSelectedEventArgs menuItemSelectedEventArgs)

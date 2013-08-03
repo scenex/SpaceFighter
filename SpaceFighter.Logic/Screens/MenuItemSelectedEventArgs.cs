@@ -18,6 +18,7 @@ namespace SpaceFighter.Logic.Screens
 
     public static class MenuItems
     {
+        public const string None = "None";
         public const string StartGame = "StartGame";
         public const string Options = "Options";
         public const string ExitGame = "ExitGame";

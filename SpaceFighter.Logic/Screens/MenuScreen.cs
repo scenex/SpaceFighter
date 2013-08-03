@@ -49,6 +49,7 @@ namespace SpaceFighter.Logic.Screens
             {
                 if (this.inputService.IsSelectionConfirmed)
                 {
+                    this.inputService.IsSelectionConfirmed = false;
                     this.MenuItemSelected(this, new MenuItemSelectedEventArgs(MenuItems.StartGame));
                 }
             }

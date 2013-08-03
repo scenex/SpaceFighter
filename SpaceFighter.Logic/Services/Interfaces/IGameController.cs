@@ -9,5 +9,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
     public interface IGameController : IGameComponent
     {
         void StartGame();
+
+        void EndGame();
     }
 }

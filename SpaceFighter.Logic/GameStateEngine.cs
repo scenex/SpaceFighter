@@ -29,7 +29,7 @@ namespace SpaceFighter.Logic
                 () => EventAggregator.Fire(this, "GameOver"),
                 null);
 
-            gameStarted.AddTransition(gameOver, () => this.health == 0);
+            gameStarted.AddTransition(gameOver, () => this.health <= 0);
             this.gameStateMachine = new StateMachine<Action<int>>(gameStarted);
         }
 

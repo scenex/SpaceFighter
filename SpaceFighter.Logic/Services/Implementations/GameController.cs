@@ -61,6 +61,14 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.gameStateEngine = new GameStateEngine();
 
+            base.Initialize();
+        }
+
+        public void StartGame()
+        {
+            // DISABLE MUSIC WHILE DEVELOPMENT
+            // this.audioService.PlaySound("music2");
+
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
             this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
@@ -72,20 +80,26 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.TransitionToStateAlive += this.OnTransitionToStateAlive;
             this.playerService.HealthChanged += this.OnHealthChanged;
 
-            base.Initialize();
-        }
-
-        public void StartGame()
-        {
-            // DISABLE MUSIC WHILE DEVELOPMENT
-            // this.audioService.PlaySound("music2");
-
             this.inputService.InputStateHandling = InputStateHandling.Gameplay;
 
             this.playerService.SpawnPlayer();
             this.enemyService.SpawnEnemies();
 
             this.isGameStarted = true;
+        }
+
+        public void EndGame()
+        {
+            this.collisionDetectionService.EnemyHit -= this.OnEnemyHit;
+            this.collisionDetectionService.PlayerHit -= this.OnPlayerHit;
+            this.collisionDetectionService.PlayerEnemyHit -= this.OnPlayerEnemyHit;
+            this.collisionDetectionService.BoundaryHit -= this.OnBoundaryHit;
+
+            this.playerService.TransitionToStateDying -= this.OnTransitionToStateDying;
+            this.playerService.TransitionToStateDead -= this.OnTransitionToStateDead;
+            this.playerService.TransitionToStateRespawn -= this.OnTransitionToStateRespawn;
+            this.playerService.TransitionToStateAlive -= this.OnTransitionToStateAlive;
+            this.playerService.HealthChanged -= this.OnHealthChanged;
         }
 
         protected override void LoadContent()
