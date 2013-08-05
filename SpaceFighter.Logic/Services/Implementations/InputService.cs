@@ -198,17 +198,17 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.currentKeyboardState = Keyboard.GetState();
 
-            if (this.currentKeyboardState.IsKeyDown(Keys.Up))
+            if (this.currentKeyboardState.IsKeyDown(Keys.Up) && this.previousKeyboardState.IsKeyUp(Keys.Up))
             {
                 this.IsSelectionMoveUp = true;
             }
 
-            if (this.currentKeyboardState.IsKeyDown(Keys.Down))
+            if (this.currentKeyboardState.IsKeyDown(Keys.Down) && this.previousKeyboardState.IsKeyUp(Keys.Down))
             {
                 this.IsSelectionMoveDown = true;
             }
 
-            if (this.currentKeyboardState.IsKeyDown(Keys.Space))
+            if (this.currentKeyboardState.IsKeyDown(Keys.Space) && this.previousKeyboardState.IsKeyUp(Keys.Space))
             {
                 this.IsSelectionConfirmed = true;
             }

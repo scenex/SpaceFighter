@@ -20,14 +20,11 @@ namespace SpaceFighter.Logic.Screens
 
         public event EventHandler<MenuItemSelectedEventArgs> MenuItemSelected;
 
+        private int selectionIndex;
+
         public MenuScreen(Game game, IInputService inputService) : base(game)
         {
             this.inputService = inputService;
-        }
-
-        public override void Initialize()
-        {
-            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -38,11 +35,6 @@ namespace SpaceFighter.Logic.Screens
             base.LoadContent();
         }
 
-        protected override void UnloadContent()
-        {
-            base.UnloadContent();
-        }
-
         public override void Update(GameTime gameTime)
         {
             if (this.MenuItemSelected != null)
@@ -50,7 +42,28 @@ namespace SpaceFighter.Logic.Screens
                 if (this.inputService.IsSelectionConfirmed)
                 {
                     this.inputService.IsSelectionConfirmed = false;
-                    this.MenuItemSelected(this, new MenuItemSelectedEventArgs(MenuItems.StartGame));
+
+                    if (this.GetSelectionIndex() == 0)
+                    {
+                        this.MenuItemSelected(this, new MenuItemSelectedEventArgs(MenuItems.StartGame));
+                    }
+
+                    if (this.GetSelectionIndex() == 1)
+                    {
+                        this.MenuItemSelected(this, new MenuItemSelectedEventArgs(MenuItems.ExitGame));
+                    }
+                }
+
+                if (this.inputService.IsSelectionMoveDown)
+                {
+                    this.selectionIndex++;
+                    this.inputService.IsSelectionMoveDown = false;
+                }
+
+                if (this.inputService.IsSelectionMoveUp)
+                {
+                    this.selectionIndex--;
+                    this.inputService.IsSelectionMoveUp = false;
                 }
             }
             
@@ -60,10 +73,16 @@ namespace SpaceFighter.Logic.Screens
         public override void Draw(GameTime gameTime)
         {
             this.spriteBatch.Begin();
-            this.spriteBatch.DrawString(this.spriteFont, "Start Game\nOptions\nExit Game", new Vector2(570, 500), Color.White);
+            this.spriteBatch.DrawString(this.spriteFont, "Start Game", new Vector2(570, 500), this.GetSelectionIndex() == 0 ? Color.Red : Color.White);
+            this.spriteBatch.DrawString(this.spriteFont, "Exit Game", new Vector2(570, 550), this.GetSelectionIndex() == 1 ? Color.Red : Color.White);
             this.spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private int GetSelectionIndex()
+        {
+            return Math.Abs(this.selectionIndex % 2);
         }
     }
 }
