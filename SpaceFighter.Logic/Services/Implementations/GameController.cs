@@ -59,7 +59,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.gameStateEngine = new GameStateEngine();
+            this.gameStateEngine = new GameStateEngine(this.playerService, this.enemyService, this.inputService);
 
             base.Initialize();
         }
@@ -121,7 +121,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             if (this.isGameStarted)
             {
                 this.UpdatePlayerPositionForEnemies();
-                this.gameStateEngine.Update(this.playerService.Player.Health);
+                this.gameStateEngine.Update(gameTime);
             }
 
             base.Update(gameTime);
@@ -132,7 +132,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             // this.debugService.DrawRectangle(new Rectangle(((int)playerService.Player.Position.X / 80) * 80, ((int)playerService.Player.Position.Y / 80) * 80, 80, 80));
             if (this.isGameStarted)
             {
-
                 this.spriteBatch.Begin(
                     SpriteSortMode.BackToFront,
                     BlendState.AlphaBlend,

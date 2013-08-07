@@ -29,12 +29,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private readonly BehaviourStrategySeek behaviourStrategySeek;
         private readonly BehaviourStrategyFlee behaviourStrategyFlee;
 
+        private readonly bool isBoss;
         private Vector2 targetPosition;
-
         private Queue<Vector2> waypoints = new Queue<Vector2>();
 
-        public EnemyA(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition) : base(game, cameraService, pathFindingService, startPosition)
+        public EnemyA(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition, bool isBoss) : base(game, cameraService, pathFindingService, startPosition)
         {
+            this.isBoss = isBoss;
             this.Health = 100;
 
             this.cameraService = cameraService;
@@ -105,6 +106,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             if (this.shootingStrategy != null)
             {
                 this.shootingStrategy.Execute(() => this.Weapon.FireWeapon(), elapsed);
+            }
+        }
+
+        public override bool IsBoss
+        {
+            get
+            {
+                return isBoss;
             }
         }
 

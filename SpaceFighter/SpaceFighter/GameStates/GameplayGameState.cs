@@ -79,6 +79,18 @@ namespace SpaceFighter.GameStates
             base.OnLeaving();
         }
 
+        protected override void OnPause()
+        {
+
+            base.OnPause();
+        }
+
+        protected override void OnResume()
+        {
+
+            base.OnResume();
+        }
+
         /// <summary>
         /// Called when the component needs to update its state.
         /// </summary>

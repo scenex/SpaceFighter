@@ -38,7 +38,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         protected abstract void LoadSprites();
         protected abstract void UpdatePosition();
         protected abstract void UpdateWeapon(TimeSpan elapsed);
-        
+
+        public abstract bool IsBoss { get; }
         public abstract IWeapon Weapon { get; }
         public abstract Queue<Vector2> Waypoints { get; }
 

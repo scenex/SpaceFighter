@@ -13,7 +13,9 @@ namespace SpaceFighter.Logic.Services.Interfaces
     public interface IEnemyService : IGameComponent
     {
         IEnumerable<IEnemy> Enemies { get; }
-        IEnumerable<IShot> Shots { get; } 
+        IEnumerable<IShot> Shots { get; }
+        bool IsBossEliminated { get; }
+
         void ReportEnemyHit(IEnemy enemy, IShot shot);
         void RemoveShot(IShot shot);
 

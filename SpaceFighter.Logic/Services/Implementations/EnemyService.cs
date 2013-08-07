@@ -13,8 +13,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class EnemyService : GameComponent, IEnemyService
     {
+        public bool IsBossEliminated { get; private set; }
         private readonly IEnemyFactory enemyFactory;
-
+        
         public EnemyService(Game game, IEnemyFactory enemyFactory) : base(game)
         {
             this.enemyFactory = enemyFactory;
@@ -38,12 +39,17 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void SpawnEnemies()
         {
-            this.enemyFactory.Create<EnemyA>(new Vector2(400, 400));
+            this.enemyFactory.Create<EnemyA>(new Vector2(400, 400), true);
         }
 
         public void ReportEnemyHit(IEnemy enemy, IShot shot)
         {
             enemy.SubtractHealth(shot.FirePower);
+
+            if (enemy.IsBoss && enemy.Health <= 0)
+            {
+                this.IsBossEliminated = true;
+            }
         }
 
         public void RemoveShot(IShot shot)

@@ -18,5 +18,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
         bool IsHealthSubtracted { get; }
         bool IsHealthAdded { get; }
+
+        bool IsBoss { get; }
     }
 }

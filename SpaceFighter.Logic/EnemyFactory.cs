@@ -33,9 +33,9 @@ namespace SpaceFighter.Logic
                 this.terrainService.VerticalTileCount);
         }
 
-        public T Create<T>(Vector2 startPosition) where T : EnemyBase
+        public T Create<T>(Vector2 startPosition, bool isBoss) where T : EnemyBase
         {
-            return (T)Activator.CreateInstance(typeof(T), game, cameraService, pathFindingService, startPosition);
+            return (T)Activator.CreateInstance(typeof(T), game, cameraService, pathFindingService, startPosition, isBoss);
         }
     }
 }
