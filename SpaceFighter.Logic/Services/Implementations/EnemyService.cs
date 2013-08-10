@@ -39,13 +39,20 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void SpawnEnemies()
         {
+            this.IsBossEliminated = false;
             this.enemyFactory.Create<EnemyA>(new Vector2(400, 400), true);
+        }
+
+        public void UnspawnEnemies()
+        {
+            // Todo
         }
 
         public void ReportEnemyHit(IEnemy enemy, IShot shot)
         {
             enemy.SubtractHealth(shot.FirePower);
 
+            // Todo: Ugly..
             if (enemy.IsBoss && enemy.Health <= 0)
             {
                 this.IsBossEliminated = true;

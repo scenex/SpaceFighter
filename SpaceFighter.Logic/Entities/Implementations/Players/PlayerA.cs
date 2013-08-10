@@ -294,5 +294,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             this.ColorData = new Color[this.spriteManager.GetCurrentSprite().Width * this.spriteManager.GetCurrentSprite().Height];
             this.spriteManager.GetCurrentSprite().GetData(this.ColorData);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            this.Game.Components.Remove(this.weapon);
+            this.Game.Components.Remove(this);
+            base.Dispose(disposing);
+        }
     }
 }

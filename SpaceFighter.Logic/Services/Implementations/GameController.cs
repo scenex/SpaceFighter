@@ -85,6 +85,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.SpawnPlayer();
             this.enemyService.SpawnEnemies();
 
+            this.inputService.Enable();
+
             this.isGameStarted = true;
         }
 
@@ -100,6 +102,10 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.TransitionToStateRespawn -= this.OnTransitionToStateRespawn;
             this.playerService.TransitionToStateAlive -= this.OnTransitionToStateAlive;
             this.playerService.HealthChanged -= this.OnHealthChanged;
+
+            this.playerService.UnspawnPlayer();
+            this.enemyService.UnspawnEnemies();
+            this.isGameStarted = false;
         }
 
         protected override void LoadContent()

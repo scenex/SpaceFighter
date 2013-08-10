@@ -32,6 +32,7 @@ namespace SpaceFighter.Logic
             this.state = initialEntityState;
             this.spriteHeight = spriteHeight;
             this.spriteWidth = spriteWidth;
+            this.gameTime = new GameTime();
 
             this.spriteRectangle = new Rectangle(0, 0, this.spriteWidth, this.spriteHeight);     
         }

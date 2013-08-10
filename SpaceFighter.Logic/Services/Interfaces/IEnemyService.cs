@@ -20,5 +20,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void RemoveShot(IShot shot);
 
         void SpawnEnemies();
+        void UnspawnEnemies();
     }
 }

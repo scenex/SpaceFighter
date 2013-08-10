@@ -68,6 +68,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.Game.Components.Add(this.player);
         }
 
+        public void UnspawnPlayer()
+        {
+            this.player.Dispose();
+        }
+
         public void RotateLeft()
         {
             this.player.SetRotation(+0.05f);

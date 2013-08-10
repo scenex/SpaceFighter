@@ -135,6 +135,7 @@ namespace SpaceFighter
             this.applicationStateMachine = new StateMachine<Action<double>>(intro);
 
             EventAggregator.Subscribe(this, "GameOver");
+            EventAggregator.Subscribe(this, "LevelCompleted");
         }
 
         public void Update(GameTime gameTime)
@@ -153,6 +154,13 @@ namespace SpaceFighter
         public void GameOverSubscriptionHandler()
         {
             this.isGameOver = true;
+        }
+
+        [Subscription("LevelCompleted")]
+        public void LevelCompletedSubscriptionHandler()
+        {
+            this.gameController.EndGame();
+            this.gameController.StartGame();
         }
 
         private void OnMenuItemSelected(object sender, MenuItemSelectedEventArgs menuItemSelectedEventArgs)

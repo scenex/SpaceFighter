@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic
 {
     using System;
-    using System.Diagnostics;
 
     using Microsoft.Xna.Framework;
 
@@ -53,7 +52,12 @@ namespace SpaceFighter.Logic
             var ended = new State<Action<double>>(
                 "Ended",
                 null,
-                null,
+                delegate
+                    {
+                        this.elapsedTime = 0;
+                        this.elapsedTimeSinceEndingTransition = 0;
+                        EventAggregator.Fire(this, "LevelCompleted");
+                    }, 
                 null);
 
             var paused = new State<Action<double>>(
@@ -71,7 +75,7 @@ namespace SpaceFighter.Logic
             starting.AddTransition(started, () => this.elapsedTime > 2000);
             started.AddTransition(ending, () => this.enemyService.IsBossEliminated);
             ending.AddTransition(ended, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 2000);
-            //ended.AddTransition(starting, () => true);
+            ended.AddTransition(starting, () => true);
 
             //started.AddTransition(paused, () => this.inputService.IsPauseKey == true);
             //paused.AddTransition(started, () => this.inputService.IsPauseKey == false);
@@ -85,7 +89,6 @@ namespace SpaceFighter.Logic
         {
             this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
             this.gameStateMachine.Update();
-            Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
         }
     }
 }
