@@ -24,6 +24,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         private SpriteBatch spriteBatch;
         private readonly List<Texture2D> spriteList = new List<Texture2D>();
 
+        private readonly Game game;
+
         private readonly ICollisionDetectionService collisionDetectionService;
         private readonly IPlayerService playerService;
         private readonly IEnemyService enemyService;
@@ -46,7 +48,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             IAudioService audioService,
             ICameraService cameraService) : base(game)
         {
-            this.audioService = audioService;
+            this.game = game;
+
             this.collisionDetectionService = collisionDetectionService;
             this.playerService = playerService;
             this.enemyService = enemyService;
@@ -54,12 +57,24 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.headUpDisplayService = headUpDisplayService;
             this.terrainService = terrainService;
             this.debugService = debugService;
+            this.audioService = audioService;
             this.cameraService = cameraService;
         }
 
         public override void Initialize()
         {
             this.gameStateEngine = new GameStateEngine(this.playerService, this.enemyService, this.inputService);
+
+            this.game.Components.Add(new FramerateCounter(this.game));
+            this.Game.Components.Add(this.collisionDetectionService);
+            this.Game.Components.Add(this.playerService);
+            this.Game.Components.Add(this.enemyService);
+            this.Game.Components.Add(this.inputService);
+            this.Game.Components.Add(this.headUpDisplayService);
+            this.Game.Components.Add(this.terrainService);
+            this.Game.Components.Add(this.debugService);
+            this.Game.Components.Add(this.audioService);
+            this.Game.Components.Add(this.cameraService);
 
             base.Initialize();
         }
@@ -106,6 +121,16 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.UnspawnPlayer();
             this.enemyService.UnspawnEnemies();
             this.isGameStarted = false;
+        }
+
+        public void PauseGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResumeGame()
+        {
+            throw new NotImplementedException();
         }
 
         protected override void LoadContent()

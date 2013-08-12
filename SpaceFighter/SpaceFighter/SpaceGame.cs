@@ -68,15 +68,7 @@ namespace SpaceFighter
 
             this.applicationStateEngine = new ApplicationStateEngine(
                 this,
-                this.terrainService,
-                this.headUpDisplayService,
-                this.audioService,
-                this.playerService,
                 this.inputService,
-                this.enemyService,
-                this.collisionDetectionService,
-                this.cameraService,
-                this.debugService,
                 this.gameController);
 
             base.Initialize();

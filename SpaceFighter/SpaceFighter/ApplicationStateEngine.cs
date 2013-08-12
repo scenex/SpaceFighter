@@ -19,16 +19,7 @@ namespace SpaceFighter
     public class ApplicationStateEngine
     {
         private readonly Game game;
-
-        private readonly ITerrainService terrainService;
-        private readonly IHeadUpDisplayService headUpDisplayService;
-        private readonly IAudioService audioService;
-        private readonly IPlayerService playerService;
         private readonly IInputService inputService;
-        private readonly IEnemyService enemyService;
-        private readonly ICollisionDetectionService collisionDetectionService;
-        private readonly ICameraService cameraService;
-        private readonly IDebugService debugService;
         private readonly IGameController gameController;
 
         private readonly GameStateManager gameStateManager = new GameStateManager();
@@ -45,27 +36,11 @@ namespace SpaceFighter
 
         public ApplicationStateEngine(
             Game game, 
-            ITerrainService terrainService,
-            IHeadUpDisplayService headUpDisplayService,
-            IAudioService audioService,
-            IPlayerService playerService,
             IInputService inputService,
-            IEnemyService enemyService,
-            ICollisionDetectionService collisionDetectionService,
-            ICameraService cameraService,
-            IDebugService debugService,
             IGameController gameController)
         {
             this.game = game;
-            this.terrainService = terrainService;
-            this.headUpDisplayService = headUpDisplayService;
-            this.audioService = audioService;
-            this.playerService = playerService;
             this.inputService = inputService;
-            this.enemyService = enemyService;
-            this.collisionDetectionService = collisionDetectionService;
-            this.cameraService = cameraService;
-            this.debugService = debugService;
             this.gameController = gameController;
 
             var intro = new State<Action<double>>(
@@ -106,15 +81,6 @@ namespace SpaceFighter
                     {
                         this.gameplayGameState = new GameplayGameState(
                             this.game,
-                            this.terrainService,
-                            this.headUpDisplayService,
-                            this.audioService,
-                            this.playerService,
-                            this.inputService,
-                            this.enemyService,
-                            this.collisionDetectionService,
-                            this.cameraService,
-                            this.debugService,
                             this.gameController);
 
                         this.gameStateManager.Push(this.gameplayGameState);
@@ -131,7 +97,7 @@ namespace SpaceFighter
             menu.AddTransition(gameplay, () => this.selectedMenuItem == MenuItems.StartGame);
             menu.AddTransition(exit, () => this.selectedMenuItem == MenuItems.ExitGame);
             gameplay.AddTransition(menu, () => this.isGameOver);
-            
+
             this.applicationStateMachine = new StateMachine<Action<double>>(intro);
 
             EventAggregator.Subscribe(this, "GameOver");
@@ -167,7 +133,14 @@ namespace SpaceFighter
         [Subscription("PauseToggled")]
         public void PauseToggledSubscriptionHandler()
         {
-
+            if (this.inputService.IsGamePaused)
+            {
+                this.gameStateManager.Pause();
+            }
+            else
+            {
+                this.gameStateManager.Resume();
+            }
         }
 
         private void OnMenuItemSelected(object sender, MenuItemSelectedEventArgs menuItemSelectedEventArgs)
