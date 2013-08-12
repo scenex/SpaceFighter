@@ -136,6 +136,7 @@ namespace SpaceFighter
 
             EventAggregator.Subscribe(this, "GameOver");
             EventAggregator.Subscribe(this, "LevelCompleted");
+            EventAggregator.Subscribe(this, "PauseToggled");
         }
 
         public void Update(GameTime gameTime)
@@ -161,6 +162,12 @@ namespace SpaceFighter
         {
             this.gameController.EndGame();
             this.gameController.StartGame();
+        }
+
+        [Subscription("PauseToggled")]
+        public void PauseToggledSubscriptionHandler()
+        {
+
         }
 
         private void OnMenuItemSelected(object sender, MenuItemSelectedEventArgs menuItemSelectedEventArgs)

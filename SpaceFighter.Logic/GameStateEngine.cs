@@ -63,8 +63,8 @@ namespace SpaceFighter.Logic
             var paused = new State<Action<double>>(
                 "Paused",
                 null,
-                null,
-                null);
+                () => EventAggregator.Fire(this, "PauseToggled"),
+                () => EventAggregator.Fire(this, "PauseToggled"));
 
             var gameOver = new State<Action<double>>(
                 "GameOver",
@@ -77,8 +77,8 @@ namespace SpaceFighter.Logic
             ending.AddTransition(ended, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 2000);
             ended.AddTransition(starting, () => true);
 
-            //started.AddTransition(paused, () => this.inputService.IsPauseKey == true);
-            //paused.AddTransition(started, () => this.inputService.IsPauseKey == false);
+            started.AddTransition(paused, () => this.inputService.IsGamePaused == true);
+            paused.AddTransition(started, () => this.inputService.IsGamePaused == false);
             
             started.AddTransition(gameOver, () => this.playerService.Player.Health <= 0);
             

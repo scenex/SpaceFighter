@@ -119,6 +119,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         public bool IsSelectionMoveUp { get; set; }
         public bool IsSelectionMoveDown { get; set; }
         public bool IsSelectionConfirmed { get; set; }
+        public bool IsGamePaused { get; set; }
 
         private void ProcessInputKeyboardGameplay()
         {
@@ -152,6 +153,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             if (this.currentKeyboardState.IsKeyDown(Keys.F2) && this.previousKeyboardState.IsKeyUp(Keys.F2))
             {
                 this.playerService.Player.Weapon.UpgradeWeapon();
+            }
+
+            if (this.currentKeyboardState.IsKeyDown(Keys.P) && this.previousKeyboardState.IsKeyUp(Keys.P))
+            {
+                this.IsGamePaused = !this.IsGamePaused;
             }
 
             this.previousKeyboardState = this.currentKeyboardState;

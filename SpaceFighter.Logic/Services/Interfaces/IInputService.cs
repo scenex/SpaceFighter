@@ -24,6 +24,8 @@ namespace SpaceFighter.Logic.Services.Interfaces
         bool IsSelectionMoveDown { get; set; }
         bool IsSelectionConfirmed { get; set; }
 
+        bool IsGamePaused { get; set; }
+
         void Disable();
         void Enable();
     }
