@@ -91,7 +91,7 @@ namespace SpaceFighter
                 this, 
                 translation);
 
-            terrainService = new TerrainService();
+            terrainService = new TerrainService(this, cameraService);
 
             headUpDisplayService = new HeadUpDisplayService(
                 this);

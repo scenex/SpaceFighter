@@ -5,24 +5,15 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-
     using SpaceFighter.Logic.Services.Interfaces;
 
-    /// <summary>
-    /// Todo: Level drawing happening here in GameController, is it the right place? Probably not...
-    /// </summary>
-    public class GameController : DrawableGameComponent, IGameController
+    public class GameController : GameComponent, IGameController
     {
         private GameStateEngine gameStateEngine;
 
         private bool isGameStarted;
-        private SpriteBatch spriteBatch;
-        private readonly List<Texture2D> spriteList = new List<Texture2D>();
 
         private readonly Game game;
 
@@ -66,15 +57,15 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.gameStateEngine = new GameStateEngine(this.playerService, this.enemyService, this.inputService);
 
             this.game.Components.Add(new FramerateCounter(this.game));
-            this.Game.Components.Add(this.collisionDetectionService);
-            this.Game.Components.Add(this.playerService);
-            this.Game.Components.Add(this.enemyService);
-            this.Game.Components.Add(this.inputService);
-            this.Game.Components.Add(this.headUpDisplayService);
-            this.Game.Components.Add(this.terrainService);
-            this.Game.Components.Add(this.debugService);
-            this.Game.Components.Add(this.audioService);
-            this.Game.Components.Add(this.cameraService);
+            this.game.Components.Add(this.collisionDetectionService);
+            this.game.Components.Add(this.playerService);
+            this.game.Components.Add(this.enemyService);
+            this.game.Components.Add(this.inputService);
+            this.game.Components.Add(this.headUpDisplayService);
+            this.game.Components.Add(this.terrainService);
+            this.game.Components.Add(this.debugService);
+            this.game.Components.Add(this.audioService);
+            this.game.Components.Add(this.cameraService);
 
             base.Initialize();
         }
@@ -102,7 +93,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.inputService.Enable();
 
-            this.isGameStarted = true;
+            this.isGameStarted = true; // Todo: Needed?
         }
 
         public void EndGame()
@@ -133,20 +124,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             throw new NotImplementedException();
         }
 
-        protected override void LoadContent()
-        {
-            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-
-            var tileList = this.Game.Content.Load<List<string>>("manifest").Where(x => x.StartsWith(@"Sprites\L1\")).ToList();
-
-            foreach (var tile in tileList)
-            {
-                spriteList.Add(this.Game.Content.Load<Texture2D>(tile));
-            }
-
-            base.LoadContent();
-        }
-
         public override void Update(GameTime gameTime)
         {
             if (this.isGameStarted)
@@ -156,37 +133,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
 
             base.Update(gameTime);
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            // this.debugService.DrawRectangle(new Rectangle(((int)playerService.Player.Position.X / 80) * 80, ((int)playerService.Player.Position.Y / 80) * 80, 80, 80));
-            if (this.isGameStarted)
-            {
-                this.spriteBatch.Begin(
-                    SpriteSortMode.BackToFront,
-                    BlendState.AlphaBlend,
-                    null,
-                    null,
-                    null,
-                    null,
-                    cameraService.GetTransformation());
-
-                for (int i = 0; i < this.terrainService.VerticalTileCount; i++)
-                {
-                    for (int j = 0; j < this.terrainService.HorizontalTileCount; j++)
-                    {
-                        this.spriteBatch.Draw(
-                            this.spriteList[this.terrainService.Map[i, j]],
-                            new Vector2(j * this.terrainService.TileSize, i * this.terrainService.TileSize),
-                            Color.White);
-                    }
-                }
-
-                this.spriteBatch.End();
-            }
-
-            base.Draw(gameTime);
         }
 
         private void UpdatePlayerPositionForEnemies()
