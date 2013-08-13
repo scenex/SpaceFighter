@@ -13,8 +13,6 @@ namespace SpaceFighter.Logic.Services.Implementations
     {
         private GameStateEngine gameStateEngine;
 
-        private bool isGameStarted;
-
         private readonly Game game;
 
         private readonly ICollisionDetectionService collisionDetectionService;
@@ -92,8 +90,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.enemyService.SpawnEnemies();
 
             this.inputService.Enable();
-
-            this.isGameStarted = true; // Todo: Needed?
         }
 
         public void EndGame()
@@ -111,27 +107,35 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.playerService.UnspawnPlayer();
             this.enemyService.UnspawnEnemies();
-            this.isGameStarted = false;
         }
 
         public void PauseGame()
         {
-            throw new NotImplementedException();
+            foreach (var updateableComponent in this.game.Components.OfType<GameComponent>())
+            {
+                if (updateableComponent.GetType() != typeof(InputService) && updateableComponent.GetType() != typeof(GameController)) // Todo: Reflection alternative?
+                {
+                    updateableComponent.Enabled = false;
+                }
+            }
         }
 
         public void ResumeGame()
         {
-            throw new NotImplementedException();
+            foreach (var updateableComponent in this.game.Components.OfType<GameComponent>())
+            {
+                if (updateableComponent.GetType() != typeof(InputService) && updateableComponent.GetType() != typeof(GameController)) // Todo: Reflection alternative?
+                {
+                    updateableComponent.Enabled = true;
+                }
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (this.isGameStarted)
-            {
-                this.UpdatePlayerPositionForEnemies();
-                this.gameStateEngine.Update(gameTime);
-            }
-
+            this.UpdatePlayerPositionForEnemies();
+            this.gameStateEngine.Update(gameTime);
+            
             base.Update(gameTime);
         }
 
