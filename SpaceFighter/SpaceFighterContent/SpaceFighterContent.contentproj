@@ -244,10 +244,21 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Compile Include="Curves\IntroTextCurve.xml">
-      <Name>IntroTextCurve</Name>
+    <Compile Include="Curves\MenuTextFadeIn.xml">
+      <Name>MenuTextFadeIn</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="Curves\MenuTextFadeOut.xml">
+      <Name>MenuTextFadeOut</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Curves\IntroTextFade.xml">
+      <Name>IntroTextFade</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>

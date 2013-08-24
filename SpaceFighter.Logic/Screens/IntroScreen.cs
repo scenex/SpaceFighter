@@ -13,7 +13,7 @@ namespace SpaceFighter.Logic.Screens
 
         private SpriteBatch spriteBatch;
         private SpriteFont spriteFont;
-        private Curve introCurve;
+        private Curve introTextFade;
         private RenderTarget2D renderTarget;
 
         public IntroScreen(Game game) : base(game)
@@ -33,7 +33,7 @@ namespace SpaceFighter.Logic.Screens
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.spriteFont = this.Game.Content.Load<SpriteFont>(@"FramerateFont");
-            this.introCurve = this.Game.Content.Load<Curve>(@"Curves\IntroTextCurve");
+            this.introTextFade = this.Game.Content.Load<Curve>(@"Curves\IntroTextFade");
             
             base.LoadContent();
         }
@@ -69,7 +69,7 @@ namespace SpaceFighter.Logic.Screens
                 this.spriteFont, 
                 "Cataclysm Game Studios Presents", 
                 new Vector2(400, 300), 
-                Color.White * this.introCurve.Evaluate((float)elapsedTime / 1000));
+                Color.White * this.introTextFade.Evaluate((float)elapsedTime / 1000));
 
             this.spriteBatch.End();
 
