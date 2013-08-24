@@ -13,8 +13,7 @@ namespace SpaceFighter.GameStates
     public class GameplayGameState : GameState, IGameStateTransition
     {
         private readonly Game game;
-        readonly IGameController gameController;
-        public object TransitionTag { get; private set; }
+        readonly IGameController gameController;   
 
         public GameplayGameState(Game game, IGameController gameController)
         {
@@ -22,6 +21,7 @@ namespace SpaceFighter.GameStates
             this.gameController = gameController;
         }
 
+        public object TransitionTag { get; private set; }
         public bool IsTransitionAllowed { get; private set; }
 
         protected override void OnEntered()
