@@ -13,6 +13,7 @@ namespace SpaceFighter.Logic.Screens
 
         private SpriteBatch spriteBatch;
         private SpriteFont spriteFont;
+        private Curve introCurve;
         private RenderTarget2D renderTarget;
 
         public IntroScreen(Game game) : base(game)
@@ -32,6 +33,8 @@ namespace SpaceFighter.Logic.Screens
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.spriteFont = this.Game.Content.Load<SpriteFont>(@"FramerateFont");
+            this.introCurve = this.Game.Content.Load<Curve>(@"Curves\IntroTextCurve");
+            
             base.LoadContent();
         }
 
@@ -44,7 +47,7 @@ namespace SpaceFighter.Logic.Screens
         {
             this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (this.elapsedTime > 4000)
+            if (this.elapsedTime > 5000)
             {
                 this.IsTransitionAllowed = true;
                 this.TransitionTag = null;
@@ -64,9 +67,9 @@ namespace SpaceFighter.Logic.Screens
 
             this.spriteBatch.DrawString(
                 this.spriteFont, 
-                "Cataclysm Game Studios Presents\n\n         Space Fighter", 
+                "Cataclysm Game Studios Presents", 
                 new Vector2(400, 300), 
-                Color.White * 0.2f);
+                Color.White * this.introCurve.Evaluate((float)elapsedTime / 1000));
 
             this.spriteBatch.End();
 

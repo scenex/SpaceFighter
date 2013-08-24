@@ -90,7 +90,6 @@ namespace SpaceFighter
             intro.AddTransition(menu, () => this.introGameState.IsTransitionAllowed);
             menu.AddTransition(gameplay, () => this.menuGameState.IsTransitionAllowed && (string)this.menuGameState.TransitionTag == MenuItems.StartGame);
             menu.AddTransition(exit, () => this.menuGameState.IsTransitionAllowed && (string)this.menuGameState.TransitionTag == MenuItems.ExitGame);
-
             gameplay.AddTransition(menu, () => this.isGameOver);
 
             this.applicationStateMachine = new StateMachine<Action<double>>(intro);
