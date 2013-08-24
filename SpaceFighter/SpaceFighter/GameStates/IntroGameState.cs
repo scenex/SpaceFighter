@@ -10,26 +10,29 @@ namespace SpaceFighter.GameStates
 
     using SpaceFighter.Logic.Screens;
 
-    public class IntroGameState : GameState
+    public class IntroGameState : GameState, IGameStateTransition
     {
         private readonly Game game;
         private IntroScreen introScreen;
+        public object TransitionTag { get; private set; }
 
         public IntroGameState(Game game)
         {
             this.game = game;
         }
 
+        public bool IsTransitionAllowed { get; private set; }
+
         protected override void OnEntered()
         {
-            introScreen = new IntroScreen(this.game);
-            this.game.Components.Add(introScreen);
+            this.introScreen = new IntroScreen(this.game);
+            this.game.Components.Add(this.introScreen);
             base.OnEntered();
         }
 
         protected override void OnLeaving()
         {
-            this.game.Components.Remove(introScreen);
+            this.game.Components.Remove(this.introScreen);
             base.OnLeaving();
         }
 
@@ -40,6 +43,11 @@ namespace SpaceFighter.GameStates
         public override void Update(GameTime gameTime)
         {
             // Components do their own updating...
+
+            if(this.introScreen.IsTransitionAllowed)
+            {
+                this.IsTransitionAllowed = true;
+            }
         }
     }
 }

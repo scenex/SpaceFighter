@@ -11,21 +11,21 @@ namespace SpaceFighter.Logic.Screens
 
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class MenuScreen : DrawableGameComponent
+    public class MenuScreen : DrawableGameComponent, IScreenTransition
     {
         private readonly IInputService inputService;
 
         private SpriteBatch spriteBatch;
         private SpriteFont spriteFont;
-
-        public event EventHandler<MenuItemSelectedEventArgs> MenuItemSelected;
-
         private int selectionIndex;
 
         public MenuScreen(Game game, IInputService inputService) : base(game)
         {
             this.inputService = inputService;
         }
+
+        public bool IsTransitionAllowed { get; private set; }
+        public object TransitionTag { get; private set; }
 
         protected override void LoadContent()
         {
@@ -37,34 +37,35 @@ namespace SpaceFighter.Logic.Screens
 
         public override void Update(GameTime gameTime)
         {
-            if (this.MenuItemSelected != null)
+            if (this.inputService.IsSelectionConfirmed)
             {
-                if (this.inputService.IsSelectionConfirmed)
+                this.inputService.IsSelectionConfirmed = false;
+
+                if (this.GetSelectionIndex() == 0)
                 {
-                    this.inputService.IsSelectionConfirmed = false;
-
-                    if (this.GetSelectionIndex() == 0)
-                    {
-                        this.MenuItemSelected(this, new MenuItemSelectedEventArgs(MenuItems.StartGame));
-                    }
-
-                    if (this.GetSelectionIndex() == 1)
-                    {
-                        this.MenuItemSelected(this, new MenuItemSelectedEventArgs(MenuItems.ExitGame));
-                    }
+                    //this.MenuItemSelected(this, new MenuItemSelectedEventArgs(MenuItems.StartGame));
+                    this.IsTransitionAllowed = true;
+                    this.TransitionTag = MenuItems.StartGame;
                 }
 
-                if (this.inputService.IsSelectionMoveDown)
+                if (this.GetSelectionIndex() == 1)
                 {
-                    this.selectionIndex++;
-                    this.inputService.IsSelectionMoveDown = false;
+                    //this.MenuItemSelected(this, new MenuItemSelectedEventArgs(MenuItems.ExitGame));
+                    this.IsTransitionAllowed = true;
+                    this.TransitionTag = MenuItems.ExitGame;
                 }
+            }
 
-                if (this.inputService.IsSelectionMoveUp)
-                {
-                    this.selectionIndex--;
-                    this.inputService.IsSelectionMoveUp = false;
-                }
+            if (this.inputService.IsSelectionMoveDown)
+            {
+                this.selectionIndex++;
+                this.inputService.IsSelectionMoveDown = false;
+            }
+
+            if (this.inputService.IsSelectionMoveUp)
+            {
+                this.selectionIndex--;
+                this.inputService.IsSelectionMoveUp = false;
             }
             
             base.Update(gameTime);

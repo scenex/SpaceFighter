@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="ApplicationStateEngine.cs" />
     <Compile Include="GameStates\GameplayGameState.cs" />
+    <Compile Include="GameStates\IGameStateTransition.cs" />
     <Compile Include="GameStates\IntroGameState.cs" />
     <Compile Include="GameStates\MenuGameState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -24,15 +24,12 @@ namespace SpaceFighter
 
         private readonly GameStateManager gameStateManager = new GameStateManager();
         private readonly StateMachine<Action<double>> applicationStateMachine;
-        private double elapsedTime;
 
         private MenuGameState menuGameState;
         private IntroGameState introGameState;
         private GameplayGameState gameplayGameState;
 
-        private string selectedMenuItem;
-
-        private bool isGameOver;
+        private bool isGameOver; // Todo: Encapsulate in gameplay state
 
         public ApplicationStateEngine(
             Game game, 
@@ -64,13 +61,10 @@ namespace SpaceFighter
                             this.game, 
                             this.inputService);
 
-                        this.menuGameState.MenuItemSelected += this.OnMenuItemSelected;
                         this.gameStateManager.Push(this.menuGameState);
                     }, 
                 delegate
                     {
-                        this.menuGameState.MenuItemSelected -= this.OnMenuItemSelected;
-                        this.selectedMenuItem = MenuItems.None;
                         this.gameStateManager.Pop();
                     });
 
@@ -93,9 +87,10 @@ namespace SpaceFighter
                 () => this.game.Exit(),
                 null);
 
-            intro.AddTransition(menu, () => this.elapsedTime > 4000);
-            menu.AddTransition(gameplay, () => this.selectedMenuItem == MenuItems.StartGame);
-            menu.AddTransition(exit, () => this.selectedMenuItem == MenuItems.ExitGame);
+            intro.AddTransition(menu, () => this.introGameState.IsTransitionAllowed);
+            menu.AddTransition(gameplay, () => this.menuGameState.IsTransitionAllowed && (string)this.menuGameState.TransitionTag == MenuItems.StartGame);
+            menu.AddTransition(exit, () => this.menuGameState.IsTransitionAllowed && (string)this.menuGameState.TransitionTag == MenuItems.ExitGame);
+
             gameplay.AddTransition(menu, () => this.isGameOver);
 
             this.applicationStateMachine = new StateMachine<Action<double>>(intro);
@@ -107,7 +102,6 @@ namespace SpaceFighter
 
         public void Update(GameTime gameTime)
         {
-            this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
             this.gameStateManager.Update(gameTime);
             this.applicationStateMachine.Update();
         }
@@ -141,11 +135,6 @@ namespace SpaceFighter
             {
                 this.gameStateManager.Resume();
             }
-        }
-
-        private void OnMenuItemSelected(object sender, MenuItemSelectedEventArgs menuItemSelectedEventArgs)
-        {
-            this.selectedMenuItem = menuItemSelectedEventArgs.SelectedMenuItem;
         }
     }
 }

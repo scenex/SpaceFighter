@@ -10,17 +10,19 @@ namespace SpaceFighter.GameStates
 
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class GameplayGameState : GameState
+    public class GameplayGameState : GameState, IGameStateTransition
     {
         private readonly Game game;
-
         readonly IGameController gameController;
+        public object TransitionTag { get; private set; }
 
         public GameplayGameState(Game game, IGameController gameController)
         {
             this.game = game;
             this.gameController = gameController;
         }
+
+        public bool IsTransitionAllowed { get; private set; }
 
         protected override void OnEntered()
         {                   

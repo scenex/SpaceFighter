@@ -4,9 +4,9 @@
 
 namespace SpaceFighter.Logic.Screens
 {
-    public class GameplayScreen : IScreenTransition
+    public interface IScreenTransition
     {
-        public bool IsTransitionAllowed { get; private set; }
-        public object TransitionTag { get; private set; }
+        bool IsTransitionAllowed { get; }
+        object TransitionTag { get; }
     }
 }
