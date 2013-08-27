@@ -4,21 +4,32 @@
 
 namespace SpaceFighter.GameStates
 {
+    using System;
+
     using Microsoft.Xna.Framework;
 
     using Nuclex.Game.States;
 
     using SpaceFighter.Logic.Screens;
 
-    public class IntroGameState : GameState, IGameStateTransition
+    public class IntroGameState : GameState, IGameStateTransition, IDrawable
     {
         private readonly Game game;
+
         private IntroScreen introScreen;
+
+        public event EventHandler<EventArgs> DrawOrderChanged;
+        public event EventHandler<EventArgs> VisibleChanged;
+
+        public bool Visible { get; private set; }
+        public int DrawOrder { get; private set; }
+
         public object TransitionTag { get; private set; }
 
         public IntroGameState(Game game)
         {
             this.game = game;
+            this.Visible = true;
         }
 
         public bool IsTransitionAllowed { get; private set; }
@@ -26,13 +37,13 @@ namespace SpaceFighter.GameStates
         protected override void OnEntered()
         {
             this.introScreen = new IntroScreen(this.game);
-            this.game.Components.Add(this.introScreen);
+            this.introScreen.Initialize();
             base.OnEntered();
         }
 
         protected override void OnLeaving()
         {
-            this.game.Components.Remove(this.introScreen);
+            this.introScreen.Dispose();
             base.OnLeaving();
         }
 
@@ -42,12 +53,17 @@ namespace SpaceFighter.GameStates
         /// <param name="gameTime">Provides a snapshot of the Game's timing values</param>
         public override void Update(GameTime gameTime)
         {
-            // Components do their own updating...
+            this.introScreen.Update(gameTime);
 
             if(this.introScreen.IsTransitionAllowed)
             {
                 this.IsTransitionAllowed = true;
             }
+        }
+
+        public void Draw(GameTime gameTime)
+        {
+            this.introScreen.Draw(gameTime);
         }
     }
 }

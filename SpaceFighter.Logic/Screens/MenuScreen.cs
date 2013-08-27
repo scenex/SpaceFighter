@@ -112,8 +112,6 @@ namespace SpaceFighter.Logic.Screens
                 : Color.White * this.currentFadeCurve.Evaluate((float)this.elapsedTime / 1000));
             
             this.spriteBatch.End();
-
-            base.Draw(gameTime);
         }
 
         private int GetSelectionIndex()

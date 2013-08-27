@@ -146,7 +146,7 @@ namespace SpaceFighter
         protected override void Update(GameTime gameTime)
         {
             this.applicationStateEngine.Update(gameTime);            
-            base.Update(gameTime);
+            base.Update(gameTime); // Todo: Check if obsolete
         }
 
         /// <summary>
@@ -155,10 +155,8 @@ namespace SpaceFighter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            this.GraphicsDevice.Clear(Color.Black);
-
+            this.GraphicsDevice.Clear(Color.Black); // Todo: Check if obsolete
             this.applicationStateEngine.Draw(gameTime);
-            base.Draw(gameTime);
         }
 
         #region Post Processing Shader

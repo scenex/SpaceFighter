@@ -33,9 +33,7 @@ namespace SpaceFighter.GameStates
         public MenuGameState(Game game, IInputService inputService)
         {
             this.game = game;
-
             this.inputService = inputService;
-
             this.Visible = true;
         }
 
@@ -47,13 +45,14 @@ namespace SpaceFighter.GameStates
             this.game.Components.Add(this.inputService);
 
             this.menuScreen = new MenuScreen(this.game, this.inputService);
-            this.menuScreen.Initialize();     
+            this.menuScreen.Initialize();
             base.OnEntered();
         }
 
         protected override void OnLeaving()
         {
             this.game.Components.Remove(this.inputService);
+            this.menuScreen.Dispose();
             base.OnLeaving();
         }
 
