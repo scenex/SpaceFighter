@@ -4,29 +4,38 @@
 
 namespace SpaceFighter.GameStates
 {
+    using System;
+
     using Microsoft.Xna.Framework;
 
     using Nuclex.Game.States;
 
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class GameplayGameState : GameState, IGameStateTransition
+    public class GameplayGameState : GameState, IGameStateTransition, IDrawable
     {
         private readonly Game game;
-        readonly IGameController gameController;   
+        readonly IGameController gameController;
+
+        public event EventHandler<EventArgs> DrawOrderChanged;
+        public event EventHandler<EventArgs> VisibleChanged;
+
+        public bool Visible { get; private set; }
+        public int DrawOrder { get; private set; }
 
         public GameplayGameState(Game game, IGameController gameController)
         {
             this.game = game;
             this.gameController = gameController;
+            this.Visible = true;
         }
 
         public object TransitionTag { get; private set; }
         public bool IsTransitionAllowed { get; private set; }
 
         protected override void OnEntered()
-        {                   
-            this.game.Components.Add(this.gameController);           
+        {                     
+            this.gameController.Initialize();
             this.gameController.StartGame();       
             base.OnEntered();
         }
@@ -56,7 +65,12 @@ namespace SpaceFighter.GameStates
         /// <param name="gameTime">Provides a snapshot of the Game's timing values</param>
         public override void Update(GameTime gameTime)
         {
-            // Components do their own updating...
+            ((IUpdateable)this.gameController).Update(gameTime);
+        }
+
+        public void Draw(GameTime gameTime)
+        {
+            ((IDrawable)this.gameController).Draw(gameTime);
         }
     }
 }

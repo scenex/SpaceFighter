@@ -7,13 +7,17 @@ namespace SpaceFighter.Logic.Services.Implementations
     using System;
     using System.Linq;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     using SpaceFighter.Logic.Services.Interfaces;
 
-    public class GameController : GameComponent, IGameController
+    public class GameController : DrawableGameComponent, IGameController
     {
         private GameStateEngine gameStateEngine;
 
         private readonly Game game;
+        private SpriteBatch spriteBatch;
+        private RenderTarget2D renderTarget;
 
         private readonly ICollisionDetectionService collisionDetectionService;
         private readonly IPlayerService playerService;
@@ -64,7 +68,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.game.Components.Add(this.debugService);
             this.game.Components.Add(this.audioService);
             this.game.Components.Add(this.cameraService);
-
             base.Initialize();
         }
 
@@ -72,6 +75,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             // DISABLE MUSIC WHILE DEVELOPMENT
             // this.audioService.PlaySound("music2");
+
+            this.renderTarget = new RenderTarget2D(this.GraphicsDevice, this.game.GraphicsDevice.PresentationParameters.BackBufferWidth, this.game.GraphicsDevice.PresentationParameters.BackBufferHeight);
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
@@ -131,12 +136,42 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
+        protected override void LoadContent()
+        {
+            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
+            base.LoadContent();
+        }
+
         public override void Update(GameTime gameTime)
         {
             this.UpdatePlayerPositionForEnemies();
             this.gameStateEngine.Update(gameTime);
             
             base.Update(gameTime);
+        }
+        
+        public override void Draw(GameTime gameTime)
+        {
+            //this.game.GraphicsDevice.SetRenderTarget(this.renderTarget);
+            //GraphicsDevice.Clear(Color.Black);
+
+            foreach (var component in this.Game.Components)
+            {
+                var drawableComponent = component as IDrawable;
+                if (drawableComponent != null)
+                {
+                    if(drawableComponent.Visible)
+                    {
+                        drawableComponent.Draw(gameTime);
+                    }
+                }
+            }
+
+            //this.game.GraphicsDevice.SetRenderTarget(null);
+
+            //spriteBatch.Begin();
+            //spriteBatch.Draw(this.renderTarget, this.renderTarget.Bounds, Color.White * 1.0f);
+            //spriteBatch.End();
         }
 
         private void UpdatePlayerPositionForEnemies()
