@@ -68,15 +68,19 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.game.Components.Add(this.debugService);
             this.game.Components.Add(this.audioService);
             this.game.Components.Add(this.cameraService);
+
             base.Initialize();
+
+            this.renderTarget = new RenderTarget2D(
+                this.GraphicsDevice,
+                this.game.GraphicsDevice.PresentationParameters.BackBufferWidth,
+                this.game.GraphicsDevice.PresentationParameters.BackBufferHeight);
         }
 
         public void StartGame()
         {
             // DISABLE MUSIC WHILE DEVELOPMENT
             // this.audioService.PlaySound("music2");
-
-            this.renderTarget = new RenderTarget2D(this.GraphicsDevice, this.game.GraphicsDevice.PresentationParameters.BackBufferWidth, this.game.GraphicsDevice.PresentationParameters.BackBufferHeight);
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
@@ -99,6 +103,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void EndGame()
         {
+            this.GraphicsDevice.SetRenderTarget(null);
+
             this.collisionDetectionService.EnemyHit -= this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit -= this.OnPlayerHit;
             this.collisionDetectionService.PlayerEnemyHit -= this.OnPlayerEnemyHit;
@@ -148,13 +154,12 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.gameStateEngine.Update(gameTime);
             
             base.Update(gameTime);
+
+            this.game.GraphicsDevice.SetRenderTarget(renderTarget);
         }
         
         public override void Draw(GameTime gameTime)
         {
-            //this.game.GraphicsDevice.SetRenderTarget(this.renderTarget);
-            //GraphicsDevice.Clear(Color.Black);
-
             foreach (var component in this.Game.Components)
             {
                 var drawableComponent = component as IDrawable;
@@ -167,11 +172,12 @@ namespace SpaceFighter.Logic.Services.Implementations
                 }
             }
 
-            //this.game.GraphicsDevice.SetRenderTarget(null);
+            this.game.GraphicsDevice.SetRenderTarget(null);
+            this.GraphicsDevice.Clear(Color.Black);
 
-            //spriteBatch.Begin();
-            //spriteBatch.Draw(this.renderTarget, this.renderTarget.Bounds, Color.White * 1.0f);
-            //spriteBatch.End();
+            spriteBatch.Begin();
+            spriteBatch.Draw(renderTarget, renderTarget.Bounds, Color.White * 0.8f);
+            spriteBatch.End();
         }
 
         private void UpdatePlayerPositionForEnemies()
