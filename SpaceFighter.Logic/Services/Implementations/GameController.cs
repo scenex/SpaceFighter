@@ -19,6 +19,11 @@ namespace SpaceFighter.Logic.Services.Implementations
         private SpriteBatch spriteBatch;
         private RenderTarget2D renderTarget;
 
+        private double elapsedTime;
+
+        private Curve fadeInCurve;
+        private Curve fadeOutCurve;
+
         private readonly ICollisionDetectionService collisionDetectionService;
         private readonly IPlayerService playerService;
         private readonly IEnemyService enemyService;
@@ -81,7 +86,9 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             // DISABLE MUSIC WHILE DEVELOPMENT
             // this.audioService.PlaySound("music2");
-
+            
+            this.elapsedTime = 0;
+            
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
             this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
@@ -145,11 +152,17 @@ namespace SpaceFighter.Logic.Services.Implementations
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
+            
+            this.fadeInCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeIn");
+            this.fadeOutCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeOut");
+
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
+            this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+
             this.UpdatePlayerPositionForEnemies();
             this.gameStateEngine.Update(gameTime);
             
@@ -176,7 +189,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(renderTarget, renderTarget.Bounds, Color.White * 0.8f);
+            spriteBatch.Draw(renderTarget, renderTarget.Bounds, Color.White * this.fadeInCurve.Evaluate((float)this.elapsedTime / 1000));
             spriteBatch.End();
         }
 

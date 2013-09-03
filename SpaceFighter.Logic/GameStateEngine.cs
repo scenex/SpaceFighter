@@ -72,9 +72,9 @@ namespace SpaceFighter.Logic
                 () => EventAggregator.Fire(this, "GameOver"),
                 null);
 
-            starting.AddTransition(started, () => this.elapsedTime > 2000);
+            starting.AddTransition(started, () => this.elapsedTime > 1500);
             started.AddTransition(ending, () => this.enemyService.IsBossEliminated);
-            ending.AddTransition(ended, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 2000);
+            ending.AddTransition(ended, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 1500);
             ended.AddTransition(starting, () => true);
 
             started.AddTransition(paused, () => this.inputService.IsGamePaused == true);
