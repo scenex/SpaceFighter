@@ -13,8 +13,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class GameController : DrawableGameComponent, IGameController
     {
-        private GameStateEngine gameStateEngine;
-
         private readonly Game game;
         private SpriteBatch spriteBatch;
         private RenderTarget2D renderTarget;
@@ -61,8 +59,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.gameStateEngine = new GameStateEngine(this.playerService, this.enemyService, this.inputService);
-
             this.game.Components.Add(new FramerateCounter(this.game));
             this.game.Components.Add(this.collisionDetectionService);
             this.game.Components.Add(this.playerService);
@@ -164,7 +160,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             this.UpdatePlayerPositionForEnemies();
-            this.gameStateEngine.Update(gameTime);
             
             base.Update(gameTime);
 

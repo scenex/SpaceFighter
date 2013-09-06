@@ -10,13 +10,15 @@ namespace SpaceFighter.Logic.Screens
 
     public class GameplayScreen : IScreenTransition
     {
+        private readonly GameStateEngine gameStateEngine;
         private readonly IGameController gameController;
 
         public bool IsTransitionAllowed { get; private set; }
         public object TransitionTag { get; private set; }
 
-        public GameplayScreen(IGameController gameController)
+        public GameplayScreen(GameStateEngine gameStateEngine, IGameController gameController)
         {
+            this.gameStateEngine = gameStateEngine;
             this.gameController = gameController;
         }
 
@@ -47,6 +49,7 @@ namespace SpaceFighter.Logic.Screens
 
         public void Update(GameTime gameTime)
         {
+            this.gameStateEngine.Update(gameTime);
             ((IUpdateable)this.gameController).Update(gameTime);
         }
 

@@ -5,6 +5,7 @@
 namespace SpaceFighter.Logic
 {
     using System;
+    using System.Diagnostics;
 
     using Microsoft.Xna.Framework;
 
@@ -24,6 +25,8 @@ namespace SpaceFighter.Logic
         
         private double elapsedTime;
         private double elapsedTimeSinceEndingTransition;
+
+        private bool reset;
 
         public GameStateEngine(IPlayerService playerService, IEnemyService enemyService, IInputService inputService)
         {
@@ -70,7 +73,7 @@ namespace SpaceFighter.Logic
                 "GameOver",
                 null,
                 () => EventAggregator.Fire(this, "GameOver"),
-                null);
+                () => this.reset = false);
 
             starting.AddTransition(started, () => this.elapsedTime > 1500);
             started.AddTransition(ending, () => this.enemyService.IsBossEliminated);
@@ -81,6 +84,8 @@ namespace SpaceFighter.Logic
             paused.AddTransition(started, () => this.inputService.IsGamePaused == false);
             
             started.AddTransition(gameOver, () => this.playerService.Player.Health <= 0);
+
+            gameOver.AddTransition(starting, () => this.reset);
             
             this.gameStateMachine = new StateMachine<Action<double>>(starting);
         }
@@ -89,6 +94,14 @@ namespace SpaceFighter.Logic
         {
             this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
             this.gameStateMachine.Update();
+
+            Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
+        }
+
+        public void Reset()
+        {
+            this.elapsedTime = 0;
+            this.reset = true;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace SpaceFighter
     using Nuclex.Game.States;
 
     using SpaceFighter.GameStates;
+    using SpaceFighter.Logic;
     using SpaceFighter.Logic.EventManager;
     using SpaceFighter.Logic.Screens;
     using SpaceFighter.Logic.Services.Interfaces;
@@ -19,6 +20,9 @@ namespace SpaceFighter
     public class ApplicationStateEngine
     {
         private readonly Game game;
+
+        private readonly GameStateEngine gameStateEngine;
+
         private readonly IInputService inputService;
         private readonly IGameController gameController;
 
@@ -32,11 +36,13 @@ namespace SpaceFighter
         private bool isGameOver; // Todo: Encapsulate in gameplay state
 
         public ApplicationStateEngine(
-            Game game, 
+            Game game,
+            GameStateEngine gameStateEngine,
             IInputService inputService,
             IGameController gameController)
         {
             this.game = game;
+            this.gameStateEngine = gameStateEngine;
             this.inputService = inputService;
             this.gameController = gameController;
 
@@ -73,9 +79,11 @@ namespace SpaceFighter
                 null,
                 delegate
                     {
+                        this.gameStateEngine.Reset();
+
                         this.gameplayGameState = new GameplayGameState(
                             this.game,
-                            this.gameController);
+                            this.gameStateEngine, this.gameController);
 
                         this.gameStateManager.Push(this.gameplayGameState);
                     }, 
