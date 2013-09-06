@@ -10,12 +10,13 @@ namespace SpaceFighter.GameStates
 
     using Nuclex.Game.States;
 
+    using SpaceFighter.Logic.Screens;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class GameplayGameState : GameState, IGameStateTransition, IDrawable
     {
         private readonly Game game;
-        readonly IGameController gameController;
+        private readonly GameplayScreen gameplayScreen;
 
         public event EventHandler<EventArgs> DrawOrderChanged;
         public event EventHandler<EventArgs> VisibleChanged;
@@ -26,36 +27,37 @@ namespace SpaceFighter.GameStates
         public GameplayGameState(Game game, IGameController gameController)
         {
             this.game = game;
-            this.gameController = gameController;
             this.Visible = true;
+
+            this.gameplayScreen = new GameplayScreen(gameController);
         }
 
         public object TransitionTag { get; private set; }
         public bool IsTransitionAllowed { get; private set; }
 
         protected override void OnEntered()
-        {                     
-            this.gameController.Initialize();
-            this.gameController.StartGame();       
+        {
+            this.gameplayScreen.Initialize();
+            this.gameplayScreen.StartGame();       
             base.OnEntered();
         }
 
         protected override void OnLeaving()
         {
-            this.gameController.EndGame();
+            this.gameplayScreen.EndGame();
             this.game.Components.Clear();
             base.OnLeaving();
         }
 
         protected override void OnPause()
         {
-            this.gameController.PauseGame();
+            this.gameplayScreen.PauseGame();
             base.OnPause();
         }
 
         protected override void OnResume()
         {
-            this.gameController.ResumeGame();
+            this.gameplayScreen.ResumeGame();
             base.OnResume();
         }
 
@@ -65,12 +67,12 @@ namespace SpaceFighter.GameStates
         /// <param name="gameTime">Provides a snapshot of the Game's timing values</param>
         public override void Update(GameTime gameTime)
         {
-            ((IUpdateable)this.gameController).Update(gameTime);
+            this.gameplayScreen.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)
         {
-            ((IDrawable)this.gameController).Draw(gameTime);
+            this.gameplayScreen.Draw(gameTime);
         }
     }
 }
