@@ -67,6 +67,7 @@ namespace SpaceFighter
             this.ComposeServices();
 
             var gameStateEngine = new GameStateEngine(
+                this.gameController,
                 this.playerService, 
                 this.enemyService, 
                 this.inputService);
@@ -74,8 +75,7 @@ namespace SpaceFighter
             this.applicationStateEngine = new ApplicationStateEngine(
                 this,
                 gameStateEngine,
-                this.inputService,
-                this.gameController);
+                this.inputService);
 
             base.Initialize();
         }

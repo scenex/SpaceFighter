@@ -24,7 +24,6 @@ namespace SpaceFighter
         private readonly GameStateEngine gameStateEngine;
 
         private readonly IInputService inputService;
-        private readonly IGameController gameController;
 
         private readonly GameStateManager gameStateManager = new GameStateManager();
         private readonly StateMachine<Action<double>> applicationStateMachine;
@@ -33,18 +32,14 @@ namespace SpaceFighter
         private IntroGameState introGameState;
         private GameplayGameState gameplayGameState;
 
-        private bool isGameOver; // Todo: Encapsulate in gameplay state
-
         public ApplicationStateEngine(
             Game game,
             GameStateEngine gameStateEngine,
-            IInputService inputService,
-            IGameController gameController)
+            IInputService inputService)
         {
             this.game = game;
             this.gameStateEngine = gameStateEngine;
             this.inputService = inputService;
-            this.gameController = gameController;
 
             var intro = new State<Action<double>>(
                 "Intro",
@@ -61,18 +56,13 @@ namespace SpaceFighter
                 null,
                 delegate
                     {
-                        this.isGameOver = false;
-
                         this.menuGameState = new MenuGameState(
                             this.game, 
                             this.inputService);
 
                         this.gameStateManager.Push(this.menuGameState);
-                    }, 
-                delegate
-                    {
-                        this.gameStateManager.Pop();
-                    });
+                    },
+                () => this.gameStateManager.Pop());
 
             var gameplay = new State<Action<double>>(
                 "Gameplay",
@@ -83,7 +73,7 @@ namespace SpaceFighter
 
                         this.gameplayGameState = new GameplayGameState(
                             this.game,
-                            this.gameStateEngine, this.gameController);
+                            this.gameStateEngine);
 
                         this.gameStateManager.Push(this.gameplayGameState);
                     }, 
@@ -98,12 +88,10 @@ namespace SpaceFighter
             intro.AddTransition(menu, () => this.introGameState.IsTransitionAllowed);
             menu.AddTransition(gameplay, () => this.menuGameState.IsTransitionAllowed && (string)this.menuGameState.TransitionTag == MenuItems.StartGame);
             menu.AddTransition(exit, () => this.menuGameState.IsTransitionAllowed && (string)this.menuGameState.TransitionTag == MenuItems.ExitGame);
-            gameplay.AddTransition(menu, () => this.isGameOver);
+            gameplay.AddTransition(menu, () => this.gameplayGameState.IsTransitionAllowed);
 
             this.applicationStateMachine = new StateMachine<Action<double>>(intro);
 
-            EventAggregator.Subscribe(this, "GameOver");
-            EventAggregator.Subscribe(this, "LevelCompleted");
             EventAggregator.Subscribe(this, "PauseToggled");
         }
 
@@ -116,19 +104,6 @@ namespace SpaceFighter
         public void Draw(GameTime gameTime)
         {
             this.gameStateManager.Draw(gameTime);
-        }
-
-        [Subscription("GameOver")]
-        public void GameOverSubscriptionHandler()
-        {
-            this.isGameOver = true;
-        }
-
-        [Subscription("LevelCompleted")]
-        public void LevelCompletedSubscriptionHandler()
-        {
-            this.gameController.EndGame();
-            this.gameController.StartGame();
         }
 
         [Subscription("PauseToggled")]

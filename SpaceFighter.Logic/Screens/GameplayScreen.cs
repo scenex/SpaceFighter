@@ -6,56 +6,56 @@ namespace SpaceFighter.Logic.Screens
 {
     using Microsoft.Xna.Framework;
 
-    using SpaceFighter.Logic.Services.Interfaces;
-
     public class GameplayScreen : IScreenTransition
     {
         private readonly GameStateEngine gameStateEngine;
-        private readonly IGameController gameController;
 
         public bool IsTransitionAllowed { get; private set; }
         public object TransitionTag { get; private set; }
 
-        public GameplayScreen(GameStateEngine gameStateEngine, IGameController gameController)
+        public GameplayScreen(GameStateEngine gameStateEngine)
         {
             this.gameStateEngine = gameStateEngine;
-            this.gameController = gameController;
         }
 
         public void Initialize()
         {
-            this.gameController.Initialize();
+            this.gameStateEngine.Initialize();
         }
 
         public void StartGame()
         {
-            this.gameController.StartGame();
+            this.gameStateEngine.StartGame();
         }
 
         public void EndGame()
         {
-            this.gameController.EndGame();
+            this.gameStateEngine.EndGame();
         }
 
         public void PauseGame()
         {
-            this.gameController.PauseGame();
+            this.gameStateEngine.PauseGame();
         }
 
         public void ResumeGame()
         {
-            this.gameController.ResumeGame();
+            this.gameStateEngine.ResumeGame();
         }
 
         public void Update(GameTime gameTime)
         {
             this.gameStateEngine.Update(gameTime);
-            ((IUpdateable)this.gameController).Update(gameTime);
+
+            if(gameStateEngine.CurrentState == "GameOver") // Todo: Change to use name dictionary
+            {
+                this.IsTransitionAllowed = true;
+            }
         }
 
         public void Draw(GameTime gameTime)
         {
-            ((IDrawable)this.gameController).Draw(gameTime);
+            this.gameStateEngine.Draw(gameTime);
         }
     }
 }

@@ -15,6 +15,8 @@ namespace SpaceFighter.Logic
 
     public class GameStateEngine
     {
+        private readonly IGameController gameController;
+
         private readonly IPlayerService playerService;
 
         private readonly IEnemyService enemyService;
@@ -28,8 +30,9 @@ namespace SpaceFighter.Logic
 
         private bool reset;
 
-        public GameStateEngine(IPlayerService playerService, IEnemyService enemyService, IInputService inputService)
+        public GameStateEngine(IGameController gameController, IPlayerService playerService, IEnemyService enemyService, IInputService inputService)
         {
+            this.gameController = gameController;
             this.playerService = playerService;
             this.enemyService = enemyService;
             this.inputService = inputService;
@@ -59,7 +62,9 @@ namespace SpaceFighter.Logic
                     {
                         this.elapsedTime = 0;
                         this.elapsedTimeSinceEndingTransition = 0;
-                        EventAggregator.Fire(this, "LevelCompleted");
+
+                        this.gameController.EndGame();
+                        this.gameController.StartGame();
                     }, 
                 null);
 
@@ -72,7 +77,7 @@ namespace SpaceFighter.Logic
             var gameOver = new State<Action<double>>(
                 "GameOver",
                 null,
-                () => EventAggregator.Fire(this, "GameOver"),
+                null,
                 () => this.reset = false);
 
             starting.AddTransition(started, () => this.elapsedTime > 1500);
@@ -90,18 +95,58 @@ namespace SpaceFighter.Logic
             this.gameStateMachine = new StateMachine<Action<double>>(starting);
         }
 
+        public string CurrentState 
+        { 
+            get
+            {
+                return this.gameStateMachine.CurrentState.Name;
+            }
+        }
+
         public void Update(GameTime gameTime)
         {
             this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
             this.gameStateMachine.Update();
 
+            ((IUpdateable)this.gameController).Update(gameTime);
+
             Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
+        }
+
+        public void Draw(GameTime gameTime)
+        {
+            ((IDrawable)this.gameController).Draw(gameTime);
         }
 
         public void Reset()
         {
             this.elapsedTime = 0;
             this.reset = true;
+        }
+
+        public void Initialize()
+        {
+            this.gameController.Initialize();
+        }
+
+        public void StartGame()
+        {
+            this.gameController.StartGame();
+        }
+
+        public void EndGame()
+        {
+            this.gameController.EndGame();
+        }
+
+        public void PauseGame()
+        {
+            this.gameController.PauseGame();
+        }
+
+        public void ResumeGame()
+        {
+            this.gameController.ResumeGame();
         }
     }
 }
