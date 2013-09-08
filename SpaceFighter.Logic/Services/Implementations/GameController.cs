@@ -5,6 +5,7 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -21,6 +22,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private Curve fadeInCurve;
         private Curve fadeOutCurve;
+        private readonly Dictionary<string, Curve> curves = new Dictionary<string, Curve>(); 
 
         private readonly ICollisionDetectionService collisionDetectionService;
         private readonly IPlayerService playerService;
@@ -31,6 +33,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly ICameraService cameraService;
         private readonly IAudioService audioService;
         private IDebugService debugService;
+
+        private string currentState;
 
         public GameController(
             Game game,
@@ -55,7 +59,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.debugService = debugService;
             this.audioService = audioService;
             this.cameraService = cameraService;
+
+            this.currentState = "Starting";
         }
+
+
 
         public override void Initialize()
         {
@@ -76,6 +84,22 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.GraphicsDevice,
                 this.game.GraphicsDevice.PresentationParameters.BackBufferWidth,
                 this.game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+        }
+
+        public string CurrentState
+        {
+            get
+            {
+                return this.currentState;
+            }
+            set
+            {
+                if(this.currentState != value)
+                {
+                    this.elapsedTime = 0;
+                    this.currentState = value;
+                }
+            }
         }
 
         public void StartGame()
@@ -152,6 +176,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.fadeInCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeIn");
             this.fadeOutCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeOut");
 
+            this.curves.Add("Starting", this.fadeInCurve);
+            this.curves.Add("Ending", this.fadeOutCurve);
+
             base.LoadContent();
         }
 
@@ -184,7 +211,15 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(renderTarget, renderTarget.Bounds, Color.White * this.fadeInCurve.Evaluate((float)this.elapsedTime / 1000));
+
+            spriteBatch.Draw(
+                renderTarget, 
+                renderTarget.Bounds, 
+                this.currentState == "Starting" || this.currentState == "Ending" 
+                    ? Color.White * this.curves[this.CurrentState].Evaluate((float)this.elapsedTime / 1000)
+                    : Color.White * 1
+                );
+            
             spriteBatch.End();
         }
 

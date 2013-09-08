@@ -52,7 +52,7 @@ namespace SpaceFighter.Logic
             var ending = new State<Action<double>>(
                 "Ending",
                 null,
-                () => this.elapsedTimeSinceEndingTransition = elapsedTime,
+                () => this.elapsedTimeSinceEndingTransition = this.elapsedTime,
                 null);
 
             var ended = new State<Action<double>>(
@@ -82,14 +82,14 @@ namespace SpaceFighter.Logic
 
             starting.AddTransition(started, () => this.elapsedTime > 1500);
             started.AddTransition(ending, () => this.enemyService.IsBossEliminated);
-            ending.AddTransition(ended, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 1500);
-            ended.AddTransition(starting, () => true);
+            started.AddTransition(ending, () => this.playerService.Player.Health <= 0);
 
             started.AddTransition(paused, () => this.inputService.IsGamePaused == true);
             paused.AddTransition(started, () => this.inputService.IsGamePaused == false);
-            
-            started.AddTransition(gameOver, () => this.playerService.Player.Health <= 0);
 
+            ending.AddTransition(ended, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 1500 && this.enemyService.IsBossEliminated); // Todo: Extend state engine to store previous state.
+            ending.AddTransition(gameOver, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 1500 && this.playerService.Player.Health <= 0); // Todo: Extend state engine to store previous state.
+            ended.AddTransition(starting, () => true);
             gameOver.AddTransition(starting, () => this.reset);
             
             this.gameStateMachine = new StateMachine<Action<double>>(starting);
@@ -108,9 +108,10 @@ namespace SpaceFighter.Logic
             this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
             this.gameStateMachine.Update();
 
+            this.gameController.CurrentState = this.CurrentState;
             ((IUpdateable)this.gameController).Update(gameTime);
 
-            Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
+            //Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
         }
 
         public void Draw(GameTime gameTime)
