@@ -33,7 +33,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private Vector2 targetPosition;
         private Queue<Vector2> waypoints = new Queue<Vector2>();
 
-        public EnemyA(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition, bool isBoss) : base(game, cameraService, pathFindingService, startPosition)
+        public EnemyA(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition, bool isBoss) : base(game, cameraService, startPosition)
         {
             this.isBoss = isBoss;
             this.Health = 100;
@@ -43,6 +43,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             
             this.behaviourStrategySeek = new BehaviourStrategySeek();
             this.behaviourStrategyFlee = new BehaviourStrategyFlee();
+            
+            this.Game.Components.Add(this);
 
             this.weapon = new WeaponEnemyA(this.Game, this.cameraService); // Todo: Factory
             this.Game.Components.Add(this.weapon);
@@ -50,7 +52,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         public override void Initialize()
         {
-            this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);
+            this.waypoints = this.pathFindingService.GetPathToRandomTile(this.Position);
             base.Initialize();
         }
 
@@ -83,7 +85,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                     {
                         while (this.waypoints.Count == 0)
                         {
-                            this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);
+                            this.waypoints = this.pathFindingService.GetPathToRandomTile(this.Position);
                         }
                     }
                     else
@@ -91,7 +93,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                         this.waypoints.Dequeue();
                         while (this.waypoints.Count == 0)
                         {
-                            this.waypoints = this.PathFindingService.GetPathToRandomTile(this.Position);
+                            this.waypoints = this.pathFindingService.GetPathToRandomTile(this.Position);
                         }
                     }
                 }
