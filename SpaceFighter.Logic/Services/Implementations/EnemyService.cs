@@ -40,7 +40,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void SpawnEnemies()
         {
             this.IsBossEliminated = false;
-            this.enemyFactory.Create<EnemyA>(new Vector2(400, 400), true);
+            this.enemyFactory.Create<EnemyAutonomous>(new Vector2(400, 400), true);
         }
 
         public void UnspawnEnemies()

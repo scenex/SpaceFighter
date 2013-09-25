@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="Behaviours\Implementations\BehaviourStrategy.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyArrive.cs" />
+    <Compile Include="Entities\Implementations\Enemies\EnemyScripted.cs" />
     <Compile Include="EventManager\EventAggregator.cs" />
     <Compile Include="EventManager\Subscriber.cs" />
     <Compile Include="EventManager\SubscriptionAttribute.cs" />
@@ -123,7 +124,7 @@
     <Compile Include="EnemyState.cs" />
     <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />
-    <Compile Include="Entities\Implementations\Enemies\EnemyA.cs" />
+    <Compile Include="Entities\Implementations\Enemies\EnemyAutonomous.cs" />
     <Compile Include="Entities\Implementations\Players\PlayerA.cs" />
     <Compile Include="Entities\Implementations\Weapons\WeaponPlayerA.cs" />
     <Compile Include="Entities\Implementations\Weapons\WeaponEnemyA.cs" />

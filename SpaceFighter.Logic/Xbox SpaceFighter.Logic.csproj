@@ -51,8 +51,9 @@
     <Compile Include="EnemyFactory.cs" />
     <Compile Include="EnemyHitEventArgs.cs" />
     <Compile Include="EnemyState.cs" />
-    <Compile Include="Entities\Implementations\Enemies\EnemyA.cs" />
+    <Compile Include="Entities\Implementations\Enemies\EnemyAutonomous.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyBase.cs" />
+    <Compile Include="Entities\Implementations\Enemies\EnemyScripted.cs" />
     <Compile Include="Entities\Implementations\Players\PlayerA.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA1.cs" />
     <Compile Include="Entities\Implementations\WeaponStrategies\WeaponStrategyA2.cs" />

@@ -16,7 +16,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
 
-    public class EnemyA : EnemyBase
+    public class EnemyAutonomous : EnemyBase
     {
         private readonly ICameraService cameraService;
 
@@ -33,7 +33,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private Vector2 targetPosition;
         private Queue<Vector2> waypoints = new Queue<Vector2>();
 
-        public EnemyA(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition, bool isBoss) : base(game, cameraService, startPosition)
+        public EnemyAutonomous(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition, bool isBoss) : base(game, cameraService, startPosition)
         {
             this.isBoss = isBoss;
             this.Health = 100;

@@ -33,7 +33,7 @@ namespace SpaceFighter.Logic
                 this.terrainService.VerticalTileCount);
         }
 
-        public T Create<T>(Vector2 startPosition, bool isBoss) where T : EnemyA
+        public T Create<T>(Vector2 startPosition, bool isBoss) where T : EnemyAutonomous
         {
             return (T)Activator.CreateInstance(typeof(T), game, cameraService, pathFindingService, startPosition, isBoss);
         }

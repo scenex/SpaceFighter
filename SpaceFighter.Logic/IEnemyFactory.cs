@@ -10,6 +10,6 @@ namespace SpaceFighter.Logic
 
     public interface IEnemyFactory
     {
-        T Create<T>(Vector2 startPosition, bool isBoss) where T : EnemyA;
+        T Create<T>(Vector2 startPosition, bool isBoss) where T : EnemyAutonomous;
     }
 }
