@@ -5,15 +5,17 @@ Codename: 'Space Fighter' Backlog
 What's currently on:
 ====================
 
-- Game state management
-- Glowing edges and trails for shots
-- Particle system for explosions
+- Scripted enemies
+- Level editor
+- Boss system
+- Procedural background gfx
 
 
 What's next:
 ============
 
 - Radial electromagnetic shock wave
+- Screen distortion effect
 - HUD with score, energy, lives, special weapons in title safe area
 - More accurate collision detection
 - Time system
@@ -23,25 +25,16 @@ What's next:
 - Boss sprites
 
 - Input device configuration
-- Screen menu start game, options
-- Screen pause
-- Screen high score
-- Screen company name 
-
-- Boss system
-- Level scripting
-- Level editor
 
 - 2 player mode offline
 - 2 player mode online
 
 - Acceptance/Integration testing
-
 - Collision detection with terrain
-
-- Game restart
-
 - Farseer physics integration
+
+- Glowing edges and trails for shots
+- Particle system for explosions
 
 
 DONE:
@@ -69,3 +62,9 @@ DONE:
 - Wandering steering behavior (buggy)
 - A* path finding
 - Xbox controller under Windows
+- Game state management
+- Screen company name 
+- Screen menu start game, options
+- Screen pause
+- Screen high score
+- Game restart
