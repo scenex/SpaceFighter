@@ -61,7 +61,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         protected override void UpdatePosition()
         {
-            // Todo
+            // Todo Fix:
+            this.Position = Vector2.CatmullRom(
+                this.Position, 
+                this.Position + new Vector2(1, 1), 
+                this.Position + new Vector2(2, 3), 
+                this.Position + new Vector2(4, 2), 0.1f);
         }
 
         protected override void UpdateWeapon(TimeSpan elapsed)
@@ -93,42 +98,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 null,
                 null);
 
-            var patrol = new State<Action<double>>(
-                EnemyState.Patrol,
-                delegate { this.targetPosition = this.waypoints.Peek(); },
-                delegate
-                    {
-                        this.shootingStrategy = null;
-
-                        this.IsHealthAdded = false;
-                        this.IsHealthSubtracted = false;
-                    },             
-                null);
-
-            var attack = new State<Action<double>>(
-                EnemyState.Attack,
-                delegate { this.targetPosition = this.PlayerPosition; },
-                delegate
-                    {
-                        this.shootingStrategy = new WeaponStrategyEnemyA();
-
-                        this.IsHealthAdded = false;
-                        this.IsHealthSubtracted = false;
-                    },  
-                null);
-
-            var retreat = new State<Action<double>>(
-                EnemyState.Retreat,
-                delegate { this.targetPosition = this.PlayerPosition; },
-                delegate
-                    {
-                        this.shootingStrategy = null;
-
-                        this.IsHealthAdded = false;
-                        this.IsHealthSubtracted = false;
-                    },  
-                null);
-
             var dying = new State<Action<double>>(
                 EnemyState.Dying,
                 null,
@@ -147,19 +116,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 () => this.Game.Components.Remove(this),
                 null);
 
-            alive.AddTransition(patrol, () => true);
-
-            patrol.AddTransition(attack, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() < 200);
-            patrol.AddTransition(retreat, () => this.IsHealthSubtracted);
-            patrol.AddTransition(dying, () => this.Health <= 0);
-
-            attack.AddTransition(retreat, () => this.IsHealthSubtracted);
-            attack.AddTransition(patrol, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() > 200);
-            attack.AddTransition(dying, () => this.Health <= 0);
-
-            //retreat.AddTransition(attack, () => ...); <- Should that be even possible?
-            retreat.AddTransition(patrol, () => new Vector2(this.PlayerPosition.X - this.Position.X, this.PlayerPosition.Y - this.Position.Y).Length() > 200);
-            retreat.AddTransition(dying, () => this.Health <= 0);
+            alive.AddTransition(dying, () => this.Health <= 0);
+            //alive.AddTransition(dead, () => this.Health >= 0 && this.Position == outofscreen);
 
             dying.AddTransition(dead, () => this.spriteManager.IsAnimationDone(this.stateMachine.CurrentState.Name));
 
