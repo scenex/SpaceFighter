@@ -31,16 +31,16 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private bool isOffscreen;
 
-        public EnemyScripted(Game game, ICameraService cameraService, Vector2 startPosition, bool isBoss) : base(game, cameraService, startPosition)
+        public EnemyScripted(Game game, ICameraService cameraService, Queue<Vector2> waypoints, bool isBoss) : base(game, cameraService)
         {
+            this.waypoints = waypoints;
             this.isBoss = isBoss;
             this.Health = 100;
-
-            this.waypoints.Enqueue(new Vector2(400, 100));
-            this.waypoints.Enqueue(new Vector2(700, 100));
-            this.waypoints.Enqueue(new Vector2(700, 500));
-            this.waypoints.Enqueue(new Vector2(400, 500));
-
+            
+            this.Position = waypoints.Peek();
+            waypoints.Dequeue();
+            this.targetPosition = waypoints.Peek();
+            
             this.behaviourStrategy = new BehaviourStrategySeek();
             this.cameraService = cameraService;
             
@@ -78,7 +78,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 this.Position = this.behaviourStrategy.Execute(this.Position, this.targetPosition);
 
                 // Target position reached?
-                if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < 40) // Todo: Magic number -> TileSize: 80 / 2 = 40
+                if (new Vector2(this.targetPosition.X - this.Position.X, this.targetPosition.Y - this.Position.Y).Length() < 40) // Todo: Magic number -> TileSize: 80 / 2 = 40 || Tweak radius
                 {
                     if (this.waypoints.Count != 0)
                     {

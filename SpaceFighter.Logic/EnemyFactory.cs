@@ -5,6 +5,8 @@
 namespace SpaceFighter.Logic
 {
     using System;
+    using System.Collections.Generic;
+
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Entities.Implementations.Enemies;
     using SpaceFighter.Logic.Services.Implementations;
@@ -38,9 +40,9 @@ namespace SpaceFighter.Logic
             return (T)Activator.CreateInstance(typeof(T), game, cameraService, pathFindingService, startPosition, isBoss);
         }
 
-        public T CreateScripted<T>(Vector2 startPosition, bool isBoss) where T : EnemyScripted
+        public T CreateScripted<T>(Queue<Vector2> waypoints, bool isBoss) where T : EnemyScripted
         {
-            return (T)Activator.CreateInstance(typeof(T), game, cameraService, startPosition, isBoss);
+            return (T)Activator.CreateInstance(typeof(T), game, cameraService, waypoints, isBoss);
         }
     }
 }

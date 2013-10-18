@@ -41,8 +41,29 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.IsBossEliminated = false;
 
+            var waypoints = new Queue<Vector2>();
+
+            waypoints.Enqueue(new Vector2(0 + 40, 500));
+            waypoints.Enqueue(new Vector2(80 + 40, 580));
+            waypoints.Enqueue(new Vector2(160 + 40, 660));
+            waypoints.Enqueue(new Vector2(240 + 40, 580));
+            waypoints.Enqueue(new Vector2(320 + 40, 660));
+            waypoints.Enqueue(new Vector2(400 + 40, 580));
+            waypoints.Enqueue(new Vector2(480 + 40, 500));
+            waypoints.Enqueue(new Vector2(560 + 40, 580));
+            waypoints.Enqueue(new Vector2(640 + 40, 500));
+            waypoints.Enqueue(new Vector2(720 + 40, 500));
+            waypoints.Enqueue(new Vector2(800 + 40, 420));
+            waypoints.Enqueue(new Vector2(880 + 40, 580));
+            waypoints.Enqueue(new Vector2(960 + 40, 500));
+            waypoints.Enqueue(new Vector2(1040 + 40, 580));
+            waypoints.Enqueue(new Vector2(1120 + 40, 500));
+            waypoints.Enqueue(new Vector2(1200 + 40, 580));
+            waypoints.Enqueue(new Vector2(1280 + 40, 500));
+            waypoints.Enqueue(new Vector2(1360 + 40, 580));
+
             //this.enemyFactory.CreateAutonomous<EnemyAutonomous>(new Vector2(400, 400), true);          
-            this.enemyFactory.CreateScripted<EnemyScripted>(new Vector2(400, 400), true);
+            this.enemyFactory.CreateScripted<EnemyScripted>(waypoints, true);
         }
 
         public void UnspawnEnemies()

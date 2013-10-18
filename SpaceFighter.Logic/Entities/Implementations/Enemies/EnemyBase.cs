@@ -23,9 +23,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         protected StateMachine<Action<double>> stateMachine;
         protected SpriteManager spriteManager;
 
-        protected EnemyBase(Game game, ICameraService cameraService, Vector2 startPosition) : base(game)
+        protected EnemyBase(Game game, ICameraService cameraService) : base(game)
         {
-            this.Position = startPosition;
             this.cameraService = cameraService;
         }
 

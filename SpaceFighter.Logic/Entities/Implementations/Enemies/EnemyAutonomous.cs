@@ -33,8 +33,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private Vector2 targetPosition;
         private Queue<Vector2> waypoints = new Queue<Vector2>();
 
-        public EnemyAutonomous(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition, bool isBoss) : base(game, cameraService, startPosition)
+        public EnemyAutonomous(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition, bool isBoss) : base(game, cameraService)
         {
+            this.Position = startPosition;
             this.isBoss = isBoss;
             this.Health = 100;
 
