@@ -9,16 +9,17 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class CameraService : GameComponent, ICameraService
     {
-        private readonly Vector3 translation;
+        private readonly Vector3 screenCenter;
 
         protected float zoom; 
         public Matrix transform; 
         public Vector2 position;
         protected float rotation;
+        const int LevelWidthShift = (1280 - 960) / 2; // Todo: Get from TerrainService
 
-        public CameraService(Game game, Vector3 translation) : base(game)
+        public CameraService(Game game, Vector3 screenCenter) : base(game)
         {
-            this.translation = translation;
+            this.screenCenter = screenCenter;
             this.zoom = 1.0f;
             this.rotation = 0.0f;
             this.position = Vector2.Zero;
@@ -54,11 +55,13 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public Matrix GetTransformation()
         {
-            return Matrix.CreateTranslation(
-                        new Vector3(-this.position.X, -this.position.Y, 0)) *
-                            Matrix.CreateRotationZ(Rotation) *
-                            Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
-                            Matrix.CreateTranslation(translation); 
+            //return Matrix.CreateTranslation(
+            //            new Vector3(-this.position.X, -this.position.Y, 0)) *
+            //                Matrix.CreateRotationZ(Rotation) *
+            //                Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
+            //                Matrix.CreateTranslation(this.screenCenter);
+
+            return Matrix.CreateTranslation(LevelWidthShift, 0, 1);
         }
     }
 }

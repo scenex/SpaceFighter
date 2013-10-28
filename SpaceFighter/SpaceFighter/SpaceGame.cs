@@ -88,14 +88,14 @@ namespace SpaceFighter
 
         private void ComposeServices()
         {            
-            var translation = new Vector3(
+            var screenCenter = new Vector3(
                 (this.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - (80 / 2) + 62,  // (this.playerService.Player.Width / 2) + 62
                 (this.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) - (80 / 2) + 32, // (this.playerService.Player.Height / 2) + 32
                 0); 
 
             cameraService = new CameraService(
                 this, 
-                translation);
+                screenCenter);
 
             terrainService = new TerrainService(this, cameraService);
 

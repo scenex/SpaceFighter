@@ -4,9 +4,6 @@
 
 namespace SpaceFighter.Logic.Services.Implementations
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -17,7 +14,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly ICameraService cameraService;
 
         private SpriteBatch spriteBatch;
-        private readonly List<Texture2D> spriteList = new List<Texture2D>();
+
+        private Texture2D backgroundTexture;
 
         public TerrainService(Game game, ICameraService cameraService) : base(game)
         {
@@ -26,16 +24,15 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.Map = new[,]
                 {
-                    { 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05 },
-                    { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x05, 0x05, 0x05, 0x00, 0x00, 0x00, 0x00, 0x05 },
-                    { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x05, 0x05, 0x05, 0x00, 0x00, 0x00, 0x00, 0x05 },
-                    { 0x05, 0x00, 0x05, 0x05, 0x05, 0x00, 0x00, 0x00, 0x00, 0x05, 0x05, 0x05, 0x00, 0x00, 0x00, 0x00, 0x05 },
-                    { 0x05, 0x00, 0x05, 0x05, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05 },
-                    { 0x05, 0x00, 0x05, 0x05, 0x05, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05 },
-                    { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x05, 0x05, 0x05, 0x05, 0x00, 0x05 },
-                    { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x05, 0x05, 0x05, 0x05, 0x00, 0x05 },
-                    { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x05, 0x00, 0x05, 0x05, 0x05, 0x05, 0x00, 0x05 },
-                    { 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05 }
+                    { 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05 },
+                    { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x05 },
+                    { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x05 },
+                    { 0x05, 0x00, 0x05, 0x05, 0x05, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x05 },
+                    { 0x05, 0x00, 0x05, 0x05, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05 },
+                    { 0x05, 0x00, 0x05, 0x05, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05 },
+                    { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x05, 0x05, 0x05, 0x00, 0x05 },
+                    { 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x05, 0x05, 0x05, 0x00, 0x05 },
+                    { 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05 }
                 };
 
             this.VerticalTileCount = this.Map.GetUpperBound(0) + 1;
@@ -67,19 +64,33 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            var tileList = this.Game.Content.Load<List<string>>("manifest").Where(x => x.StartsWith(@"Sprites\L1\")).ToList();
+            this.backgroundTexture = new Texture2D(this.GraphicsDevice, LevelWidth, LevelHeight, false, SurfaceFormat.Color);
+            
+            var colors = new Color[LevelWidth * LevelHeight];
 
-            foreach (var tile in tileList)
+            // Borders
+            for (var x = 0; x < LevelWidth; x++)
             {
-                spriteList.Add(this.Game.Content.Load<Texture2D>(tile));
+                for (var y = 0; y < LevelHeight; y++)
+                {
+                    if (x == 0 || x == LevelWidth - 1)
+                    {
+                        colors[x + y * LevelWidth] = Color.White;
+                    }
+                }
             }
-
+            
+            this.backgroundTexture.SetData(colors);
             base.LoadContent();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            // this.debugService.DrawRectangle(new Rectangle(((int)playerService.Player.Position.X / 80) * 80, ((int)playerService.Player.Position.Y / 80) * 80, 80, 80));
             this.spriteBatch.Begin(
                 SpriteSortMode.BackToFront,
                 BlendState.AlphaBlend,
@@ -89,21 +100,57 @@ namespace SpaceFighter.Logic.Services.Implementations
                 null,
                 cameraService.GetTransformation());
 
-            for (int i = 0; i < this.VerticalTileCount; i++)
-            {
-                for (int j = 0; j < this.HorizontalTileCount; j++)
-                {
-                    this.spriteBatch.Draw(
-                        this.spriteList[this.Map[i, j]],
-                        new Vector2(j * this.TileSize, i * this.TileSize),
-                        Color.White);
-                }
-            }
+            this.spriteBatch.Draw(this.backgroundTexture, new Vector2(0, 0), Color.White);
 
             this.spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
+        #region Old stuff
+
+        //protected override void LoadContent()
+        //{
+        //    this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
+
+        //    var tileList = this.Game.Content.Load<List<string>>("manifest").Where(x => x.StartsWith(@"Sprites\L1\")).ToList();
+
+        //    foreach (var tile in tileList)
+        //    {
+        //        spriteList.Add(this.Game.Content.Load<Texture2D>(tile));
+        //    }
+
+        //    base.LoadContent();
+        //}
+        
+        //public override void Draw(GameTime gameTime)
+        //{
+        //    // this.debugService.DrawRectangle(new Rectangle(((int)playerService.Player.Position.X / 80) * 80, ((int)playerService.Player.Position.Y / 80) * 80, 80, 80));
+        //    this.spriteBatch.Begin(
+        //        SpriteSortMode.BackToFront,
+        //        BlendState.AlphaBlend,
+        //        null,
+        //        null,
+        //        null,
+        //        null,
+        //        cameraService.GetTransformation());
+
+        //    for (int i = 0; i < this.VerticalTileCount; i++)
+        //    {
+        //        for (int j = 0; j < this.HorizontalTileCount; j++)
+        //        {
+        //            this.spriteBatch.Draw(
+        //                this.spriteList[this.Map[i, j]],
+        //                new Vector2(j * this.TileSize, i * this.TileSize),
+        //                Color.White);
+        //        }
+        //    }
+
+        //    this.spriteBatch.End();
+
+        //    base.Draw(gameTime);
+        //}
+
+        #endregion
     }
 }

@@ -137,10 +137,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 0.0f);
 
             // For path finding debugging purposes only
-            foreach (var waypoint in Waypoints)
-            {
-                this.spriteBatch.Draw(this.pixel, waypoint, Color.White);
-            }
+            //foreach (var waypoint in Waypoints)
+            //{
+            //    this.spriteBatch.Draw(this.pixel, waypoint, Color.White);
+            //}
 
             this.spriteBatch.End();
 
