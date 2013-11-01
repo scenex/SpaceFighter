@@ -33,8 +33,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly ICameraService cameraService;
         private readonly IAudioService audioService;
         private IDebugService debugService;
-
-        private string currentState;
+        private SpriteFont font;
 
         public GameController(
             Game game,
@@ -60,10 +59,10 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.audioService = audioService;
             this.cameraService = cameraService;
 
-            this.currentState = "Starting";
+            this.CurrentState = "Starting";
         }
 
-
+        public string CurrentState { get; set; }
 
         public override void Initialize()
         {
@@ -84,22 +83,6 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.GraphicsDevice,
                 this.game.GraphicsDevice.PresentationParameters.BackBufferWidth,
                 this.game.GraphicsDevice.PresentationParameters.BackBufferHeight);
-        }
-
-        public string CurrentState
-        {
-            get
-            {
-                return this.currentState;
-            }
-            set
-            {
-                if(this.currentState != value)
-                {
-                    this.elapsedTime = 0;
-                    this.currentState = value;
-                }
-            }
         }
 
         public void StartGame()
@@ -179,6 +162,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.curves.Add("Starting", this.fadeInCurve);
             this.curves.Add("Ending", this.fadeOutCurve);
 
+            this.font = this.game.Content.Load<SpriteFont>(@"FramerateFont");
+
             base.LoadContent();
         }
 
@@ -215,10 +200,12 @@ namespace SpaceFighter.Logic.Services.Implementations
             spriteBatch.Draw(
                 renderTarget, 
                 renderTarget.Bounds, 
-                this.currentState == "Starting" || this.currentState == "Ending" 
+                this.CurrentState == "Starting" || this.CurrentState == "Ending" 
                     ? Color.White * this.curves[this.CurrentState].Evaluate((float)this.elapsedTime / 1000)
                     : Color.White * 1
                 );
+
+            spriteBatch.DrawString(this.font, Math.Round(elapsedTime / 1000, 1).ToString(), new Vector2(50, 20), Color.White);
             
             spriteBatch.End();
         }
