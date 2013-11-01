@@ -1,7 +1,7 @@
 Sprites\Shot
 Sprites\Spaceship\Alive
 Sprites\Enemy
-FramerateFont
+DefaultFont
 Sprites\L1\00
 Sprites\L1\01
 Sprites\L1\02
@@ -15,3 +15,24 @@ Sprites\L1\09
 Sprites\Spaceship\Dying
 Sprites\Spaceship\Dead
 Shaders\Transparency
+Sprites\Enemy\Alive
+Sprites\Enemy\Dead
+Sprites\Enemy\Dying
+Sprites\Turrets\Dead
+Sprites\Turrets\Alive
+Shaders\Prototype
+Shaders\Ripple
+Shaders\Circle
+Sprites\Debugging\Rectangle
+Sprites\Debugging\Pixel
+Curves\MenuTextFadeIn
+Curves\MenuTextFadeOut
+Curves\IntroTextFade
+Curves\GameplayFadeIn
+Curves\GameplayFadeOut
+Content\Sounds\Win\Sound Bank.xsb
+Content\Sounds\Win\SpaceFighter.Sound.xgs
+Content\Sounds\Win\Wave Bank.xwb
+Content\Sounds\Xbox\Sound Bank.xsb
+Content\Sounds\Xbox\SpaceFighter.Sound.xgs
+Content\Sounds\Xbox\Wave Bank.xwb

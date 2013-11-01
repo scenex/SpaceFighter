@@ -162,7 +162,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.curves.Add("Starting", this.fadeInCurve);
             this.curves.Add("Ending", this.fadeOutCurve);
 
-            this.font = this.game.Content.Load<SpriteFont>(@"FramerateFont");
+            this.font = this.game.Content.Load<SpriteFont>(@"DefaultFont");
 
             base.LoadContent();
         }

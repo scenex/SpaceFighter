@@ -37,7 +37,7 @@ namespace SpaceFighter.Logic.Screens
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.spriteFont = this.Game.Content.Load<SpriteFont>(@"FramerateFont");
+            this.spriteFont = this.Game.Content.Load<SpriteFont>(@"DefaultFont");
 
             this.fadeInCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeIn");
             this.fadeOutCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeOut");

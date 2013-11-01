@@ -66,8 +66,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FramerateFont.spritefont">
-      <Name>FramerateFont</Name>
+    <Compile Include="DefaultFont.spritefont">
+      <Name>DefaultFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>

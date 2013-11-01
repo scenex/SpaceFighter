@@ -25,7 +25,7 @@ namespace SpaceFighter.Logic
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.spriteFont = this.Game.Content.Load<SpriteFont>(@"FramerateFont");
+            this.spriteFont = this.Game.Content.Load<SpriteFont>(@"DefaultFont");
         }
 
         protected override void UnloadContent()
