@@ -31,7 +31,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.WeaponStrategies
                         shotWidth,
                         shotHeight,
                         shotColorInformation,
-                        20,
+                        100,
                         shotRotation));
 
                 shots.Add(
@@ -42,7 +42,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.WeaponStrategies
                         shotWidth,
                         shotHeight,
                         shotColorInformation,
-                        20,
+                        100,
                         shotRotation));
 
                 firedEvent.Invoke();
