@@ -120,6 +120,7 @@
     <Compile Include="StateMachine\State.cs" />
     <Compile Include="StateMachine\StateMachine.cs" />
     <Compile Include="StateMachine\Transition.cs" />
+    <Compile Include="TimeTriggerActionInvoker.cs" />
     <Compile Include="Vector2Extensions.cs" />
     <Compile Include="XboxExtensions.cs" />
   </ItemGroup>

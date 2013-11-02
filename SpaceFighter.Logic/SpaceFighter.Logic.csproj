@@ -110,6 +110,7 @@
     <Compile Include="Screens\IScreenTransition.cs" />
     <Compile Include="Screens\MenuItemSelectedEventArgs.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
+    <Compile Include="TimeTriggerActionInvoker.cs" />
     <Compile Include="Services\Implementations\PathFindingService.cs" />
     <Compile Include="Services\Interfaces\IPathFindingService.cs" />
     <Compile Include="XboxExtensions.cs" />
