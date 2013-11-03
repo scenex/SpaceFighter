@@ -19,6 +19,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         private RenderTarget2D renderTarget;
 
         private double elapsedTime;
+        private double elapsedTimeSinceEndingTransition;
+        private string currentState;
 
         private Curve fadeInCurve;
         private Curve fadeOutCurve;
@@ -59,10 +61,28 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.audioService = audioService;
             this.cameraService = cameraService;
 
-            this.CurrentState = "Starting";
+            this.currentState = "Starting";
         }
 
-        public string CurrentState { get; set; }
+        public string CurrentState
+        {
+            get
+            {
+                return this.currentState;
+            }
+            set
+            {
+                if (this.currentState != value)
+                {
+                    this.currentState = value;
+
+                    if(this.currentState == "Ending") // Todo: Maybe there is a better way..
+                    {
+                        this.elapsedTimeSinceEndingTransition = this.elapsedTime;
+                    }
+                }
+            }
+        }
 
         public override void Initialize()
         {
@@ -89,9 +109,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             // DISABLE MUSIC WHILE DEVELOPMENT
             // this.audioService.PlaySound("music2");
-            
+
             this.elapsedTime = 0;
-            
+            this.elapsedTimeSinceEndingTransition = 0;
+
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
             this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
@@ -200,8 +221,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             spriteBatch.Draw(
                 renderTarget, 
                 renderTarget.Bounds, 
-                this.CurrentState == "Starting" || this.CurrentState == "Ending" 
-                    ? Color.White * this.curves[this.CurrentState].Evaluate((float)this.elapsedTime / 1000)
+                this.currentState == "Starting" || this.currentState == "Ending"
+                    ? Color.White * this.curves[this.currentState].Evaluate((float)(this.elapsedTime - this.elapsedTimeSinceEndingTransition) / 1000)
                     : Color.White * 1
                 );
 
