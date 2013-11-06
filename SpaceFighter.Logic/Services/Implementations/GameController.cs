@@ -22,6 +22,9 @@ namespace SpaceFighter.Logic.Services.Implementations
         private double elapsedTimeSinceEndingTransition;
         private string currentState;
 
+        private bool isFadeInRequestPending;
+        private bool isFadeOutRequestPending;
+
         private Curve fadeInCurve;
         private Curve fadeOutCurve;
         private readonly Dictionary<string, Curve> curves = new Dictionary<string, Curve>(); 
@@ -76,10 +79,10 @@ namespace SpaceFighter.Logic.Services.Implementations
                 {
                     this.currentState = value;
 
-                    if(this.currentState == "Ending") // Todo: Maybe there is a better way..
-                    {
-                        this.elapsedTimeSinceEndingTransition = this.elapsedTime;
-                    }
+                    //if(this.currentState == "Ending") // Todo: Maybe there is a better way..
+                    //{
+                    //    this.elapsedTimeSinceEndingTransition = this.elapsedTime;
+                    //}
                 }
             }
         }
@@ -105,13 +108,25 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.game.GraphicsDevice.PresentationParameters.BackBufferHeight);
         }
 
+        public void FadeIn()
+        {
+            this.isFadeInRequestPending = true;
+            this.elapsedTimeSinceEndingTransition = this.elapsedTime;
+        }
+
+        public void FadeOut()
+        {
+            this.isFadeOutRequestPending = true;
+            this.elapsedTimeSinceEndingTransition = this.elapsedTime;
+        }
+
         public void StartGame()
         {
             // DISABLE MUSIC WHILE DEVELOPMENT
             // this.audioService.PlaySound("music2");
 
-            this.elapsedTime = 0;
-            this.elapsedTimeSinceEndingTransition = 0;
+            //this.elapsedTime = 0;
+            //this.elapsedTimeSinceEndingTransition = 0;
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
@@ -221,14 +236,38 @@ namespace SpaceFighter.Logic.Services.Implementations
             spriteBatch.Draw(
                 renderTarget, 
                 renderTarget.Bounds, 
-                this.currentState == "Starting" || this.currentState == "Ending"
-                    ? Color.White * this.curves[this.currentState].Evaluate((float)(this.elapsedTime - this.elapsedTimeSinceEndingTransition) / 1000)
-                    : Color.White * 1
-                );
+                this.DetermineColorAlpha());
 
             spriteBatch.DrawString(this.font, Math.Round(elapsedTime / 1000, 1).ToString(), new Vector2(50, 20), Color.White);
             
             spriteBatch.End();
+        }
+
+        private Color DetermineColorAlpha()
+        {
+            if (isFadeInRequestPending)
+            {               
+                if (this.elapsedTime - this.elapsedTimeSinceEndingTransition > 1500)
+                {
+                    this.isFadeInRequestPending = false;
+                    return Color.White;
+                }
+
+                return Color.White * this.fadeInCurve.Evaluate((float)(this.elapsedTime - this.elapsedTimeSinceEndingTransition) / 1000);
+            }
+
+            if (isFadeOutRequestPending)
+            {
+                if (this.elapsedTime - this.elapsedTimeSinceEndingTransition > 1500)
+                {
+                    this.isFadeOutRequestPending = false;
+                    return Color.White;
+                }
+
+                return Color.White * this.fadeOutCurve.Evaluate((float)(this.elapsedTime - this.elapsedTimeSinceEndingTransition) / 1000);
+            }
+
+            return Color.White * 1;
         }
 
         private void UpdatePlayerPositionForEnemies()

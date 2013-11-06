@@ -10,6 +10,11 @@ namespace SpaceFighter.Logic.Services.Interfaces
     {
         string CurrentState { get; set; }
 
+        // blablabla
+
+        void FadeIn();
+        void FadeOut();
+
         void StartGame();
         void EndGame();
 

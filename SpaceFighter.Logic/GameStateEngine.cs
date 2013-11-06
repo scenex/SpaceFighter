@@ -40,7 +40,7 @@ namespace SpaceFighter.Logic
             var starting = new State<Action<double>>(
                 "Starting",
                 null,
-                null,
+                () => this.gameController.FadeIn(),
                 null);
 
             var started = new State<Action<double>>(
@@ -52,7 +52,7 @@ namespace SpaceFighter.Logic
             var ending = new State<Action<double>>(
                 "Ending",
                 null,
-                () => this.elapsedTimeSinceEndingTransition = this.elapsedTime,
+                () => this.gameController.FadeOut(),
                 null);
 
             var ended = new State<Action<double>>(
@@ -86,9 +86,11 @@ namespace SpaceFighter.Logic
 
             started.AddTransition(paused, () => this.inputService.IsGamePaused == true);
             paused.AddTransition(started, () => this.inputService.IsGamePaused == false);
-
+            
+            // TODO!!! Rethink -> Ask GameController to give allowance to transition (GameController holds all relevant services)
             ending.AddTransition(ended, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 1500 && this.enemyService.IsBossEliminated); // Todo: Extend state engine to store previous state.
             ending.AddTransition(gameOver, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 1500 && this.playerService.Player.Health <= 0); // Todo: Extend state engine to store previous state.
+            // ^^ Allows to transition off screen to menu screen ^^
             ended.AddTransition(starting, () => true);
             gameOver.AddTransition(starting, () => this.reset);
             
