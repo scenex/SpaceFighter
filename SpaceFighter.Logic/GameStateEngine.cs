@@ -17,10 +17,6 @@ namespace SpaceFighter.Logic
     {
         private readonly IGameController gameController;
 
-        private readonly IPlayerService playerService;
-
-        private readonly IEnemyService enemyService;
-
         private readonly IInputService inputService;
 
         private readonly StateMachine<Action<double>> gameStateMachine;
@@ -30,11 +26,9 @@ namespace SpaceFighter.Logic
 
         private bool reset;
 
-        public GameStateEngine(IGameController gameController, IPlayerService playerService, IEnemyService enemyService, IInputService inputService)
+        public GameStateEngine(IGameController gameController, IInputService inputService)
         {
             this.gameController = gameController;
-            this.playerService = playerService;
-            this.enemyService = enemyService;
             this.inputService = inputService;
 
             var starting = new State<Action<double>>(
@@ -80,15 +74,14 @@ namespace SpaceFighter.Logic
                 null,
                 () => this.reset = false);
 
-            starting.AddTransition(started, () => this.elapsedTime > 1500);
-            started.AddTransition(ending, () => this.enemyService.IsBossEliminated);
-            started.AddTransition(ending, () => this.playerService.Player.Health <= 0);
+            starting.AddTransition(started, () => this.gameController.CheckTransitionAllowedStartingToStarted(this.elapsedTime));
+            started.AddTransition(ending, () => this.gameController.CheckTransitionAllowedStartedToEnding());
 
             started.AddTransition(paused, () => this.inputService.IsGamePaused == true);
             paused.AddTransition(started, () => this.inputService.IsGamePaused == false);
 
-            ending.AddTransition(ended, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 1500 && this.enemyService.IsBossEliminated); // Todo: Extend state engine to store previous state.
-            ending.AddTransition(gameOver, () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > 1500 && this.playerService.Player.Health <= 0); // Todo: Extend state engine to store previous state.
+            ending.AddTransition(ended, () => this.gameController.CheckTransitionAllowedEndingToEnded(this.elapsedTime - this.elapsedTimeSinceEndingTransition)); // Todo: Extend state engine to store previous state.
+            ending.AddTransition(gameOver, () => this.gameController.CheckTransitionAllowedEndingToGameOver(this.elapsedTime - this.elapsedTimeSinceEndingTransition)); // Todo: Extend state engine to store previous state.
             ended.AddTransition(starting, () => true);
             gameOver.AddTransition(starting, () => this.reset);
             

@@ -84,6 +84,27 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
+        public bool CheckTransitionAllowedStartingToStarted(double currentElapsedTime)
+        {
+            return currentElapsedTime > 1500;
+        }
+
+        public bool CheckTransitionAllowedStartedToEnding()
+        {
+            return this.enemyService.IsBossEliminated || this.playerService.Player.Health <= 0;
+        }
+
+        public bool CheckTransitionAllowedEndingToEnded(double currentElapsedTime)
+        {
+            return currentElapsedTime > 1500 && this.enemyService.IsBossEliminated;
+        }
+
+        public bool CheckTransitionAllowedEndingToGameOver(double currentElapsedTime)
+        {
+            return currentElapsedTime > 1500 && this.playerService.Player.Health <= 0;
+            // ^^ Allows to transition off screen to menu screen ^^
+        }
+
         public override void Initialize()
         {
             this.game.Components.Add(new FramerateCounter(this.game));
