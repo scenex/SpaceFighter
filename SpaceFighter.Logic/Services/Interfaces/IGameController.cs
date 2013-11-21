@@ -16,6 +16,9 @@ namespace SpaceFighter.Logic.Services.Interfaces
         bool CheckTransitionAllowedEndingToEnded(double currentElapsedTime);
         bool CheckTransitionAllowedEndingToGameOver(double currentElapsedTime);
 
+        void FadeIn();
+        void FadeOut();
+
         void StartGame();
         void EndGame();
 

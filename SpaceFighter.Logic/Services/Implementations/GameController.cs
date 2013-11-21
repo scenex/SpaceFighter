@@ -14,6 +14,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class GameController : DrawableGameComponent, IGameController
     {
+        private const double FadeEffectDuration = 1500;
+
         private readonly Game game;
         private SpriteBatch spriteBatch;
         private RenderTarget2D renderTarget;
@@ -24,7 +26,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private Curve fadeInCurve;
         private Curve fadeOutCurve;
-        private readonly Dictionary<string, Curve> curves = new Dictionary<string, Curve>(); 
+        private readonly Dictionary<string, Curve> curves = new Dictionary<string, Curve>();
 
         private readonly ICollisionDetectionService collisionDetectionService;
         private readonly IPlayerService playerService;
@@ -86,7 +88,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public bool CheckTransitionAllowedStartingToStarted(double currentElapsedTime)
         {
-            return currentElapsedTime > 1500;
+            return currentElapsedTime > FadeEffectDuration;
         }
 
         public bool CheckTransitionAllowedStartedToEnding()
@@ -96,13 +98,23 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public bool CheckTransitionAllowedEndingToEnded(double currentElapsedTime)
         {
-            return currentElapsedTime > 1500 && this.enemyService.IsBossEliminated;
+            return currentElapsedTime > FadeEffectDuration && this.enemyService.IsBossEliminated;
         }
 
         public bool CheckTransitionAllowedEndingToGameOver(double currentElapsedTime)
         {
-            return currentElapsedTime > 1500 && this.playerService.Player.Health <= 0;
+            return currentElapsedTime > FadeEffectDuration && this.playerService.Player.Health <= 0;
             // ^^ Allows to transition off screen to menu screen ^^
+        }
+
+        public void FadeIn()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FadeOut()
+        {
+            throw new NotImplementedException();
         }
 
         public override void Initialize()
