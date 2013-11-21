@@ -34,7 +34,7 @@ namespace SpaceFighter.Logic
             var starting = new State<Action<double>>(
                 "Starting",
                 null,
-                null,
+                () => this.gameController.FadeIn(),
                 null);
 
             var started = new State<Action<double>>(
@@ -46,7 +46,11 @@ namespace SpaceFighter.Logic
             var ending = new State<Action<double>>(
                 "Ending",
                 null,
-                () => this.elapsedTimeSinceEndingTransition = this.elapsedTime,
+                delegate
+                    {
+                        this.elapsedTimeSinceEndingTransition = this.elapsedTime;
+                        this.gameController.FadeOut();
+                    },
                 null);
 
             var ended = new State<Action<double>>(
@@ -101,7 +105,6 @@ namespace SpaceFighter.Logic
             this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
             this.gameStateMachine.Update();
 
-            this.gameController.CurrentState = this.CurrentState;
             ((IUpdateable)this.gameController).Update(gameTime);
 
             //Debug.WriteLine(this.gameStateMachine.CurrentState.Name);

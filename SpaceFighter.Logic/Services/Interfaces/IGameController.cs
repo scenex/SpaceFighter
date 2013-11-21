@@ -8,8 +8,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
     public interface IGameController : IGameComponent
     {
-        string CurrentState { get; set; } // This smells...
-
         bool CheckTransitionAllowedStartingToStarted(double currentElapsedTime);
         bool CheckTransitionAllowedStartedToEnding();
 

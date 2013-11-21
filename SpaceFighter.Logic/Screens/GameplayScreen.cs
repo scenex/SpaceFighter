@@ -47,7 +47,7 @@ namespace SpaceFighter.Logic.Screens
         {
             this.gameStateEngine.Update(gameTime);
 
-            if(gameStateEngine.CurrentState == "GameOver") // Todo: Change to use name dictionary
+            if(gameStateEngine.CurrentState == "GameOver") // Todo: Sucks, solve differently..
             {
                 this.IsTransitionAllowed = true;
             }

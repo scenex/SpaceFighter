@@ -20,10 +20,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         private SpriteBatch spriteBatch;
         private RenderTarget2D renderTarget;
 
-        private double elapsedTime;
-        private double elapsedTimeSinceEndingTransition;
-        private string currentState;
-
         private Curve fadeInCurve;
         private Curve fadeOutCurve;
         private readonly Dictionary<string, Curve> curves = new Dictionary<string, Curve>();
@@ -38,6 +34,9 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly IAudioService audioService;
         private IDebugService debugService;
         private SpriteFont font;
+
+        private string fadeEffect;
+        private double fadeEffectElapsed;
 
         public GameController(
             Game game,
@@ -63,27 +62,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.audioService = audioService;
             this.cameraService = cameraService;
 
-            this.currentState = "Starting";
-        }
-
-        public string CurrentState
-        {
-            get
-            {
-                return this.currentState;
-            }
-            set
-            {
-                if (this.currentState != value)
-                {
-                    this.currentState = value;
-
-                    if(this.currentState == "Ending") // Todo: Maybe there is a better way..
-                    {
-                        this.elapsedTimeSinceEndingTransition = this.elapsedTime;
-                    }
-                }
-            }
+            this.fadeEffect = string.Empty;
         }
 
         public bool CheckTransitionAllowedStartingToStarted(double currentElapsedTime)
@@ -109,12 +88,14 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void FadeIn()
         {
-            throw new NotImplementedException();
+            this.fadeEffect = "FadeIn";
+            this.fadeEffectElapsed = 0;
         }
 
         public void FadeOut()
         {
-            throw new NotImplementedException();
+            this.fadeEffect = "FadeOut";
+            this.fadeEffectElapsed = 0;
         }
 
         public override void Initialize()
@@ -142,9 +123,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             // DISABLE MUSIC WHILE DEVELOPMENT
             // this.audioService.PlaySound("music2");
-
-            this.elapsedTime = 0;
-            this.elapsedTimeSinceEndingTransition = 0;
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
@@ -209,12 +187,12 @@ namespace SpaceFighter.Logic.Services.Implementations
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
-            
+
             this.fadeInCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeIn");
             this.fadeOutCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeOut");
 
-            this.curves.Add("Starting", this.fadeInCurve);
-            this.curves.Add("Ending", this.fadeOutCurve);
+            this.curves.Add("FadeIn", this.fadeInCurve);
+            this.curves.Add("FadeOut", this.fadeOutCurve);
 
             this.font = this.game.Content.Load<SpriteFont>(@"DefaultFont");
 
@@ -223,7 +201,10 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Update(GameTime gameTime)
         {
-            this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if(this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut")
+            {
+                this.fadeEffectElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
+            }
 
             this.UpdatePlayerPositionForEnemies();
             
@@ -252,14 +233,13 @@ namespace SpaceFighter.Logic.Services.Implementations
             spriteBatch.Begin();
 
             spriteBatch.Draw(
-                renderTarget, 
-                renderTarget.Bounds, 
-                this.currentState == "Starting" || this.currentState == "Ending"
-                    ? Color.White * this.curves[this.currentState].Evaluate((float)(this.elapsedTime - this.elapsedTimeSinceEndingTransition) / 1000)
-                    : Color.White * 1
-                );
+                renderTarget,
+                renderTarget.Bounds,
+                this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut"
+                    ? Color.White * this.curves[this.fadeEffect].Evaluate((float)(this.fadeEffectElapsed) / 1000)
+                    : Color.White * 1);
 
-            spriteBatch.DrawString(this.font, Math.Round(elapsedTime / 1000, 1).ToString(), new Vector2(50, 20), Color.White);
+            //spriteBatch.DrawString(this.font, Math.Round(elapsedTime / 1000, 1).ToString(), new Vector2(50, 20), Color.White);
             
             spriteBatch.End();
         }
