@@ -8,15 +8,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
     public interface IGameController : IGameComponent
     {
-        bool CheckTransitionAllowedStartingToStarted(double currentElapsedTime);
-        bool CheckTransitionAllowedStartedToEnding();
-
-        bool CheckTransitionAllowedEndingToEnded(double currentElapsedTime);
-        bool CheckTransitionAllowedEndingToGameOver(double currentElapsedTime);
-
-        void FadeIn();
-        void FadeOut();
-
         void StartGame();
         void EndGame();
 

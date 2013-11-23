@@ -139,34 +139,34 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.gameStateMachine = new StateMachine<Action<double>>(starting);
         }
 
-        public bool CheckTransitionAllowedStartingToStarted(double currentElapsedTime)
+        private bool CheckTransitionAllowedStartingToStarted(double currentElapsedTime)
         {
             return currentElapsedTime > FadeEffectDuration;
         }
 
-        public bool CheckTransitionAllowedStartedToEnding()
+        private bool CheckTransitionAllowedStartedToEnding()
         {
             return this.enemyService.IsBossEliminated || this.playerService.Player.Health <= 0;
         }
 
-        public bool CheckTransitionAllowedEndingToEnded(double currentElapsedTime)
+        private bool CheckTransitionAllowedEndingToEnded(double currentElapsedTime)
         {
             return currentElapsedTime > FadeEffectDuration && this.enemyService.IsBossEliminated;
         }
 
-        public bool CheckTransitionAllowedEndingToGameOver(double currentElapsedTime)
+        private bool CheckTransitionAllowedEndingToGameOver(double currentElapsedTime)
         {
             return currentElapsedTime > FadeEffectDuration && this.playerService.Player.Health <= 0;
             // ^^ Allows to transition off screen to menu screen ^^
         }
 
-        public void FadeIn()
+        private void FadeIn()
         {
             this.fadeEffect = "FadeIn";
             this.fadeEffectElapsed = 0;
         }
 
-        public void FadeOut()
+        private void FadeOut()
         {
             this.fadeEffect = "FadeOut";
             this.fadeEffectElapsed = 0;
