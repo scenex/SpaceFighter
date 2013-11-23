@@ -10,8 +10,8 @@ namespace SpaceFighter.GameStates
 
     using Nuclex.Game.States;
 
-    using SpaceFighter.Logic;
     using SpaceFighter.Logic.Screens;
+    using SpaceFighter.Logic.Services.Interfaces;
 
     public class GameplayGameState : GameState, IGameStateTransition, IDrawable
     {
@@ -24,12 +24,12 @@ namespace SpaceFighter.GameStates
         public bool Visible { get; private set; }
         public int DrawOrder { get; private set; }
 
-        public GameplayGameState(Game game, GameStateEngine gameStateEngine)
+        public GameplayGameState(Game game, IGameController gameController)
         {
             this.game = game;
             this.Visible = true;
 
-            this.gameplayScreen = new GameplayScreen(gameStateEngine);
+            this.gameplayScreen = new GameplayScreen(gameController);
         }
 
         public object TransitionTag { get; private set; }

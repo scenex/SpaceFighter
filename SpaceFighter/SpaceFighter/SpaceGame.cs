@@ -66,13 +66,9 @@ namespace SpaceFighter
 
             this.ComposeServices();
 
-            var gameStateEngine = new GameStateEngine(
-                this.gameController,
-                this.inputService);
-
             this.applicationStateEngine = new ApplicationStateEngine(
                 this,
-                gameStateEngine,
+                this.gameController,
                 this.inputService);
 
             base.Initialize();

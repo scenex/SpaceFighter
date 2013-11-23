@@ -10,7 +10,9 @@ namespace SpaceFighter.Logic.Services.Implementations
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using SpaceFighter.Logic.EventManager;
     using SpaceFighter.Logic.Services.Interfaces;
+    using SpaceFighter.Logic.StateMachine;
 
     public class GameController : DrawableGameComponent, IGameController
     {
@@ -35,8 +37,13 @@ namespace SpaceFighter.Logic.Services.Implementations
         private IDebugService debugService;
         private SpriteFont font;
 
+        private StateMachine<Action<double>> gameStateMachine;
+
         private string fadeEffect;
         private double fadeEffectElapsed;
+
+        private double elapsedTime;
+        private double elapsedTimeSinceEndingTransition;
 
         public GameController(
             Game game,
@@ -63,6 +70,73 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.cameraService = cameraService;
 
             this.fadeEffect = string.Empty;
+
+            // ----- REWRITE 2013 -----
+            this.SetupStateEngine();
+        }
+
+        private void SetupStateEngine()
+        {
+            var starting = new State<Action<double>>(
+                "Starting",
+                null,
+                this.FadeIn,
+                null);
+
+            var started = new State<Action<double>>(
+                "Started",
+                null,
+                null,
+                null);
+
+            var ending = new State<Action<double>>(
+                "Ending",
+                null,
+                delegate
+                {
+                    this.elapsedTimeSinceEndingTransition = this.elapsedTime;
+                    this.FadeOut();
+                },
+                null);
+
+            var ended = new State<Action<double>>(
+                "Ended",
+                null,
+                delegate
+                {
+                    this.elapsedTime = 0;
+                    this.elapsedTimeSinceEndingTransition = 0;
+
+                    this.EndGame();
+                    this.StartGame();
+                },
+                null);
+
+            var paused = new State<Action<double>>(
+                "Paused",
+                null,
+                () => EventAggregator.Fire(this, "PauseToggled"),
+                () => EventAggregator.Fire(this, "PauseToggled"));
+
+            var gameOver = new State<Action<double>>(
+                "GameOver",
+                null,
+                null,
+                null
+                /*() => this.reset = false*/);
+
+            starting.AddTransition(started, () => this.CheckTransitionAllowedStartingToStarted(this.elapsedTime));
+            started.AddTransition(ending, this.CheckTransitionAllowedStartedToEnding);
+
+            started.AddTransition(paused, () => this.inputService.IsGamePaused == true);
+            paused.AddTransition(started, () => this.inputService.IsGamePaused == false);
+
+            ending.AddTransition(ended, () => this.CheckTransitionAllowedEndingToEnded(this.elapsedTime - this.elapsedTimeSinceEndingTransition)); // Todo: Extend state engine to store previous state.
+            ending.AddTransition(gameOver, () => this.CheckTransitionAllowedEndingToGameOver(this.elapsedTime - this.elapsedTimeSinceEndingTransition)); // Todo: Extend state engine to store previous state.
+            //ended.AddTransition(starting, () => true);
+            //gameOver.AddTransition(starting, () => this.reset);
+
+            this.gameStateMachine = new StateMachine<Action<double>>(starting);
         }
 
         public bool CheckTransitionAllowedStartingToStarted(double currentElapsedTime)
@@ -201,6 +275,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Update(GameTime gameTime)
         {
+            this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+            this.gameStateMachine.Update();
+
             if(this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut")
             {
                 this.fadeEffectElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;

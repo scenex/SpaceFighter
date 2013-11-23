@@ -6,56 +6,58 @@ namespace SpaceFighter.Logic.Screens
 {
     using Microsoft.Xna.Framework;
 
+    using SpaceFighter.Logic.Services.Interfaces;
+
     public class GameplayScreen : IScreenTransition
     {
-        private readonly GameStateEngine gameStateEngine;
+        private readonly IGameController gameController;
 
         public bool IsTransitionAllowed { get; private set; }
         public object TransitionTag { get; private set; }
 
-        public GameplayScreen(GameStateEngine gameStateEngine)
+        public GameplayScreen(IGameController gameController)
         {
-            this.gameStateEngine = gameStateEngine;
+            this.gameController = gameController;
         }
 
         public void Initialize()
         {
-            this.gameStateEngine.Initialize();
+            this.gameController.Initialize();
         }
 
         public void StartGame()
         {
-            this.gameStateEngine.StartGame();
+            this.gameController.StartGame();
         }
 
         public void EndGame()
         {
-            this.gameStateEngine.EndGame();
+            this.gameController.EndGame();
         }
 
         public void PauseGame()
         {
-            this.gameStateEngine.PauseGame();
+            this.gameController.PauseGame();
         }
 
         public void ResumeGame()
         {
-            this.gameStateEngine.ResumeGame();
+            this.gameController.ResumeGame();
         }
 
         public void Update(GameTime gameTime)
         {
-            this.gameStateEngine.Update(gameTime);
+            ((IUpdateable)this.gameController).Update(gameTime);
 
-            if(gameStateEngine.CurrentState == "GameOver") // Todo: Sucks, solve differently..
-            {
-                this.IsTransitionAllowed = true;
-            }
+            //if(this.gameController.CurrentState == "GameOver") // TODO: REFACTORING
+            //{
+            //    this.IsTransitionAllowed = true;
+            //}
         }
 
         public void Draw(GameTime gameTime)
         {
-            this.gameStateEngine.Draw(gameTime);
+            ((IDrawable)this.gameController).Draw(gameTime);
         }
     }
 }

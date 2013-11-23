@@ -11,7 +11,6 @@ namespace SpaceFighter
     using Nuclex.Game.States;
 
     using SpaceFighter.GameStates;
-    using SpaceFighter.Logic;
     using SpaceFighter.Logic.EventManager;
     using SpaceFighter.Logic.Screens;
     using SpaceFighter.Logic.Services.Interfaces;
@@ -21,7 +20,7 @@ namespace SpaceFighter
     {
         private readonly Game game;
 
-        private readonly GameStateEngine gameStateEngine;
+        private readonly IGameController gameController;
 
         private readonly IInputService inputService;
 
@@ -34,11 +33,11 @@ namespace SpaceFighter
 
         public ApplicationStateEngine(
             Game game,
-            GameStateEngine gameStateEngine,
+            IGameController gameController,
             IInputService inputService)
         {
             this.game = game;
-            this.gameStateEngine = gameStateEngine;
+            this.gameController = gameController;
             this.inputService = inputService;
 
             var intro = new State<Action<double>>(
@@ -69,11 +68,11 @@ namespace SpaceFighter
                 null,
                 delegate
                     {
-                        this.gameStateEngine.Reset();
+                        //this.gameStateEngine.Reset(); TODO: REFACTORING
 
                         this.gameplayGameState = new GameplayGameState(
                             this.game,
-                            this.gameStateEngine);
+                            this.gameController);
 
                         this.gameStateManager.Push(this.gameplayGameState);
                     }, 
