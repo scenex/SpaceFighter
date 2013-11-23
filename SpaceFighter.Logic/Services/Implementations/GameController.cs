@@ -125,39 +125,34 @@ namespace SpaceFighter.Logic.Services.Implementations
                 null
                 /*() => this.reset = false*/);
 
-            starting.AddTransition(started, () => this.CheckTransitionAllowedStartingToStarted(this.elapsedTime));
-            started.AddTransition(ending, this.CheckTransitionAllowedStartedToEnding);
+            starting.AddTransition(
+                started, 
+                () => this.elapsedTime > FadeEffectDuration);
 
-            started.AddTransition(paused, () => this.inputService.IsGamePaused == true);
-            paused.AddTransition(started, () => this.inputService.IsGamePaused == false);
+            started.AddTransition(
+                ending, 
+                () => this.enemyService.IsBossEliminated || this.playerService.Player.Health <= 0);
 
-            ending.AddTransition(ended, () => this.CheckTransitionAllowedEndingToEnded(this.elapsedTime - this.elapsedTimeSinceEndingTransition)); // Todo: Extend state engine to store previous state.
-            ending.AddTransition(gameOver, () => this.CheckTransitionAllowedEndingToGameOver(this.elapsedTime - this.elapsedTimeSinceEndingTransition)); // Todo: Extend state engine to store previous state.
+            started.AddTransition(
+                paused, 
+                () => this.inputService.IsGamePaused == true);
+
+            paused.AddTransition(
+                started, 
+                () => this.inputService.IsGamePaused == false);
+
+            ending.AddTransition(
+                ended, 
+                () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > FadeEffectDuration && this.enemyService.IsBossEliminated);
+            
+            ending.AddTransition(
+                gameOver, 
+                () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > FadeEffectDuration && this.playerService.Player.Health <= 0);
+            
             //ended.AddTransition(starting, () => true);
             //gameOver.AddTransition(starting, () => this.reset);
 
             this.gameStateMachine = new StateMachine<Action<double>>(starting);
-        }
-
-        private bool CheckTransitionAllowedStartingToStarted(double currentElapsedTime)
-        {
-            return currentElapsedTime > FadeEffectDuration;
-        }
-
-        private bool CheckTransitionAllowedStartedToEnding()
-        {
-            return this.enemyService.IsBossEliminated || this.playerService.Player.Health <= 0;
-        }
-
-        private bool CheckTransitionAllowedEndingToEnded(double currentElapsedTime)
-        {
-            return currentElapsedTime > FadeEffectDuration && this.enemyService.IsBossEliminated;
-        }
-
-        private bool CheckTransitionAllowedEndingToGameOver(double currentElapsedTime)
-        {
-            return currentElapsedTime > FadeEffectDuration && this.playerService.Player.Health <= 0;
-            // ^^ Allows to transition off screen to menu screen ^^
         }
 
         private void FadeIn()
