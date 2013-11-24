@@ -103,13 +103,12 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Update(GameTime gameTime)
         {
+            Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
             this.gameStateMachine.Update();
 
             if (this.IsGameRunning)
             {
                 this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
-                Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
-
 
                 if (this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut")
                 {
@@ -303,8 +302,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                 "GameOver",
                 null,
                 this.EndGame,
-                null
-                /*() => this.reset = false*/);
+                null);
 
             idle.AddTransition(
                 starting,
