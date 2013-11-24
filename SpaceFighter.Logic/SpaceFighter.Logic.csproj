@@ -98,7 +98,6 @@
     <Compile Include="EventManager\EventAggregator.cs" />
     <Compile Include="EventManager\Subscriber.cs" />
     <Compile Include="EventManager\SubscriptionAttribute.cs" />
-    <Compile Include="GameStateEngine.cs" />
     <Compile Include="IEnemyFactory.cs" />
     <Compile Include="IPlayerFactory.cs" />
     <Compile Include="Pathfinding\AStar.cs" />

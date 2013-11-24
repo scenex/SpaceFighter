@@ -35,7 +35,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly ITerrainService terrainService;
         private readonly ICameraService cameraService;
         private readonly IAudioService audioService;
-        private IDebugService debugService;
+        private readonly IDebugService debugService;
         private SpriteFont font;
 
         private StateMachine<Action<double>> gameStateMachine;
@@ -71,19 +71,191 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.cameraService = cameraService;
 
             this.fadeEffect = string.Empty;
-
-            // ----- REWRITE 2013 -----
-            this.SetupStateEngine();
         }
 
         public bool IsGameRunning { get; private set; }
+
+        public override void Initialize()
+        {
+            this.SetupStateEngine();
+            base.Initialize();
+
+            this.renderTarget = new RenderTarget2D(
+                this.GraphicsDevice,
+                this.game.GraphicsDevice.PresentationParameters.BackBufferWidth,
+                this.game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+        }
+
+        protected override void LoadContent()
+        {
+            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
+
+            this.fadeInCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeIn");
+            this.fadeOutCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeOut");
+
+            this.curves.Add("FadeIn", this.fadeInCurve);
+            this.curves.Add("FadeOut", this.fadeOutCurve);
+
+            this.font = this.game.Content.Load<SpriteFont>(@"DefaultFont");
+
+            base.LoadContent();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            this.gameStateMachine.Update();
+
+            if (this.IsGameRunning)
+            {
+                this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+                Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
+
+
+                if (this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut")
+                {
+                    this.fadeEffectElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
+                }
+
+                this.UpdatePlayerPositionForEnemies();
+                base.Update(gameTime);
+                this.game.GraphicsDevice.SetRenderTarget(renderTarget);
+            }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            if (this.IsGameRunning)
+            {
+                foreach (var component in this.Game.Components)
+                {
+                    var drawableComponent = component as IDrawable;
+                    if (drawableComponent != null)
+                    {
+                        if (drawableComponent.Visible)
+                        {
+                            drawableComponent.Draw(gameTime);
+                        }
+                    }
+                }
+
+                this.game.GraphicsDevice.SetRenderTarget(null);
+                this.GraphicsDevice.Clear(Color.Black);
+
+                spriteBatch.Begin();
+
+                spriteBatch.Draw(
+                    renderTarget,
+                    renderTarget.Bounds,
+                    this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut"
+                        ? Color.White * this.curves[this.fadeEffect].Evaluate((float)(this.fadeEffectElapsed) / 1000)
+                        : Color.White * 1);
+
+                //spriteBatch.DrawString(this.font, Math.Round(elapsedTime / 1000, 1).ToString(), new Vector2(50, 20), Color.White);
+
+                spriteBatch.End();
+            }
+        }
+
+        public void StartGame()
+        {
+            // DISABLE MUSIC WHILE DEVELOPMENT
+            // this.audioService.PlaySound("music2");
+
+            this.IsGameRunning = true;
+
+            this.game.Components.Add(new FramerateCounter(this.game));
+            this.game.Components.Add(this.collisionDetectionService);
+            this.game.Components.Add(this.playerService);
+            this.game.Components.Add(this.enemyService);
+            this.game.Components.Add(this.inputService);
+            this.game.Components.Add(this.headUpDisplayService);
+            this.game.Components.Add(this.terrainService);
+            this.game.Components.Add(this.debugService);
+            this.game.Components.Add(this.audioService);
+            this.game.Components.Add(this.cameraService);
+
+            this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
+            this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
+            this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
+            this.collisionDetectionService.BoundaryHit += this.OnBoundaryHit;
+
+            this.playerService.TransitionToStateDying += this.OnTransitionToStateDying;
+            this.playerService.TransitionToStateDead += this.OnTransitionToStateDead;
+            this.playerService.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
+            this.playerService.TransitionToStateAlive += this.OnTransitionToStateAlive;
+            this.playerService.HealthChanged += this.OnHealthChanged;
+
+            this.inputService.InputStateHandling = InputStateHandling.Gameplay;
+
+            this.playerService.SpawnPlayer();
+            this.enemyService.SpawnEnemies();
+
+            this.inputService.Enable();
+        }
+
+        public void PauseGame()
+        {
+            foreach (var updateableComponent in this.game.Components.OfType<GameComponent>())
+            {
+                if (updateableComponent.GetType() != typeof(InputService) && updateableComponent.GetType() != typeof(GameController)) // Todo: Reflection alternative?
+                {
+                    updateableComponent.Enabled = false;
+                }
+            }
+        }
+
+        public void ResumeGame()
+        {
+            foreach (var updateableComponent in this.game.Components.OfType<GameComponent>())
+            {
+                if (updateableComponent.GetType() != typeof(InputService) && updateableComponent.GetType() != typeof(GameController)) // Todo: Reflection alternative?
+                {
+                    updateableComponent.Enabled = true;
+                }
+            }
+        }
+
+        private void EndGame()
+        {
+            this.IsGameRunning = false;
+
+            this.GraphicsDevice.SetRenderTarget(null);
+
+            this.collisionDetectionService.EnemyHit -= this.OnEnemyHit;
+            this.collisionDetectionService.PlayerHit -= this.OnPlayerHit;
+            this.collisionDetectionService.PlayerEnemyHit -= this.OnPlayerEnemyHit;
+            this.collisionDetectionService.BoundaryHit -= this.OnBoundaryHit;
+
+            this.playerService.TransitionToStateDying -= this.OnTransitionToStateDying;
+            this.playerService.TransitionToStateDead -= this.OnTransitionToStateDead;
+            this.playerService.TransitionToStateRespawn -= this.OnTransitionToStateRespawn;
+            this.playerService.TransitionToStateAlive -= this.OnTransitionToStateAlive;
+            this.playerService.HealthChanged -= this.OnHealthChanged;
+
+            this.playerService.UnspawnPlayer();
+            this.enemyService.UnspawnEnemies();
+
+            this.game.Components.Clear();
+        }
+
+        private void FadeIn()
+        {
+            this.fadeEffect = "FadeIn";
+            this.fadeEffectElapsed = 0;
+        }
+
+        private void FadeOut()
+        {
+            this.fadeEffect = "FadeOut";
+            this.fadeEffectElapsed = 0;
+        }
 
         private void SetupStateEngine()
         {
             var idle = new State<Action<double>>(
                 "Idle",
                 null,
-                () => this.IsGameRunning = false,
+                null,
                 null);
 
             var starting = new State<Action<double>>(
@@ -139,203 +311,33 @@ namespace SpaceFighter.Logic.Services.Implementations
                 () => this.IsGameRunning);
 
             starting.AddTransition(
-                started, 
+                started,
                 () => this.elapsedTime > FadeEffectDuration);
 
             started.AddTransition(
-                ending, 
+                ending,
                 () => this.enemyService.IsBossEliminated || this.playerService.Player.Health <= 0);
 
             started.AddTransition(
-                paused, 
+                paused,
                 () => this.inputService.IsGamePaused == true);
 
             paused.AddTransition(
-                started, 
+                started,
                 () => this.inputService.IsGamePaused == false);
 
             ending.AddTransition(
-                ended, 
+                ended,
                 () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > FadeEffectDuration && this.enemyService.IsBossEliminated);
-            
+
             ending.AddTransition(
-                gameOver, 
+                gameOver,
                 () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > FadeEffectDuration && this.playerService.Player.Health <= 0);
-            
+
             ended.AddTransition(starting, () => true);
             gameOver.AddTransition(idle, () => true);
 
             this.gameStateMachine = new StateMachine<Action<double>>(idle);
-        }
-
-        private void FadeIn()
-        {
-            this.fadeEffect = "FadeIn";
-            this.fadeEffectElapsed = 0;
-        }
-
-        private void FadeOut()
-        {
-            this.fadeEffect = "FadeOut";
-            this.fadeEffectElapsed = 0;
-        }
-
-        public override void Initialize()
-        {
-            base.Initialize();
-
-            this.renderTarget = new RenderTarget2D(
-                this.GraphicsDevice,
-                this.game.GraphicsDevice.PresentationParameters.BackBufferWidth,
-                this.game.GraphicsDevice.PresentationParameters.BackBufferHeight);
-        }
-
-        public void StartGame()
-        {
-            // DISABLE MUSIC WHILE DEVELOPMENT
-            // this.audioService.PlaySound("music2");
-
-            this.IsGameRunning = true;
-
-            this.game.Components.Add(new FramerateCounter(this.game));
-            this.game.Components.Add(this.collisionDetectionService);
-            this.game.Components.Add(this.playerService);
-            this.game.Components.Add(this.enemyService);
-            this.game.Components.Add(this.inputService);
-            this.game.Components.Add(this.headUpDisplayService);
-            this.game.Components.Add(this.terrainService);
-            this.game.Components.Add(this.debugService);
-            this.game.Components.Add(this.audioService);
-            this.game.Components.Add(this.cameraService);
-
-            this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
-            this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
-            this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
-            this.collisionDetectionService.BoundaryHit += this.OnBoundaryHit;
-
-            this.playerService.TransitionToStateDying += this.OnTransitionToStateDying;
-            this.playerService.TransitionToStateDead += this.OnTransitionToStateDead;
-            this.playerService.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
-            this.playerService.TransitionToStateAlive += this.OnTransitionToStateAlive;
-            this.playerService.HealthChanged += this.OnHealthChanged;
-
-            this.inputService.InputStateHandling = InputStateHandling.Gameplay;
-
-            this.playerService.SpawnPlayer();
-            this.enemyService.SpawnEnemies();
-
-            this.inputService.Enable();
-        }
-
-        private void EndGame()
-        {
-            //this.GraphicsDevice.SetRenderTarget(null);
-
-            this.collisionDetectionService.EnemyHit -= this.OnEnemyHit;
-            this.collisionDetectionService.PlayerHit -= this.OnPlayerHit;
-            this.collisionDetectionService.PlayerEnemyHit -= this.OnPlayerEnemyHit;
-            this.collisionDetectionService.BoundaryHit -= this.OnBoundaryHit;
-
-            this.playerService.TransitionToStateDying -= this.OnTransitionToStateDying;
-            this.playerService.TransitionToStateDead -= this.OnTransitionToStateDead;
-            this.playerService.TransitionToStateRespawn -= this.OnTransitionToStateRespawn;
-            this.playerService.TransitionToStateAlive -= this.OnTransitionToStateAlive;
-            this.playerService.HealthChanged -= this.OnHealthChanged;
-
-            this.playerService.UnspawnPlayer();
-            this.enemyService.UnspawnEnemies();
-
-            this.game.Components.Clear();
-        }
-
-        public void PauseGame()
-        {
-            foreach (var updateableComponent in this.game.Components.OfType<GameComponent>())
-            {
-                if (updateableComponent.GetType() != typeof(InputService) && updateableComponent.GetType() != typeof(GameController)) // Todo: Reflection alternative?
-                {
-                    updateableComponent.Enabled = false;
-                }
-            }
-        }
-
-        public void ResumeGame()
-        {
-            foreach (var updateableComponent in this.game.Components.OfType<GameComponent>())
-            {
-                if (updateableComponent.GetType() != typeof(InputService) && updateableComponent.GetType() != typeof(GameController)) // Todo: Reflection alternative?
-                {
-                    updateableComponent.Enabled = true;
-                }
-            }
-        }
-
-        protected override void LoadContent()
-        {
-            this.spriteBatch = new SpriteBatch(this.game.GraphicsDevice);
-
-            this.fadeInCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeIn");
-            this.fadeOutCurve = this.Game.Content.Load<Curve>(@"Curves\MenuTextFadeOut");
-
-            this.curves.Add("FadeIn", this.fadeInCurve);
-            this.curves.Add("FadeOut", this.fadeOutCurve);
-
-            this.font = this.game.Content.Load<SpriteFont>(@"DefaultFont");
-
-            base.LoadContent();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            if (this.IsGameRunning)
-            {
-                this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
-                Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
-                this.gameStateMachine.Update();
-
-                if (this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut")
-                {
-                    this.fadeEffectElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
-                }
-
-                this.UpdatePlayerPositionForEnemies();
-                base.Update(gameTime);
-                this.game.GraphicsDevice.SetRenderTarget(renderTarget);
-            }
-        }
-        
-        public override void Draw(GameTime gameTime)
-        {
-            if (this.IsGameRunning)
-            {
-                foreach (var component in this.Game.Components)
-                {
-                    var drawableComponent = component as IDrawable;
-                    if (drawableComponent != null)
-                    {
-                        if (drawableComponent.Visible)
-                        {
-                            drawableComponent.Draw(gameTime);
-                        }
-                    }
-                }
-
-                this.game.GraphicsDevice.SetRenderTarget(null);
-                this.GraphicsDevice.Clear(Color.Black);
-
-                spriteBatch.Begin();
-
-                spriteBatch.Draw(
-                    renderTarget,
-                    renderTarget.Bounds,
-                    this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut"
-                        ? Color.White * this.curves[this.fadeEffect].Evaluate((float)(this.fadeEffectElapsed) / 1000)
-                        : Color.White * 1);
-
-                //spriteBatch.DrawString(this.font, Math.Round(elapsedTime / 1000, 1).ToString(), new Vector2(50, 20), Color.White);
-
-                spriteBatch.End();
-            }
         }
 
         private void UpdatePlayerPositionForEnemies()

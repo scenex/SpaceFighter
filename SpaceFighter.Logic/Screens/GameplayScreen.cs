@@ -48,11 +48,6 @@ namespace SpaceFighter.Logic.Screens
             {
                 this.IsTransitionAllowed = true;
             }
-
-            //if(this.gameController.CurrentState == "GameOver") // TODO: REFACTORING
-            //{
-            //    this.IsTransitionAllowed = true;
-            //}
         }
 
         public void Draw(GameTime gameTime)
