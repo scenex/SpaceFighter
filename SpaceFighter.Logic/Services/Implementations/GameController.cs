@@ -6,6 +6,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -75,8 +76,16 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.SetupStateEngine();
         }
 
+        public bool IsGameRunning { get; private set; }
+
         private void SetupStateEngine()
         {
+            var idle = new State<Action<double>>(
+                "Idle",
+                null,
+                () => this.IsGameRunning = false,
+                null);
+
             var starting = new State<Action<double>>(
                 "Starting",
                 null,
@@ -121,9 +130,13 @@ namespace SpaceFighter.Logic.Services.Implementations
             var gameOver = new State<Action<double>>(
                 "GameOver",
                 null,
-                null,
+                this.EndGame,
                 null
                 /*() => this.reset = false*/);
+
+            idle.AddTransition(
+                starting,
+                () => this.IsGameRunning);
 
             starting.AddTransition(
                 started, 
@@ -149,10 +162,10 @@ namespace SpaceFighter.Logic.Services.Implementations
                 gameOver, 
                 () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > FadeEffectDuration && this.playerService.Player.Health <= 0);
             
-            //ended.AddTransition(starting, () => true);
-            //gameOver.AddTransition(starting, () => this.reset);
+            ended.AddTransition(starting, () => true);
+            gameOver.AddTransition(idle, () => true);
 
-            this.gameStateMachine = new StateMachine<Action<double>>(starting);
+            this.gameStateMachine = new StateMachine<Action<double>>(idle);
         }
 
         private void FadeIn()
@@ -169,17 +182,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Initialize()
         {
-            this.game.Components.Add(new FramerateCounter(this.game));
-            this.game.Components.Add(this.collisionDetectionService);
-            this.game.Components.Add(this.playerService);
-            this.game.Components.Add(this.enemyService);
-            this.game.Components.Add(this.inputService);
-            this.game.Components.Add(this.headUpDisplayService);
-            this.game.Components.Add(this.terrainService);
-            this.game.Components.Add(this.debugService);
-            this.game.Components.Add(this.audioService);
-            this.game.Components.Add(this.cameraService);
-
             base.Initialize();
 
             this.renderTarget = new RenderTarget2D(
@@ -192,6 +194,19 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             // DISABLE MUSIC WHILE DEVELOPMENT
             // this.audioService.PlaySound("music2");
+
+            this.IsGameRunning = true;
+
+            this.game.Components.Add(new FramerateCounter(this.game));
+            this.game.Components.Add(this.collisionDetectionService);
+            this.game.Components.Add(this.playerService);
+            this.game.Components.Add(this.enemyService);
+            this.game.Components.Add(this.inputService);
+            this.game.Components.Add(this.headUpDisplayService);
+            this.game.Components.Add(this.terrainService);
+            this.game.Components.Add(this.debugService);
+            this.game.Components.Add(this.audioService);
+            this.game.Components.Add(this.cameraService);
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
@@ -212,9 +227,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.inputService.Enable();
         }
 
-        public void EndGame()
+        private void EndGame()
         {
-            this.GraphicsDevice.SetRenderTarget(null);
+            //this.GraphicsDevice.SetRenderTarget(null);
 
             this.collisionDetectionService.EnemyHit -= this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit -= this.OnPlayerHit;
@@ -229,6 +244,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.playerService.UnspawnPlayer();
             this.enemyService.UnspawnEnemies();
+
+            this.game.Components.Clear();
         }
 
         public void PauseGame()
@@ -270,50 +287,55 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Update(GameTime gameTime)
         {
-            this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
-            this.gameStateMachine.Update();
-
-            if(this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut")
+            if (this.IsGameRunning)
             {
-                this.fadeEffectElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
+                this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
+                Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
+                this.gameStateMachine.Update();
+
+                if (this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut")
+                {
+                    this.fadeEffectElapsed += gameTime.ElapsedGameTime.TotalMilliseconds;
+                }
+
+                this.UpdatePlayerPositionForEnemies();
+                base.Update(gameTime);
+                this.game.GraphicsDevice.SetRenderTarget(renderTarget);
             }
-
-            this.UpdatePlayerPositionForEnemies();
-            
-            base.Update(gameTime);
-
-            this.game.GraphicsDevice.SetRenderTarget(renderTarget);
         }
         
         public override void Draw(GameTime gameTime)
         {
-            foreach (var component in this.Game.Components)
+            if (this.IsGameRunning)
             {
-                var drawableComponent = component as IDrawable;
-                if (drawableComponent != null)
+                foreach (var component in this.Game.Components)
                 {
-                    if(drawableComponent.Visible)
+                    var drawableComponent = component as IDrawable;
+                    if (drawableComponent != null)
                     {
-                        drawableComponent.Draw(gameTime);
+                        if (drawableComponent.Visible)
+                        {
+                            drawableComponent.Draw(gameTime);
+                        }
                     }
                 }
+
+                this.game.GraphicsDevice.SetRenderTarget(null);
+                this.GraphicsDevice.Clear(Color.Black);
+
+                spriteBatch.Begin();
+
+                spriteBatch.Draw(
+                    renderTarget,
+                    renderTarget.Bounds,
+                    this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut"
+                        ? Color.White * this.curves[this.fadeEffect].Evaluate((float)(this.fadeEffectElapsed) / 1000)
+                        : Color.White * 1);
+
+                //spriteBatch.DrawString(this.font, Math.Round(elapsedTime / 1000, 1).ToString(), new Vector2(50, 20), Color.White);
+
+                spriteBatch.End();
             }
-
-            this.game.GraphicsDevice.SetRenderTarget(null);
-            this.GraphicsDevice.Clear(Color.Black);
-
-            spriteBatch.Begin();
-
-            spriteBatch.Draw(
-                renderTarget,
-                renderTarget.Bounds,
-                this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut"
-                    ? Color.White * this.curves[this.fadeEffect].Evaluate((float)(this.fadeEffectElapsed) / 1000)
-                    : Color.White * 1);
-
-            //spriteBatch.DrawString(this.font, Math.Round(elapsedTime / 1000, 1).ToString(), new Vector2(50, 20), Color.White);
-            
-            spriteBatch.End();
         }
 
         private void UpdatePlayerPositionForEnemies()

@@ -30,11 +30,6 @@ namespace SpaceFighter.Logic.Screens
             this.gameController.StartGame();
         }
 
-        public void EndGame()
-        {
-            this.gameController.EndGame();
-        }
-
         public void PauseGame()
         {
             this.gameController.PauseGame();
@@ -48,6 +43,11 @@ namespace SpaceFighter.Logic.Screens
         public void Update(GameTime gameTime)
         {
             ((IUpdateable)this.gameController).Update(gameTime);
+
+            if (this.gameController.IsGameRunning == false)
+            {
+                this.IsTransitionAllowed = true;
+            }
 
             //if(this.gameController.CurrentState == "GameOver") // TODO: REFACTORING
             //{

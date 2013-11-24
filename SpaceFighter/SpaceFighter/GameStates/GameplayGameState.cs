@@ -43,9 +43,7 @@ namespace SpaceFighter.GameStates
         }
 
         protected override void OnLeaving()
-        {
-            this.gameplayScreen.EndGame();
-            this.game.Components.Clear();
+        {           
             base.OnLeaving();
         }
 
