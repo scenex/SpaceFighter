@@ -105,6 +105,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
             this.gameStateMachine.Update();
 
+            this.headUpDisplayService.Health = this.playerService.Player.Health;
+
             if (this.IsGameRunning)
             {
                 this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -181,7 +183,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.TransitionToStateDead += this.OnTransitionToStateDead;
             this.playerService.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
             this.playerService.TransitionToStateAlive += this.OnTransitionToStateAlive;
-            this.playerService.HealthChanged += this.OnHealthChanged;
 
             this.inputService.InputStateHandling = InputStateHandling.Gameplay;
 
@@ -228,7 +229,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.TransitionToStateDead -= this.OnTransitionToStateDead;
             this.playerService.TransitionToStateRespawn -= this.OnTransitionToStateRespawn;
             this.playerService.TransitionToStateAlive -= this.OnTransitionToStateAlive;
-            this.playerService.HealthChanged -= this.OnHealthChanged;
 
             this.playerService.UnspawnPlayer();
             this.enemyService.UnspawnEnemies();
@@ -367,11 +367,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.collisionDetectionService.Enable();
         }
 
-        private void OnHealthChanged(object sender, HealthChangedEventArgs healthChangedEventArgs)
-        {
-            this.headUpDisplayService.Health = healthChangedEventArgs.NewHealth;
-        }
-
         private void OnEnemyHit(object sender, EnemyHitEventArgs e)
         {
             this.playerService.RemoveShot(e.Shot);
@@ -382,19 +377,16 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.enemyService.RemoveShot(e.Shot);
             this.playerService.ReportPlayerHit(e.Shot);
-            this.headUpDisplayService.Health = this.playerService.Player.Health;
         }
 
         private void OnPlayerEnemyHit(object sender, EventArgs e)
         {
             this.playerService.ReportPlayerHit(100);
-            this.headUpDisplayService.Health = this.playerService.Player.Health;
         }
 
         private void OnBoundaryHit(object sender, EventArgs e)
         {
             this.playerService.ReportPlayerHit(100);
-            this.headUpDisplayService.Health = this.playerService.Player.Health;
         }
     }
 }

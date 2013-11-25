@@ -28,7 +28,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         public event EventHandler<StateChangedEventArgs> TransitionToStateDying;
         public event EventHandler<StateChangedEventArgs> TransitionToStateDead;
         public event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
-        public event EventHandler<HealthChangedEventArgs> HealthChanged;
 
         public IPlayer Player
         {
@@ -62,7 +61,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.TransitionToStateDead += this.OnTransitionToStateDead;
             this.player.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
             this.player.TransitionToStateAlive += this.OnTransitionToStateAlive;
-            this.player.HealthChanged += this.OnHealthChanged;
             this.player.Weapon.WeaponFired += this.OnWeaponFired;
 
             this.Game.Components.Add(this.player);
@@ -139,14 +137,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             if (this.TransitionToStateAlive != null)
             {
                 this.TransitionToStateAlive(this, stateChangedEventArgs);
-            }
-        }
-
-        private void OnHealthChanged(object sender, HealthChangedEventArgs healthChangedEventArgs)
-        {
-            if (this.HealthChanged != null)
-            {
-                this.HealthChanged(this, healthChangedEventArgs);
             }
         }
 
