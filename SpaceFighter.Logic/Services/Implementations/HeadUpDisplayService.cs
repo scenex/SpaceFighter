@@ -31,21 +31,21 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.primitiveBatch.Begin(PrimitiveType.LineList);
 
             this.primitiveBatch.AddVertex(new Vector2(95, 595), Color.White);
-            this.primitiveBatch.AddVertex(new Vector2(305, 595), Color.White);
+            this.primitiveBatch.AddVertex(new Vector2(205, 595), Color.White);
 
             this.primitiveBatch.AddVertex(new Vector2(95, 595), Color.White);
-            this.primitiveBatch.AddVertex(new Vector2(95, 625), Color.White);
+            this.primitiveBatch.AddVertex(new Vector2(95, 615), Color.White);
 
-            this.primitiveBatch.AddVertex(new Vector2(305, 595), Color.White);
-            this.primitiveBatch.AddVertex(new Vector2(305, 625), Color.White);
+            this.primitiveBatch.AddVertex(new Vector2(205, 595), Color.White);
+            this.primitiveBatch.AddVertex(new Vector2(205, 615), Color.White);
 
-            this.primitiveBatch.AddVertex(new Vector2(95, 625), Color.White);
-            this.primitiveBatch.AddVertex(new Vector2(305, 625), Color.White);
+            this.primitiveBatch.AddVertex(new Vector2(95, 615), Color.White);
+            this.primitiveBatch.AddVertex(new Vector2(205, 615), Color.White);
 
-            for (int i = 0; i < this.Health * 2; i++)
+            for (int i = 0; i < this.Health; i++)
             {
                 this.primitiveBatch.AddVertex(new Vector2(100 + i, 600), Color.White);
-                this.primitiveBatch.AddVertex(new Vector2(100 + i, 620), Color.White);
+                this.primitiveBatch.AddVertex(new Vector2(100 + i, 610), Color.White);
             }
 
             this.primitiveBatch.End();
