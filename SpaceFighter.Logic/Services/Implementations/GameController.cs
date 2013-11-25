@@ -286,6 +286,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                     this.elapsedTime = 0;
                     this.elapsedTimeSinceEndingTransition = 0;
 
+                    // Todo: Restarting only for development purposes, otherwise next level or game finished.
                     this.EndGame();
                     this.StartGame();
                 },
@@ -313,7 +314,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             started.AddTransition(
                 ending,
-                () => this.enemyService.IsBossEliminated || this.playerService.Player.Health <= 0);
+                () => this.enemyService.IsBossEliminated || this.playerService.Player.Lives <= 0);
 
             started.AddTransition(
                 paused,
@@ -329,7 +330,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             ending.AddTransition(
                 gameOver,
-                () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > FadeEffectDuration && this.playerService.Player.Health <= 0);
+                () => this.elapsedTime - this.elapsedTimeSinceEndingTransition > FadeEffectDuration && this.playerService.Player.Lives == 0);
 
             ended.AddTransition(starting, () => true);
             gameOver.AddTransition(idle, () => true);

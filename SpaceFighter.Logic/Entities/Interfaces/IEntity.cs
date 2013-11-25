@@ -8,15 +8,18 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
     public interface IEntity
     {
+        IWeapon Weapon { get; }
+
         Color[] ColorData { get; }
-        Vector2 Position { get; }
-        Vector2 Origin { get; } // <- rename to 'AbsoluteOrigin' ?
-        int Width { get; }
-        int Height { get; }
-        int Health { get; }
-        float Rotation { get; }
         Rectangle BoundingRectangle { get; }
 
-        IWeapon Weapon { get; }
+        Vector2 Position { get; }
+        Vector2 Origin { get; } // <- rename to 'AbsoluteOrigin' ?
+        float Rotation { get; }
+        int Width { get; }
+        int Height { get; }
+
+        int Health { get; }
+        int Lives { get; }        
     }
 }

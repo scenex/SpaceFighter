@@ -18,15 +18,17 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
     /// The spaceship class which represent the player's spaceship.
     /// </summary>
     public class PlayerA : DrawableGameComponent, IPlayer
-    {   
+    {
+        private readonly ICameraService cameraService;
+        private readonly Weapon weapon;
+
         private SpriteBatch spriteBatch;
-        private ICameraService cameraService;       
         private StateMachine<Action<double>> stateMachine;
+        private SpriteManager spriteManager;
+
         private double deadToRespawnTimer;
         private int healthReplenishCounter;
-        private SpriteManager spriteManager;
         private int health;
-        private Weapon weapon;
         private float thrustTotal;
 
         private const float ThrustIncrement = 0.2f;
@@ -43,7 +45,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             this.weapon = new WeaponPlayerA(this.Game, this.cameraService) { DrawOrder = 1 }; // Todo: Factory
             this.Game.Components.Add(this.weapon);
 
+            this.Lives = 2;
             this.Health = 100;
+
             this.Rotation = -MathHelper.PiOver2;
             this.Position = startPosition;
         }
@@ -53,6 +57,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
         public event EventHandler<StateChangedEventArgs> TransitionToStateDead;
         public event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
         public event EventHandler<HealthChangedEventArgs> HealthChanged;
+
+        public int Lives { get; private set; }
 
         public Vector2 Position { get; private set; }
         public float Rotation { get; private set; }
@@ -166,7 +172,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                 PlayerState.Dead,
                 elapsedTime => this.deadToRespawnTimer += elapsedTime,
                 delegate
-                    {       
+                    {
+                        this.Lives--;
                         if (this.TransitionToStateDead != null)
                         {
                             this.TransitionToStateDead(this, new StateChangedEventArgs(PlayerState.Dying, PlayerState.Dead));

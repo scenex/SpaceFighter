@@ -40,7 +40,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         public Vector2 PlayerPosition { get; set; }
         public Vector2 Position { get; protected set; }
 
+        public int Lives { get; protected set; }
         public int Health { get; protected set; }
+
         public float Rotation { get; private set; }
         public Color[] ColorData { get; private set; }
 
