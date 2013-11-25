@@ -106,6 +106,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.gameStateMachine.Update();
 
             this.headUpDisplayService.Health = this.playerService.Player.Health;
+            this.headUpDisplayService.Lives = this.playerService.Player.Lives;
 
             if (this.IsGameRunning)
             {
