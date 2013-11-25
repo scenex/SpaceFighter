@@ -11,7 +11,6 @@ namespace SpaceFighter
     using Nuclex.Game.States;
 
     using SpaceFighter.GameStates;
-    using SpaceFighter.Logic.EventManager;
     using SpaceFighter.Logic.Screens;
     using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
@@ -55,10 +54,7 @@ namespace SpaceFighter
                 null,
                 delegate
                     {
-                        this.menuGameState = new MenuGameState(
-                            this.game, 
-                            this.inputService);
-
+                        this.menuGameState = new MenuGameState(this.game, this.inputService);
                         this.gameStateManager.Push(this.menuGameState);
                     },
                 () => this.gameStateManager.Pop());
@@ -68,12 +64,7 @@ namespace SpaceFighter
                 null,
                 delegate
                     {
-                        //this.gameStateEngine.Reset(); TODO: REFACTORING
-
-                        this.gameplayGameState = new GameplayGameState(
-                            this.game,
-                            this.gameController);
-
+                        this.gameplayGameState = new GameplayGameState(this.gameController);
                         this.gameStateManager.Push(this.gameplayGameState);
                     }, 
                 () => this.gameStateManager.Pop());
@@ -91,8 +82,6 @@ namespace SpaceFighter
 
             this.applicationStateMachine = new StateMachine<Action<double>>(intro);
             //this.applicationStateMachine = new StateMachine<Action<double>>(gameplay); // Skipping intro and menu for faster startup
-
-            EventAggregator.Subscribe(this, "PauseToggled");
         }
 
         public void Update(GameTime gameTime)
@@ -104,19 +93,6 @@ namespace SpaceFighter
         public void Draw(GameTime gameTime)
         {
             this.gameStateManager.Draw(gameTime);
-        }
-
-        [Subscription("PauseToggled")]
-        public void PauseToggledSubscriptionHandler()
-        {
-            if (this.inputService.IsGamePaused)
-            {
-                this.gameStateManager.Pause();
-            }
-            else
-            {
-                this.gameStateManager.Resume();
-            }
         }
     }
 }

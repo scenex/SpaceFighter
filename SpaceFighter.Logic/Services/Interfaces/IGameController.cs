@@ -10,8 +10,5 @@ namespace SpaceFighter.Logic.Services.Interfaces
     {
         void StartGame();
         bool IsGameRunning { get; }
-
-        void PauseGame();
-        void ResumeGame();
     }
 }

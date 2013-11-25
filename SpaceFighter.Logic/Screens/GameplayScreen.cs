@@ -30,16 +30,6 @@ namespace SpaceFighter.Logic.Screens
             this.gameController.StartGame();
         }
 
-        public void PauseGame()
-        {
-            this.gameController.PauseGame();
-        }
-
-        public void ResumeGame()
-        {
-            this.gameController.ResumeGame();
-        }
-
         public void Update(GameTime gameTime)
         {
             ((IUpdateable)this.gameController).Update(gameTime);

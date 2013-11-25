@@ -15,7 +15,6 @@ namespace SpaceFighter.GameStates
 
     public class GameplayGameState : GameState, IGameStateTransition, IDrawable
     {
-        private readonly Game game;
         private readonly GameplayScreen gameplayScreen;
 
         public event EventHandler<EventArgs> DrawOrderChanged;
@@ -24,9 +23,8 @@ namespace SpaceFighter.GameStates
         public bool Visible { get; private set; }
         public int DrawOrder { get; private set; }
 
-        public GameplayGameState(Game game, IGameController gameController)
+        public GameplayGameState(IGameController gameController)
         {
-            this.game = game;
             this.Visible = true;
 
             this.gameplayScreen = new GameplayScreen(gameController);
@@ -40,23 +38,6 @@ namespace SpaceFighter.GameStates
             this.gameplayScreen.Initialize();
             this.gameplayScreen.StartGame();       
             base.OnEntered();
-        }
-
-        protected override void OnLeaving()
-        {           
-            base.OnLeaving();
-        }
-
-        protected override void OnPause()
-        {
-            this.gameplayScreen.PauseGame();
-            base.OnPause();
-        }
-
-        protected override void OnResume()
-        {
-            this.gameplayScreen.ResumeGame();
-            base.OnResume();
         }
 
         /// <summary>

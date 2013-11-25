@@ -11,7 +11,6 @@ namespace SpaceFighter.Logic.Services.Implementations
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    using SpaceFighter.Logic.EventManager;
     using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
 
@@ -192,7 +191,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.inputService.Enable();
         }
 
-        public void PauseGame()
+        private void PauseGame()
         {
             foreach (var updateableComponent in this.game.Components.OfType<GameComponent>())
             {
@@ -203,7 +202,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        public void ResumeGame()
+        private void ResumeGame()
         {
             foreach (var updateableComponent in this.game.Components.OfType<GameComponent>())
             {
@@ -295,8 +294,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             var paused = new State<Action<double>>(
                 "Paused",
                 null,
-                () => EventAggregator.Fire(this, "PauseToggled"),
-                () => EventAggregator.Fire(this, "PauseToggled"));
+                this.PauseGame,
+                this.ResumeGame);
 
             var gameOver = new State<Action<double>>(
                 "GameOver",
