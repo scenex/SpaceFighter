@@ -127,18 +127,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             if (this.IsGameRunning)
             {
-                foreach (var component in this.Game.Components)
-                {
-                    var drawableComponent = component as IDrawable;
-                    if (drawableComponent != null)
-                    {
-                        if (drawableComponent.Visible)
-                        {
-                            drawableComponent.Draw(gameTime);
-                        }
-                    }
-                }
-
                 this.game.GraphicsDevice.SetRenderTarget(null);
                 this.GraphicsDevice.Clear(Color.Black);
 
@@ -146,14 +134,14 @@ namespace SpaceFighter.Logic.Services.Implementations
 
                 spriteBatch.Draw(
                     renderTarget,
-                    renderTarget.Bounds,
+                    renderTarget.Bounds, 
                     this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut"
                         ? Color.White * this.curves[this.fadeEffect].Evaluate((float)(this.fadeEffectElapsed) / 1000)
                         : Color.White * 1);
-
-                //spriteBatch.DrawString(this.font, Math.Round(elapsedTime / 1000, 1).ToString(), new Vector2(50, 20), Color.White);
-
+                
                 spriteBatch.End();
+
+                //base.Draw(gameTime); // Todo: Needed?
             }
         }
 
