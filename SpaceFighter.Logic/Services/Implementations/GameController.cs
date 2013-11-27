@@ -180,10 +180,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
             this.collisionDetectionService.BoundaryHit += this.OnBoundaryHit;
 
-            this.playerService.TransitionToStateDying += this.OnTransitionToStateDying;
-            this.playerService.TransitionToStateDead += this.OnTransitionToStateDead;
-            this.playerService.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
-            this.playerService.TransitionToStateAlive += this.OnTransitionToStateAlive;
+            this.playerService.ShipExploding += this.OnShipExploding;
+            this.playerService.ShipInvincible += this.OnShipInvincible;
+            this.playerService.ShipVulnerable += this.OnShipVulnerable;
 
             this.inputService.InputStateHandling = InputStateHandling.Gameplay;
 
@@ -226,10 +225,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.collisionDetectionService.PlayerEnemyHit -= this.OnPlayerEnemyHit;
             this.collisionDetectionService.BoundaryHit -= this.OnBoundaryHit;
 
-            this.playerService.TransitionToStateDying -= this.OnTransitionToStateDying;
-            this.playerService.TransitionToStateDead -= this.OnTransitionToStateDead;
-            this.playerService.TransitionToStateRespawn -= this.OnTransitionToStateRespawn;
-            this.playerService.TransitionToStateAlive -= this.OnTransitionToStateAlive;
+            this.playerService.ShipExploding -= this.OnShipExploding;
+            this.playerService.ShipInvincible -= this.OnShipInvincible;
+            this.playerService.ShipVulnerable -= this.OnShipVulnerable;
 
             this.playerService.UnspawnPlayer();
             this.enemyService.UnspawnEnemies();
@@ -347,23 +345,18 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        private void OnTransitionToStateDying(object sender, EventArgs eventArgs)
+        private void OnShipExploding(object sender, EventArgs eventArgs)
         {   
             this.inputService.Disable();
             this.collisionDetectionService.Disable();  
         }
 
-        private void OnTransitionToStateDead(object sender, EventArgs eventArgs)
-        {
-            // Continue...
-        }
-
-        private void OnTransitionToStateRespawn(object sender, StateChangedEventArgs stateChangedEventArgs)
+        private void OnShipInvincible(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
             this.inputService.Enable();
         }
 
-        private void OnTransitionToStateAlive(object sender, StateChangedEventArgs stateChangedEventArgs)
+        private void OnShipVulnerable(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
             this.collisionDetectionService.Enable();
         }

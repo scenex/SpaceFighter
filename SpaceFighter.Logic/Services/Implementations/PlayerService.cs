@@ -24,10 +24,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerFactory = playerFactory;
         }
 
-        public event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
-        public event EventHandler<StateChangedEventArgs> TransitionToStateDying;
-        public event EventHandler<StateChangedEventArgs> TransitionToStateDead;
-        public event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
+        public event EventHandler<StateChangedEventArgs> ShipInvincible;
+        public event EventHandler<StateChangedEventArgs> ShipVulnerable;
+        public event EventHandler<StateChangedEventArgs> ShipExploding;
 
         public IPlayer Player
         {
@@ -57,10 +56,9 @@ namespace SpaceFighter.Logic.Services.Implementations
                     (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) + 40,
                     (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) + 300)); // Todo: Eliminate magic numbers)
 
-            this.player.TransitionToStateDying += this.OnTransitionToStateDying;
-            this.player.TransitionToStateDead += this.OnTransitionToStateDead;
-            this.player.TransitionToStateRespawn += this.OnTransitionToStateRespawn;
-            this.player.TransitionToStateAlive += this.OnTransitionToStateAlive;
+            this.player.ShipExploding += this.OnShipExploding;
+            this.player.ShipInvincible += this.OnShipInvincible;
+            this.player.ShipVulnerable += this.OnShipVulnerable;
             this.player.Weapon.WeaponFired += this.OnWeaponFired;
 
             this.Game.Components.Add(this.player);
@@ -106,37 +104,29 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Weapon.Shots.Remove(shot);
         }
 
-        private void OnTransitionToStateDying(object sender, StateChangedEventArgs stateChangedEventArgs)
+        private void OnShipExploding(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
             this.audioService.PlaySound("explosion");
 
-            if (this.TransitionToStateDying != null)
+            if (this.ShipExploding != null)
             {
-                this.TransitionToStateDying(this, stateChangedEventArgs);
+                this.ShipExploding(this, stateChangedEventArgs);
             }
         }
 
-        private void OnTransitionToStateDead(object sender, StateChangedEventArgs stateChangedEventArgs)
+        private void OnShipInvincible(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
-            if (this.TransitionToStateDead != null)
+            if (this.ShipInvincible != null)
             {
-                this.TransitionToStateDead(this, stateChangedEventArgs);
+                this.ShipInvincible(this, stateChangedEventArgs);
             }
         }
 
-        private void OnTransitionToStateRespawn(object sender, StateChangedEventArgs stateChangedEventArgs)
+        private void OnShipVulnerable(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
-            if (this.TransitionToStateRespawn != null)
+            if (this.ShipVulnerable != null)
             {
-                this.TransitionToStateRespawn(this, stateChangedEventArgs);
-            }
-        }
-
-        private void OnTransitionToStateAlive(object sender, StateChangedEventArgs stateChangedEventArgs)
-        {
-            if (this.TransitionToStateAlive != null)
-            {
-                this.TransitionToStateAlive(this, stateChangedEventArgs);
+                this.ShipVulnerable(this, stateChangedEventArgs);
             }
         }
 

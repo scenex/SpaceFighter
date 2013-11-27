@@ -13,10 +13,9 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
     public interface IPlayerService : IGameComponent
     {
-        event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
-        event EventHandler<StateChangedEventArgs> TransitionToStateDying;
-        event EventHandler<StateChangedEventArgs> TransitionToStateDead;
-        event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
+        event EventHandler<StateChangedEventArgs> ShipVulnerable;
+        event EventHandler<StateChangedEventArgs> ShipExploding;
+        event EventHandler<StateChangedEventArgs> ShipInvincible;
 
         IPlayer Player { get; }
         IEnumerable<IShot> Shots { get; } 

@@ -28,7 +28,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
 
         private double deadToRespawnTimer;
         private int healthReplenishCounter;
-        private int health;
+
         private float thrustTotal;
 
         private const float ThrustIncrement = 0.2f;
@@ -52,13 +52,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             this.Position = startPosition;
         }
 
-        public event EventHandler<StateChangedEventArgs> TransitionToStateAlive;
-        public event EventHandler<StateChangedEventArgs> TransitionToStateDying;
+        public event EventHandler<StateChangedEventArgs> ShipVulnerable;
+        public event EventHandler<StateChangedEventArgs> ShipExploding;
         public event EventHandler<StateChangedEventArgs> TransitionToStateDead;
-        public event EventHandler<StateChangedEventArgs> TransitionToStateRespawn;
-        public event EventHandler<HealthChangedEventArgs> HealthChanged;
+        public event EventHandler<StateChangedEventArgs> ShipInvincible;
 
         public int Lives { get; private set; }
+        public int Health { get; private set; }
 
         public Vector2 Position { get; private set; }
         public float Rotation { get; private set; }
@@ -81,24 +81,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             get
             {
                 return this.weapon;
-            }
-        }
-
-        public int Health
-        {
-            get
-            {
-                return this.health;
-            }
-
-            private set
-            {
-                this.health = value;
-
-                if (this.HealthChanged != null)
-                {
-                    this.HealthChanged(this, new HealthChangedEventArgs(value));
-                }
             }
         }
 
@@ -161,9 +143,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                     {
                         this.thrustTotal = 0;
 
-                        if (this.TransitionToStateDying != null)
+                        if (this.ShipExploding != null)
                         {
-                            this.TransitionToStateDying(this, new StateChangedEventArgs(PlayerState.Alive, PlayerState.Dying));
+                            this.ShipExploding(this, new StateChangedEventArgs(PlayerState.Alive, PlayerState.Dying));
                         }
                     }, 
                 null);
@@ -194,9 +176,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                     },
                 delegate
                     {
-                        if (this.TransitionToStateRespawn != null)
+                        if (this.ShipInvincible != null)
                         {
-                            this.TransitionToStateRespawn(this, new StateChangedEventArgs(PlayerState.Dead, PlayerState.Respawn));
+                            this.ShipInvincible(this, new StateChangedEventArgs(PlayerState.Dead, PlayerState.Respawn));
                         }                       
                     },
                 () => { this.healthReplenishCounter = 0; });
@@ -206,9 +188,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                 null, 
                 delegate
                     {
-                        if (this.TransitionToStateAlive != null)
+                        if (this.ShipVulnerable != null)
                         {
-                            this.TransitionToStateAlive(this, new StateChangedEventArgs(PlayerState.Respawn, PlayerState.Alive));
+                            this.ShipVulnerable(this, new StateChangedEventArgs(PlayerState.Respawn, PlayerState.Alive));
                         }
                     },
                 null);
