@@ -345,12 +345,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        private void OnShipExploding(object sender, EventArgs eventArgs)
-        {   
-            this.inputService.Disable();
-            this.collisionDetectionService.Disable();  
-        }
-
         private void OnShipInvincible(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
             this.inputService.Enable();
@@ -359,6 +353,12 @@ namespace SpaceFighter.Logic.Services.Implementations
         private void OnShipVulnerable(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
             this.collisionDetectionService.Enable();
+        }
+
+        private void OnShipExploding(object sender, EventArgs eventArgs)
+        {
+            this.inputService.Disable();
+            this.collisionDetectionService.Disable();
         }
 
         private void OnEnemyHit(object sender, EnemyHitEventArgs e)
