@@ -5,17 +5,12 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
 
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class TerrainService : DrawableGameComponent, ITerrainService
     {
         private readonly ICameraService cameraService;
-
-        private SpriteBatch spriteBatch;
-
-        private Texture2D backgroundTexture;
 
         public TerrainService(Game game, ICameraService cameraService) : base(game)
         {
@@ -58,53 +53,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 return this.VerticalTileCount * TileSize;
             }
-        }
-
-        protected override void LoadContent()
-        {
-            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-
-            this.backgroundTexture = new Texture2D(this.GraphicsDevice, LevelWidth, LevelHeight, false, SurfaceFormat.Color);
-            
-            var colors = new Color[LevelWidth * LevelHeight];
-
-            // Borders
-            for (var x = 0; x < LevelWidth; x++)
-            {
-                for (var y = 0; y < LevelHeight; y++)
-                {
-                    if (x == 0 || x == LevelWidth - 1)
-                    {
-                        colors[x + y * LevelWidth] = Color.White;
-                    }
-                }
-            }
-            
-            this.backgroundTexture.SetData(colors);
-            base.LoadContent();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            this.spriteBatch.Begin(
-                SpriteSortMode.BackToFront,
-                BlendState.AlphaBlend,
-                null,
-                null,
-                null,
-                null,
-                cameraService.GetTransformation());
-
-            this.spriteBatch.Draw(this.backgroundTexture, new Vector2(0, 0), Color.White);
-
-            this.spriteBatch.End();
-
-            base.Draw(gameTime);
         }
 
         #region Old stuff

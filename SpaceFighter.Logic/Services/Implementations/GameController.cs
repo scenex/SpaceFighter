@@ -20,7 +20,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private readonly Game game;
         private SpriteBatch spriteBatch;
-        private RenderTarget2D renderTarget;
+        private RenderTarget2D gameRenderTarget;
 
         private Curve fadeInCurve;
         private Curve fadeOutCurve;
@@ -77,9 +77,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         public override void Initialize()
         {
             this.SetupStateEngine();
+
             base.Initialize();
 
-            this.renderTarget = new RenderTarget2D(
+            this.gameRenderTarget = new RenderTarget2D(
                 this.GraphicsDevice,
                 this.game.GraphicsDevice.PresentationParameters.BackBufferWidth,
                 this.game.GraphicsDevice.PresentationParameters.BackBufferHeight);
@@ -119,7 +120,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
                 this.UpdatePlayerPositionForEnemies();
                 base.Update(gameTime);
-                this.game.GraphicsDevice.SetRenderTarget(renderTarget);
+                this.game.GraphicsDevice.SetRenderTarget(this.gameRenderTarget);
             }
         }
 
@@ -130,16 +131,28 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.game.GraphicsDevice.SetRenderTarget(null);
                 this.GraphicsDevice.Clear(Color.Black);
 
-                spriteBatch.Begin();
+                this.spriteBatch.Begin(
+                    SpriteSortMode.BackToFront,
+                    BlendState.AlphaBlend,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Matrix.CreateTranslation(2*80, 0, 1)); // Global translation
 
                 spriteBatch.Draw(
-                    renderTarget,
-                    renderTarget.Bounds, 
+                    this.gameRenderTarget,
+                    this.gameRenderTarget.Bounds, 
                     this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut"
                         ? Color.White * this.curves[this.fadeEffect].Evaluate((float)(this.fadeEffectElapsed) / 1000)
                         : Color.White * 1);
                 
                 spriteBatch.End();
+
+                this.headUpDisplayService.Draw(gameTime,
+                    this.fadeEffect == "FadeIn" || this.fadeEffect == "FadeOut"
+                        ? Color.White * this.curves[this.fadeEffect].Evaluate((float)(this.fadeEffectElapsed) / 1000)
+                        : Color.White * 1);
 
                 //base.Draw(gameTime); // Todo: Needed?
             }

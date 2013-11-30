@@ -259,8 +259,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                 null,
                 null,
                 null,
-                this.spriteManager.GetCurrentShader(),
-                this.cameraService.GetTransformation());
+                this.spriteManager.GetCurrentShader());
 
             this.spriteBatch.Draw(
                 this.spriteManager.GetCurrentSprite(),

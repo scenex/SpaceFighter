@@ -8,6 +8,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
     public interface IHeadUpDisplayService : IGameComponent
     {
+        void Draw(GameTime gameTime, Color color);
         int Health { get; set; }
         int Lives { get; set; }
     }

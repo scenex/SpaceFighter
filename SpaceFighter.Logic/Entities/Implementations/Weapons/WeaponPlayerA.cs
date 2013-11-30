@@ -126,12 +126,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
         {
             this.SpriteBatch.Begin(
                 SpriteSortMode.BackToFront,
-                BlendState.AlphaBlend,
-                null,
-                null,
-                null,
-                null,
-                cameraService.GetTransformation());
+                BlendState.AlphaBlend);
 
             foreach (var shot in this.Shots)
             {
@@ -149,8 +144,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
                 null,
                 null,
                 null,
-                this.SpriteManager.GetCurrentShader(),
-                cameraService.GetTransformation());
+                this.SpriteManager.GetCurrentShader());
 
             this.SpriteBatch.Draw(
                 this.SpriteManager.GetCurrentSprite(), 

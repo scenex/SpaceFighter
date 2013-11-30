@@ -34,12 +34,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.spriteBatch.Begin(
                 SpriteSortMode.BackToFront, 
-                BlendState.AlphaBlend,
-                null,
-                null,
-                null,
-                null,
-                cameraService.GetTransformation());
+                BlendState.AlphaBlend);
 
                 this.spriteBatch.Draw(this.texture, this.rectangle, Color.White);
 

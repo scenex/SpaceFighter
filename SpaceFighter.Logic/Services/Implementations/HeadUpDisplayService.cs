@@ -19,6 +19,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public HeadUpDisplayService(Game game) : base(game)
         {
+            this.Enabled = false; // no automatic updating
+            this.Visible = false; // no automatic drawing
+
             this.Health = 100;
             this.primitiveBatch = new PrimitiveBatch(game.GraphicsDevice);
         }
@@ -39,41 +42,47 @@ namespace SpaceFighter.Logic.Services.Implementations
             base.LoadContent();
         }
 
-        public override void Draw(GameTime gameTime)
+        /// <summary>
+        /// Special Draw call, intended to be called manually (shall not be part of game render target).
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="color"></param>
+        public void Draw(GameTime gameTime, Color color)
         {
-            this.spriteBatch.Begin();
-
-            this.spriteBatch.Draw(this.border, Vector2.Zero, Color.White);
-            this.spriteBatch.Draw(this.border, new Vector2(1280 - 160, 0), Color.White);
-
-            this.spriteBatch.DrawString(this.spriteFont, "Energy", new Vector2(15, 20), Color.White);
-            this.spriteBatch.DrawString(this.spriteFont, "Lives: " + this.Lives, new Vector2(15, 100), Color.White);
+            this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            this.spriteBatch.Draw(this.border, Vector2.Zero, color);
+            this.spriteBatch.Draw(this.border, new Vector2(1280 - 160, 0), color);
             this.spriteBatch.End();
 
-            this.DrawEnergyBar(15, 50);
+            this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            this.spriteBatch.DrawString(this.spriteFont, "Energy", new Vector2(15, 20), color);
+            this.spriteBatch.DrawString(this.spriteFont, "Lives: " + this.Lives, new Vector2(15, 100), color);
+            this.spriteBatch.End();
+
+            this.DrawEnergyBar(15, 50, color);
             base.Draw(gameTime);
         }
 
-        public void DrawEnergyBar(int x, int y)
+        public void DrawEnergyBar(int x, int y, Color color)
         {
             this.primitiveBatch.Begin(PrimitiveType.LineList);
 
-            this.primitiveBatch.AddVertex(new Vector2(0   + x, 0  + y), Color.White);
-            this.primitiveBatch.AddVertex(new Vector2(110 + x, 0  + y), Color.White);
+            this.primitiveBatch.AddVertex(new Vector2(0   + x, 0  + y), color);
+            this.primitiveBatch.AddVertex(new Vector2(110 + x, 0  + y), color);
 
-            this.primitiveBatch.AddVertex(new Vector2(0   + x, 0  + y), Color.White);
-            this.primitiveBatch.AddVertex(new Vector2(0   + x, 20 + y), Color.White);
+            this.primitiveBatch.AddVertex(new Vector2(0   + x, 0  + y), color);
+            this.primitiveBatch.AddVertex(new Vector2(0   + x, 20 + y), color);
 
-            this.primitiveBatch.AddVertex(new Vector2(110 + x, 0  + y), Color.White);
-            this.primitiveBatch.AddVertex(new Vector2(110 + x, 20 + y), Color.White);
+            this.primitiveBatch.AddVertex(new Vector2(110 + x, 0  + y), color);
+            this.primitiveBatch.AddVertex(new Vector2(110 + x, 20 + y), color);
 
-            this.primitiveBatch.AddVertex(new Vector2(0   + x, 20 + y), Color.White);
-            this.primitiveBatch.AddVertex(new Vector2(110 + x, 20 + y), Color.White);
+            this.primitiveBatch.AddVertex(new Vector2(0   + x, 20 + y), color);
+            this.primitiveBatch.AddVertex(new Vector2(110 + x, 20 + y), color);
 
             for (int i = 0; i < this.Health; i++)
             {
-                this.primitiveBatch.AddVertex(new Vector2(5 + i + x, 5  + y), Color.White);
-                this.primitiveBatch.AddVertex(new Vector2(5 + i + x, 15 + y), Color.White);
+                this.primitiveBatch.AddVertex(new Vector2(5 + i + x, 5  + y), color);
+                this.primitiveBatch.AddVertex(new Vector2(5 + i + x, 15 + y), color);
             }
 
             this.primitiveBatch.End();

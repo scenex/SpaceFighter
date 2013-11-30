@@ -118,12 +118,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         /// <param name="gameTime">Time passed since the last call to Draw.</param>
         public override void Draw(GameTime gameTime)
         {
-            this.GraphicsDevice.Viewport = new Viewport(
-                (int)cameraService.GetTransformation().Translation.X, 
-                (int)cameraService.GetTransformation().Translation.Y, 
-                960,  // Todo: Get from TerrainService
-                720); // Todo: Get from TerrainService
-
             this.spriteBatch.Begin();
 
             this.spriteBatch.Draw(
