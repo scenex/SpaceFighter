@@ -66,7 +66,6 @@
     <Compile Include="EventManager\EventAggregator.cs" />
     <Compile Include="EventManager\Subscriber.cs" />
     <Compile Include="EventManager\SubscriptionAttribute.cs" />
-    <Compile Include="FramerateCounter.cs" />
     <Compile Include="Entities\Interfaces\IShot.cs" />
     <Compile Include="HealthChangedEventArgs.cs" />
     <Compile Include="IEnemyFactory.cs" />

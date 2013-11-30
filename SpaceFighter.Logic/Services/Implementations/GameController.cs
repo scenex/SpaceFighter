@@ -162,7 +162,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.IsGameRunning = true;
 
-            this.game.Components.Add(new FramerateCounter(this.game));
             this.game.Components.Add(this.collisionDetectionService);
             this.game.Components.Add(this.playerService);
             this.game.Components.Add(this.enemyService);

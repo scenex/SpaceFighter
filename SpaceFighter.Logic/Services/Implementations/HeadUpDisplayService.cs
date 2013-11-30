@@ -4,6 +4,8 @@
 
 namespace SpaceFighter.Logic.Services.Implementations
 {
+    using System;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Services.Interfaces;
@@ -15,11 +17,14 @@ namespace SpaceFighter.Logic.Services.Implementations
         private SpriteBatch spriteBatch;
         private SpriteFont spriteFont;
 
-        private Texture2D border;
+        int frameRate;
+        int frameCounter;
+        TimeSpan elapsedTime = TimeSpan.Zero;
+
+        private Texture2D screenBorder;
 
         public HeadUpDisplayService(Game game) : base(game)
         {
-            this.Enabled = false; // no automatic updating
             this.Visible = false; // no automatic drawing
 
             this.Health = 100;
@@ -34,12 +39,24 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.spriteFont = this.Game.Content.Load<SpriteFont>(@"DefaultFont");
 
-            this.border = new Texture2D(this.GraphicsDevice, 160, 720);
+            this.screenBorder = new Texture2D(this.GraphicsDevice, 160, 720);
             var data = new Color[160 * 720];
             for (var i = 0; i < data.Length; ++i) data[i] = Color.DarkBlue;
-            this.border.SetData(data);
+            this.screenBorder.SetData(data);
 
             base.LoadContent();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            this.elapsedTime += gameTime.ElapsedGameTime;
+
+            if (this.elapsedTime > TimeSpan.FromSeconds(1))
+            {
+                this.elapsedTime -= TimeSpan.FromSeconds(1);
+                this.frameRate = this.frameCounter;
+                this.frameCounter = 0;
+            }   
         }
 
         /// <summary>
@@ -49,18 +66,28 @@ namespace SpaceFighter.Logic.Services.Implementations
         /// <param name="color"></param>
         public void Draw(GameTime gameTime, Color color)
         {
-            this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            this.spriteBatch.Draw(this.border, Vector2.Zero, color);
-            this.spriteBatch.Draw(this.border, new Vector2(1280 - 160, 0), color);
-            this.spriteBatch.End();
+            this.DrawScreenBorders(color);
+            this.DrawVitals(color);
+            this.DrawEnergyBar(15, 50, color);
+            this.DrawFps(color);
 
+            base.Draw(gameTime);
+        }
+
+        private void DrawScreenBorders(Color color)
+        {
+            this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            this.spriteBatch.Draw(this.screenBorder, Vector2.Zero, color);
+            this.spriteBatch.Draw(this.screenBorder, new Vector2(1280 - 160, 0), color);
+            this.spriteBatch.End();
+        }
+
+        private void DrawVitals(Color color)
+        {
             this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             this.spriteBatch.DrawString(this.spriteFont, "Energy", new Vector2(15, 20), color);
             this.spriteBatch.DrawString(this.spriteFont, "Lives: " + this.Lives, new Vector2(15, 100), color);
             this.spriteBatch.End();
-
-            this.DrawEnergyBar(15, 50, color);
-            base.Draw(gameTime);
         }
 
         public void DrawEnergyBar(int x, int y, Color color)
@@ -86,6 +113,15 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
 
             this.primitiveBatch.End();
-        }        
+        }
+
+        private void DrawFps(Color color)
+        {
+            this.frameCounter++;
+            var fps = string.Format("FPS:{0}", this.frameRate);
+            this.spriteBatch.Begin();
+            this.spriteBatch.DrawString(this.spriteFont, fps, new Vector2(1170, 30), color);
+            this.spriteBatch.End();
+        }
     }
 }
