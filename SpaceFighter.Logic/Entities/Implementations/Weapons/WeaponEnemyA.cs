@@ -11,13 +11,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
     public class WeaponEnemyA : Weapon
     {
-        private ICameraService cameraService;
-
         public WeaponEnemyA(
-            Game game,
-            ICameraService cameraService) : base(game)
+            Game game) : base(game)
         {
-            this.cameraService = cameraService;
         }
 
         public override void Initialize()

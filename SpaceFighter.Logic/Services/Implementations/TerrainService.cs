@@ -10,11 +10,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class TerrainService : DrawableGameComponent, ITerrainService
     {
-        private readonly ICameraService cameraService;
-
-        public TerrainService(Game game, ICameraService cameraService) : base(game)
+        public TerrainService(Game game) : base(game)
         {
-            this.cameraService = cameraService;
             this.TileSize = 80;
 
             this.Map = new[,]

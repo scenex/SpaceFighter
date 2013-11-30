@@ -19,7 +19,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
     /// </summary>
     public class PlayerA : DrawableGameComponent, IPlayer
     {
-        private readonly ICameraService cameraService;
         private readonly Weapon weapon;
 
         private SpriteBatch spriteBatch;
@@ -34,15 +33,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
         private const float ThrustIncrement = 0.2f;
         private const float ThrustFriction = 0.05f;
 
-        public PlayerA(
-            Game game, 
-            ICameraService cameraService,
-            Vector2 startPosition
-            ) : base(game)
+        public PlayerA(Game game, Vector2 startPosition) : base(game)
         {
-            this.cameraService = cameraService;
 
-            this.weapon = new WeaponPlayerA(this.Game, this.cameraService) { DrawOrder = 1 }; // Todo: Factory
+            this.weapon = new WeaponPlayerA(this.Game) { DrawOrder = 1 }; // Todo: Factory
             this.Game.Components.Add(this.weapon);
 
             this.Lives = 2;
@@ -237,7 +231,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, 3.0f);
 
             this.weapon.Position = this.Position;
-            this.cameraService.Position = this.Position;
           
             this.stateMachine.Update();
             this.spriteManager.Update(this.stateMachine.CurrentState.Name, gameTime);

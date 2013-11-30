@@ -18,14 +18,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private Texture2D pixel;
         private SpriteBatch spriteBatch;
 
-        private readonly ICameraService cameraService;
-
         protected StateMachine<Action<double>> stateMachine;
         protected SpriteManager spriteManager;
 
-        protected EnemyBase(Game game, ICameraService cameraService) : base(game)
+        protected EnemyBase(Game game) : base(game)
         {
-            this.cameraService = cameraService;
         }
 
         protected abstract void InitializeStateMachine();

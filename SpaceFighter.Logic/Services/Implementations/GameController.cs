@@ -32,7 +32,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly IInputService inputService;
         private readonly IHeadUpDisplayService headUpDisplayService;
         private readonly ITerrainService terrainService;
-        private readonly ICameraService cameraService;
         private readonly IAudioService audioService;
         private readonly IDebugService debugService;
         private SpriteFont font;
@@ -54,8 +53,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             IHeadUpDisplayService headUpDisplayService,
             ITerrainService terrainService,
             IDebugService debugService,
-            IAudioService audioService,
-            ICameraService cameraService) : base(game)
+            IAudioService audioService) : base(game)
         {
             this.game = game;
 
@@ -67,7 +65,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.terrainService = terrainService;
             this.debugService = debugService;
             this.audioService = audioService;
-            this.cameraService = cameraService;
 
             this.fadeEffect = string.Empty;
         }
@@ -174,7 +171,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.game.Components.Add(this.terrainService);
             this.game.Components.Add(this.debugService);
             this.game.Components.Add(this.audioService);
-            this.game.Components.Add(this.cameraService);
 
             this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
             this.collisionDetectionService.PlayerHit += this.OnPlayerHit;

@@ -18,8 +18,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
     public class EnemyAutonomous : EnemyBase
     {
-        private readonly ICameraService cameraService;
-
         private readonly IPathFindingService pathFindingService;
 
         private readonly Weapon weapon;
@@ -33,13 +31,12 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
         private Vector2 targetPosition;
         private Queue<Vector2> waypoints = new Queue<Vector2>();
 
-        public EnemyAutonomous(Game game, ICameraService cameraService, IPathFindingService pathFindingService, Vector2 startPosition, bool isBoss) : base(game, cameraService)
+        public EnemyAutonomous(Game game, IPathFindingService pathFindingService, Vector2 startPosition, bool isBoss) : base(game)
         {
             this.Position = startPosition;
             this.isBoss = isBoss;
             this.Health = 100;
 
-            this.cameraService = cameraService;
             this.pathFindingService = pathFindingService;
             
             this.behaviourStrategySeek = new BehaviourStrategySeek();
@@ -47,7 +44,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             
             this.Game.Components.Add(this);
 
-            this.weapon = new WeaponEnemyA(this.Game, this.cameraService); // Todo: Factory
+            this.weapon = new WeaponEnemyA(this.Game); // Todo: Factory
             this.Game.Components.Add(this.weapon);
         }
 

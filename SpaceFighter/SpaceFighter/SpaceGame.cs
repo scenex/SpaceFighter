@@ -82,16 +82,8 @@ namespace SpaceFighter
 
         private void ComposeServices()
         {            
-            var screenCenter = new Vector3(
-                (this.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) - (80 / 2) + 62,  // (this.playerService.Player.Width / 2) + 62
-                (this.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) - (80 / 2) + 32, // (this.playerService.Player.Height / 2) + 32
-                0); 
-
-            cameraService = new CameraService(
-                this, 
-                screenCenter);
-
-            terrainService = new TerrainService(this, cameraService);
+            terrainService = new TerrainService(
+                this);
 
             headUpDisplayService = new HeadUpDisplayService(
                 this);
@@ -99,8 +91,8 @@ namespace SpaceFighter
             audioService = new AudioService(
                 this);
 
-            enemyFactory = new EnemyFactory(this, 
-                cameraService, 
+            enemyFactory = new EnemyFactory(
+                this,
                 terrainService);
 
             enemyService = new EnemyService(
@@ -108,8 +100,7 @@ namespace SpaceFighter
                 enemyFactory);
 
             playerFactory = new PlayerFactory(
-                this, 
-                this.cameraService);
+                this);
 
             playerService = new PlayerService(
                 this, 
@@ -127,8 +118,7 @@ namespace SpaceFighter
                 terrainService);
 
             debugService = new DebugService(
-                this, 
-                cameraService);
+                this);
 
             gameController = new GameController(
                 this, 
@@ -139,8 +129,7 @@ namespace SpaceFighter
                 headUpDisplayService, 
                 terrainService, 
                 debugService, 
-                audioService, 
-                cameraService);
+                audioService);
         }
 
         protected override void Update(GameTime gameTime)

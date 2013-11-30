@@ -18,8 +18,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
     public class EnemyScripted : EnemyBase
     {
-        private readonly ICameraService cameraService;
-
         private readonly Weapon weapon;
         
         private readonly IBehaviourStrategy behaviourStrategy;
@@ -31,7 +29,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private bool isOffscreen;
 
-        public EnemyScripted(Game game, ICameraService cameraService, Queue<Vector2> waypoints, bool isBoss) : base(game, cameraService)
+        public EnemyScripted(Game game, Queue<Vector2> waypoints, bool isBoss) : base(game)
         {
             this.waypoints = waypoints;
             this.isBoss = isBoss;
@@ -42,11 +40,10 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.targetPosition = waypoints.Peek();
             
             this.behaviourStrategy = new BehaviourStrategySeek();
-            this.cameraService = cameraService;
             
             this.Game.Components.Add(this);
 
-            this.weapon = new WeaponEnemyA(this.Game, this.cameraService); // Todo: Factory
+            this.weapon = new WeaponEnemyA(this.Game); // Todo: Factory
             this.Game.Components.Add(this.weapon);
         }
 

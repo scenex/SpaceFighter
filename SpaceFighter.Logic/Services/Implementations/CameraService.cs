@@ -48,11 +48,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.position += amount;
         }
 
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
-
         public Matrix GetTransformation()
         {
             //return Matrix.CreateTranslation(

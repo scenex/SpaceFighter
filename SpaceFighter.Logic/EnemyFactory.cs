@@ -16,16 +16,13 @@ namespace SpaceFighter.Logic
     {
         private readonly Game game;
 
-        private readonly ICameraService cameraService;
-
         private readonly IPathFindingService pathFindingService;
 
         private readonly ITerrainService terrainService;
 
-        public EnemyFactory(Game game, ICameraService cameraService, ITerrainService terrainService)
+        public EnemyFactory(Game game, ITerrainService terrainService)
         {
             this.game = game;
-            this.cameraService = cameraService;
             this.terrainService = terrainService;
             
             this.pathFindingService = new PathFindingService(
@@ -37,12 +34,12 @@ namespace SpaceFighter.Logic
 
         public T CreateAutonomous<T>(Vector2 startPosition, bool isBoss) where T : EnemyAutonomous
         {
-            return (T)Activator.CreateInstance(typeof(T), game, cameraService, pathFindingService, startPosition, isBoss);
+            return (T)Activator.CreateInstance(typeof(T), game, pathFindingService, startPosition, isBoss);
         }
 
         public T CreateScripted<T>(Queue<Vector2> waypoints, bool isBoss) where T : EnemyScripted
         {
-            return (T)Activator.CreateInstance(typeof(T), game, cameraService, waypoints, isBoss);
+            return (T)Activator.CreateInstance(typeof(T), game, waypoints, isBoss);
         }
     }
 }

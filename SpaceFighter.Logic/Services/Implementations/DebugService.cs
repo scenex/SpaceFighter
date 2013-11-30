@@ -12,14 +12,12 @@ namespace SpaceFighter.Logic.Services.Implementations
     public class DebugService : DrawableGameComponent, IDebugService
     {
         private SpriteBatch spriteBatch;
-        private ICameraService cameraService;
 
         private Rectangle rectangle;
         private Texture2D texture;
 
-        public DebugService(Game game, ICameraService cameraService) : base(game)
+        public DebugService(Game game) : base(game)
         {
-            this.cameraService = cameraService;
             this.rectangle = new Rectangle();
         }
 

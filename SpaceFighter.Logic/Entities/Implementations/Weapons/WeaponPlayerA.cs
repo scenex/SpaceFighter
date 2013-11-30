@@ -10,22 +10,17 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
     using SpaceFighter.Logic.Entities.Implementations.WeaponStrategies;
     using SpaceFighter.Logic.Entities.Interfaces;
-    using SpaceFighter.Logic.Services.Interfaces;
 
     public class WeaponPlayerA : Weapon
     {
-        private ICameraService cameraService;
-
         private IWeaponStrategy weaponStrategy;
         private readonly WeaponStrategyA1 weaponStrategyA1;
         private readonly WeaponStrategyA2 weaponStrategyA2;
 
         private double elapsedShotInterval;
         
-        public WeaponPlayerA(Game game, ICameraService cameraService) : base(game)
+        public WeaponPlayerA(Game game) : base(game)
         {
-            this.cameraService = cameraService;
-
             this.weaponStrategy = new WeaponStrategyA1();
             this.weaponStrategyA1 = new WeaponStrategyA1();
             this.weaponStrategyA2 = new WeaponStrategyA2();
