@@ -53,8 +53,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.player = this.playerFactory.Create(
                 new Vector2(
-                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 2) + 40,
-                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 2) + 300)); // Todo: Eliminate magic numbers)
+                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferWidth / 16) * 6,
+                    (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 9) * 8)); // Todo: Eliminate magic numbers)
 
             this.player.ShipExploding += this.OnShipExploding;
             this.player.ShipInvincible += this.OnShipInvincible;
