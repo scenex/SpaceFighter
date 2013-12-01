@@ -127,22 +127,27 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Left))
             {
-                this.playerService.RotateLeft();
+                this.playerService.MoveLeft();
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Right))
             {
-                this.playerService.RotateRight();
+                this.playerService.MoveRight();
+            }
+
+            if (this.currentKeyboardState.IsKeyDown(Keys.Up))
+            {
+                this.playerService.MoveUp();
+            }
+
+            if (this.currentKeyboardState.IsKeyDown(Keys.Down))
+            {
+                this.playerService.MoveDown();
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.LeftControl) && this.previousKeyboardState.IsKeyUp(Keys.LeftControl))
             {
                 this.playerService.Fire();
-            }
-
-            if (this.currentKeyboardState.IsKeyDown(Keys.LeftAlt))
-            {
-                this.playerService.Thrust();
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.F1) && this.previousKeyboardState.IsKeyUp(Keys.F1))
@@ -176,7 +181,8 @@ namespace SpaceFighter.Logic.Services.Implementations
                 var rotationDifference = (float)Math.Atan2(Math.Sin(targetRotation - originalRotation), Math.Cos(targetRotation - originalRotation));
                 this.playerService.Player.SetRotation(rotationDifference * 0.05f);
 
-                this.playerService.Thrust();
+                // Todo: Obsolete & Fix for Xbox360 controller
+                //this.playerService.Thrust();
             }
 
             if (Math.Abs(this.currentGamePadState.ThumbSticks.Right.X - 0) > 0.1f || Math.Abs(this.currentGamePadState.ThumbSticks.Right.Y - 0) > 0.1f)

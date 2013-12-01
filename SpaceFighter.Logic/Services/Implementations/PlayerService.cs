@@ -64,24 +64,29 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Dispose();
         }
 
-        public void RotateLeft()
-        {
-            this.player.SetRotation(+0.05f);
-        }
-
-        public void RotateRight()
-        {
-            this.player.SetRotation(-0.05f);
-        }
-
         public void Fire()
         {
             this.player.Weapon.FireWeapon();
         }
 
-        public void Thrust()
+        public void MoveUp()
         {
-            this.player.Thrust();
+            this.player.Move(new Vector2(0,-3));
+        }
+
+        public void MoveDown()
+        {
+            this.player.Move(new Vector2(0, 3));
+        }
+
+        public void MoveLeft()
+        {
+            this.player.Move(new Vector2(-3, 0));
+        }
+
+        public void MoveRight()
+        {
+            this.player.Move(new Vector2(3, 0));
         }
 
         public void ReportPlayerHit(IShot shot)

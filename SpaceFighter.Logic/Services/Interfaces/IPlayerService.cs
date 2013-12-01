@@ -24,10 +24,11 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
         void RemoveShot(IShot shot);
 
-        void RotateLeft();
-        void RotateRight();
         void Fire();
-        void Thrust();
+        void MoveUp();
+        void MoveDown();
+        void MoveLeft();
+        void MoveRight();
 
         void SpawnPlayer();
         void UnspawnPlayer();

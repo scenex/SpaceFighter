@@ -110,6 +110,11 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             this.Rotation += angle;
         }
 
+        public void Move(Vector2 moveBy)
+        {
+            this.Position += moveBy;
+        }
+
         public void SubtractHealth(int amount)
         {
             this.Health -= amount;
