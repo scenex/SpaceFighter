@@ -11,7 +11,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
 
     using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;
-    using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
 
     /// <summary>
@@ -46,10 +45,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             this.Position = startPosition;
         }
 
-        public event EventHandler<StateChangedEventArgs> ShipVulnerable;
+        public event EventHandler<StateChangedEventArgs> ShipReady;
         public event EventHandler<StateChangedEventArgs> ShipExploding;
-        public event EventHandler<StateChangedEventArgs> TransitionToStateDead;
-        public event EventHandler<StateChangedEventArgs> ShipInvincible;
+        public event EventHandler<StateChangedEventArgs> ShipRespawning;
 
         public int Lives { get; private set; }
         public int Health { get; private set; }
@@ -147,14 +145,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             var dead = new State<Action<double>>(
                 PlayerState.Dead,
                 elapsedTime => this.deadToRespawnTimer += elapsedTime,
-                delegate
-                    {
-                        this.Lives--;
-                        if (this.TransitionToStateDead != null)
-                        {
-                            this.TransitionToStateDead(this, new StateChangedEventArgs(PlayerState.Dying, PlayerState.Dead));
-                        }
-                    }, 
+                () => this.Lives--, 
                 () => this.deadToRespawnTimer = 0);
 
             var respawn = new State<Action<double>>(
@@ -170,9 +161,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                     },
                 delegate
                     {
-                        if (this.ShipInvincible != null)
+                        if (this.ShipRespawning != null)
                         {
-                            this.ShipInvincible(this, new StateChangedEventArgs(PlayerState.Dead, PlayerState.Respawn));
+                            this.ShipRespawning(this, new StateChangedEventArgs(PlayerState.Dead, PlayerState.Respawn));
                         }                       
                     },
                 () => { this.healthReplenishCounter = 0; });
@@ -182,9 +173,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                 null, 
                 delegate
                     {
-                        if (this.ShipVulnerable != null)
+                        if (this.ShipReady != null)
                         {
-                            this.ShipVulnerable(this, new StateChangedEventArgs(PlayerState.Respawn, PlayerState.Alive));
+                            this.ShipReady(this, new StateChangedEventArgs(PlayerState.Respawn, PlayerState.Alive));
                         }
                     },
                 null);

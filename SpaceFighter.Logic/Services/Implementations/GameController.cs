@@ -177,8 +177,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.collisionDetectionService.BoundaryHit += this.OnBoundaryHit;
 
             this.playerService.ShipExploding += this.OnShipExploding;
-            this.playerService.ShipInvincible += this.OnShipInvincible;
-            this.playerService.ShipVulnerable += this.OnShipVulnerable;
+            this.playerService.ShipRespawning += this.OnShipRespawning;
+            this.playerService.ShipReady += this.OnShipReady;
 
             this.inputService.InputStateHandling = InputStateHandling.Gameplay;
 
@@ -222,8 +222,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.collisionDetectionService.BoundaryHit -= this.OnBoundaryHit;
 
             this.playerService.ShipExploding -= this.OnShipExploding;
-            this.playerService.ShipInvincible -= this.OnShipInvincible;
-            this.playerService.ShipVulnerable -= this.OnShipVulnerable;
+            this.playerService.ShipRespawning -= this.OnShipRespawning;
+            this.playerService.ShipReady -= this.OnShipReady;
 
             this.playerService.UnspawnPlayer();
             this.enemyService.UnspawnEnemies();
@@ -341,14 +341,14 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        private void OnShipInvincible(object sender, StateChangedEventArgs stateChangedEventArgs)
-        {
-            this.inputService.Enable();
-        }
-
-        private void OnShipVulnerable(object sender, StateChangedEventArgs stateChangedEventArgs)
+        private void OnShipReady(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
             this.collisionDetectionService.Enable();
+        }
+
+        private void OnShipRespawning(object sender, StateChangedEventArgs stateChangedEventArgs)
+        {
+            this.inputService.Enable();
         }
 
         private void OnShipExploding(object sender, EventArgs eventArgs)

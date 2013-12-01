@@ -24,8 +24,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerFactory = playerFactory;
         }
 
-        public event EventHandler<StateChangedEventArgs> ShipInvincible;
-        public event EventHandler<StateChangedEventArgs> ShipVulnerable;
+        public event EventHandler<StateChangedEventArgs> ShipRespawning;
+        public event EventHandler<StateChangedEventArgs> ShipReady;
         public event EventHandler<StateChangedEventArgs> ShipExploding;
 
         public IPlayer Player
@@ -44,11 +44,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
-
         public void SpawnPlayer()
         {
             this.player = this.playerFactory.Create(
@@ -57,8 +52,8 @@ namespace SpaceFighter.Logic.Services.Implementations
                     (this.Game.GraphicsDevice.PresentationParameters.BackBufferHeight / 9) * 8)); // Todo: Eliminate magic numbers)
 
             this.player.ShipExploding += this.OnShipExploding;
-            this.player.ShipInvincible += this.OnShipInvincible;
-            this.player.ShipVulnerable += this.OnShipVulnerable;
+            this.player.ShipRespawning += this.OnShipRespawning;
+            this.player.ShipReady += this.OnShipReady;
             this.player.Weapon.WeaponFired += this.OnWeaponFired;
 
             this.Game.Components.Add(this.player);
@@ -114,19 +109,19 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        private void OnShipInvincible(object sender, StateChangedEventArgs stateChangedEventArgs)
+        private void OnShipRespawning(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
-            if (this.ShipInvincible != null)
+            if (this.ShipRespawning != null)
             {
-                this.ShipInvincible(this, stateChangedEventArgs);
+                this.ShipRespawning(this, stateChangedEventArgs);
             }
         }
 
-        private void OnShipVulnerable(object sender, StateChangedEventArgs stateChangedEventArgs)
+        private void OnShipReady(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
-            if (this.ShipVulnerable != null)
+            if (this.ShipReady != null)
             {
-                this.ShipVulnerable(this, stateChangedEventArgs);
+                this.ShipReady(this, stateChangedEventArgs);
             }
         }
 

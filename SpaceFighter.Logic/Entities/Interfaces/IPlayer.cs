@@ -11,9 +11,9 @@ namespace SpaceFighter.Logic.Entities.Interfaces
     /// </summary>
     public interface IPlayer : IEntity
     {
-        event EventHandler<StateChangedEventArgs> ShipVulnerable;
+        event EventHandler<StateChangedEventArgs> ShipReady;
         event EventHandler<StateChangedEventArgs> ShipExploding;
-        event EventHandler<StateChangedEventArgs> ShipInvincible;
+        event EventHandler<StateChangedEventArgs> ShipRespawning;
 
         void Thrust();
         void AddHealth(int amount);
