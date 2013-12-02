@@ -85,7 +85,6 @@
     <Compile Include="Screens\MenuItemSelectedEventArgs.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Services\Implementations\AudioService.cs" />
-    <Compile Include="Services\Implementations\CameraService.cs" />
     <Compile Include="Services\Implementations\CollisionDetectionService.cs" />
     <Compile Include="Entities\Interfaces\IEnemy.cs" />
     <Compile Include="Entities\Interfaces\IPlayer.cs" />
@@ -99,7 +98,6 @@
     <Compile Include="Services\Implementations\PathFindingService.cs" />
     <Compile Include="Services\Implementations\TerrainService.cs" />
     <Compile Include="Services\Interfaces\IAudioService.cs" />
-    <Compile Include="Services\Interfaces\ICameraService.cs" />
     <Compile Include="Services\Interfaces\ICollisionDetectionService.cs" />
     <Compile Include="Services\Interfaces\IDebugService.cs" />
     <Compile Include="Services\Interfaces\IEnemyService.cs" />
