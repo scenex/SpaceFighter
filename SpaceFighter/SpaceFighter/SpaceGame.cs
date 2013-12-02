@@ -25,7 +25,6 @@ namespace SpaceFighter
         IInputService inputService;
         IEnemyService enemyService;
         ICollisionDetectionService collisionDetectionService;
-        ICameraService cameraService;
         IDebugService debugService;
         IGameController gameController;
 
