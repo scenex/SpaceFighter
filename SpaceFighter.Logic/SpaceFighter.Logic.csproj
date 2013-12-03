@@ -123,7 +123,6 @@
     <Compile Include="Behaviours\Implementations\BehaviourStrategySeek.cs" />
     <Compile Include="EnemyState.cs" />
     <Compile Include="EnemyFactory.cs" />
-    <Compile Include="EnemyHitEventArgs.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyAutonomous.cs" />
     <Compile Include="Entities\Implementations\Players\PlayerA.cs" />
     <Compile Include="Entities\Implementations\Weapons\WeaponPlayerA.cs" />
@@ -133,7 +132,6 @@
     <Compile Include="Input\Implementation\InputGamepad.cs" />
     <Compile Include="Input\Implementation\InputKeyboard.cs" />
     <Compile Include="Input\Interfaces\IInput.cs" />
-    <Compile Include="PlayerHitEventArgs.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="PrimitiveBatch.cs" />
     <Compile Include="Services\Implementations\AudioService.cs" />

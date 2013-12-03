@@ -49,7 +49,6 @@
     <Compile Include="Behaviours\Implementations\BehaviourStrategyWander.cs" />
     <Compile Include="Behaviours\Interfaces\IBehaviourStrategy.cs" />
     <Compile Include="EnemyFactory.cs" />
-    <Compile Include="EnemyHitEventArgs.cs" />
     <Compile Include="EnemyState.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyAutonomous.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyBase.cs" />
@@ -76,7 +75,6 @@
     <Compile Include="Pathfinding\Node.cs" />
     <Compile Include="Pathfinding\NodeComparer.cs" />
     <Compile Include="PlayerFactory.cs" />
-    <Compile Include="PlayerHitEventArgs.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="PrimitiveBatch.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
