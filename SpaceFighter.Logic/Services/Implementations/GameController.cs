@@ -171,8 +171,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.game.Components.Add(this.debugService);
             this.game.Components.Add(this.audioService);
 
-            this.collisionDetectionService.BoundaryHit += this.OnBoundaryHit;
-
             this.playerService.ShipExploding += this.OnShipExploding;
             this.playerService.ShipRespawning += this.OnShipRespawning;
             this.playerService.ShipReady += this.OnShipReady;
@@ -212,8 +210,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.IsGameRunning = false;
 
             this.GraphicsDevice.SetRenderTarget(null);
-
-            this.collisionDetectionService.BoundaryHit -= this.OnBoundaryHit;
 
             this.playerService.ShipExploding -= this.OnShipExploding;
             this.playerService.ShipRespawning -= this.OnShipRespawning;
@@ -350,12 +346,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.inputService.Disable();
             this.collisionDetectionService.Disable();
-        }
-
-        // Todo: No death sentence anymore, just block moving outside bounds.
-        private void OnBoundaryHit(object sender, EventArgs e)
-        {
-            this.playerService.ReportPlayerHit(100);
         }
     }
 }

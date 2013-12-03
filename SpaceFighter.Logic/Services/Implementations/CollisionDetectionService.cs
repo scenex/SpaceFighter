@@ -33,8 +33,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.terrainService = terrainService;
         }
 
-        public event EventHandler<EventArgs> BoundaryHit;
-
         public void Enable()
         {
             this.isCollisionDetectionActive = true;
@@ -73,7 +71,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 this.CheckCollisionBetweenPlayerAndEnemies();              
                 this.CheckCollisionsBetweenEnemiesShotsAndPlayer();
-                this.CheckCollisionsBetweenPlayerAndBounds(); // <- Todo: Move out, integrate into playerservice? no collision anymore -> coercing instead
             }
 
             base.Update(gameTime);
@@ -178,17 +175,6 @@ namespace SpaceFighter.Logic.Services.Implementations
                 //    enemy.Width,
                 //    enemy.Height,
                 //    enemy.ColorData))
-            }
-        }
-
-        private void CheckCollisionsBetweenPlayerAndBounds()
-        {
-            if (!this.levelBoundsRectangle.Contains(this.playerService.Player.BoundingRectangle))
-            {
-                if (this.BoundaryHit != null)
-                {
-                    this.BoundaryHit(this, null);
-                }
             }
         }
 

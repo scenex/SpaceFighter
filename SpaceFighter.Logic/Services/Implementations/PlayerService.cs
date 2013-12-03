@@ -17,11 +17,13 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private readonly IAudioService audioService;
         private readonly IPlayerFactory playerFactory;
+        private readonly ITerrainService terrainService;
 
-        public PlayerService(Game game, IAudioService audioService, IPlayerFactory playerFactory) : base(game)
+        public PlayerService(Game game, IAudioService audioService, IPlayerFactory playerFactory, ITerrainService terrainService) : base(game)
         {
             this.audioService = audioService;
             this.playerFactory = playerFactory;
+            this.terrainService = terrainService;
         }
 
         public event EventHandler<StateChangedEventArgs> ShipRespawning;
@@ -69,24 +71,40 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Weapon.FireWeapon();
         }
 
+        // Todo: Why shifting by half player's height?
         public void MoveUp()
         {
-            this.player.Move(new Vector2(0,-3));
+            if (this.player.Position.Y - this.player.Height / 2.0 >= 0)
+            {
+                this.player.Move(new Vector2(0,-3));
+            }
         }
 
+        // Todo: Why shifting by half player's height?
         public void MoveDown()
         {
-            this.player.Move(new Vector2(0, 3));
+            if (this.player.Position.Y + this.player.Height / 2.0 <= this.terrainService.LevelHeight)
+            {
+                this.player.Move(new Vector2(0, 3));
+            }
         }
 
+        // Todo: Why shifting by half player's width?
         public void MoveLeft()
         {
-            this.player.Move(new Vector2(-3, 0));
+            if (this.player.Position.X - this.player.Width / 2.0 >= 0)
+            {
+                this.player.Move(new Vector2(-3, 0));
+            }
         }
 
+        // Todo: Why shifting by half player's width?
         public void MoveRight()
         {
-            this.player.Move(new Vector2(3, 0));
+            if (this.player.Position.X + this.player.Width / 2.0 <= this.terrainService.LevelWidth)
+            {
+                this.player.Move(new Vector2(3, 0));
+            }
         }
 
         public void ReportPlayerHit(IShot shot)

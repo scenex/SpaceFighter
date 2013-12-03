@@ -104,7 +104,8 @@ namespace SpaceFighter
             playerService = new PlayerService(
                 this, 
                 audioService, 
-                playerFactory);
+                playerFactory,
+                terrainService);
 
             inputService = new InputService(
                 this, 
