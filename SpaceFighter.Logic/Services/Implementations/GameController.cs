@@ -171,9 +171,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.game.Components.Add(this.debugService);
             this.game.Components.Add(this.audioService);
 
-            this.collisionDetectionService.EnemyHit += this.OnEnemyHit;
-            this.collisionDetectionService.PlayerHit += this.OnPlayerHit;
-            this.collisionDetectionService.PlayerEnemyHit += this.OnPlayerEnemyHit;
             this.collisionDetectionService.BoundaryHit += this.OnBoundaryHit;
 
             this.playerService.ShipExploding += this.OnShipExploding;
@@ -216,9 +213,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.GraphicsDevice.SetRenderTarget(null);
 
-            this.collisionDetectionService.EnemyHit -= this.OnEnemyHit;
-            this.collisionDetectionService.PlayerHit -= this.OnPlayerHit;
-            this.collisionDetectionService.PlayerEnemyHit -= this.OnPlayerEnemyHit;
             this.collisionDetectionService.BoundaryHit -= this.OnBoundaryHit;
 
             this.playerService.ShipExploding -= this.OnShipExploding;
@@ -333,6 +327,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.gameStateMachine = new StateMachine<Action<double>>(idle);
         }
 
+        // Todo: Somewhat ugly..
         private void UpdatePlayerPositionForEnemies()
         {
             foreach (var enemy in this.enemyService.Enemies.ToList())
@@ -357,23 +352,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.collisionDetectionService.Disable();
         }
 
-        private void OnEnemyHit(object sender, EnemyHitEventArgs e)
-        {
-            this.playerService.RemoveShot(e.Shot);
-            this.enemyService.ReportEnemyHit(e.Enemy, e.Shot);
-        }
-
-        private void OnPlayerHit(object sender, PlayerHitEventArgs e)
-        {
-            this.enemyService.RemoveShot(e.Shot);
-            this.playerService.ReportPlayerHit(e.Shot);
-        }
-
-        private void OnPlayerEnemyHit(object sender, EventArgs e)
-        {
-            this.playerService.ReportPlayerHit(100);
-        }
-
+        // Todo: No death sentence anymore, just block moving outside bounds.
         private void OnBoundaryHit(object sender, EventArgs e)
         {
             this.playerService.ReportPlayerHit(100);

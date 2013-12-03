@@ -33,9 +33,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.terrainService = terrainService;
         }
 
-        public event EventHandler<EventArgs> PlayerEnemyHit;
-        public event EventHandler<EnemyHitEventArgs> EnemyHit;
-        public event EventHandler<PlayerHitEventArgs> PlayerHit;
         public event EventHandler<EventArgs> BoundaryHit;
 
         public void Enable()
@@ -76,7 +73,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             {
                 this.CheckCollisionBetweenPlayerAndEnemies();              
                 this.CheckCollisionsBetweenEnemiesShotsAndPlayer();
-                this.CheckCollisionsBetweenPlayerAndBounds();
+                this.CheckCollisionsBetweenPlayerAndBounds(); // <- Todo: Move out, integrate into playerservice? no collision anymore -> coercing instead
             }
 
             base.Update(gameTime);
@@ -102,10 +99,8 @@ namespace SpaceFighter.Logic.Services.Implementations
                             shot.Height),
                         shot.ColorData))
                 {
-                    if (this.PlayerHit != null)
-                    {
-                        this.PlayerHit(this, new PlayerHitEventArgs(shot));
-                    }
+                    this.enemyService.RemoveShot(shot);
+                    this.playerService.ReportPlayerHit(shot);
                 }
             }
         }
@@ -132,10 +127,8 @@ namespace SpaceFighter.Logic.Services.Implementations
                                 shot.Height),
                             shot.ColorData))
                     {
-                        if (this.EnemyHit != null)
-                        {
-                            this.EnemyHit(this, new EnemyHitEventArgs(enemy, shot));
-                        }
+                        this.playerService.RemoveShot(shot);
+                        this.enemyService.ReportEnemyHit(enemy, shot);
                     }
 
                     // PERFORMACE KILLER
@@ -172,10 +165,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                             enemy.Height),
                         enemy.ColorData))
                 {
-                    if (this.PlayerEnemyHit != null)
-                    {
-                        this.PlayerEnemyHit(this, null);
-                    }
+                    this.playerService.ReportPlayerHit(100);
                 }
 
                 // PERFORMANCE KILLER
