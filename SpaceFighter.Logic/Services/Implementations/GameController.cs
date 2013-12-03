@@ -34,7 +34,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly ITerrainService terrainService;
         private readonly IAudioService audioService;
         private readonly IDebugService debugService;
-        private SpriteFont font;
 
         private StateMachine<Action<double>> gameStateMachine;
 
@@ -92,8 +91,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.curves.Add("FadeIn", this.fadeInCurve);
             this.curves.Add("FadeOut", this.fadeOutCurve);
-
-            this.font = this.game.Content.Load<SpriteFont>(@"DefaultFont");
 
             base.LoadContent();
         }
