@@ -88,7 +88,6 @@
     <Compile Include="Entities\Interfaces\IPlayer.cs" />
     <Compile Include="Entities\Interfaces\IWeapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Implementations\DebugService.cs" />
     <Compile Include="Services\Implementations\EnemyService.cs" />
     <Compile Include="Services\Implementations\GameController.cs" />
     <Compile Include="Services\Implementations\HeadUpDisplayService.cs" />
@@ -97,7 +96,6 @@
     <Compile Include="Services\Implementations\TerrainService.cs" />
     <Compile Include="Services\Interfaces\IAudioService.cs" />
     <Compile Include="Services\Interfaces\ICollisionDetectionService.cs" />
-    <Compile Include="Services\Interfaces\IDebugService.cs" />
     <Compile Include="Services\Interfaces\IEnemyService.cs" />
     <Compile Include="Services\Interfaces\IGameController.cs" />
     <Compile Include="Services\Interfaces\IHeadUpDisplayService.cs" />

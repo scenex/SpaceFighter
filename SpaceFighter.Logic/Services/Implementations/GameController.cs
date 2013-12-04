@@ -33,7 +33,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly IHeadUpDisplayService headUpDisplayService;
         private readonly ITerrainService terrainService;
         private readonly IAudioService audioService;
-        private readonly IDebugService debugService;
 
         private StateMachine<Action<double>> gameStateMachine;
 
@@ -51,7 +50,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             IInputService inputService,
             IHeadUpDisplayService headUpDisplayService,
             ITerrainService terrainService,
-            IDebugService debugService,
             IAudioService audioService) : base(game)
         {
             this.game = game;
@@ -62,7 +60,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.inputService = inputService;
             this.headUpDisplayService = headUpDisplayService;
             this.terrainService = terrainService;
-            this.debugService = debugService;
             this.audioService = audioService;
 
             this.fadeEffect = string.Empty;
@@ -97,7 +94,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public override void Update(GameTime gameTime)
         {
-            Debug.WriteLine(this.gameStateMachine.CurrentState.Name);
             this.gameStateMachine.Update();
 
             this.headUpDisplayService.Health = this.playerService.Player.Health;
@@ -165,7 +161,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.game.Components.Add(this.inputService);
             this.game.Components.Add(this.headUpDisplayService);
             this.game.Components.Add(this.terrainService);
-            this.game.Components.Add(this.debugService);
             this.game.Components.Add(this.audioService);
 
             this.playerService.ShipExploding += this.OnShipExploding;

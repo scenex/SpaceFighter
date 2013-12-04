@@ -21,7 +21,13 @@ namespace SpaceFighter.Logic.Services.Implementations
         int frameCounter;
         TimeSpan elapsedTime = TimeSpan.Zero;
 
+        // Todo: Get from TerrainService
+        private const int VerticalTileCount = 9;
+        private const int HorizontalTileCount = 16;
+        private const int TileSize = 80;
+
         private Texture2D screenBorder;
+        private Texture2D debugTileRect;
 
         public HeadUpDisplayService(Game game) : base(game)
         {
@@ -38,6 +44,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.spriteFont = this.Game.Content.Load<SpriteFont>(@"DefaultFont");
+            this.debugTileRect = this.Game.Content.Load<Texture2D>("Sprites/Debugging/Rectangle");
 
             this.screenBorder = new Texture2D(this.GraphicsDevice, 160, 720);
             var data = new Color[160 * 720];
@@ -70,6 +77,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.DrawVitals(color);
             this.DrawEnergyBar(15, 50, color);
             this.DrawFps(color);
+            this.DrawGrid();
 
             base.Draw(gameTime);
         }
@@ -121,6 +129,24 @@ namespace SpaceFighter.Logic.Services.Implementations
             var fps = string.Format("FPS:{0}", this.frameRate);
             this.spriteBatch.Begin();
             this.spriteBatch.DrawString(this.spriteFont, fps, new Vector2(1170, 30), color);
+            this.spriteBatch.End();
+        }
+
+        private void DrawGrid()
+        {
+            this.spriteBatch.Begin();
+
+            for (int i = 0; i < VerticalTileCount; i++)
+            {
+                for (int j = 0; j < HorizontalTileCount; j++)
+                {
+                    this.spriteBatch.Draw(
+                        this.debugTileRect,
+                        new Vector2(j * TileSize, i * TileSize),
+                        Color.White);
+                }
+            }
+
             this.spriteBatch.End();
         }
     }

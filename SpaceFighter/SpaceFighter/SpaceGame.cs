@@ -25,7 +25,6 @@ namespace SpaceFighter
         IInputService inputService;
         IEnemyService enemyService;
         ICollisionDetectionService collisionDetectionService;
-        IDebugService debugService;
         IGameController gameController;
 
         private readonly GraphicsDeviceManager graphics;
@@ -117,9 +116,6 @@ namespace SpaceFighter
                 enemyService, 
                 terrainService);
 
-            debugService = new DebugService(
-                this);
-
             gameController = new GameController(
                 this, 
                 collisionDetectionService, 
@@ -128,7 +124,6 @@ namespace SpaceFighter
                 inputService, 
                 headUpDisplayService, 
                 terrainService, 
-                debugService, 
                 audioService);
         }
 
