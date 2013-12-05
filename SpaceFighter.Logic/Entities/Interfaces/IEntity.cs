@@ -14,7 +14,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         Rectangle BoundingRectangle { get; }
 
         Vector2 Position { get; }
-        Vector2 Origin { get; } // <- rename to 'AbsoluteOrigin' ?
         float Rotation { get; }
         int Width { get; }
         int Height { get; }

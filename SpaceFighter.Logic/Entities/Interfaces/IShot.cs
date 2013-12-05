@@ -10,7 +10,6 @@ namespace SpaceFighter.Logic.Entities.Interfaces
     {
         Color[] ColorData { get; }
         Vector2 Position { get; set; }
-        Vector2 Origin { get;}
         int Width { get; }
         int Height { get; }
         int FirePower { get; }

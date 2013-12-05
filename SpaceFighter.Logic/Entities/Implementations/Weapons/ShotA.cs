@@ -19,14 +19,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
             this.Angle = angle;
         }       
 
-        public Vector2 Origin
-        {
-            get
-            {
-                return new Vector2(this.Position.X + (this.Width / 2.0f), this.Position.Y + (this.Height / 2.0f));
-            }
-        }
-
         public Color[] ColorData { get; private set; }
         
         public int Width { get; private set; }

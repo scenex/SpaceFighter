@@ -13,7 +13,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using SpaceFighter.Logic.Behaviours.Interfaces;
     using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;
-    using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
 
     public class EnemyScripted : EnemyBase

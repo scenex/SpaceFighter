@@ -62,14 +62,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             }
         }
 
-        public Vector2 Origin
-        {
-            get
-            {
-                return new Vector2(this.Position.X + (this.Width / 2.0f), this.Position.Y + (this.Height / 2.0f));
-            }
-        }
-
         public Rectangle BoundingRectangle
         {
             get

@@ -92,14 +92,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             }
         }
 
-        public Vector2 Origin
-        {
-            get
-            {
-                return new Vector2(this.Position.X + (this.Width / 2.0f), this.Position.Y + (this.Height / 2.0f));
-            }
-        }
-
         public void Thrust()
         {
             this.thrustTotal += ThrustIncrement;
@@ -226,6 +218,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             this.Position = Vector2.Add(new Vector2((float)Math.Cos(this.Rotation) * this.thrustTotal, (float)Math.Sin(this.Rotation) * this.thrustTotal), this.Position);
             this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, 3.0f);
 
+            // Same position as weapon -> origin
             this.weapon.Position = this.Position;
           
             this.stateMachine.Update();
