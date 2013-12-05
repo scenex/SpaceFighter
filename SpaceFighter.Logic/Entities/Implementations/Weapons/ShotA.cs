@@ -9,14 +9,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
     public class ShotA : IShot
     {
-        public ShotA(Vector2 startPosition, int width, int height, Color[] colorData, int firePower, double angle)
+        public ShotA(Vector2 startPosition, int width, int height, Color[] colorData, int firePower, float rotation)
         {           
             this.Position = startPosition;
             this.Width = width;
             this.Height = height;
             this.ColorData = colorData;
             this.FirePower = firePower;
-            this.Angle = angle;
+            this.Rotation = rotation;
         }       
 
         public Color[] ColorData { get; private set; }
@@ -29,7 +29,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Weapons
 
         public int FirePower { get; private set; }
 
-        public double Angle { get; private set; }
+        public float Rotation { get; private set; }
 
         public Rectangle BoundingRectangle
         {

@@ -5,6 +5,7 @@
 namespace SpaceFighter.Logic.Entities.Implementations.Players
 {
     using System;
+    using System.Diagnostics;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -215,6 +216,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
 
         public override void Update(GameTime gameTime)
         {
+            Debug.WriteLine(this.Position.X + ", " + this.Position.Y);
             this.Position = Vector2.Add(new Vector2((float)Math.Cos(this.Rotation) * this.thrustTotal, (float)Math.Sin(this.Rotation) * this.thrustTotal), this.Position);
             this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, 3.0f);
 
