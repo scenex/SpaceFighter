@@ -6,14 +6,9 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 {
     using Microsoft.Xna.Framework;
 
-    public interface IShot
+    public interface IShot : IEntity
     {
-        Color[] ColorData { get; }
-        Vector2 Position { get; set; }
-        int Width { get; }
-        int Height { get; }
         int FirePower { get; }
-        float Rotation { get; }
-        Rectangle BoundingRectangle { get; }
+        new Vector2 Position { get; set; } // We need the setter
     }
 }

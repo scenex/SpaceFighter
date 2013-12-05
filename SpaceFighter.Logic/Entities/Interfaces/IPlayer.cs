@@ -23,5 +23,9 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         void SetRotation(float angle);
 
         void Move(Vector2 moveBy);
+
+        IWeapon Weapon { get; }
+        int Health { get; }
+        int Lives { get; } 
     }
 }
