@@ -250,7 +250,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                 this.Position,
                 this.spriteManager.GetCurrentRectangle(),
                 Color.White,
-                this.Rotation,
+                MathHelper.PiOver2 * -1,
                 new Vector2(this.Width / 2.0f, this.Height / 2.0f),
                 1.0f,
                 SpriteEffects.None,

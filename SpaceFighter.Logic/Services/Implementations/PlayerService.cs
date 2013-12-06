@@ -71,7 +71,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Weapon.FireWeapon();
         }
 
-        // Todo: Why shifting by half player's height?
+        public void Thrust()
+        {
+            this.player.Thrust();
+        }
+
         public void MoveUp()
         {
             if (this.player.Position.Y - this.player.Height / 2.0 >= 0)
@@ -80,7 +84,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        // Todo: Why shifting by half player's height?
         public void MoveDown()
         {
             if (this.player.Position.Y + this.player.Height / 2.0 <= this.terrainService.LevelHeight)
@@ -89,7 +92,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        // Todo: Why shifting by half player's width?
         public void MoveLeft()
         {
             if (this.player.Position.X - this.player.Width / 2.0 >= 0)
@@ -98,7 +100,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             }
         }
 
-        // Todo: Why shifting by half player's width?
         public void MoveRight()
         {
             if (this.player.Position.X + this.player.Width / 2.0 <= this.terrainService.LevelWidth)

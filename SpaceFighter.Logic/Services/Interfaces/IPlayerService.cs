@@ -30,6 +30,8 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void MoveLeft();
         void MoveRight();
 
+        void Thrust();
+
         void SpawnPlayer();
         void UnspawnPlayer();
     }
