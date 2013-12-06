@@ -77,7 +77,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.DrawVitals(color);
             this.DrawEnergyBar(15, 50, color);
             this.DrawFps(color);
-            this.DrawGrid();
+            //this.DrawGrid();
 
             base.Draw(gameTime);
         }
