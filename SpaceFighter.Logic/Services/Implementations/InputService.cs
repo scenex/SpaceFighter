@@ -22,6 +22,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         private KeyboardState previousKeyboardState;
 
         private GamePadState currentGamePadState;
+        private GamePadState previousGamePadState;
 
         private bool isInputDeviceActive;
 
@@ -229,7 +230,24 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void ProcessInputGamepadMenu()
         {
-            
+            this.currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
+
+            if (this.previousGamePadState.DPad.Up == ButtonState.Pressed && this.currentGamePadState.DPad.Up == ButtonState.Released)
+            {
+                this.IsSelectionMoveUp = true;
+            }
+
+            if (this.previousGamePadState.DPad.Down == ButtonState.Pressed && this.currentGamePadState.DPad.Down == ButtonState.Released)
+            {
+                this.IsSelectionMoveDown = true;
+            }
+
+            if (this.previousGamePadState.Buttons.A == ButtonState.Pressed)
+            {
+                this.IsSelectionConfirmed = true;
+            }
+
+            this.previousGamePadState = this.currentGamePadState;
         }
     }
 
