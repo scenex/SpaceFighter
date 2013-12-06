@@ -6,7 +6,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -62,7 +61,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.terrainService = terrainService;
             this.audioService = audioService;
 
-            this.fadeEffect = string.Empty;
+            this.fadeEffect = "FadeIn";
         }
 
         public bool IsGameRunning { get; private set; }
