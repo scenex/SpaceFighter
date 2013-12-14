@@ -15,7 +15,7 @@ namespace SpaceFighter
     using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
 
-    public class ApplicationStateEngine
+    public class ApplicationController
     {
         private readonly Game game;
 
@@ -30,7 +30,7 @@ namespace SpaceFighter
         private IntroGameState introGameState;
         private GameplayGameState gameplayGameState;
 
-        public ApplicationStateEngine(
+        public ApplicationController(
             Game game,
             IGameController gameController,
             IInputService inputService)

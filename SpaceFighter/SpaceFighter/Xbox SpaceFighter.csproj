@@ -59,7 +59,7 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="ApplicationStateEngine.cs" />
+    <Compile Include="ApplicationController.cs" />
     <Compile Include="GameStates\GameplayGameState.cs" />
     <Compile Include="GameStates\IGameStateTransition.cs" />
     <Compile Include="GameStates\IntroGameState.cs" />

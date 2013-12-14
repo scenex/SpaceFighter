@@ -29,7 +29,7 @@ namespace SpaceFighter
 
         private readonly GraphicsDeviceManager graphics;
 
-        private ApplicationStateEngine applicationStateEngine;
+        private ApplicationController applicationController;
 
         //SpriteBatch spriteBatch;
         //private Effect shader;
@@ -64,7 +64,7 @@ namespace SpaceFighter
 
             this.ComposeServices();
 
-            this.applicationStateEngine = new ApplicationStateEngine(
+            this.applicationController = new ApplicationController(
                 this,
                 this.gameController,
                 this.inputService);
@@ -129,7 +129,7 @@ namespace SpaceFighter
 
         protected override void Update(GameTime gameTime)
         {
-            this.applicationStateEngine.Update(gameTime);            
+            this.applicationController.Update(gameTime);            
             base.Update(gameTime); // Re-Added
         }
 
@@ -142,7 +142,7 @@ namespace SpaceFighter
             this.GraphicsDevice.Clear(Color.Black);
             base.Draw(gameTime);  // Re-Added
 
-            this.applicationStateEngine.Draw(gameTime);
+            this.applicationController.Draw(gameTime);
         }
 
         #region Post Processing Shader
