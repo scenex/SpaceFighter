@@ -40,6 +40,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             get
             {
+                // 12 * 80 = 960
                 return this.HorizontalTileCount * TileSize;
             }
         }
@@ -48,6 +49,7 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             get
             {
+                // 9 * 80 = 720
                 return this.VerticalTileCount * TileSize;
             }
         }
