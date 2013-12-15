@@ -98,9 +98,9 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             this.thrustTotal += ThrustIncrement;
         }
 
-        public void SetRotation(float angle)
+        public void SetRotation(float angleDelta)
         {
-            this.Rotation += angle;
+            this.Rotation += angleDelta;
         }
 
         public void Move(Vector2 moveBy)
@@ -217,7 +217,13 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
         public override void Update(GameTime gameTime)
         {
             Debug.WriteLine(this.Position.X + ", " + this.Position.Y);
-            this.Position = Vector2.Add(new Vector2((float)Math.Cos(this.Rotation) * this.thrustTotal, (float)Math.Sin(this.Rotation) * this.thrustTotal), this.Position);
+            
+            this.Position = Vector2.Add(
+                new Vector2(
+                    (float)Math.Cos(this.Rotation) * this.thrustTotal, 
+                    (float)Math.Sin(this.Rotation) * this.thrustTotal), 
+                this.Position);
+
             this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, 3.0f);
 
             // Same position as weapon -> origin
