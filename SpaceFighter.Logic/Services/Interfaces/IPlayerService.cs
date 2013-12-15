@@ -30,7 +30,7 @@ namespace SpaceFighter.Logic.Services.Interfaces
         void MoveLeft();
         void MoveRight();
 
-        void Thrust();
+        void Thrust(float angleDelta);
 
         void SpawnPlayer();
         void UnspawnPlayer();

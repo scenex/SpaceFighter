@@ -182,7 +182,7 @@ namespace SpaceFighter.Logic.Services.Implementations
                 var rotationDifference = (float)Math.Atan2(Math.Sin(targetRotation - originalRotation), Math.Cos(targetRotation - originalRotation));
                 this.playerService.Player.SetRotation(rotationDifference * 0.05f);
 
-                this.playerService.Thrust();
+                this.playerService.Thrust(rotationDifference * 0.05f);
             }
 
             if (Math.Abs(this.currentGamePadState.ThumbSticks.Right.X - 0) > 0.1f || Math.Abs(this.currentGamePadState.ThumbSticks.Right.Y - 0) > 0.1f)

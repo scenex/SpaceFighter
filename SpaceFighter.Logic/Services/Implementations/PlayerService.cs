@@ -71,9 +71,11 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Weapon.FireWeapon();
         }
 
-        public void Thrust()
+        // Make more generic
+        public void Thrust(float angleDelta)
         {
             this.player.Thrust();
+            //this.player.Move();
         }
 
         public void MoveUp()
