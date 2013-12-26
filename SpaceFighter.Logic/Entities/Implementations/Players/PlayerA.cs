@@ -5,7 +5,6 @@
 namespace SpaceFighter.Logic.Entities.Implementations.Players
 {
     using System;
-    using System.Diagnostics;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -28,11 +27,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
         private double deadToRespawnTimer;
         private int healthReplenishCounter;
 
-        private float thrustTotal;
-
-        private const float ThrustIncrement = 0.2f;
-        private const float ThrustFriction = 0.05f;
-
         public PlayerA(Game game, Vector2 startPosition) : base(game)
         {
 
@@ -53,7 +47,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
         public int Lives { get; private set; }
         public int Health { get; private set; }
 
-        public Vector2 Position { get; private set; }
+        public Vector2 Position { get; set; }
         public float Rotation { get; private set; }
         public Color[] ColorData { get; private set; }
 
@@ -93,11 +87,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             }
         }
 
-        public void Thrust()
-        {
-            this.thrustTotal += ThrustIncrement;
-        }
-
         public void SetRotationDelta(float angleDelta)
         {
             this.Rotation += angleDelta;
@@ -106,11 +95,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
         public void SetRotation(float angle)
         {
             this.Rotation = angle;
-        }
-
-        public void Move(Vector2 moveBy)
-        {
-            this.Position += moveBy;
         }
 
         public void SubtractHealth(int amount)
@@ -136,8 +120,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                 null,
                 delegate
                     {
-                        this.thrustTotal = 0;
-
                         if (this.ShipExploding != null)
                         {
                             this.ShipExploding(this, new StateChangedEventArgs(PlayerState.Alive, PlayerState.Dying));
@@ -221,16 +203,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
 
         public override void Update(GameTime gameTime)
         {
-            Debug.WriteLine(this.Position.X + ", " + this.Position.Y);
-            
-            this.Position = Vector2.Add(
-                new Vector2(
-                    (float)Math.Cos(this.Rotation) * this.thrustTotal, 
-                    (float)Math.Sin(this.Rotation) * this.thrustTotal), 
-                this.Position);
-
-            this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, 3.0f);
-
             // Same position as weapon -> origin
             this.weapon.Position = this.Position;
           

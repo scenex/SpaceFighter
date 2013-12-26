@@ -6,6 +6,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
     using System.Collections.Generic;
+
     using Microsoft.Xna.Framework;
     using SpaceFighter.Logic.Entities.Implementations.Players;
     using SpaceFighter.Logic.Entities.Interfaces;
@@ -18,6 +19,13 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly IAudioService audioService;
         private readonly IPlayerFactory playerFactory;
         private readonly ITerrainService terrainService;
+
+        private const float ThrustIncrement = 0.2f;
+        private const float ThrustFriction = 0.05f;
+
+        private float thrustTotal;
+
+        private bool isAfterGlow;
 
         public PlayerService(Game game, IAudioService audioService, IPlayerFactory playerFactory, ITerrainService terrainService) : base(game)
         {
@@ -32,18 +40,48 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public IPlayer Player
         {
-            get
-            {
-                return this.player;
-            }
+            get { return this.player; }
         }
 
         public IEnumerable<IShot> Shots
         {
-            get
+            get { return this.player.Weapon.Shots; }
+        }
+
+        private bool IsMoveUpPossible
+        {
+            get { return this.player.Position.Y - this.player.Height / 2.0 >= 0; }
+        }
+
+        private bool IsMoveDownPossible
+        {
+            get { return this.player.Position.Y + this.player.Height / 2.0 <= this.terrainService.LevelHeight; }
+        }
+
+        private bool IsMoveLeftPossible
+        {
+            get { return this.player.Position.X - this.player.Width / 2.0 >= 0; }
+        }
+
+        private bool IsMoveRightPossible
+        {
+            get { return this.player.Position.X + this.player.Width / 2.0 <= this.terrainService.LevelWidth; }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, 3.0f);
+
+            if (this.IsMoveUpPossible && this.IsMoveDownPossible && this.IsMoveLeftPossible && this.IsMoveRightPossible)
             {
-                return this.player.Weapon.Shots;
+                if (isAfterGlow)
+                {
+                    this.TranslateShip();
+                }
             }
+
+            this.isAfterGlow = true;
+            base.Update(gameTime);
         }
 
         public void SpawnPlayer()
@@ -71,54 +109,54 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Weapon.FireWeapon();
         }
 
-        // Make more generic
+        // Todo: Test with Xbox360 controller
         public void Thrust(float angleDelta)
         {
-            this.player.Thrust();
-            //this.player.Move();
+            this.AccumulateThrust();
+            this.TranslateShip();
         }
 
         public void MoveUp()
         {
-            if (this.player.Position.Y - this.player.Height / 2.0 >= 0)
+            this.isAfterGlow = false;
+            if (this.IsMoveUpPossible)
             {
-                //this.player.Move(new Vector2(0,-3));
-
                 this.player.SetRotation(MathHelper.PiOver2 * (-1));
-                this.player.Thrust();
+                this.AccumulateThrust();
+                this.TranslateShip();
             }
         }
 
         public void MoveDown()
         {
-            if (this.player.Position.Y + this.player.Height / 2.0 <= this.terrainService.LevelHeight)
+            this.isAfterGlow = false;
+            if (this.IsMoveDownPossible)
             {
-                //this.player.Move(new Vector2(0, 3));
-
                 this.player.SetRotation(MathHelper.PiOver2);
-                this.player.Thrust();
+                this.AccumulateThrust();
+                this.TranslateShip();
             }
         }
 
         public void MoveLeft()
         {
-            if (this.player.Position.X - this.player.Width / 2.0 >= 0)
+            this.isAfterGlow = false;
+            if (this.IsMoveLeftPossible)
             {
-                //this.player.Move(new Vector2(-3, 0));
-
                 this.player.SetRotation(MathHelper.Pi);
-                this.player.Thrust();
+                this.AccumulateThrust();
+                this.TranslateShip();
             }
         }
 
         public void MoveRight()
         {
-            if (this.player.Position.X + this.player.Width / 2.0 <= this.terrainService.LevelWidth)
+            this.isAfterGlow = false;
+            if (this.IsMoveRightPossible)
             {
-                //this.player.Move(new Vector2(3, 0));
-
                 this.player.SetRotation(0);
-                this.player.Thrust();
+                this.AccumulateThrust();
+                this.TranslateShip();
             }
         }
 
@@ -135,6 +173,20 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void RemoveShot(IShot shot)
         {
             this.player.Weapon.Shots.Remove(shot);
+        }
+
+        private void AccumulateThrust()
+        {
+            this.thrustTotal += ThrustIncrement;
+        }
+
+        private void TranslateShip()
+        {
+            this.player.Position = Vector2.Add(
+                this.player.Position,
+                new Vector2(
+                    (float)Math.Cos(this.player.Rotation) * this.thrustTotal,
+                    (float)Math.Sin(this.player.Rotation) * this.thrustTotal));
         }
 
         private void OnShipExploding(object sender, StateChangedEventArgs stateChangedEventArgs)

@@ -17,14 +17,13 @@ namespace SpaceFighter.Logic.Entities.Interfaces
         event EventHandler<StateChangedEventArgs> ShipExploding;
         event EventHandler<StateChangedEventArgs> ShipRespawning;
 
-        void Thrust();
         void AddHealth(int amount);
         void SubtractHealth(int amount); 
       
         void SetRotationDelta(float angleDelta);
         void SetRotation(float angle);
 
-        void Move(Vector2 moveBy);
+        new Vector2 Position { get; set; } // We need the setter
 
         IWeapon Weapon { get; }
         int Health { get; }
