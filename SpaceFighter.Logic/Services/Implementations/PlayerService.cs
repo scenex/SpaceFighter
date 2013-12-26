@@ -82,7 +82,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             if (this.player.Position.Y - this.player.Height / 2.0 >= 0)
             {
-                this.player.Move(new Vector2(0,-3));
+                //this.player.Move(new Vector2(0,-3));
+
+                this.player.SetRotation(MathHelper.PiOver2 * (-1));
+                this.player.Thrust();
             }
         }
 
@@ -90,7 +93,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             if (this.player.Position.Y + this.player.Height / 2.0 <= this.terrainService.LevelHeight)
             {
-                this.player.Move(new Vector2(0, 3));
+                //this.player.Move(new Vector2(0, 3));
+
+                this.player.SetRotation(MathHelper.PiOver2);
+                this.player.Thrust();
             }
         }
 
@@ -98,7 +104,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             if (this.player.Position.X - this.player.Width / 2.0 >= 0)
             {
-                this.player.Move(new Vector2(-3, 0));
+                //this.player.Move(new Vector2(-3, 0));
+
+                this.player.SetRotation(MathHelper.Pi);
+                this.player.Thrust();
             }
         }
 
@@ -106,7 +115,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             if (this.player.Position.X + this.player.Width / 2.0 <= this.terrainService.LevelWidth)
             {
-                this.player.Move(new Vector2(3, 0));
+                //this.player.Move(new Vector2(3, 0));
+
+                this.player.SetRotation(0);
+                this.player.Thrust();
             }
         }
 

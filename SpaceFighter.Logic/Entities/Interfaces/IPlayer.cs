@@ -19,8 +19,10 @@ namespace SpaceFighter.Logic.Entities.Interfaces
 
         void Thrust();
         void AddHealth(int amount);
-        void SubtractHealth(int amount);       
-        void SetRotation(float angleDelta);
+        void SubtractHealth(int amount); 
+      
+        void SetRotationDelta(float angleDelta);
+        void SetRotation(float angle);
 
         void Move(Vector2 moveBy);
 

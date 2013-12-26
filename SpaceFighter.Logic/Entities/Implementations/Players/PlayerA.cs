@@ -98,9 +98,14 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             this.thrustTotal += ThrustIncrement;
         }
 
-        public void SetRotation(float angleDelta)
+        public void SetRotationDelta(float angleDelta)
         {
             this.Rotation += angleDelta;
+        }
+
+        public void SetRotation(float angle)
+        {
+            this.Rotation = angle;
         }
 
         public void Move(Vector2 moveBy)
@@ -256,7 +261,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                 this.Position,
                 this.spriteManager.GetCurrentRectangle(),
                 Color.White,
-                MathHelper.PiOver2 * -1,
+                this.Rotation,
                 new Vector2(this.Width / 2.0f, this.Height / 2.0f),
                 1.0f,
                 SpriteEffects.None,
