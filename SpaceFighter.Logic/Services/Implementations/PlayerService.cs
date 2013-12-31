@@ -22,6 +22,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private const float ThrustIncrement = 0.2f;
         private const float ThrustFriction = 0.05f;
+        private const float ThrustMax = 3.0f;
 
         private float thrustTotal;
 
@@ -48,31 +49,32 @@ namespace SpaceFighter.Logic.Services.Implementations
             get { return this.player.Weapon.Shots; }
         }
 
-        private bool IsMoveUpPossible
+        private bool IsMoveUpPossible(float offset)
         {
-            get { return this.player.Position.Y - this.player.Height / 2.0 >= 0; }
+            return this.player.Position.Y - (this.player.Height / 2.0) >= offset;
         }
 
-        private bool IsMoveDownPossible
+        private bool IsMoveDownPossible(float offset)
         {
-            get { return this.player.Position.Y + this.player.Height / 2.0 <= this.terrainService.LevelHeight; }
+            return this.player.Position.Y + (this.player.Height / 2.0) <= this.terrainService.LevelHeight - offset;
         }
 
-        private bool IsMoveLeftPossible
+        private bool IsMoveLeftPossible(float offset)
         {
-            get { return this.player.Position.X - this.player.Width / 2.0 >= 0; }
+            return this.player.Position.X - (this.player.Width / 2.0) >= offset;
         }
 
-        private bool IsMoveRightPossible
+        private bool IsMoveRightPossible(float offset)
         {
-            get { return this.player.Position.X + this.player.Width / 2.0 <= this.terrainService.LevelWidth; }
+            return this.player.Position.X + (this.player.Width / 2.0) <= this.terrainService.LevelWidth - offset;
         }
 
         public override void Update(GameTime gameTime)
         {
-            this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, 3.0f);
+            // Todo: Correctly coerce values when still moving while not giving any input
+            this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, ThrustMax);
 
-            if (this.IsMoveUpPossible && this.IsMoveDownPossible && this.IsMoveLeftPossible && this.IsMoveRightPossible)
+            if (this.IsMoveUpPossible(0) && this.IsMoveDownPossible(0) && this.IsMoveLeftPossible(0) && this.IsMoveRightPossible(0))
             {
                 if (isAfterGlow)
                 {
@@ -119,44 +121,60 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void MoveUp()
         {
             this.isAfterGlow = false;
-            if (this.IsMoveUpPossible)
+            if (this.IsMoveUpPossible(ThrustMax))
             {
                 this.player.SetRotation(MathHelper.PiOver2 * (-1));
                 this.AccumulateThrust();
                 this.TranslateShip();
+            }
+            else
+            {
+                this.thrustTotal = 0;
             }
         }
 
         public void MoveDown()
         {
             this.isAfterGlow = false;
-            if (this.IsMoveDownPossible)
+            if (this.IsMoveDownPossible(ThrustMax))
             {
                 this.player.SetRotation(MathHelper.PiOver2);
                 this.AccumulateThrust();
                 this.TranslateShip();
+            }
+            else
+            {
+                this.thrustTotal = 0;
             }
         }
 
         public void MoveLeft()
         {
             this.isAfterGlow = false;
-            if (this.IsMoveLeftPossible)
+            if (this.IsMoveLeftPossible(ThrustMax))
             {
                 this.player.SetRotation(MathHelper.Pi);
                 this.AccumulateThrust();
                 this.TranslateShip();
+            }
+            else
+            {
+                this.thrustTotal = 0;
             }
         }
 
         public void MoveRight()
         {
             this.isAfterGlow = false;
-            if (this.IsMoveRightPossible)
+            if (this.IsMoveRightPossible(ThrustMax))
             {
                 this.player.SetRotation(0);
                 this.AccumulateThrust();
                 this.TranslateShip();
+            }
+            else
+            {
+                this.thrustTotal = 0;
             }
         }
 
