@@ -28,6 +28,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private bool isAfterGlow;
 
+        private Vector2 previousPlayerPosition;
+
         public PlayerService(Game game, IAudioService audioService, IPlayerFactory playerFactory, ITerrainService terrainService) : base(game)
         {
             this.audioService = audioService;
@@ -74,13 +76,13 @@ namespace SpaceFighter.Logic.Services.Implementations
             // Todo: Correctly coerce values when still moving while not giving any input
             this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, ThrustMax);
 
-            if (this.IsMoveUpPossible(0) && this.IsMoveDownPossible(0) && this.IsMoveLeftPossible(0) && this.IsMoveRightPossible(0))
+            //if (this.IsMoveUpPossible(0) && this.IsMoveDownPossible(0) && this.IsMoveLeftPossible(0) && this.IsMoveRightPossible(0))
+            //{
+            if (isAfterGlow)
             {
-                if (isAfterGlow)
-                {
-                    this.TranslateShip();
-                }
+                this.TranslateShip();
             }
+            //}
 
             this.isAfterGlow = true;
             base.Update(gameTime);
@@ -111,7 +113,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Weapon.FireWeapon();
         }
 
-        // Todo: Test with Xbox360 controller
         public void Thrust(float angleDelta)
         {
             this.AccumulateThrust();
@@ -205,6 +206,22 @@ namespace SpaceFighter.Logic.Services.Implementations
                 new Vector2(
                     (float)Math.Cos(this.player.Rotation) * this.thrustTotal,
                     (float)Math.Sin(this.player.Rotation) * this.thrustTotal));
+
+            if (!this.IsMoveLeftPossible(0) || !this.IsMoveRightPossible(0))
+            {
+                this.player.Position = new Vector2(
+                    this.previousPlayerPosition.X, 
+                    this.player.Position.Y);
+            }
+
+            if (!this.IsMoveUpPossible(0) || !this.IsMoveDownPossible(0))
+            {
+                this.player.Position = new Vector2(
+                    this.player.Position.X,
+                    this.previousPlayerPosition.Y);
+            }
+
+            this.previousPlayerPosition = this.player.Position;
         }
 
         private void OnShipExploding(object sender, StateChangedEventArgs stateChangedEventArgs)
