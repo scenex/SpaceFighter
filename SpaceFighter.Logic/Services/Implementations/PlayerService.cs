@@ -109,7 +109,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Weapon.FireWeapon();
         }
 
-        public void Thrust(float angleDelta)
+        public void Move(float angleDelta)
         {
             this.AccumulateThrust();
             this.TranslateShip();
