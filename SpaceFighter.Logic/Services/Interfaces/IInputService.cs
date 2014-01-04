@@ -13,6 +13,15 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
     public interface IInputService : IGameComponent
     {
+        event EventHandler<GamePadStateEventArgs> AnalogMoveChanged;
+        event EventHandler<GamePadStateEventArgs> AnalogFireChanged;
+
+        event EventHandler MoveUpChanged;
+        event EventHandler MoveDownChanged;
+        event EventHandler MoveLeftChanged;
+        event EventHandler MoveRightChanged;
+        event EventHandler FireChanged;
+
         void SetInputDevice(IInput inputDevice);
 
         bool IsGamePadConnected { get; }

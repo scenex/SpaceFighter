@@ -66,6 +66,7 @@
     <Compile Include="EventManager\Subscriber.cs" />
     <Compile Include="EventManager\SubscriptionAttribute.cs" />
     <Compile Include="Entities\Interfaces\IShot.cs" />
+    <Compile Include="GamePadStateEventArgs.cs" />
     <Compile Include="IEnemyFactory.cs" />
     <Compile Include="Input\Implementation\InputGamepad.cs" />
     <Compile Include="Input\Implementation\InputKeyboard.cs" />

@@ -19,17 +19,10 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
         IPlayer Player { get; }
         IEnumerable<IShot> Shots { get; } 
+
         void ReportPlayerHit(IShot shot);
         void ReportPlayerHit(int damage);
-
         void RemoveShot(IShot shot);
-
-        void Move(float angleDelta);
-        void MoveUp();
-        void MoveDown();
-        void MoveLeft();
-        void MoveRight();
-        void Fire();
 
         void SpawnPlayer();
         void UnspawnPlayer();

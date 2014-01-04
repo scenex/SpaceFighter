@@ -100,15 +100,15 @@ namespace SpaceFighter
             playerFactory = new PlayerFactory(
                 this);
 
+            inputService = new InputService(
+                this);
+
             playerService = new PlayerService(
                 this, 
+                inputService,
                 audioService, 
                 playerFactory,
                 terrainService);
-
-            inputService = new InputService(
-                this, 
-                playerService);
 
             collisionDetectionService = new CollisionDetectionService(
                 this, 

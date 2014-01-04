@@ -16,6 +16,8 @@ namespace SpaceFighter.Logic.Services.Implementations
     {
         private PlayerA player;
 
+        private readonly IInputService inputService;
+
         private readonly IAudioService audioService;
         private readonly IPlayerFactory playerFactory;
         private readonly ITerrainService terrainService;
@@ -30,11 +32,21 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private Vector2 previousPlayerPosition;
 
-        public PlayerService(Game game, IAudioService audioService, IPlayerFactory playerFactory, ITerrainService terrainService) : base(game)
+        public PlayerService(Game game, IInputService inputService, IAudioService audioService, IPlayerFactory playerFactory, ITerrainService terrainService) : base(game)
         {
+            this.inputService = inputService;
             this.audioService = audioService;
             this.playerFactory = playerFactory;
             this.terrainService = terrainService;
+
+            this.inputService.AnalogMoveChanged += this.OnAnalogMove;
+            this.inputService.AnalogFireChanged += this.OnAnalogFire;
+
+            this.inputService.MoveUpChanged += this.OnMoveUp;
+            this.inputService.MoveDownChanged += this.OnMoveDown;
+            this.inputService.MoveLeftChanged += this.OnMoveLeft;
+            this.inputService.MoveRightChanged += this.OnMoveRight;
+            this.inputService.FireChanged += this.OnFire;
         }
 
         public event EventHandler<StateChangedEventArgs> ShipRespawning;
@@ -104,18 +116,30 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.player.Dispose();
         }
 
-        public void Fire()
+        private void OnAnalogMove(object sender, GamePadStateEventArgs gamePadStateEventArgs)
         {
-            this.player.Weapon.FireWeapon();
-        }
+            // http://plasticsturgeon.com/2012/08/rotate-the-shortest-direction/
 
-        public void Move(float angleDelta)
-        {
+            var originalRotation = this.Player.Rotation;
+            var targetRotation = ((float)Math.Atan2(gamePadStateEventArgs.GamePadState.ThumbSticks.Left.Y, gamePadStateEventArgs.GamePadState.ThumbSticks.Left.X)) * -1; // Todo: Why do have to invert?
+            var rotationDifference = (float)Math.Atan2(Math.Sin(targetRotation - originalRotation), Math.Cos(targetRotation - originalRotation));
+            this.Player.SetRotationDelta(rotationDifference * 0.05f);
+
             this.AccumulateThrust();
             this.TranslateShip();
         }
 
-        public void MoveUp()
+        private void OnAnalogFire(object sender, GamePadStateEventArgs gamePadStateEventArgs)
+        {
+            var originalRotation = this.Player.Weapon.Rotation;
+            var targetRotation = ((float)Math.Atan2(gamePadStateEventArgs.GamePadState.ThumbSticks.Right.Y, gamePadStateEventArgs.GamePadState.ThumbSticks.Right.X)) * -1; // Todo: Why do have to invert?
+            var rotationDifference = (float)Math.Atan2(Math.Sin(targetRotation - originalRotation), Math.Cos(targetRotation - originalRotation));
+            this.Player.Weapon.Rotation += rotationDifference * 0.05f;
+
+            this.player.Weapon.FireWeapon();
+        }
+
+        private void OnMoveUp(object sender, EventArgs eventArgs)
         {
             this.isAfterGlow = false;
             this.player.SetRotation(MathHelper.PiOver2 * (-1));
@@ -123,7 +147,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.TranslateShip();
         }
 
-        public void MoveDown()
+        private void OnMoveDown(object sender, EventArgs eventArgs)
         {
             this.isAfterGlow = false;
             this.player.SetRotation(MathHelper.PiOver2);
@@ -131,7 +155,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.TranslateShip();
         }
 
-        public void MoveLeft()
+        private void OnMoveLeft(object sender, EventArgs eventArgs)
         {
             this.isAfterGlow = false;
             this.player.SetRotation(MathHelper.Pi);
@@ -139,12 +163,17 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.TranslateShip();
         }
 
-        public void MoveRight()
+        private void OnMoveRight(object sender, EventArgs eventArgs)
         {
             this.isAfterGlow = false;
             this.player.SetRotation(0);
             this.AccumulateThrust();
             this.TranslateShip();
+        }
+
+        private void OnFire(object sender, EventArgs eventArgs)
+        {
+            this.player.Weapon.FireWeapon();
         }
 
         public void ReportPlayerHit(IShot shot)

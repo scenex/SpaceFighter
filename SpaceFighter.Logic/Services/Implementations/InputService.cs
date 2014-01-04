@@ -15,7 +15,14 @@ namespace SpaceFighter.Logic.Services.Implementations
 
     public class InputService : GameComponent, IInputService
     {
-        private readonly IPlayerService playerService;
+        public event EventHandler<GamePadStateEventArgs> AnalogMoveChanged;
+        public event EventHandler<GamePadStateEventArgs> AnalogFireChanged;
+
+        public event EventHandler MoveUpChanged;
+        public event EventHandler MoveDownChanged;
+        public event EventHandler MoveLeftChanged;
+        public event EventHandler MoveRightChanged;
+        public event EventHandler FireChanged;
 
         private IInput input;
 
@@ -27,9 +34,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private bool isInputDeviceActive;
 
-        public InputService(Game game, IPlayerService playerService) : base(game)
+        public InputService(Game game) : base(game)
         {
-            this.playerService = playerService;
         }
 
         public override void Initialize()
@@ -129,27 +135,42 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Left))
             {
-                this.playerService.MoveLeft();
+                if(this.MoveLeftChanged != null)
+                {
+                    this.MoveLeftChanged(this, EventArgs.Empty);
+                }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Right))
             {
-                this.playerService.MoveRight();
+                if (this.MoveRightChanged != null)
+                {
+                    this.MoveRightChanged(this, EventArgs.Empty);
+                }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Up))
             {
-                this.playerService.MoveUp();
+                if (this.MoveUpChanged != null)
+                {
+                    this.MoveUpChanged(this, EventArgs.Empty);
+                }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Down))
             {
-                this.playerService.MoveDown();
+                if (this.MoveDownChanged != null)
+                {
+                    this.MoveDownChanged(this, EventArgs.Empty);
+                }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.LeftControl) && this.previousKeyboardState.IsKeyUp(Keys.LeftControl))
             {
-                this.playerService.Fire();
+                if (this.FireChanged != null)
+                {
+                    this.FireChanged(this, EventArgs.Empty);
+                }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.P) && this.previousKeyboardState.IsKeyUp(Keys.P))
@@ -166,24 +187,18 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (Math.Abs(this.currentGamePadState.ThumbSticks.Left.X - 0) > 0.1f || Math.Abs(this.currentGamePadState.ThumbSticks.Left.Y - 0) > 0.1f)
             {
-                // http://plasticsturgeon.com/2012/08/rotate-the-shortest-direction/
-
-                var originalRotation = this.playerService.Player.Rotation;
-                var targetRotation = ((float)Math.Atan2(this.currentGamePadState.ThumbSticks.Left.Y, this.currentGamePadState.ThumbSticks.Left.X)) * -1; // Todo: Why do have to invert?
-                var rotationDifference = (float)Math.Atan2(Math.Sin(targetRotation - originalRotation), Math.Cos(targetRotation - originalRotation));
-                this.playerService.Player.SetRotationDelta(rotationDifference * 0.05f);
-
-                this.playerService.Move(rotationDifference * 0.05f);
+                if(this.AnalogMoveChanged != null)
+                {
+                    this.AnalogMoveChanged(this, new GamePadStateEventArgs(this.currentGamePadState));
+                }
             }
 
             if (Math.Abs(this.currentGamePadState.ThumbSticks.Right.X - 0) > 0.1f || Math.Abs(this.currentGamePadState.ThumbSticks.Right.Y - 0) > 0.1f)
             {
-                var originalRotation = this.playerService.Player.Weapon.Rotation;
-                var targetRotation = ((float)Math.Atan2(this.currentGamePadState.ThumbSticks.Right.Y, this.currentGamePadState.ThumbSticks.Right.X)) * -1; // Todo: Why do have to invert?
-                var rotationDifference = (float)Math.Atan2(Math.Sin(targetRotation - originalRotation), Math.Cos(targetRotation - originalRotation));
-                this.playerService.Player.Weapon.Rotation += rotationDifference * 0.05f;
-
-                this.playerService.Fire();
+                if (this.AnalogFireChanged != null)
+                {
+                    this.AnalogFireChanged(this, new GamePadStateEventArgs(this.currentGamePadState));
+                }
             }
 
             if (this.previousGamePadState.Buttons.Start == ButtonState.Pressed && this.currentGamePadState.Buttons.Start == ButtonState.Released)
