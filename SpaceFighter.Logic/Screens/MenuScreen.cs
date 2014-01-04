@@ -29,6 +29,10 @@ namespace SpaceFighter.Logic.Screens
         public MenuScreen(Game game, IInputService inputService) : base(game)
         {
             this.inputService = inputService;
+
+            this.inputService.MenuSelectionUpChanged += delegate { this.selectionIndex--; };
+            this.inputService.MenuSelectionDownChanged += delegate { this.selectionIndex++; };
+            this.inputService.MenuSelectionConfirmedChanged += this.OnMenuSelectionConfirmedChanged;
         }
 
         public bool IsTransitionAllowed { get; private set; }
@@ -50,42 +54,9 @@ namespace SpaceFighter.Logic.Screens
         {
             this.elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (this.inputService.IsSelectionConfirmed)
-            {
-                this.inputService.IsSelectionConfirmed = false;
-
-                if (this.GetSelectionIndex() == 0)
-                {
-                    this.elapsedTime = 0;
-                    this.currentFadeCurve = fadeOutCurve;
-                    this.TransitionTag = MenuItems.StartGame;
-                    this.inputService.Disable();
-                }
-
-                if (this.GetSelectionIndex() == 1)
-                {
-                    this.elapsedTime = 0;
-                    this.currentFadeCurve = fadeOutCurve;
-                    this.TransitionTag = MenuItems.ExitGame;
-                    this.inputService.Disable();
-                }
-            }
-
             if (this.TransitionTag != null && elapsedTime > TransitionTime)
             {
                 this.IsTransitionAllowed = true;
-            }
-
-            if (this.inputService.IsSelectionMoveDown)
-            {
-                this.selectionIndex++;
-                this.inputService.IsSelectionMoveDown = false;
-            }
-
-            if (this.inputService.IsSelectionMoveUp)
-            {
-                this.selectionIndex--;
-                this.inputService.IsSelectionMoveUp = false;
             }
             
             base.Update(gameTime);
@@ -112,6 +83,25 @@ namespace SpaceFighter.Logic.Screens
                 : Color.White * this.currentFadeCurve.Evaluate((float)this.elapsedTime / 1000));
             
             this.spriteBatch.End();
+        }
+
+        private void OnMenuSelectionConfirmedChanged(object sender, EventArgs eventArgs)
+        {
+            if (this.GetSelectionIndex() == 0)
+            {
+                this.elapsedTime = 0;
+                this.currentFadeCurve = fadeOutCurve;
+                this.TransitionTag = MenuItems.StartGame;
+                this.inputService.Disable();
+            }
+
+            if (this.GetSelectionIndex() == 1)
+            {
+                this.elapsedTime = 0;
+                this.currentFadeCurve = fadeOutCurve;
+                this.TransitionTag = MenuItems.ExitGame;
+                this.inputService.Disable();
+            }
         }
 
         private int GetSelectionIndex()

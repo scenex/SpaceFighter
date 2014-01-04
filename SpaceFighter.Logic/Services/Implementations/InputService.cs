@@ -24,6 +24,10 @@ namespace SpaceFighter.Logic.Services.Implementations
         public event EventHandler MoveRightChanged;
         public event EventHandler FireChanged;
 
+        public event EventHandler MenuSelectionUpChanged;
+        public event EventHandler MenuSelectionDownChanged;
+        public event EventHandler MenuSelectionConfirmedChanged;
+
         private IInput input;
 
         private KeyboardState currentKeyboardState;
@@ -114,19 +118,8 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.isInputDeviceActive = true;
         }
 
-        public Type InputDeviceType
-        {
-            get
-            {
-                return (this.input.DeviceType);
-            }
-        }
-
         public InputStateHandling InputStateHandling { get; set; }
 
-        public bool IsSelectionMoveUp { get; set; }
-        public bool IsSelectionMoveDown { get; set; }
-        public bool IsSelectionConfirmed { get; set; }
         public bool IsGamePaused { get; set; }
 
         private void ProcessInputKeyboardGameplay()
@@ -215,17 +208,26 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Up) && this.previousKeyboardState.IsKeyUp(Keys.Up))
             {
-                this.IsSelectionMoveUp = true;
+                if(this.MenuSelectionUpChanged != null)
+                {
+                    this.MenuSelectionUpChanged(this, EventArgs.Empty);
+                }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Down) && this.previousKeyboardState.IsKeyUp(Keys.Down))
             {
-                this.IsSelectionMoveDown = true;
+                if (this.MenuSelectionDownChanged != null)
+                {
+                    this.MenuSelectionDownChanged(this, EventArgs.Empty);
+                }
             }
 
             if (this.currentKeyboardState.IsKeyDown(Keys.Space) && this.previousKeyboardState.IsKeyUp(Keys.Space))
             {
-                this.IsSelectionConfirmed = true;
+                if (this.MenuSelectionConfirmedChanged != null)
+                {
+                    this.MenuSelectionConfirmedChanged(this, EventArgs.Empty);
+                }
             }
 
             this.previousKeyboardState = this.currentKeyboardState;
@@ -237,17 +239,26 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.previousGamePadState.DPad.Up == ButtonState.Pressed && this.currentGamePadState.DPad.Up == ButtonState.Released)
             {
-                this.IsSelectionMoveUp = true;
+                if (this.MenuSelectionUpChanged != null)
+                {
+                    this.MenuSelectionUpChanged(this, EventArgs.Empty);
+                }
             }
 
             if (this.previousGamePadState.DPad.Down == ButtonState.Pressed && this.currentGamePadState.DPad.Down == ButtonState.Released)
             {
-                this.IsSelectionMoveDown = true;
+                if (this.MenuSelectionDownChanged != null)
+                {
+                    this.MenuSelectionDownChanged(this, EventArgs.Empty);
+                }
             }
 
             if (this.previousGamePadState.Buttons.A == ButtonState.Pressed)
             {
-                this.IsSelectionConfirmed = true;
+                if (this.MenuSelectionConfirmedChanged != null)
+                {
+                    this.MenuSelectionConfirmedChanged(this, EventArgs.Empty);
+                }
             }
 
             this.previousGamePadState = this.currentGamePadState;

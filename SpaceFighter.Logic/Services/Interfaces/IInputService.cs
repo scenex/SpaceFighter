@@ -22,16 +22,15 @@ namespace SpaceFighter.Logic.Services.Interfaces
         event EventHandler MoveRightChanged;
         event EventHandler FireChanged;
 
+        event EventHandler MenuSelectionUpChanged;
+        event EventHandler MenuSelectionDownChanged;
+        event EventHandler MenuSelectionConfirmedChanged;
+
         void SetInputDevice(IInput inputDevice);
 
         bool IsGamePadConnected { get; }
-        Type InputDeviceType { get; }
 
         InputStateHandling InputStateHandling { get; set; }
-
-        bool IsSelectionMoveUp { get; set; }
-        bool IsSelectionMoveDown { get; set; }
-        bool IsSelectionConfirmed { get; set; }
 
         bool IsGamePaused { get; set; }
 
