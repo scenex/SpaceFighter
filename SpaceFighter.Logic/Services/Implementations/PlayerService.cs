@@ -51,38 +51,34 @@ namespace SpaceFighter.Logic.Services.Implementations
             get { return this.player.Weapon.Shots; }
         }
 
-        private bool IsMoveUpPossible(float offset)
+        private bool IsMoveUpPossible
         {
-            return this.player.Position.Y - (this.player.Height / 2.0) >= offset;
+            get { return this.player.Position.Y - (this.player.Height / 2.0) >= 0; }
         }
 
-        private bool IsMoveDownPossible(float offset)
+        private bool IsMoveDownPossible
         {
-            return this.player.Position.Y + (this.player.Height / 2.0) <= this.terrainService.LevelHeight - offset;
+            get { return this.player.Position.Y + (this.player.Height / 2.0) <= this.terrainService.LevelHeight; }
         }
 
-        private bool IsMoveLeftPossible(float offset)
+        private bool IsMoveLeftPossible
         {
-            return this.player.Position.X - (this.player.Width / 2.0) >= offset;
+            get { return this.player.Position.X - (this.player.Width / 2.0) >= 0; }
         }
 
-        private bool IsMoveRightPossible(float offset)
+        private bool IsMoveRightPossible
         {
-            return this.player.Position.X + (this.player.Width / 2.0) <= this.terrainService.LevelWidth - offset;
+            get { return this.player.Position.X + (this.player.Width / 2.0) <= this.terrainService.LevelWidth; }
         }
 
         public override void Update(GameTime gameTime)
         {
-            // Todo: Correctly coerce values when still moving while not giving any input
             this.thrustTotal = MathHelper.Clamp(this.thrustTotal -= ThrustFriction, 0.0f, ThrustMax);
 
-            //if (this.IsMoveUpPossible(0) && this.IsMoveDownPossible(0) && this.IsMoveLeftPossible(0) && this.IsMoveRightPossible(0))
-            //{
             if (isAfterGlow)
             {
                 this.TranslateShip();
             }
-            //}
 
             this.isAfterGlow = true;
             base.Update(gameTime);
@@ -122,61 +118,33 @@ namespace SpaceFighter.Logic.Services.Implementations
         public void MoveUp()
         {
             this.isAfterGlow = false;
-            if (this.IsMoveUpPossible(ThrustMax))
-            {
-                this.player.SetRotation(MathHelper.PiOver2 * (-1));
-                this.AccumulateThrust();
-                this.TranslateShip();
-            }
-            else
-            {
-                this.thrustTotal = 0;
-            }
+            this.player.SetRotation(MathHelper.PiOver2 * (-1));
+            this.AccumulateThrust();
+            this.TranslateShip();
         }
 
         public void MoveDown()
         {
             this.isAfterGlow = false;
-            if (this.IsMoveDownPossible(ThrustMax))
-            {
-                this.player.SetRotation(MathHelper.PiOver2);
-                this.AccumulateThrust();
-                this.TranslateShip();
-            }
-            else
-            {
-                this.thrustTotal = 0;
-            }
+            this.player.SetRotation(MathHelper.PiOver2);
+            this.AccumulateThrust();
+            this.TranslateShip();
         }
 
         public void MoveLeft()
         {
             this.isAfterGlow = false;
-            if (this.IsMoveLeftPossible(ThrustMax))
-            {
-                this.player.SetRotation(MathHelper.Pi);
-                this.AccumulateThrust();
-                this.TranslateShip();
-            }
-            else
-            {
-                this.thrustTotal = 0;
-            }
+            this.player.SetRotation(MathHelper.Pi);
+            this.AccumulateThrust();
+            this.TranslateShip();
         }
 
         public void MoveRight()
         {
             this.isAfterGlow = false;
-            if (this.IsMoveRightPossible(ThrustMax))
-            {
-                this.player.SetRotation(0);
-                this.AccumulateThrust();
-                this.TranslateShip();
-            }
-            else
-            {
-                this.thrustTotal = 0;
-            }
+            this.player.SetRotation(0);
+            this.AccumulateThrust();
+            this.TranslateShip();
         }
 
         public void ReportPlayerHit(IShot shot)
@@ -207,14 +175,14 @@ namespace SpaceFighter.Logic.Services.Implementations
                     (float)Math.Cos(this.player.Rotation) * this.thrustTotal,
                     (float)Math.Sin(this.player.Rotation) * this.thrustTotal));
 
-            if (!this.IsMoveLeftPossible(0) || !this.IsMoveRightPossible(0))
+            if (!this.IsMoveLeftPossible || !this.IsMoveRightPossible)
             {
                 this.player.Position = new Vector2(
                     this.previousPlayerPosition.X, 
                     this.player.Position.Y);
             }
 
-            if (!this.IsMoveUpPossible(0) || !this.IsMoveDownPossible(0))
+            if (!this.IsMoveUpPossible || !this.IsMoveDownPossible)
             {
                 this.player.Position = new Vector2(
                     this.player.Position.X,
