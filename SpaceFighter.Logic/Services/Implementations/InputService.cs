@@ -5,6 +5,7 @@
 namespace SpaceFighter.Logic.Services.Implementations
 {
     using System;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
 
@@ -151,16 +152,6 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.playerService.Fire();
             }
 
-            if (this.currentKeyboardState.IsKeyDown(Keys.F1) && this.previousKeyboardState.IsKeyUp(Keys.F1))
-            {
-                this.playerService.Player.Weapon.DowngradeWeapon();
-            }
-
-            if (this.currentKeyboardState.IsKeyDown(Keys.F2) && this.previousKeyboardState.IsKeyUp(Keys.F2))
-            {
-                this.playerService.Player.Weapon.UpgradeWeapon();
-            }
-
             if (this.currentKeyboardState.IsKeyDown(Keys.P) && this.previousKeyboardState.IsKeyUp(Keys.P))
             {
                 this.IsGamePaused = !this.IsGamePaused;
@@ -195,15 +186,12 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.playerService.Fire();
             }
 
-            if (this.currentGamePadState.Triggers.Left > 0.1f)
+            if (this.previousGamePadState.Buttons.Start == ButtonState.Pressed && this.currentGamePadState.Buttons.Start == ButtonState.Released)
             {
-                this.playerService.Player.Weapon.DowngradeWeapon();
+                this.IsGamePaused = !this.IsGamePaused;
             }
 
-            if (this.currentGamePadState.Triggers.Right > 0.1f)
-            {
-                this.playerService.Player.Weapon.UpgradeWeapon();
-            }
+            this.previousGamePadState = this.currentGamePadState;
         }
 
         private void ProcessInputKeyboardMenu()
