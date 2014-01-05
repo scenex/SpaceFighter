@@ -28,7 +28,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
         event EventHandler MenuSelectionDownChanged;
         event EventHandler MenuSelectionConfirmedChanged;
 
-        void SetInputDevice(IInput inputDevice);
         InputStateHandling InputStateHandling { get; set; }
     }
 }

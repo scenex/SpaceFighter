@@ -51,14 +51,14 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.currentGamePadState = this.currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
             if (this.currentGamePadState.IsConnected)
             {
-                this.SetInputDevice(new InputGamepad());
+                this.input = new InputGamepad();
             }
             else
             {
-                this.SetInputDevice(new InputKeyboard());
+                this.input = new InputKeyboard();
             }
             #elif XBOX
-                this.SetInputDevice(new InputGamepad());
+                this.input = new InputGamepad();
             #endif
             
             base.Initialize();
@@ -92,11 +92,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             }       
 
             base.Update(gameTime);
-        }
-
-        public void SetInputDevice(IInput inputDevice)
-        {
-            this.input = inputDevice;
         }
 
         private void ProcessInputKeyboardGameplay()
