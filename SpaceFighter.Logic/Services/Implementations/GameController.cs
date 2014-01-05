@@ -41,6 +41,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         private double elapsedTime;
         private double elapsedTimeSinceEndingTransition;
 
+        private bool isGamePaused;
+
         public GameController(
             Game game,
             ICollisionDetectionService collisionDetectionService,
@@ -60,6 +62,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.headUpDisplayService = headUpDisplayService;
             this.terrainService = terrainService;
             this.audioService = audioService;
+
+            this.inputService.AnalogPauseChanged += delegate { this.isGamePaused = !this.isGamePaused; };
+            this.inputService.PauseChanged += delegate { this.isGamePaused = !this.isGamePaused; };
 
             this.fadeEffect = "FadeIn";
         }
@@ -294,11 +299,11 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             started.AddTransition(
                 paused,
-                () => this.inputService.IsGamePaused == true);
+                () => this.isGamePaused == true);
 
             paused.AddTransition(
                 started,
-                () => this.inputService.IsGamePaused == false);
+                () => this.isGamePaused == false);
 
             ending.AddTransition(
                 ended,

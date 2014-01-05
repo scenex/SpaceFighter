@@ -17,12 +17,15 @@ namespace SpaceFighter.Logic.Services.Implementations
     {
         public event EventHandler<GamePadStateEventArgs> AnalogMoveChanged;
         public event EventHandler<GamePadStateEventArgs> AnalogFireChanged;
+        public event EventHandler<GamePadStateEventArgs> AnalogPauseChanged;
 
         public event EventHandler MoveUpChanged;
         public event EventHandler MoveDownChanged;
         public event EventHandler MoveLeftChanged;
         public event EventHandler MoveRightChanged;
         public event EventHandler FireChanged;
+
+        public event EventHandler PauseChanged;
 
         public event EventHandler MenuSelectionUpChanged;
         public event EventHandler MenuSelectionDownChanged;
@@ -168,7 +171,10 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.currentKeyboardState.IsKeyDown(Keys.P) && this.previousKeyboardState.IsKeyUp(Keys.P))
             {
-                this.IsGamePaused = !this.IsGamePaused;
+                if (this.PauseChanged != null)
+                {
+                    this.PauseChanged(this, EventArgs.Empty);
+                }
             }
 
             this.previousKeyboardState = this.currentKeyboardState;
@@ -196,7 +202,10 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             if (this.previousGamePadState.Buttons.Start == ButtonState.Pressed && this.currentGamePadState.Buttons.Start == ButtonState.Released)
             {
-                this.IsGamePaused = !this.IsGamePaused;
+                if (this.AnalogPauseChanged != null)
+                {
+                    this.AnalogPauseChanged(this, new GamePadStateEventArgs(this.currentGamePadState));
+                }
             }
 
             this.previousGamePadState = this.currentGamePadState;
