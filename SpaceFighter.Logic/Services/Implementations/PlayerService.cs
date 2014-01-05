@@ -39,14 +39,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerFactory = playerFactory;
             this.terrainService = terrainService;
 
-            this.inputService.AnalogMoveChanged += this.OnAnalogMove;
-            this.inputService.AnalogFireChanged += this.OnAnalogFire;
-
-            this.inputService.MoveUpChanged += this.OnMoveUp;
-            this.inputService.MoveDownChanged += this.OnMoveDown;
-            this.inputService.MoveLeftChanged += this.OnMoveLeft;
-            this.inputService.MoveRightChanged += this.OnMoveRight;
-            this.inputService.FireChanged += this.OnFire;
+            this.SubscribeInputNotifications();
         }
 
         public event EventHandler<StateChangedEventArgs> ShipRespawning;
@@ -223,6 +216,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void OnShipExploding(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
+            this.UnsubscribeInputNotifications();
             this.audioService.PlaySound("explosion");
 
             if (this.ShipExploding != null)
@@ -233,6 +227,8 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void OnShipRespawning(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
+            this.SubscribeInputNotifications();
+
             if (this.ShipRespawning != null)
             {
                 this.ShipRespawning(this, stateChangedEventArgs);
@@ -250,6 +246,30 @@ namespace SpaceFighter.Logic.Services.Implementations
         private void OnWeaponFired(object sender, EventArgs e)
         {
             this.audioService.PlaySound("shot");
+        }
+
+        private void SubscribeInputNotifications()
+        {
+            this.inputService.AnalogMoveChanged += this.OnAnalogMove;
+            this.inputService.AnalogFireChanged += this.OnAnalogFire;
+
+            this.inputService.MoveUpChanged += this.OnMoveUp;
+            this.inputService.MoveDownChanged += this.OnMoveDown;
+            this.inputService.MoveLeftChanged += this.OnMoveLeft;
+            this.inputService.MoveRightChanged += this.OnMoveRight;
+            this.inputService.FireChanged += this.OnFire;
+        }
+
+        private void UnsubscribeInputNotifications()
+        {
+            this.inputService.AnalogMoveChanged -= this.OnAnalogMove;
+            this.inputService.AnalogFireChanged -= this.OnAnalogFire;
+
+            this.inputService.MoveUpChanged -= this.OnMoveUp;
+            this.inputService.MoveDownChanged -= this.OnMoveDown;
+            this.inputService.MoveLeftChanged -= this.OnMoveLeft;
+            this.inputService.MoveRightChanged -= this.OnMoveRight;
+            this.inputService.FireChanged -= this.OnFire;
         }
     }
 }

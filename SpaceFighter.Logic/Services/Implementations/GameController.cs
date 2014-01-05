@@ -175,8 +175,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.playerService.SpawnPlayer();
             this.enemyService.SpawnEnemies();
-
-            this.inputService.Enable();
         }
 
         private void PauseGame()
@@ -335,12 +333,10 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void OnShipRespawning(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
-            this.inputService.Enable();
         }
 
         private void OnShipExploding(object sender, EventArgs eventArgs)
         {
-            this.inputService.Disable();
             this.collisionDetectionService.Disable();
         }
     }

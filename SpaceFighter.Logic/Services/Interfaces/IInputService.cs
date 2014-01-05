@@ -28,13 +28,8 @@ namespace SpaceFighter.Logic.Services.Interfaces
         event EventHandler MenuSelectionDownChanged;
         event EventHandler MenuSelectionConfirmedChanged;
 
-        void SetInputDevice(IInput inputDevice);
-
         bool IsGamePadConnected { get; }
-
+        void SetInputDevice(IInput inputDevice);
         InputStateHandling InputStateHandling { get; set; }
-
-        void Disable();
-        void Enable();
     }
 }

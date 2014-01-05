@@ -29,10 +29,7 @@ namespace SpaceFighter.Logic.Screens
         public MenuScreen(Game game, IInputService inputService) : base(game)
         {
             this.inputService = inputService;
-
-            this.inputService.MenuSelectionUpChanged += delegate { this.selectionIndex--; };
-            this.inputService.MenuSelectionDownChanged += delegate { this.selectionIndex++; };
-            this.inputService.MenuSelectionConfirmedChanged += this.OnMenuSelectionConfirmedChanged;
+            this.SubscribeInputNotifications();
         }
 
         public bool IsTransitionAllowed { get; private set; }
@@ -85,6 +82,30 @@ namespace SpaceFighter.Logic.Screens
             this.spriteBatch.End();
         }
 
+        private void SubscribeInputNotifications()
+        {
+            this.inputService.MenuSelectionUpChanged += this.OnMenuSelectionUpChanged;
+            this.inputService.MenuSelectionDownChanged += this.OnMenuSelectionDownChanged;
+            this.inputService.MenuSelectionConfirmedChanged += this.OnMenuSelectionConfirmedChanged;
+        }
+
+        private void UnsubscribeInputNotifications()
+        {
+            this.inputService.MenuSelectionUpChanged -= this.OnMenuSelectionUpChanged;
+            this.inputService.MenuSelectionDownChanged -= this.OnMenuSelectionDownChanged;
+            this.inputService.MenuSelectionConfirmedChanged -= this.OnMenuSelectionConfirmedChanged;
+        }
+
+        private void OnMenuSelectionDownChanged(object sender, EventArgs e)
+        {
+            this.selectionIndex++;
+        }
+
+        private void OnMenuSelectionUpChanged(object sender, EventArgs e)
+        {
+            this.selectionIndex--;
+        }
+
         private void OnMenuSelectionConfirmedChanged(object sender, EventArgs eventArgs)
         {
             if (this.GetSelectionIndex() == 0)
@@ -92,7 +113,7 @@ namespace SpaceFighter.Logic.Screens
                 this.elapsedTime = 0;
                 this.currentFadeCurve = fadeOutCurve;
                 this.TransitionTag = MenuItems.StartGame;
-                this.inputService.Disable();
+                this.UnsubscribeInputNotifications();
             }
 
             if (this.GetSelectionIndex() == 1)
@@ -100,7 +121,7 @@ namespace SpaceFighter.Logic.Screens
                 this.elapsedTime = 0;
                 this.currentFadeCurve = fadeOutCurve;
                 this.TransitionTag = MenuItems.ExitGame;
-                this.inputService.Disable();
+                this.UnsubscribeInputNotifications();
             }
         }
 
