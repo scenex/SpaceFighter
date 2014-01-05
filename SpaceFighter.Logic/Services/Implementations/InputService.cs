@@ -39,16 +39,17 @@ namespace SpaceFighter.Logic.Services.Implementations
         private GamePadState currentGamePadState;
         private GamePadState previousGamePadState;
 
-        private bool isInputDeviceActive;
-
         public InputService(Game game) : base(game)
         {
         }
 
+        public InputStateHandling InputStateHandling { get; set; }
+
         public override void Initialize()
         {
             #if WINDOWS
-            if (IsGamePadConnected)
+            this.currentGamePadState = this.currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
+            if (this.currentGamePadState.IsConnected)
             {
                 this.SetInputDevice(new InputGamepad());
             }
@@ -60,39 +61,35 @@ namespace SpaceFighter.Logic.Services.Implementations
                 this.SetInputDevice(new InputGamepad());
             #endif
             
-            this.Enable();
             base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (this.isInputDeviceActive)
+            if (this.input.DeviceType == typeof(Keyboard))
             {
-                if (this.input.DeviceType == typeof(Keyboard))
+                if (this.InputStateHandling == InputStateHandling.Gameplay)
                 {
-                    if (this.InputStateHandling == InputStateHandling.Gameplay)
-                    {
-                        this.ProcessInputKeyboardGameplay();
-                    }
-
-                    if (this.InputStateHandling == InputStateHandling.Menu)
-                    {
-                        this.ProcessInputKeyboardMenu();
-                    }
+                    this.ProcessInputKeyboardGameplay();
                 }
-                else if (this.input.DeviceType == typeof(GamePad))
-                {
-                    if (this.InputStateHandling == InputStateHandling.Gameplay)
-                    {
-                        this.ProcessInputGamepadGameplay();
-                    }
 
-                    if (this.InputStateHandling == InputStateHandling.Menu)
-                    {
-                        this.ProcessInputGamepadMenu();
-                    }
+                if (this.InputStateHandling == InputStateHandling.Menu)
+                {
+                    this.ProcessInputKeyboardMenu();
                 }
             }
+            else if (this.input.DeviceType == typeof(GamePad))
+            {
+                if (this.InputStateHandling == InputStateHandling.Gameplay)
+                {
+                    this.ProcessInputGamepadGameplay();
+                }
+
+                if (this.InputStateHandling == InputStateHandling.Menu)
+                {
+                    this.ProcessInputGamepadMenu();
+                }
+            }       
 
             base.Update(gameTime);
         }
@@ -101,29 +98,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.input = inputDevice;
         }
-
-        public bool IsGamePadConnected
-        {
-            get
-            {
-                this.currentGamePadState = this.currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
-                return this.currentGamePadState.IsConnected;
-            }
-        }
-
-        public void Disable()
-        {
-            this.isInputDeviceActive = false;
-        }
-
-        public void Enable()
-        {
-            this.isInputDeviceActive = true;
-        }
-
-        public InputStateHandling InputStateHandling { get; set; }
-
-        public bool IsGamePaused { get; set; }
 
         private void ProcessInputKeyboardGameplay()
         {
