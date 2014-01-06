@@ -8,9 +8,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
     using Microsoft.Xna.Framework;
 
-    using SpaceFighter.Logic.Input.Interfaces;
-    using SpaceFighter.Logic.Services.Implementations;
-
     public interface IInputService : IGameComponent
     {
         event EventHandler<GamePadStateEventArgs> AnalogMoveChanged;
@@ -27,7 +24,5 @@ namespace SpaceFighter.Logic.Services.Interfaces
         event EventHandler MenuSelectionUpChanged;
         event EventHandler MenuSelectionDownChanged;
         event EventHandler MenuSelectionConfirmedChanged;
-
-        InputStateHandling InputStateHandling { get; set; }
     }
 }

@@ -170,8 +170,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.ShipExploding += this.OnShipExploding;
             this.playerService.ShipReady += this.OnShipReady;
 
-            this.inputService.InputStateHandling = InputStateHandling.Gameplay;
-
             this.playerService.SpawnPlayer();
             this.enemyService.SpawnEnemies();
         }

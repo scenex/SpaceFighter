@@ -11,7 +11,6 @@ namespace SpaceFighter.GameStates
     using Nuclex.Game.States;
 
     using SpaceFighter.Logic.Screens;
-    using SpaceFighter.Logic.Services.Implementations;
     using SpaceFighter.Logic.Services.Interfaces;
 
     public class MenuGameState : GameState, IGameStateTransition, IDrawable
@@ -41,7 +40,6 @@ namespace SpaceFighter.GameStates
 
         protected override void OnEntered()
         {
-            this.inputService.InputStateHandling = InputStateHandling.Menu;
             this.game.Components.Add(this.inputService);
 
             this.menuScreen = new MenuScreen(this.game, this.inputService);

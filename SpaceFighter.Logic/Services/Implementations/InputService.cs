@@ -43,8 +43,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
         }
 
-        public InputStateHandling InputStateHandling { get; set; }
-
         public override void Initialize()
         {
             #if WINDOWS
@@ -68,27 +66,13 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             if (this.input.DeviceType == typeof(Keyboard))
             {
-                if (this.InputStateHandling == InputStateHandling.Gameplay)
-                {
-                    this.ProcessInputKeyboardGameplay();
-                }
-
-                if (this.InputStateHandling == InputStateHandling.Menu)
-                {
-                    this.ProcessInputKeyboardMenu();
-                }
+                this.ProcessInputKeyboardGameplay();
+                this.ProcessInputKeyboardMenu();
             }
             else if (this.input.DeviceType == typeof(GamePad))
             {
-                if (this.InputStateHandling == InputStateHandling.Gameplay)
-                {
-                    this.ProcessInputGamepadGameplay();
-                }
-
-                if (this.InputStateHandling == InputStateHandling.Menu)
-                {
-                    this.ProcessInputGamepadMenu();
-                }
+                this.ProcessInputGamepadGameplay();
+                this.ProcessInputGamepadMenu();
             }       
 
             base.Update(gameTime);
@@ -241,11 +225,5 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.previousGamePadState = this.currentGamePadState;
         }
-    }
-
-    public enum InputStateHandling
-    {
-        Menu,
-        Gameplay
     }
 }
