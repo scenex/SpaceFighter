@@ -34,7 +34,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             this.Game.Components.Add(this.weapon);
 
             this.Lives = 2;
-            this.Health = 100;
 
             this.Rotation = -MathHelper.PiOver2;
             this.Position = startPosition;
@@ -120,6 +119,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
                 null,
                 delegate
                     {
+                        this.Lives--;
                         if (this.ShipExploding != null)
                         {
                             this.ShipExploding(this, new StateChangedEventArgs(PlayerState.Alive, PlayerState.Dying));
@@ -130,7 +130,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             var dead = new State<Action<double>>(
                 PlayerState.Dead,
                 elapsedTime => this.deadToRespawnTimer += elapsedTime,
-                () => this.Lives--, 
+                null,
                 () => this.deadToRespawnTimer = 0);
 
             var respawn = new State<Action<double>>(
@@ -170,7 +170,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
             dead.AddTransition(respawn, () => this.deadToRespawnTimer > 1000);
             respawn.AddTransition(alive, () => this.Health == 100);
 
-            this.stateMachine = new StateMachine<Action<double>>(alive);
+            this.stateMachine = new StateMachine<Action<double>>(respawn);
         }
 
         protected override void LoadContent()
