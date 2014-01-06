@@ -66,13 +66,17 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             if (this.input.DeviceType == typeof(Keyboard))
             {
+                this.currentKeyboardState = Keyboard.GetState();
                 this.ProcessInputKeyboardGameplay();
                 this.ProcessInputKeyboardMenu();
+                this.previousKeyboardState = this.currentKeyboardState;
             }
             else if (this.input.DeviceType == typeof(GamePad))
             {
+                this.currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
                 this.ProcessInputGamepadGameplay();
                 this.ProcessInputGamepadMenu();
+                this.previousGamePadState = this.currentGamePadState;
             }       
 
             base.Update(gameTime);
@@ -80,8 +84,6 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         private void ProcessInputKeyboardGameplay()
         {
-            this.currentKeyboardState = Keyboard.GetState();
-
             if (this.currentKeyboardState.IsKeyDown(Keys.Left))
             {
                 if(this.MoveLeftChanged != null)
@@ -129,14 +131,10 @@ namespace SpaceFighter.Logic.Services.Implementations
                     this.PauseChanged(this, EventArgs.Empty);
                 }
             }
-
-            this.previousKeyboardState = this.currentKeyboardState;
         }
 
         private void ProcessInputGamepadGameplay()
         {
-            this.currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
-
             if (Math.Abs(this.currentGamePadState.ThumbSticks.Left.X - 0) > 0.1f || Math.Abs(this.currentGamePadState.ThumbSticks.Left.Y - 0) > 0.1f)
             {
                 if(this.AnalogMoveChanged != null)
@@ -160,14 +158,10 @@ namespace SpaceFighter.Logic.Services.Implementations
                     this.AnalogPauseChanged(this, new GamePadStateEventArgs(this.currentGamePadState));
                 }
             }
-
-            this.previousGamePadState = this.currentGamePadState;
         }
 
         private void ProcessInputKeyboardMenu()
         {
-            this.currentKeyboardState = Keyboard.GetState();
-
             if (this.currentKeyboardState.IsKeyDown(Keys.Up) && this.previousKeyboardState.IsKeyUp(Keys.Up))
             {
                 if(this.MenuSelectionUpChanged != null)
@@ -191,14 +185,10 @@ namespace SpaceFighter.Logic.Services.Implementations
                     this.MenuSelectionConfirmedChanged(this, EventArgs.Empty);
                 }
             }
-
-            this.previousKeyboardState = this.currentKeyboardState;
         }
 
         private void ProcessInputGamepadMenu()
         {
-            this.currentGamePadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
-
             if (this.previousGamePadState.DPad.Up == ButtonState.Pressed && this.currentGamePadState.DPad.Up == ButtonState.Released)
             {
                 if (this.MenuSelectionUpChanged != null)
@@ -222,8 +212,6 @@ namespace SpaceFighter.Logic.Services.Implementations
                     this.MenuSelectionConfirmedChanged(this, EventArgs.Empty);
                 }
             }
-
-            this.previousGamePadState = this.currentGamePadState;
         }
     }
 }
