@@ -38,8 +38,6 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.audioService = audioService;
             this.playerFactory = playerFactory;
             this.terrainService = terrainService;
-
-            this.SubscribeInputNotifications();
         }
 
         public event EventHandler<StateChangedEventArgs> ShipRespawning;
@@ -252,7 +250,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.inputService.AnalogMoveChanged += this.OnAnalogMove;
             this.inputService.AnalogFireChanged += this.OnAnalogFire;
-
             this.inputService.MoveUpChanged += this.OnMoveUp;
             this.inputService.MoveDownChanged += this.OnMoveDown;
             this.inputService.MoveLeftChanged += this.OnMoveLeft;
@@ -264,7 +261,6 @@ namespace SpaceFighter.Logic.Services.Implementations
         {
             this.inputService.AnalogMoveChanged -= this.OnAnalogMove;
             this.inputService.AnalogFireChanged -= this.OnAnalogFire;
-
             this.inputService.MoveUpChanged -= this.OnMoveUp;
             this.inputService.MoveDownChanged -= this.OnMoveDown;
             this.inputService.MoveLeftChanged -= this.OnMoveLeft;
