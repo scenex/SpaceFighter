@@ -167,8 +167,9 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.game.Components.Add(this.terrainService);
             this.game.Components.Add(this.audioService);
 
-            this.playerService.ShipExploding += this.OnShipExploding;
             this.playerService.ShipReady += this.OnShipReady;
+            this.playerService.ShipExploding += this.OnShipExploding;
+            this.playerService.ShipRespawning += this.OnShipRespawning;
 
             this.playerService.SpawnPlayer();
             this.enemyService.SpawnEnemies();
@@ -202,8 +203,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             this.GraphicsDevice.SetRenderTarget(null);
 
-            this.playerService.ShipExploding -= this.OnShipExploding;
             this.playerService.ShipReady -= this.OnShipReady;
+            this.playerService.ShipExploding -= this.OnShipExploding;
+            this.playerService.ShipRespawning -= this.OnShipRespawning;
 
             this.playerService.UnspawnPlayer();
             this.enemyService.UnspawnEnemies();
@@ -327,7 +329,12 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.collisionDetectionService.Enable();
         }
 
-        private void OnShipExploding(object sender, EventArgs eventArgs)
+        private void OnShipExploding(object sender, StateChangedEventArgs stateChangedEventArgs)
+        {
+            this.collisionDetectionService.Disable();
+        }
+
+        private void OnShipRespawning(object sender, StateChangedEventArgs stateChangedEventArgs)
         {
             this.collisionDetectionService.Disable();
         }

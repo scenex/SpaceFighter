@@ -29,7 +29,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
 
         public PlayerA(Game game, Vector2 startPosition) : base(game)
         {
-
             this.weapon = new WeaponPlayerA(this.Game) { DrawOrder = 1 }; // Todo: Factory
             this.Game.Components.Add(this.weapon);
 
@@ -167,7 +166,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Players
 
             alive.AddTransition(dying, () => this.Health <= 0);
             dying.AddTransition(dead, () => this.spriteManager.IsAnimationDone(this.stateMachine.CurrentState.Name));
-            dead.AddTransition(respawn, () => this.deadToRespawnTimer > 1000);
+            dead.AddTransition(respawn, () => this.deadToRespawnTimer > 1000); // eventually add -> && lives >= 0
             respawn.AddTransition(alive, () => this.Health == 100);
 
             this.stateMachine = new StateMachine<Action<double>>(respawn);
