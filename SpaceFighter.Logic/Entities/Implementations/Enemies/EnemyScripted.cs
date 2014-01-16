@@ -11,6 +11,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
     using SpaceFighter.Logic.Behaviours.Implementations;
     using SpaceFighter.Logic.Behaviours.Interfaces;
+    using SpaceFighter.Logic.Entities.Implementations.WeaponStrategies;
     using SpaceFighter.Logic.Entities.Implementations.Weapons;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.StateMachine;
@@ -39,7 +40,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             this.targetPosition = waypoints.Peek();
             
             this.behaviourStrategy = new BehaviourStrategySeek();
-            
+            this.shootingStrategy = new WeaponStrategyEnemyA();
+
             this.Game.Components.Add(this);
 
             this.weapon = new WeaponEnemyA(this.Game); // Todo: Factory
