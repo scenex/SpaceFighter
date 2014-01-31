@@ -104,6 +104,7 @@ namespace SpaceFighter.Logic.Services.Implementations
 
         public void UnspawnPlayer()
         {
+            this.UnsubscribeInputNotifications();
             this.player.Dispose();
         }
 
