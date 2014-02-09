@@ -76,6 +76,7 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -94,6 +95,7 @@
   <ItemGroup>
     <Compile Include="ConsoleService.cs" />
     <Compile Include="IConsoleService.cs" />
+    <Compile Include="Input\KeyGrabber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
