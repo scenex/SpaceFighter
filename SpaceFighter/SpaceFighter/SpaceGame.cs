@@ -80,43 +80,43 @@ namespace SpaceFighter
 
         private void ComposeServices()
         {            
-            terrainService = new TerrainService(
+            this.terrainService = new TerrainService(
                 this);
 
-            headUpDisplayService = new HeadUpDisplayService(
+            this.headUpDisplayService = new HeadUpDisplayService(
                 this);
 
-            audioService = new AudioService(
+            this.audioService = new AudioService(
                 this);
 
-            enemyFactory = new EnemyFactory(
+            this.enemyFactory = new EnemyFactory(
                 this,
                 terrainService);
 
-            enemyService = new EnemyService(
+            this.enemyService = new EnemyService(
                 this, 
                 enemyFactory);
 
-            playerFactory = new PlayerFactory(
+            this.playerFactory = new PlayerFactory(
                 this);
 
-            inputService = new InputService(
+            this.inputService = new InputService(
                 this);
 
-            playerService = new PlayerService(
+            this.playerService = new PlayerService(
                 this, 
                 inputService,
                 audioService, 
                 playerFactory,
                 terrainService);
 
-            collisionDetectionService = new CollisionDetectionService(
+            this.collisionDetectionService = new CollisionDetectionService(
                 this, 
                 playerService, 
                 enemyService, 
                 terrainService);
 
-            gameController = new GameController(
+            this.gameController = new GameController(
                 this, 
                 collisionDetectionService, 
                 playerService, 
