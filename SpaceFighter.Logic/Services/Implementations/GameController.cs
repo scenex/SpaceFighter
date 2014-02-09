@@ -210,7 +210,13 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.playerService.UnspawnPlayer();
             this.enemyService.UnspawnEnemies();
 
-            this.game.Components.Clear();
+            this.game.Components.Remove(this.collisionDetectionService);
+            this.game.Components.Remove(this.playerService);
+            this.game.Components.Remove(this.enemyService);
+            this.game.Components.Remove(this.inputService);
+            this.game.Components.Remove(this.headUpDisplayService);
+            this.game.Components.Remove(this.terrainService);
+            this.game.Components.Remove(this.audioService);
         }
 
         private void FadeIn()

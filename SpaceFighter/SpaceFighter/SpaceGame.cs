@@ -136,7 +136,7 @@ namespace SpaceFighter
                 var consoleServiceType = consoleAssembly.GetType("SpaceFighter.Console.ConsoleService");            
                 var consoleService = Activator.CreateInstance(consoleServiceType, this);
 
-                this.Services.AddService(consoleServiceType, consoleService);
+                this.Components.Add(consoleService as IGameComponent);
             }
             catch(FileNotFoundException)
             {
