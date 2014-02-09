@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2D2884
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceFighter.Console", "SpaceFighter.Console\SpaceFighter.Console.csproj", "{6682922C-5D18-470E-A225-3539AC148476}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,18 @@ Global
 		{1C631C3A-3ED0-4CD4-9D91-610A8A32EAEC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1C631C3A-3ED0-4CD4-9D91-610A8A32EAEC}.Release|x86.ActiveCfg = Release|Any CPU
 		{1C631C3A-3ED0-4CD4-9D91-610A8A32EAEC}.Release|Xbox 360.ActiveCfg = Release|Any CPU
+		{6682922C-5D18-470E-A225-3539AC148476}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Debug|x86.ActiveCfg = Debug|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Debug|x86.Build.0 = Debug|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Debug|Xbox 360.ActiveCfg = Debug|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Release|Any CPU.ActiveCfg = Release|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Release|Mixed Platforms.Build.0 = Release|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Release|x86.ActiveCfg = Release|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Release|x86.Build.0 = Release|x86
+		{6682922C-5D18-470E-A225-3539AC148476}.Release|Xbox 360.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
