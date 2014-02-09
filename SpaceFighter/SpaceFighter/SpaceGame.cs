@@ -4,6 +4,10 @@
 
 namespace SpaceFighter
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+
     using Microsoft.Xna.Framework;
 
     using SpaceFighter.Logic;
@@ -125,6 +129,19 @@ namespace SpaceFighter
                 headUpDisplayService, 
                 terrainService, 
                 audioService);
+
+            try
+            {
+                var consoleAssembly = Assembly.Load("SpaceFighter.Console");
+                var consoleServiceType = consoleAssembly.GetType("SpaceFighter.Console.ConsoleService");            
+                var consoleService = Activator.CreateInstance(consoleServiceType, this);
+
+                this.Services.AddService(consoleServiceType, consoleService);
+            }
+            catch(FileNotFoundException)
+            {
+                // No console support available
+            }
         }
 
         protected override void Update(GameTime gameTime)
