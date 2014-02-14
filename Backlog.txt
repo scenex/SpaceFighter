@@ -5,8 +5,14 @@ Codename: 'Space Fighter' Backlog
 What's currently on:
 ====================
 
-- Scripted enemies
+- Level management/loading/saving
+- Level calculated background: Parallax like starfield
+
 - Level editor
+- Concept optimal way to generate harmonic environment
+- Console: Add Enemy / Remove Enemy
+- Console: Restart
+
 - Boss system
 - Procedural background gfx
 
