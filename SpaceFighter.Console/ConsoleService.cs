@@ -10,7 +10,6 @@ namespace SpaceFighter.Console
     using KeyboardHookTest;
 
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.GamerServices;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
@@ -27,8 +26,7 @@ namespace SpaceFighter.Console
 
         private readonly ISpaceFighterApi spaceFighterApi;
 
-        private string textInput;
-
+        private Rectangle rectangle;
         private bool isActive;
 
         private string typedText = "";
@@ -46,7 +44,34 @@ namespace SpaceFighter.Console
             {
                 if (inboundCharacter == 13)
                 {
-                    // Handle return
+                    switch (this.typedText)
+                    {
+                        case "Add enemy":
+                            this.spaceFighterApi.AddEnemy();
+                            break;
+                        case "Remove enemy":
+                            this.spaceFighterApi.RemoveEnemy();
+                            break;
+
+                        case "Pause":
+                            this.spaceFighterApi.Pause();
+                            break;
+                        case "Restart":
+                            this.spaceFighterApi.Restart();
+                            break;
+                        case "Quit":
+                            this.spaceFighterApi.Quit();
+                            break;
+
+                        case "Load":
+                            this.spaceFighterApi.Load();
+                            break;
+                        case "Save":
+                            this.spaceFighterApi.Save();
+                            break;
+
+                    }
+                    this.typedText = string.Empty;
                 }
 
                 //Only append characters that exist in the spritefont.
@@ -56,8 +81,6 @@ namespace SpaceFighter.Console
                 if (inboundCharacter > 126)
                     return;
 
-                Debug.WriteLine(Char.GetNumericValue(inboundCharacter));
-
                 typedText += inboundCharacter;
             };
             base.Initialize();
@@ -65,6 +88,7 @@ namespace SpaceFighter.Console
 
         protected override void LoadContent()
         {
+            this.rectangle = new Rectangle(3, 3, 300, 200);
             this.spriteBatch = new SpriteBatch(this.Game.GraphicsDevice);
             this.spriteFont = this.Game.Content.Load<SpriteFont>(@"DefaultFont");
             base.LoadContent();
@@ -94,7 +118,7 @@ namespace SpaceFighter.Console
             if (this.isActive)
             {
                 this.spriteBatch.Begin();
-                this.spriteBatch.DrawString(this.spriteFont, typedText, new Vector2(50, 50), Color.White);
+                this.spriteBatch.DrawString(this.spriteFont, typedText, new Vector2(23, 23), Color.White);
                 this.spriteBatch.End();
 
                 base.Draw(gameTime);

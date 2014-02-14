@@ -39,7 +39,6 @@ namespace KeyboardHookTest
                     //InboundCharEvent so any events hooked up to this will be
                     //notifed that there is a char ready to be processed.
                     char trueCharacter = (char)m.WParam;
-                    Console.WriteLine(trueCharacter);
 
                     if (InboundCharEvent != null)
                         InboundCharEvent(trueCharacter);

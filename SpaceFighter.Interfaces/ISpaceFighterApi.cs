@@ -14,6 +14,6 @@ namespace SpaceFighter.Interfaces
 
         void AddEnemy();
         void RemoveEnemy();
-        void ListEnemeies();
+        void ListEnemies();
     }
 }
