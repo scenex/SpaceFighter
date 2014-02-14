@@ -94,7 +94,7 @@
     <Compile Include="Services\Implementations\HeadUpDisplayService.cs" />
     <Compile Include="Services\Implementations\InputService.cs" />
     <Compile Include="Services\Implementations\PathFindingService.cs" />
-    <Compile Include="Services\Implementations\TerrainService.cs" />
+    <Compile Include="Services\Implementations\LevelService.cs" />
     <Compile Include="Services\Interfaces\IAudioService.cs" />
     <Compile Include="Services\Interfaces\ICollisionDetectionService.cs" />
     <Compile Include="Services\Interfaces\IEnemyService.cs" />
@@ -105,7 +105,7 @@
     <Compile Include="Services\Interfaces\IPlayerService.cs" />
     <Compile Include="Services\Implementations\PlayerService.cs" />
     <Compile Include="Entities\Implementations\Weapons\Weapon.cs" />
-    <Compile Include="Services\Interfaces\ITerrainService.cs" />
+    <Compile Include="Services\Interfaces\ILevelService.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="SpriteManager.cs" />
     <Compile Include="StateChangedEventArgs.cs" />

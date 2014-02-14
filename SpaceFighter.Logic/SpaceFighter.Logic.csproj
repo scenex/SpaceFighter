@@ -68,6 +68,7 @@
     <Reference Include="System.Net">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviours\Implementations\BehaviourStrategy.cs" />
@@ -88,6 +89,8 @@
     <Compile Include="Screens\IScreenTransition.cs" />
     <Compile Include="Screens\MenuItemSelectedEventArgs.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
+    <Compile Include="Services\Implementations\LevelService.cs" />
+    <Compile Include="Services\Interfaces\ILevelService.cs" />
     <Compile Include="TimeTriggerActionInvoker.cs" />
     <Compile Include="Services\Implementations\PathFindingService.cs" />
     <Compile Include="Services\Interfaces\IPathFindingService.cs" />
@@ -129,7 +132,6 @@
     <Compile Include="Services\Implementations\EnemyService.cs" />
     <Compile Include="Services\Implementations\GameController.cs" />
     <Compile Include="Services\Implementations\InputService.cs" />
-    <Compile Include="Services\Implementations\TerrainService.cs" />
     <Compile Include="Services\Interfaces\ICollisionDetectionService.cs" />
     <Compile Include="Services\Interfaces\IEnemyService.cs" />
     <Compile Include="Services\Interfaces\IGameController.cs" />
@@ -138,7 +140,6 @@
     <Compile Include="Services\Implementations\PlayerService.cs" />
     <Compile Include="Entities\Implementations\Weapons\ShotA.cs" />
     <Compile Include="Entities\Implementations\Weapons\Weapon.cs" />
-    <Compile Include="Services\Interfaces\ITerrainService.cs" />
     <Compile Include="StateMachine\State.cs" />
     <Compile Include="StateMachine\StateMachine.cs" />
     <Compile Include="StateMachine\Transition.cs" />
