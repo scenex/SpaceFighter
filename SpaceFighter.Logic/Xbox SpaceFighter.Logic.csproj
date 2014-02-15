@@ -62,6 +62,7 @@
     <Compile Include="Entities\Implementations\Weapons\WeaponPlayerA.cs" />
     <Compile Include="Entities\Interfaces\IEntity.cs" />
     <Compile Include="Entities\Interfaces\IWeaponStrategy.cs" />
+    <Compile Include="Entities\Star.cs" />
     <Compile Include="EventManager\EventAggregator.cs" />
     <Compile Include="EventManager\Subscriber.cs" />
     <Compile Include="EventManager\SubscriptionAttribute.cs" />

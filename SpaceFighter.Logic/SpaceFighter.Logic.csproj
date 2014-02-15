@@ -74,6 +74,7 @@
     <Compile Include="Behaviours\Implementations\BehaviourStrategy.cs" />
     <Compile Include="Behaviours\Implementations\BehaviourStrategyArrive.cs" />
     <Compile Include="Entities\Implementations\Enemies\EnemyScripted.cs" />
+    <Compile Include="Entities\Star.cs" />
     <Compile Include="EventManager\EventAggregator.cs" />
     <Compile Include="EventManager\Subscriber.cs" />
     <Compile Include="EventManager\SubscriptionAttribute.cs" />
