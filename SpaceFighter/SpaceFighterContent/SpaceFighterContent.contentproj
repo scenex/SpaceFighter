@@ -153,6 +153,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultFontSmall.spritefont">
+      <Name>DefaultFontSmall</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
     <None Include="Sounds\Win\Sound Bank.xsb">
       <Name>Sound Bank</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

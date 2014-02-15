@@ -15,7 +15,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         private readonly PrimitiveBatch primitiveBatch;
 
         private SpriteBatch spriteBatch;
-        private SpriteFont spriteFont;
+        private SpriteFont spriteFontRegular;
+        private SpriteFont spriteFontSmall;
 
         int frameRate;
         int frameCounter;
@@ -43,12 +44,13 @@ namespace SpaceFighter.Logic.Services.Implementations
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.spriteFont = this.Game.Content.Load<SpriteFont>(@"DefaultFont");
+            this.spriteFontRegular = this.Game.Content.Load<SpriteFont>(@"DefaultFont");
+            this.spriteFontSmall = this.Game.Content.Load<SpriteFont>(@"DefaultFontSmall");
             this.debugTileRect = this.Game.Content.Load<Texture2D>("Sprites/Debugging/Rectangle");
 
             this.screenBorder = new Texture2D(this.GraphicsDevice, 160, 720);
             var data = new Color[160 * 720];
-            for (var i = 0; i < data.Length; ++i) data[i] = Color.DarkBlue;
+            for (var i = 0; i < data.Length; ++i) data[i] = Color.DarkSlateGray;
             this.screenBorder.SetData(data);
 
             base.LoadContent();
@@ -77,7 +79,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.DrawVitals(color);
             this.DrawEnergyBar(15, 50, color);
             this.DrawFps(color);
-            //this.DrawGrid();
+            this.DrawGrid();
 
             base.Draw(gameTime);
         }
@@ -93,8 +95,8 @@ namespace SpaceFighter.Logic.Services.Implementations
         private void DrawVitals(Color color)
         {
             this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            this.spriteBatch.DrawString(this.spriteFont, "Energy", new Vector2(15, 20), color);
-            this.spriteBatch.DrawString(this.spriteFont, "Lives: " + this.Lives, new Vector2(15, 100), color);
+            this.spriteBatch.DrawString(this.spriteFontRegular, "Energy", new Vector2(15, 20), color);
+            this.spriteBatch.DrawString(this.spriteFontRegular, "Lives: " + this.Lives, new Vector2(15, 100), color);
             this.spriteBatch.End();
         }
 
@@ -128,7 +130,7 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.frameCounter++;
             var fps = string.Format("FPS:{0}", this.frameRate);
             this.spriteBatch.Begin();
-            this.spriteBatch.DrawString(this.spriteFont, fps, new Vector2(1170, 30), color);
+            this.spriteBatch.DrawString(this.spriteFontRegular, fps, new Vector2(1170, 30), color);
             this.spriteBatch.End();
         }
 
@@ -138,11 +140,20 @@ namespace SpaceFighter.Logic.Services.Implementations
 
             for (int i = 0; i < VerticalTileCount; i++)
             {
-                for (int j = 0; j < HorizontalTileCount; j++)
+                for (int j = 2; j < HorizontalTileCount - 2; j++)
                 {
                     this.spriteBatch.Draw(
                         this.debugTileRect,
                         new Vector2(j * TileSize, i * TileSize),
+                        Color.White);
+
+                    var x = (j * TileSize - 2 * TileSize) + (TileSize / 2);
+                    var y = (i * TileSize) + (TileSize / 2);
+
+                    this.spriteBatch.DrawString(
+                        this.spriteFontSmall, 
+                        x + "," + y, 
+                        new Vector2(j * TileSize + 20, i * TileSize + 32), 
                         Color.White);
                 }
             }
