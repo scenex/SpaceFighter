@@ -6,6 +6,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -25,19 +27,19 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private readonly bool isBoss;
         private Vector2 targetPosition;
-        private readonly Queue<Vector2> waypoints = new Queue<Vector2>();
+        private readonly List<Vector2> waypoints = new List<Vector2>();
 
         private bool isOffscreen;
 
-        public EnemyScripted(Game game, Queue<Vector2> waypoints, bool isBoss) : base(game)
+        public EnemyScripted(Game game, List<Vector2> waypoints, bool isBoss) : base(game)
         {
             this.waypoints = waypoints;
             this.isBoss = isBoss;
             this.Health = 100;
             
-            this.Position = waypoints.Peek();
-            waypoints.Dequeue();
-            this.targetPosition = waypoints.Peek();
+            this.Position = waypoints.First();
+            waypoints.RemoveAt(0);
+            this.targetPosition = waypoints.First();
             
             this.behaviourStrategy = new BehaviourStrategySeek();
             this.shootingStrategy = new WeaponStrategyEnemyA();
@@ -46,7 +48,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             this.weapon = new WeaponEnemyA(this.Game); // Todo: Factory
             this.Game.Components.Add(this.weapon);
-        }
+         }
 
         public override void Initialize()
         {
@@ -61,7 +63,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             }
         }
 
-        public override Queue<Vector2> Waypoints
+        public override List<Vector2> Waypoints
         {
             get
             {
@@ -80,7 +82,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                 {
                     if (this.waypoints.Count != 0)
                     {
-                        this.waypoints.Dequeue();
+                        waypoints.RemoveAt(0);
 
                         if (this.waypoints.Count == 0)
                         {
@@ -119,7 +121,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                     {
                         if (this.waypoints.Count != 0)
                         {
-                            this.targetPosition = this.waypoints.Peek();
+                            this.targetPosition = this.waypoints.First();
                         }
                     },
                 null,

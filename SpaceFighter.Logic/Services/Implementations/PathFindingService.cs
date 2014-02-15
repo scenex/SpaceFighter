@@ -37,10 +37,10 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.pathfinder = new AStar(this.map, this.tileSize);
         }
 
-        public Queue<Vector2> GetPathToRandomTile(Vector2 sourcePosition)
+        public List<Vector2> GetPathToRandomTile(Vector2 sourcePosition)
         {
             this.SetRandomTile();
-            return this.pathfinder.SolvePath(sourcePosition, this.tileIndexToNavigate);
+            return this.pathfinder.SolvePath(sourcePosition, this.tileIndexToNavigate).ToList();
         }
 
         private void SetRandomTile()

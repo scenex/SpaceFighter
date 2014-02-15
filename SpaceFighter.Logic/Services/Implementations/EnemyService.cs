@@ -6,7 +6,9 @@ namespace SpaceFighter.Logic.Services.Implementations
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using Microsoft.Xna.Framework;
+
     using SpaceFighter.Logic.Entities.Implementations.Enemies;
     using SpaceFighter.Logic.Entities.Interfaces;
     using SpaceFighter.Logic.Services.Interfaces;
@@ -15,7 +17,6 @@ namespace SpaceFighter.Logic.Services.Implementations
     {
         private readonly IEnemyFactory enemyFactory;
         private readonly List<TimeTriggerActionInvoker> enemiesTimeTriggerActionInvokers = new List<TimeTriggerActionInvoker>();
-
         private double elapsedTime;
 
         public EnemyService(Game game, IEnemyFactory enemyFactory) : base(game)
@@ -46,48 +47,54 @@ namespace SpaceFighter.Logic.Services.Implementations
             this.IsBossEliminated = false;
             //this.enemyFactory.CreateAutonomous<EnemyAutonomous>(new Vector2(400, 400), true);      
 
-            var waypoints = new Queue<Vector2>();
-            waypoints.Enqueue(new Vector2(-80,  500));
-            waypoints.Enqueue(new Vector2(0  ,  500));
-            waypoints.Enqueue(new Vector2(80 ,  580));
-            waypoints.Enqueue(new Vector2(160,  580));
-            waypoints.Enqueue(new Vector2(240,  580));
-            waypoints.Enqueue(new Vector2(320,  580));
-            waypoints.Enqueue(new Vector2(400,  580));
-            waypoints.Enqueue(new Vector2(480,  500));
-            waypoints.Enqueue(new Vector2(560,  500));
-            waypoints.Enqueue(new Vector2(640,  500));
-            waypoints.Enqueue(new Vector2(720,  420));
-            waypoints.Enqueue(new Vector2(800,  420));
-            waypoints.Enqueue(new Vector2(880,  420));
-            waypoints.Enqueue(new Vector2(960,  420));
-            waypoints.Enqueue(new Vector2(1040, 420));
-            this.enemiesTimeTriggerActionInvokers.Add(new TimeTriggerActionInvoker(1000, () => this.enemyFactory.CreateScripted<EnemyScripted>(waypoints, false)));
+            this.enemiesTimeTriggerActionInvokers.Add(new TimeTriggerActionInvoker(1000, () => this.enemyFactory.CreateScripted<EnemyScripted>(new List<Vector2>
+                {
+                    new Vector2(-80, 500),
+                    new Vector2(0, 500),
+                    new Vector2(80, 580),
+                    new Vector2(160, 580),
+                    new Vector2(240, 580),
+                    new Vector2(320, 580),
+                    new Vector2(400, 580),
+                    new Vector2(480, 500),
+                    new Vector2(560, 500),
+                    new Vector2(640, 500),
+                    new Vector2(720, 420),
+                    new Vector2(800, 420),
+                    new Vector2(880, 420),
+                    new Vector2(960, 420),
+                    new Vector2(1040, 420),
+                }, false)));
 
-
-            var waypoints2 = new Queue<Vector2>();
-            waypoints2.Enqueue(new Vector2(-80, 500));
-            waypoints2.Enqueue(new Vector2(0, 500));
-            waypoints2.Enqueue(new Vector2(80, 580));
-            waypoints2.Enqueue(new Vector2(160, 580));
-            waypoints2.Enqueue(new Vector2(240, 580));
-            waypoints2.Enqueue(new Vector2(320, 580));
-            waypoints2.Enqueue(new Vector2(400, 580));
-            waypoints2.Enqueue(new Vector2(480, 500));
-            waypoints2.Enqueue(new Vector2(560, 500));
-            waypoints2.Enqueue(new Vector2(640, 500));
-            waypoints2.Enqueue(new Vector2(720, 420));
-            waypoints2.Enqueue(new Vector2(800, 420));
-            waypoints2.Enqueue(new Vector2(880, 420));
-            waypoints2.Enqueue(new Vector2(960, 420));
-            waypoints2.Enqueue(new Vector2(1040, 420));
-            this.enemiesTimeTriggerActionInvokers.Add(new TimeTriggerActionInvoker(4000, () => this.enemyFactory.CreateScripted<EnemyScripted>(waypoints2, true)));
+            this.enemiesTimeTriggerActionInvokers.Add(new TimeTriggerActionInvoker(4000, () => this.enemyFactory.CreateScripted<EnemyScripted>(new List<Vector2>
+                {
+                    new Vector2(-80, 500),
+                    new Vector2(0, 500),
+                    new Vector2(80, 580),
+                    new Vector2(160, 580),
+                    new Vector2(240, 580),
+                    new Vector2(320, 580),
+                    new Vector2(400, 580),
+                    new Vector2(480, 500),
+                    new Vector2(560, 500),
+                    new Vector2(640, 500),
+                    new Vector2(720, 420),
+                    new Vector2(800, 420),
+                    new Vector2(880, 420),
+                    new Vector2(960, 420),
+                    new Vector2(1040, 420),
+                }, true)));
 
             this.elapsedTime = 0;
+
+            //var serializer = new XmlSerializer(typeof(EnemyScripted));
+            //Stream stream = new FileStream("aaa.xml", FileMode.OpenOrCreate);
+            //serializer.Serialize(stream, this.enemyFactory.CreateScripted<EnemyScripted>(path, true));
         }
 
         public void UnspawnEnemies()
         {
+            // Todo: Make sure entity components are cleared
             this.enemiesTimeTriggerActionInvokers.Clear();
         }
 

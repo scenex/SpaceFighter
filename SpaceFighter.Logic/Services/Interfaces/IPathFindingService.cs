@@ -9,6 +9,6 @@ namespace SpaceFighter.Logic.Services.Interfaces
 
     public interface IPathFindingService
     {
-        Queue<Vector2> GetPathToRandomTile(Vector2 sourcePosition);
+        List<Vector2> GetPathToRandomTile(Vector2 sourcePosition);
     }
 }

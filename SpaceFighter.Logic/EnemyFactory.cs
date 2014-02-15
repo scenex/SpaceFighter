@@ -37,7 +37,7 @@ namespace SpaceFighter.Logic
             return (T)Activator.CreateInstance(typeof(T), game, pathFindingService, startPosition, isBoss);
         }
 
-        public T CreateScripted<T>(Queue<Vector2> waypoints, bool isBoss) where T : EnemyScripted
+        public T CreateScripted<T>(List<Vector2> waypoints, bool isBoss) where T : EnemyScripted
         {
             return (T)Activator.CreateInstance(typeof(T), game, waypoints, isBoss);
         }

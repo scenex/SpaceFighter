@@ -11,7 +11,7 @@ namespace SpaceFighter.Logic.Entities.Interfaces
     public interface IEnemy : IEntity
     {
         Vector2 PlayerPosition { get; set; }
-        Queue<Vector2> Waypoints { get; }
+        List<Vector2> Waypoints { get; }
 
         void SubtractHealth(int amount);
         void AddHealth(int amount);

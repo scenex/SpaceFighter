@@ -6,6 +6,8 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Behaviours.Implementations;
@@ -29,7 +31,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         private readonly bool isBoss;
         private Vector2 targetPosition;
-        private Queue<Vector2> waypoints = new Queue<Vector2>();
+        private List<Vector2> waypoints = new List<Vector2>();
 
         public EnemyAutonomous(Game game, IPathFindingService pathFindingService, Vector2 startPosition, bool isBoss) : base(game)
         {
@@ -62,7 +64,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
             }
         }
 
-        public override Queue<Vector2> Waypoints
+        public override List<Vector2> Waypoints
         {
             get
             {
@@ -88,7 +90,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
                     }
                     else
                     {
-                        this.waypoints.Dequeue();
+                        this.waypoints.RemoveAt(0);
                         while (this.waypoints.Count == 0)
                         {
                             this.waypoints = this.pathFindingService.GetPathToRandomTile(this.Position);
@@ -127,7 +129,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
             var patrol = new State<Action<double>>(
                 EnemyState.Patrol,
-                delegate { this.targetPosition = this.waypoints.Peek(); },
+                delegate { this.targetPosition = this.waypoints.First(); },
                 delegate
                     {
                         this.behaviourStrategy = this.behaviourStrategySeek;

@@ -10,7 +10,6 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using SpaceFighter.Logic.Entities.Interfaces;
-    using SpaceFighter.Logic.Services.Interfaces;
     using SpaceFighter.Logic.StateMachine;
 
     public abstract class EnemyBase : DrawableGameComponent, IEnemy
@@ -32,7 +31,7 @@ namespace SpaceFighter.Logic.Entities.Implementations.Enemies
 
         public abstract bool IsBoss { get; }
         public abstract IWeapon Weapon { get; }
-        public abstract Queue<Vector2> Waypoints { get; }
+        public abstract List<Vector2> Waypoints { get; }
 
         public Vector2 PlayerPosition { get; set; }
         public Vector2 Position { get; protected set; }
