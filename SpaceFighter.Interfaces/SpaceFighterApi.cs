@@ -5,12 +5,9 @@
 namespace SpaceFighter.Interfaces
 {
     public class SpaceFighterApi : ISpaceFighterApi
-    {
-        SpaceFighter.Logic.
-        
+    {       
         public SpaceFighterApi()
-        {
-            
+        {          
         }
 
         public void Load()
