@@ -92,6 +92,7 @@ namespace SpaceFighter.Logic.Screens
             this.spriteBatch.End();
 
             this.GraphicsDevice.SetRenderTarget(null);
+            this.GraphicsDevice.Clear(Color.Black);
 
             // Render rendertarget to backbuffer
             spriteBatch.Begin(
